@@ -219,69 +219,89 @@ GARANZIE DI QUALITÀ
 
 PACCHETTI DI LAVORO
 
+Il progetto è suddiviso nei seguenti macro-blocchi, che verranno poi scomposti tra i diversi membri del gruppo, in relazione al ruolo a loro assegnato.
+1- Inizializzazione progetto e configurazione dipendenze
+	o	Creazione repository privata GitHub e struttura progetto Vaadin e Spring Boot con dipendenze nel pom
+	o	Configurazione Firebase (Realtime Database) e chiavi di accesso nella classe apposita
+	o	Creazione prima classe Application per verificare funzionamento
+
+2- Gestione Utente
+	o	Implementazione viste di registrazione e login
+	o	Creazione collegamento tra la pagina di login e la pagina principale (poi da implementare)
+	o	Implementazione del database nelle pagine, salvataggio utenti e controllo username già esistente
+	o	Controlli su campi vuoti, mail non valide, password verificate (inserimento doppio della password per verifica)
+
+3- Mappa e Visualizzazione Colonnine:
+	o	Implementazione delle dipendenze necessarie per utilizzare Leaflet
+	o	Implementazione della pagina principale con mappa e menu laterale
+	o	Caricamento dei marker delle colonnine da Firebase sulla mappa Leaflet, con coordinate
+	o	Implementazione barra di ricerca e filtri (tipo, nome, posizione) per ricerca colonnine
+	o	Visualizzazione sidebar con dettagli colonnina al click sul marker con al suo interno tasto prenota, recensioni e segnalazioni
+	o	Aggiunta barra laterale con pagine dedicate (utente, colonnine…) e tasto logout
+
+4- Sistema di Prenotazione:
+	o	Sviluppo interfaccia di selezione data e slot orari con menù a tendina nella sidebar che si visualizza dopo il click sulla colonnina
+	o	Implementazione logica backend per la validazione della prenotazione, gestione db con salvataggio delle prenotazioni e controlli
+	o	Gestione della concorrenza con controllo nel database di un nodo uguale (colonnina/data/orario)
+	o	Implementazione in Firebase Service di tutti i nodi necessari per corretta gestione DB
+
+5- Menu laterale e pagine dedicate
+	o	Implementazione delle pagine dedicate (utente, colonnine…) nella barra laterale
+	o	Implementazione parte grafica in queste pagine
+	o	Implementazione collegamento con Database nella pagina utente per visualizzare tutte le prenotazioni
+
+6- Generazione e Gestione QR Code:
+	o	Implementazione dipendenza per la generazione del QR code univoco basato sulla stringa assegnata alla prenotazione 
+	o	Salvataggio del QR code nel database, utilizzabile poi nella pagina utente
+
+7- Fase di testing
+	o	Testing
+	o	Aggiunte/modifiche JS e CSS per interfaccia e parte grafica
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+8- Modifiche e aggiunte finali
+	o	Implementazione di funzionalità extra (notifiche, segnalazioni, recensioni…)
+	o	Modifiche grafiche per interfaccia più user-friendly
 
 
 
 
 RISORSE
 
+1-	Risorse umane:
+	o	4 membri del team di sviluppo
 
+2-	Software (piattaforme): 
+	o	IDE: Eclipse IDE for Java Developers - 2025-09
+	o	JDK (Java Development Kit) + inserire versione
+	o	GitHub (per repository privato).
+	o	Firebase Realtime Database (piano gratuito).
+	o	Vaadin + inserire versione
+	o	Spring Boot + inserire versione
+	o	Leaflet (per la mappa)
+	o	ZXing per la generazione di QR code
+	o	Nessuna licenza a pagamento necessaria, tutti i piano sono gratuiti e limitati
 
+3-	Software (comunicazione e gestione):
+	o	WhatsApp (comunicazione quotidiana).
+	o	Google Drive (documentazione iniziale aggiornata)
+	o	GitHub Desktop per i commit e le modifiche
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+4-	Hardware:
+	o	PC di ogni membro del team già in suo possesso
 
 
 BUDGET
+
+Trattandosi di un progetto sviluppato in ambito accademico, il budget monetario è pari a zero.
+Costi Software: Nulli. 
+Tutte le tecnologie e piattaforme utilizzate (Java, Vaadin, Leaflet, Firebase piano base, GitHub Free) sono gratuite per gli scopi del progetto.
+
+Costi Hardware: Nulli. 
+Ogni membro utilizza il proprio PC personale già in suo possesso.
+
+Costi di Personale: 
+Nulli. Il lavoro fa parte del percorso formativo universitario. Non sono previsti compensi economici.
 
 
 
