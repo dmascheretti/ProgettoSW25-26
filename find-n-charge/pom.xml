@@ -23,6 +23,20 @@
         <vaadin.version>24.3.3</vaadin.version>
     </properties>
     
+    
+    
+	<!--librerie BOM (Bill Of Material), necessarie per il corretto funzionamento del db-->
+	<dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.google.cloud</groupId>
+                <artifactId>libraries-bom</artifactId>
+                <version>26.32.0</version> <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+    
      <dependencies>
         <!-- Vaadin + Spring Boot -->
         <dependency>
@@ -30,7 +44,7 @@
             <artifactId>vaadin-spring-boot-starter</artifactId>
             <version>${vaadin.version}</version> </dependency>
             
-            
+       
               <dependency>
 		    <groupId>org.springframework.boot</groupId>
 		    <artifactId>spring-boot-starter-security</artifactId>
@@ -41,6 +55,19 @@
 		    <artifactId>spring-boot-devtools</artifactId>
 		    <scope>runtime</scope>
 		</dependency>
+		
+		<!--Firebase-->   
+		
+		<dependency>
+	        <groupId>com.google.firebase</groupId>
+	        <artifactId>firebase-admin</artifactId>
+	        <version>9.2.0</version>
+	    </dependency>
+    
+        <dependency>
+            <groupId>io.grpc</groupId>
+            <artifactId>grpc-netty-shaded</artifactId>
+        </dependency>
 		
 			</dependencies>
     

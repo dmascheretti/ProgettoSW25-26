@@ -1,11 +1,14 @@
 /**
  * Classe RegisterView che gestisce la pagina di registrazione con il form per creare un nuovo account
  * 
- * @author Tommaso Maistrello
+ * @author Tommaso Maistrello, Davide Mascheretti
  */
 
 package com.example.views;
 
+import com.example.Utente;
+import com.example.database.FirebaseService;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.Span;
@@ -18,13 +21,21 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouterLink;
+import com.vaadin.flow.spring.annotation.UIScope;
 
 @Route("register")
 @PageTitle("Registrati")
-
+@UIScope
 public class RegisterView extends VerticalLayout {
 
-	public RegisterView() {
+	
+	private final FirebaseService firebaseService;
+	private final UI ui;
+
+	public RegisterView(FirebaseService firebaseService) {
+		
+		this.firebaseService=firebaseService;
+		this.ui = UI.getCurrent();
 
 		setSizeFull();
 		setAlignItems(Alignment.CENTER);
@@ -80,9 +91,67 @@ public class RegisterView extends VerticalLayout {
 		submitButton.getElement().getThemeList().add("success");
 		submitButton.getStyle().set("margin-top", "var(--lumo-space-l)");
 		submitButton.addClickListener(e -> {
-			Notification.show("Registrazione in corso", 1000, Notification.Position.TOP_CENTER);
+			
+
+			 	String nome = nomeField.getValue();
+			    String cognome = cognomeField.getValue();
+			    String email = emailField.getValue();
+			    String username = usernameField.getValue();
+			    String password = passwordField.getValue();
+			    String conferma = confirmPasswordField.getValue();
+			    
+			    /*
+			     * controlli base
+			     */
+			    
+			    if (username.isEmpty() || nome.isEmpty() || cognome.isEmpty() || email.isEmpty()) {
+			        Notification.show("Tutti i campi sono obbligatori!", 3000, Notification.Position.TOP_CENTER)
+			                    .getElement().getThemeList().add("error");
+			        return;
+			    }
+
+			    if (!password.equals(conferma)) {
+			        Notification.show("Le password non corrispondono!", 3000, Notification.Position.TOP_CENTER)
+			                    .getElement().getThemeList().add("error");
+			        return;
+			    }
+
+			    if (password.length() < 6) {
+			        Notification.show("La password deve contenere almeno 6 caratteri!", 3000, Notification.Position.TOP_CENTER)
+			                    .getElement().getThemeList().add("error");
+			        return;
+			    }
+			    
+			    //creo utrente solo dopo aver fatto i controlli
+			    
+			    Utente nuovoUtente = new Utente(nome, cognome, username, email, password);
+			    
+			    /*
+			     * in modo asicrono salvo utente nel database
+			     * il thenRun() permette di lavorare in background e non bloccare la UI principale della
+			     * registerView
+			     */
+			    
+			    firebaseService.salvaUtente(nuovoUtente)
+                .thenRun(() -> ui.access(() -> {
+                    Notification.show("Registrazione completata! Benvenuto, " + username + ".",
+                            3000, Notification.Position.TOP_CENTER);
+                    ui.navigate("");
+                }))
+                
+                //gestione e messaggio di errore
+                
+                .exceptionally(ex -> {
+                    ui.access(() -> {
+                        Notification.show("Errore durante il salvataggio: " + ex.getMessage(),
+                                4000, Notification.Position.TOP_CENTER)
+                                .getElement().getThemeList().add("error");
+                    });
+                    return null;
+                });
 
 		});
+		
 
 		// Box di testo
 		Span text = new Span("Hai già un account? ");
