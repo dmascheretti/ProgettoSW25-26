@@ -67,6 +67,9 @@ FORSE PARTE DI COSA ABBIAMO UTILIZZATO MEGLIO METTERLE IN TECNICHE?
 
 
 ATTIVITÀ DI GESTIONE
+La gestione del progetto avviene attraverso incontri ravvicinati soprattutto in ambiente universitario. Durante l‘incontro ogni membro aggiorna il gruppo sulle modifiche apportate al codice, eventuali problemi che ha rilevato, accorgimenti e un ipotetica suddivisione dei compiti che devono essere assegnati agli altri membri nel caso siano necessari per lo sviluppo del progetto.
+Naturalmente tutto ciò, oltre ad essere tema di incontro, deve essere dettagliatamente descritto nella documentazione o negli issue tramite GitHub.
+In caso di domande o dubbi dopo i vari incontri possono essere chiariti anche tramite gruppo Whatsapp creato per una messaggistica rapida, a cui può seguire una chiamata o una discussione per la ricerca di una possibile risoluzione della problematica. In caso di mancata soluzione al problema, e la conseguente impossibilità di chiusura della issue nel caso sia stata creata, si opterà per un nuovo incontro di gruppo.
 
 
 
@@ -122,6 +125,20 @@ Potremmo dividere meglio tra le tipologie di rischio
 
 
 PERSONALE
+Il progetto prevede il coinvolgimento costante di quattro membri, studenti del corso di laurea in Ingegneria Informatica. Tutti possiedono competenze nello sviluppo software in Java e nell’utilizzo dell’ambiente di sviluppo Eclipse.
+Non sono previsti costi per il personale, poiché si tratta di un progetto universitario a scopo formativo.
+Ciascun componente del gruppo partecipa attivamente alla programmazione, con attività sia di Front End sia di Back End, secondo le proprie competenze. Per una migliore organizzazione del lavoro, i ruoli principali sono così assegnati:
+[Davide Mascheretti] — Project Manager e Sviluppatore Back End
+Coordina le attività del gruppo, pianifica le scadenze. Implementa la logica applicativa e gestisce l’integrazione tra moduli, servizi  e database contenenti i dati del progetto.
+[Francesco Valenari] — Progettista Software e Collaboratore Front End
+Definisce l’architettura del sistema, la struttura del codice e i diagrammi UML, garantendo coerenza e qualità del design. Aiuta nella realizzazione dell'interfaccia utente.
+[Tommaso Maistrello] — Analista dei requisiti e Sviluppatore Front End
+Cura la documentazione e raccoglie i requisiti funzionali e non funzionali. Realizza l’interfaccia utente.
+[Claudio Morgera] — Collaboratore Back End e Tester
+Aiuta nell‘implementazione della logica applicativa e gestisce l’integrazione tra moduli, servizi e database. Si occupa dei test funzionali e unitari e verifica la correttezza complessiva del software.
+
+
+L’impegno dei membri sarà costante per tutta la durata del progetto, con maggiore intensità nelle fasi di sviluppo e collaudo.
 
 
 
@@ -154,7 +171,26 @@ PERSONALE
 
 
 METODI E TECNICHE
+Durante lo sviluppo del progetto saranno adottati metodi e tecniche di ingegneria del software che coprono tutte le fasi del ciclo di vita: analisi dei requisiti, progettazione, implementazione e test.
+Ingegneria dei requisiti: i requisiti saranno raccolti tramite incontri di gruppo e discussioni guidate dal Project Manager. Saranno documentati in modo strutturato utilizzando diagrammi dei casi d’uso e specifiche testuali, redatte con strumenti di videoscrittura condivisi (ad esempio Google Docs o simili).
 
+
+Progettazione: sarà impiegato un approccio object-oriented (OO), con l’ausilio di diagrammi UML per rappresentare classi, sequenze e componenti. La progettazione sarà validata in gruppo prima dell’inizio della codifica.
+
+
+Implementazione: lo sviluppo sarà realizzato in Java, utilizzando l’ambiente Eclipse IDE. Verrà seguito un processo incrementale e iterativo dove ciascun componente sarà sviluppato, testato e integrato progressivamente per tutta la durata del progetto.
+
+
+Controllo di versione: il codice sarà gestito tramite Git, con repository su GitHub per il versioneamento, la collaborazione e la revisione del codice. Ogni membro effettuerà commit regolari e aprirà pull request per l’integrazione del proprio lavoro.
+
+
+Documentazione tecnica: sarà prodotta e mantenuta durante tutto il progetto, comprendendo specifiche dei requisiti, manuali tecnici e relazioni di test. I documenti saranno salvati in formato digitale condiviso e versionati insieme al codice.
+
+
+Ambiente di prova: i test saranno condotti sui computer personali dotati di Java Development Kit (JDK) e Eclipse, replicando l’ambiente di esecuzione previsto.
+
+
+Integrazione e test: i componenti saranno testati in ordine crescente di complessità, iniziando dai moduli di base fino alla versione integrata. I test di accettazione verranno eseguiti sotto la supervisione del gruppo, verificando la conformità ai requisiti funzionali e prestazionali.
 
 
 
@@ -186,7 +222,23 @@ METODI E TECNICHE
 
 
 GARANZIE DI QUALITÀ
+La garanzia della qualità del software sarà assicurata attraverso un insieme di procedure e controlli mirati a garantire che il prodotto finale soddisfi i requisiti definiti.
+Revisione dei requisiti e del design: ogni documento e modello progettuale sarà rivisto in gruppo per verificarne la completezza e la coerenza con gli obiettivi del progetto.
 
+
+Controllo della qualità del codice: verranno adottate convenzioni di programmazione condivise (stile, nomenclatura, formattazione) e saranno effettuate revisioni periodiche del codice tramite code review su GitHub.
+
+
+Test di qualità: saranno realizzati test unitari, di integrazione e di sistema per garantire il corretto funzionamento del software. Gli esiti dei test saranno documentati in appositi report.
+
+
+Tracciabilità: verrà mantenuta una corrispondenza tra requisiti, componenti implementati e casi di test, per assicurare la copertura completa delle funzionalità.
+
+
+Gestione delle modifiche: eventuali correzioni o miglioramenti saranno tracciati nel sistema di versionamento Git, garantendo il controllo delle revisioni e la riproducibilità del lavoro.
+
+
+Verifica finale: prima della consegna, il software sarà sottoposto a un test di accettazione finale per confermare la conformità alle specifiche e la stabilità del sistema.
 
 
 
@@ -334,6 +386,22 @@ Nulli. Il lavoro fa parte del percorso formativo universitario. Non sono previst
 
 
 CAMBIAMENTI
+Nel corso del progetto potranno verificarsi modifiche ai requisiti o all’implementazione di grande impatto sul progetto. È quindi necessario gestire tali cambiamenti in modo ordinato e tracciabile, per evitare incoerenze o perdite di qualità del progetto.
+Poiché il progetto segue un approccio iterativo e leggero, i cambiamenti corposi saranno gestiti in maniera agile: ogni nuova iterazione di questo tipo introdurrà miglioramenti del software con una documentazione ben dettagliata.
+Tuttavia, per garantire il controllo e la coerenza del lavoro svolto, verranno seguite procedure condivise:
+Ogni proposta di modifica (ai requisiti, al design o al codice) dovrà essere discussa e approvata dal gruppo, in particolare dal Project Manager.
+
+
+Una volta approvata, la modifica sarà documentata brevemente indicando la motivazione, l’impatto stimato e i file coinvolti.
+
+
+Le modifiche al codice saranno gestite tramite Git, creando un nuovo branch o commit dedicato e una pull request per la revisione e l’integrazione.
+
+
+Le modifiche che comportano aggiornamenti alla documentazione tecnica (diagrammi, manuali o specifiche) saranno riportate anche nei relativi file, per mantenere la coerenza tra codice e documentazione.
+
+
+Questo approccio permette di mantenere un controllo chiaro sulle versioni del software e di prevenire modifiche non tracciate che potrebbero compromettere la qualità e aumentare i tempi di sviluppo.
 
 
 
@@ -366,4 +434,5 @@ CAMBIAMENTI
 
 
 CONSEGNA
+Per la consegna del progetto è obbligatorio mettere il tutto in un repository github da condividere preventivamente con il professore (account github: garganti) e con l’esercitatrice (account github: silviabonfanti). Mentre per i tempi di consegna possono variare in base alla decisione del gruppo nel voler svolgere l‘esame di Ingegneria del Software, siccome il project plan deve essere pronto un mese circa prima dell’esame. Il progetto deve essere completato 5 giorni prima della sua presentazione.
 
