@@ -6,3 +6,5 @@
 
 06/11/2025 	Tommaso Maistrello
 	09.00-12.00 Creazione della MapView in cui viene visualizzata la mappa di Leaflet. Problemi nell'import di Leaflet legati a Maven, risolti utilizzando una stringa js
+06/11/2025  Mascheretti Davide
+  15.30-16.15 + 17.15-18.45 Creazione branch per issue, implemetazione del controllo di esistenza dell'utente durante la fase di login e implementazione della funziona nella classe FirebaseService, aggiunta documentazione varia 
