@@ -1,11 +1,12 @@
 /**
  * Classe LoginView che gestisce la pagina di login con il form per accedere grazie alle proprie credenziali
  * 
- * @author Tommaso Maistrello
+ * @author Tommaso Maistrello, Davide Mascheretti
  */
 
 package com.example.views;
 
+import com.example.database.FirebaseService;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H1;
@@ -18,14 +19,22 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouterLink;
+import com.vaadin.flow.server.VaadinSession;
 
 // Questa deve essere la prima pagina aperta dal sito web
 @Route("")
 @PageTitle("Accedi")
 
 public class LoginView extends VerticalLayout {
+	
+	private final UI ui;
+	private final FirebaseService firebaseService;
 
-	public LoginView() {
+
+	public LoginView(FirebaseService firebaseService) {
+		
+		this.ui=UI.getCurrent();
+		this.firebaseService=firebaseService;
 
 		// Dimensione massima per occupare tutta la finestra
 		setSizeFull();
@@ -39,8 +48,8 @@ public class LoginView extends VerticalLayout {
 		// Inseriamo i campi del form
 		// Campo del nome utente
 		TextField usernameField = new TextField();
-		usernameField.setLabel("Nome utente o indirizzo email");
-		usernameField.setPlaceholder("Inserisci la tua email");
+		usernameField.setLabel("Nome utente");
+		usernameField.setPlaceholder("Inserisci il tuo username");
 		usernameField.setWidth("300px");
 		usernameField.getStyle().set("--lumo-primary-text-color", "var(--lumo-success-text-color)"); // Tema verde
 
@@ -55,9 +64,64 @@ public class LoginView extends VerticalLayout {
 		Button loginButton = new Button("Accedi");
 		loginButton.getElement().getThemeList().add("success"); // Tema verde
 		loginButton.addClickListener(event -> {
-			Notification.show("Accesso in corso", 1000, Notification.Position.TOP_CENTER);
-			UI.getCurrent().navigate("map");
-		});
+			String user=usernameField.getValue();
+			String password=passwordField.getValue();
+			
+			/*
+			 * Accesso alla pagina admin da cui può vedere tutte le info 
+			 * ps decidere password e user
+			 */
+			if(password.equals("1234") && user.equals("admin")) {
+        		
+	       		 ui.navigate("admin"); 
+	       		 return;
+	        	}
+	       	
+			/*
+			 * Chiama funzione cerca utente da firebase service (asincrona, con thenAccept perche serve
+			 * restituire utente)
+			 * Mette il risultato della funzione in utente
+			 * Accede alla ui senza bloccare il resto del programma
+			 * se cercaUtente restituisce diverso da null--> OK, prendo sessione (tengo in memoria utente)
+			 * e accedo alla pagina principale, in caso contrario (utente uguale a null, non trovato) segnala
+			 * errore
+			 */
+	       
+	        	    firebaseService.cercaUtente(user,password)
+	                .thenAccept(utente -> {
+	                	 getUI().ifPresent(ui -> ui.access(() -> {
+	                
+	        	    if (utente != null) {
+	        	    	
+	        	    	//tengo in memoria la sessione utente
+	        	    	VaadinSession.getCurrent().setAttribute("utente", utente);
+	        	    
+	        	    	Notification.show("Accesso in corso", 2000, Notification.Position.TOP_CENTER);
+	        	    	//accesso alla pagina della mappa
+						ui.navigate("map"); 
+						
+	        	    } else {
+	        	        // Login Fallito (utente non trovato o password errata)
+	        	        Notification.show("Credenziali non valide. Riprova.", 3000, Notification.Position.TOP_CENTER).getElement().getThemeList().add("error");
+	        	   
+	        	    }
+	                	 }));
+	        	    })
+	                //eccezioni database (con OnCancelled nella funzione cercaUtente())
+	        	    .exceptionally(ex -> {
+	                    //gestione vari errori possibili
+	                    getUI().ifPresent(ui -> ui.access(() -> {
+	                        Notification error = Notification.show(
+	                            "Errore di connessione",
+	                            3000,
+	                            Notification.Position.TOP_CENTER
+	                        );
+	                        error.getElement().getThemeList().add("error");
+	                    }));
+	                    ex.printStackTrace();
+	                    return null;
+	                }); 
+	        });
 
 		// Box di testo
 		Span text = new Span("Non hai un account? ");

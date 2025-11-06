@@ -101,7 +101,7 @@ public class RegisterView extends VerticalLayout {
 			    String conferma = confirmPasswordField.getValue();
 			    
 			    /*
-			     * controlli base
+			     * controlli base, potrei spostarli in una classe a parte!
 			     */
 			    
 			    if (username.isEmpty() || nome.isEmpty() || cognome.isEmpty() || email.isEmpty()) {
@@ -122,7 +122,7 @@ public class RegisterView extends VerticalLayout {
 			        return;
 			    }
 			    
-			    //creo utrente solo dopo aver fatto i controlli
+			    //creo utente solo dopo aver fatto i controlli
 			    
 			    Utente nuovoUtente = new Utente(nome, cognome, username, email, password);
 			    
@@ -130,6 +130,11 @@ public class RegisterView extends VerticalLayout {
 			     * in modo asicrono salvo utente nel database
 			     * il thenRun() permette di lavorare in background e non bloccare la UI principale della
 			     * registerView
+			     * 
+			     * quando salvaUtente termina procede con la registrazione (o eventualmente eccezione)
+			     * se salvaUtente() notifica null, tutto ok --> eseguo thenRun()
+			     * se salvaUtente() notifica != null allora thenRun() riceve notifica di eccezione, non viene
+			     * eseguito, ed esegue .exceptionally (errore del database)
 			     */
 			    
 			    firebaseService.salvaUtente(nuovoUtente)
