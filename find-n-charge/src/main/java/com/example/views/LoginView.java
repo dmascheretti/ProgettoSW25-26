@@ -6,6 +6,7 @@
 
 package com.example.views;
 
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.Span;
@@ -55,6 +56,7 @@ public class LoginView extends VerticalLayout {
 		loginButton.getElement().getThemeList().add("success"); // Tema verde
 		loginButton.addClickListener(event -> {
 			Notification.show("Accesso in corso", 1000, Notification.Position.TOP_CENTER);
+			UI.getCurrent().navigate("map");
 		});
 
 		// Box di testo

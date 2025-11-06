@@ -1,1 +1,8 @@
+04/11/2025 	Tommaso Maistrello
+	09.00-11.00 Creazione della LoginView con indirizzamento alla pagina di registrazione in caso non si abbia un account. Creazione file application.properties per runnare il programma.
+	11.00-12.00 Creazione della RegisterView con indirizzamento alla pagina di accesso in caso si abbia già un account.
+
 05/11/2025 16.00-18.00 Mascheretti Davide
+
+06/11/2025 	Tommaso Maistrello
+	09.00-12.00 Creazione della MapView in cui viene visualizzata la mappa di Leaflet. Problemi nell'import di Leaflet legati a Maven, risolti utilizzando una stringa js
