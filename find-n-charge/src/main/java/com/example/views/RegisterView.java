@@ -6,6 +6,7 @@
 
 package com.example.views;
 
+import com.example.RegisterValidator;
 import com.example.Utente;
 import com.example.database.FirebaseService;
 import com.vaadin.flow.component.UI;
@@ -101,30 +102,19 @@ public class RegisterView extends VerticalLayout {
 			    String conferma = confirmPasswordField.getValue();
 			    
 			    /*
-			     * controlli base, potrei spostarli in una classe a parte!
+			     * controlli base
 			     */
 			    
-			    if (username.isEmpty() || nome.isEmpty() || cognome.isEmpty() || email.isEmpty()) {
-			        Notification.show("Tutti i campi sono obbligatori!", 3000, Notification.Position.TOP_CENTER)
+			    String errore = RegisterValidator.verificaDati(nome, cognome, username, email, password, conferma);
+			    if (errore != null) {
+			        Notification.show(errore, 3000, Notification.Position.TOP_CENTER)
 			                    .getElement().getThemeList().add("error");
 			        return;
 			    }
-
-			    if (!password.equals(conferma)) {
-			        Notification.show("Le password non corrispondono!", 3000, Notification.Position.TOP_CENTER)
-			                    .getElement().getThemeList().add("error");
-			        return;
-			    }
-
-			    if (password.length() < 6) {
-			        Notification.show("La password deve contenere almeno 6 caratteri!", 3000, Notification.Position.TOP_CENTER)
-			                    .getElement().getThemeList().add("error");
-			        return;
-			    }
-			    
 			    //creo utente solo dopo aver fatto i controlli
+			   
 			    
-			    Utente nuovoUtente = new Utente(nome, cognome, username, email, password);
+			    	Utente nuovoUtente = new Utente(nome, cognome, username, email, password);
 			    
 			    /*
 			     * in modo asicrono salvo utente nel database
