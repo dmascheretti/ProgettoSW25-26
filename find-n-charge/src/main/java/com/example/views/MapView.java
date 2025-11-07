@@ -6,36 +6,107 @@
 
 package com.example.views;
 
+import com.example.MainLayout;
+import com.example.models.Colonnina;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+import com.example.database.FirebaseService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vaadin.flow.component.AttachEvent;
+import com.vaadin.flow.component.ClientCallable;
 import com.vaadin.flow.component.UI;
+import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.html.H3;
+import com.vaadin.flow.component.html.Span;
+import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
-import com.example.MainLayout;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @PageTitle("Find&Charge - Mappa")
 @Route(value = "map", layout = MainLayout.class) // Carica la pagina nel layout della home page
 @RouteAlias(value = "main", layout = MainLayout.class) // URL alternativo
 
-public class MapView extends Div {
+public class MapView extends HorizontalLayout {
 
 	private Div mapDiv;
 	private String mapId = "map-container-" + System.currentTimeMillis(); // Id univoco -> evita conflitti
 
-	public MapView() {
+	// Componenti per la Sidebar
+	private VerticalLayout stationSidebar;
+	private H3 sidebarTitle;
+	private VerticalLayout sidebarDetails;
+	private Button prenotaButton;
+	private com.vaadin.flow.shared.Registration prenotaButtonListener; // Per avere un solo linstener attivo
+
+	// Serve Firebase con la lista della colonnine del database
+	private FirebaseService firebaseService;
+	private List<Colonnina> colonnine;
+	private ObjectMapper objectMapper = new ObjectMapper(); // Per tradurre gli oggetti da Java a JSON
+
+	public MapView(@Autowired FirebaseService firebaseService) {
+
+		this.firebaseService = firebaseService;
+
 		setSizeFull();
+		setPadding(false);
+		setSpacing(false);
 		getStyle().set("height", "100vh"); // Altrimenti la mappa collassa a 0px
+
+		// Crea la sidebar
+		stationSidebar = createSidebar();
+
+		// Crea il contenitore per la mappa
+		mapDiv = new Div();
+		mapDiv.setSizeFull();
+		mapDiv.setId(mapId);
+		add(mapDiv);
+
+		// Aggiunge mappa e sidebar all'HorizontalLayout
+		add(mapDiv, stationSidebar);
+		expand(mapDiv); // La mappa occupa tutto lo spazio disponibile
 
 		// Carica i file CSS e JS di Leaflet
 		UI.getCurrent().getPage().addStyleSheet("https://unpkg.com/leaflet@1.9.4/dist/leaflet.css");
 		UI.getCurrent().getPage().addJavaScript("https://unpkg.com/leaflet@1.9.4/dist/leaflet.js");
 
-		// Configurazione del contenitore Div
-		mapDiv = new Div();
-		mapDiv.setSizeFull();
-		mapDiv.setId(mapId);
-		add(mapDiv);
+	}
+
+	/**
+	 * Crea la scheda colonnina
+	 */
+	private VerticalLayout createSidebar() {
+
+		VerticalLayout sidebar = new VerticalLayout();
+		sidebar.setWidth("350px");
+		sidebar.setHeightFull();
+		sidebar.getStyle().set("background-color", "var(--lumo-base-color)")
+				.set("border-left", "1px solid var(--lumo-contrast-20pct)").set("padding", "var(--lumo-space-m)");
+
+		// Di default deve essere nascosta
+		sidebar.setVisible(false);
+
+		Button closeButton = new Button(VaadinIcon.CLOSE.create(), e -> sidebar.setVisible(false));
+		closeButton.getStyle().set("align-self", "flex-end");
+		closeButton.getElement().getThemeList().add("success");
+
+		sidebarTitle = new H3("Dettagli");
+		sidebarDetails = new VerticalLayout();
+		sidebarDetails.setSpacing(false); // Rimuove spazio extra tra le righe
+		sidebarDetails.setPadding(false); // Rimuove padding
+		prenotaButton = new Button("Prenota ora");
+		prenotaButton.getElement().getThemeList().add("success");
+		prenotaButton.getStyle().set("margin-top", "var(--lumo-space-l)");
+
+		sidebar.add(closeButton, sidebarTitle, sidebarDetails, prenotaButton);
+		return sidebar;
 	}
 
 	/**
@@ -53,27 +124,135 @@ public class MapView extends Div {
 	 */
 	@Override
 	protected void onAttach(AttachEvent attachEvent) {
-
 		super.onAttach(attachEvent);
+
+		// Per l'asincronicità
+		UI ui = attachEvent.getUI();
 
 		String jsCode =
 				// Questa parte di codice deve aspettare che il file .js di Leaflet sia stato
 				// scaricato, quindi lo controlliamo ciclicamente ogni 100ms
-				"var checkLeaflet = setInterval(function() {" +
-				// Controlla se il file è stato scaricato
-						"  if (typeof L !== 'undefined') {" +
-						// Se esiste, ferma il controllo
-						"    clearInterval(checkLeaflet);" +
-						// Crea la mappa dentro al Div corretto (grazie all'Id) e posizionala alle
-						// coordinate di Dalmine con zoom pari a 15
-						"    var map = L.map('" + mapId + "').setView([45.6493, 9.6021], 15);" +
-						// Leaflet si appoggia a OpenStreetMAp.org per disegnare la mappa
-						"    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {"
-						+ "      attribution: '© OpenStreetMap contributors'" + "    }).addTo(map);" +
+				"var checkLeaflet = setInterval(function() {" + "    if (typeof L !== 'undefined') {" + // Controlla se
+																										// il file è
+																										// stato
+																										// scaricato
+						"    clearInterval(checkLeaflet);" + // Se esiste, ferma il controllo
+						"    var mapElement = document.getElementById('" + mapId + "');" + // Cerca il div che deve
+																							// contenere la mappa
+						"    if (!mapElement) return;" + // Se non esiste interrompe
+						"    if (mapElement._leaflet_id) return;" + // Controlla che non ci sia già una mappa nel div,
+																	// in caso affermativo interrompe
 
-						"  }" + "}, 100);"; // Intervallo di 100ms
+						// Crea la mappa
+						"    var map = L.map('" + mapId + "').setView([45.6493, 9.6021], 15);" + // Crea la mappa con
+																									// coordinate
+																									// default su
+																									// Dalmine e zoom
+																									// pari a 15
+						"    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {" + // Si appoggia a
+																									// OpenStreetMap per
+																									// disegnare le
+																									// mattonelle della
+																									// mappa
+						"      attribution: '© OpenStreetMap contributors'" + "    }).addTo(map);" +
 
-		// Esegue lo script di js appena scritto
-		UI.getCurrent().getPage().executeJs(jsCode);
+						// Trasforma la stringa JSON in un array JS
+						"    var stations = JSON.parse($1);" + // $1 verrà sostituito da stationsJson
+						"    var component = $0;" + // $0 è 'this.getElement()'
+
+						// Crea i marker
+						"    stations.forEach(function(station) {" + // Ciclo su ogni elemento dell'array station
+						"      var marker = L.marker([station.lat, station.lon]).addTo(map);" + // Per ogni colonnina
+																								// crea il marker
+						"      marker.on('click', function() {" + // Aggiunge il listener di click alla componente
+						"      component.$server.onMarkerClick(station.id);" + "      });});}}, 100);"; // Ciclo ogni
+																										// 100ms
+
+		// Se getAllColonnine() ha successo
+		firebaseService.getAllColonnine().thenAccept(stations -> {
+
+			// Memorizza la lista delle colonnine
+			this.colonnine = stations;
+
+			String stationsJson;
+			try {
+				// Prende i dati che servono per disegnare il marker
+				List<Map<String, Object>> markerData = stations.stream().map(c -> { // Trasforma la lista
+																					// List<Colonnina> in una
+																					// List<Map<String, Object>>
+					// Usa un HashMap esplicito per evitare problemi di inferenza dei tipi
+					Map<String, Object> map = new java.util.HashMap<>();
+					map.put("id", c.getId());
+					map.put("lat", c.getLatitudine());
+					map.put("lon", c.getLongitudine());
+					return map; // Restituisce l'HashMap
+				}).collect(Collectors.toList());
+
+				stationsJson = objectMapper.writeValueAsString(markerData); // Converte la lista Java in una lista JSON
+
+			} catch (JsonProcessingException e) {
+				e.printStackTrace();
+				stationsJson = "[]"; // Array vuoto in caso di errore
+			}
+
+			// Esegue il JS in modo sicuro sul thread della UI
+			// Dobbiamo usare ui.access() perché siamo in un thread asincrono
+			String finalStationsJson = stationsJson;
+			ui.access(() -> { // Questo thread deve essere eseguito sulla UI perchè deve aggiornarla
+				getElement().executeJs(jsCode, getElement(), finalStationsJson); // Viene eseguito il codice JS
+			});
+
+		}).exceptionally(ex -> { // In caso fallisca getAllColonnine()
+			ex.printStackTrace();
+			ui.access(() -> {
+				Notification.show("Errore nel caricamento delle colonnine: " + ex.getMessage(), 3000,
+						Notification.Position.TOP_CENTER);
+			});
+			return null;
+		});
+
+	}
+
+	/**
+	 * Metodo richiamato da JS quando un marker viene cliccato e attiva la sidebar.
+	 *
+	 * @param stationId L'ID (chiave univoca di Firebase) della colonnina cliccata.
+	 */
+	@ClientCallable // Rende il codice Java chiamabile da codice JS
+	public void onMarkerClick(String stationId) {
+
+		// Esegue sul thread UI principale
+		getUI().ifPresent(ui -> ui.access(() -> {
+
+			// Trova la colonnina nella lista
+			Colonnina selectedStation = colonnine.stream().filter(c -> stationId.equals(c.getId())).findFirst()
+					.orElse(null);
+
+			if (selectedStation != null) {
+
+				// Mette i dati della colonnina nella sidebar
+				sidebarTitle.setText(selectedStation.getNome());
+				// Pulisci i dettagli vecchi
+				sidebarDetails.removeAll();
+				sidebarDetails.add(
+						new Span("Indirizzo: " + selectedStation.getIndirizzo() + ", " + selectedStation.getComune()),
+						new Span("Stato: " + selectedStation.getStato()));
+
+				if (prenotaButtonListener != null) {
+					prenotaButtonListener.remove();
+					prenotaButtonListener = null; // Pulisce la variabile così sappiamo che è attivo un solo listener al
+													// massimo
+				}
+
+				prenotaButtonListener = prenotaButton.addClickListener(e -> {
+					// PRENOTAZIONE DA IMPLEMENTARE
+				});
+
+				// Mostra la sidebar
+				stationSidebar.setVisible(true);
+			} else {
+				Notification.show("Errore: Dati colonnina non trovati.", 2000, Notification.Position.MIDDLE);
+			}
+		}));
 	}
 }

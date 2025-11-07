@@ -21,6 +21,7 @@ import com.vaadin.flow.router.RouterLink;
 import com.vaadin.flow.server.VaadinSession;
 import com.example.views.ReservationView;
 import com.example.views.StationsView;
+import com.example.models.Utente;
 import com.example.views.MapView;
 import com.example.views.ProfileView;
 
@@ -46,7 +47,7 @@ public class MainLayout extends AppLayout {
 		VerticalLayout drawerMenu = new VerticalLayout();
 		drawerMenu.setPadding(true);
 		drawerMenu.setHeightFull();
-		setDrawerOpened(false);	// Inizialmente non visibile
+		setDrawerOpened(false); // Inizialmente non visibile
 
 		// Pulsante di logout
 		Button logoutButton = new Button("Esci", event -> {
@@ -64,7 +65,8 @@ public class MainLayout extends AppLayout {
 				createMenuLink(ReservationView.class, "Prenotazioni", VaadinIcon.LIST),
 				createMenuLink(StationsView.class, "Colonnine", VaadinIcon.MAP_MARKER), spacer, logoutButton);
 
-		//Espande lo spacer in modo da occupare tutto lo spazio extra disponibile all'interno di draweMenu (non utilizzato)
+		// Espande lo spacer in modo da occupare tutto lo spazio extra disponibile
+		// all'interno di draweMenu (non utilizzato)
 		drawerMenu.expand(spacer);
 
 		// Aggiunge il menu al drawer

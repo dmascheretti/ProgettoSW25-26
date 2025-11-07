@@ -1,7 +1,7 @@
 package com.example.views;
 
 import com.example.MainLayout;
-import com.example.Utente;
+import com.example.models.Utente;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
