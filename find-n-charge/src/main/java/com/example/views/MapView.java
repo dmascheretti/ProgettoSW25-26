@@ -11,9 +11,12 @@ import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.router.RouteAlias;
+import com.example.MainLayout;
 
-@Route("map")
-@PageTitle("Mappa")
+@PageTitle("Find&Charge - Mappa")
+@Route(value = "map", layout = MainLayout.class) // Carica la pagina nel layout della home page
+@RouteAlias(value = "main", layout = MainLayout.class) // URL alternativo
 
 public class MapView extends Div {
 
@@ -35,8 +38,19 @@ public class MapView extends Div {
 		add(mapDiv);
 	}
 
-	// Metodo standard di Vaadin che si attiva quando il comopnente (mappa) si
-	// attacca alla pagina
+	/**
+	 * Sovrascrive il metodo standard di Vaadin che viene chiamato automaticamente
+	 * quando il componente (MapView) viene aggiunto al DOM (Document Object Model,
+	 * rappresentazione ad albero che il browser crea del documento web).
+	 * 
+	 * A questo punto questo metodo esegue codice JS per interagire con gli elementi
+	 * della pagina: ogni 100ms controlla che la libreria esterna Leaflet.js sia
+	 * stata caricata e sia disponibile; quando è pronta, inizializza la mappa
+	 * all'interno dello specifico Div (mapId); imposta le coordinate di default su
+	 * Dalmine e aggiunge il layer con le grafiche;
+	 *
+	 * @param attachEvent Evento che segnala l'aggiunta del componente al DOM.
+	 */
 	@Override
 	protected void onAttach(AttachEvent attachEvent) {
 
@@ -55,8 +69,7 @@ public class MapView extends Div {
 						"    var map = L.map('" + mapId + "').setView([45.6493, 9.6021], 15);" +
 						// Leaflet si appoggia a OpenStreetMAp.org per disegnare la mappa
 						"    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {"
-						+ "      attribution: '© OpenStreetMap contributors'" + "    }).addTo(map);"
-						+ "    /* --- Fine codice mappa --- */" +
+						+ "      attribution: '© OpenStreetMap contributors'" + "    }).addTo(map);" +
 
 						"  }" + "}, 100);"; // Intervallo di 100ms
 

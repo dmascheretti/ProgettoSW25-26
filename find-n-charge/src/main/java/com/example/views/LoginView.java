@@ -98,7 +98,7 @@ public class LoginView extends VerticalLayout {
 	        	    
 	        	    	Notification.show("Accesso in corso", 2000, Notification.Position.TOP_CENTER);
 	        	    	//accesso alla pagina della mappa
-						ui.navigate("map"); 
+						ui.navigate("main"); 
 						
 	        	    } else {
 	        	        // Login Fallito (utente non trovato o password errata)

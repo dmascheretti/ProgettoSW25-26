@@ -8,6 +8,7 @@ import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import com.example.MainLayout;
 import com.example.Prenotazione;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.component.button.Button;
@@ -16,8 +17,8 @@ import com.vaadin.flow.component.notification.Notification;
 import java.util.ArrayList;
 import java.util.List;
 
-@Route("reservations")
-@PageTitle("Prenotazioni")
+@Route(value = "reservations", layout = MainLayout.class)
+@PageTitle("Find&Charge - Prenotazioni")
 public class ReservationView extends VerticalLayout {
 
     private TextField userField = new TextField("Utente");
