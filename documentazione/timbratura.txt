@@ -2,9 +2,12 @@
 	09.00-11.00 Creazione della LoginView con indirizzamento alla pagina di registrazione in caso non si abbia un account. Creazione file application.properties per runnare il programma.
 	11.00-12.00 Creazione della RegisterView con indirizzamento alla pagina di accesso in caso si abbia già un account.
 
-05/11/2025 16.00-18.00 Mascheretti Davide
+05/11/2025 16.00-18.00 Mascheretti Davide Inizializzazione Database e collegamento con applicazione
 
 06/11/2025 	Tommaso Maistrello
 	09.00-12.00 Creazione della MapView in cui viene visualizzata la mappa di Leaflet. Problemi nell'import di Leaflet legati a Maven, risolti utilizzando una stringa js
+
 06/11/2025  Mascheretti Davide
   15.30-16.15 + 17.15-18.45 Creazione branch per issue, implemetazione del controllo di esistenza dell'utente durante la fase di login e implementazione della funziona nella classe FirebaseService, aggiunta documentazione varia 
+
+07/11/2025 Creazione branch per risolvere issue del problema del doppio click, analisi delle possibili motivazioni
