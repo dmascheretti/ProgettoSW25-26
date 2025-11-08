@@ -6,9 +6,9 @@
 
 package com.example.views;
 
-import com.example.RegisterValidator;
 import com.example.database.FirebaseService;
 import com.example.models.Utente;
+import com.example.util.RegisterValidator;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H1;

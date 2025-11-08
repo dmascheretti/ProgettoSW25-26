@@ -2,7 +2,7 @@
  * CLasse RegisterValidator utilizzata da RegisterView per vericare la correttezza dei campi inseriti
  * @author Davide Mascheretti
  */
-package com.example;
+package com.example.util;
 
 public class RegisterValidator {
 
