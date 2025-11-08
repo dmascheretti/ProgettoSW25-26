@@ -72,34 +72,6 @@ Naturalmente tutto ciò, oltre ad essere tema di incontro, deve essere dettaglia
 In caso di domande o dubbi dopo i vari incontri possono essere chiariti anche tramite gruppo Whatsapp creato per una messaggistica rapida, a cui può seguire una chiamata o una discussione per la ricerca di una possibile risoluzione della problematica. In caso di mancata soluzione al problema, e la conseguente impossibilità di chiusura della issue nel caso sia stata creata, si opterà per un nuovo incontro di gruppo.
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 POTENZIALI RISCHI
 Rischi organizzativi e gestionali.
 I principali problemi potrebbero riguardare principalmente ritardi nella stesura nei diversi diagrammi e nella consegna tendenzialmente giornaliera degli aggiornamenti e delle modifiche. 
@@ -121,8 +93,6 @@ Occorre implementare meccanismi di controllo che garantiscano che due utenti non
 Questo è fondamentale che venga rispettato.
 Sono sempre poi presenti potenziali rischi riguardo numerosi aspetti dell’applicazione ma questi li andremo a gestire passo dopo passo, risolvendo o prendendo altre strade per evitarli.
 
-Potremmo dividere meglio tra le tipologie di rischio
-
 
 PERSONALE
 Il progetto prevede il coinvolgimento costante di quattro membri, studenti del corso di laurea in Ingegneria Informatica. Tutti possiedono competenze nello sviluppo software in Java e nell’utilizzo dell’ambiente di sviluppo Eclipse.
@@ -139,35 +109,6 @@ Aiuta nell‘implementazione della logica applicativa e gestisce l’integrazion
 
 
 L’impegno dei membri sarà costante per tutta la durata del progetto, con maggiore intensità nelle fasi di sviluppo e collaudo.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 METODI E TECNICHE
@@ -193,34 +134,6 @@ Ambiente di prova: i test saranno condotti sui computer personali dotati di Java
 Integrazione e test: i componenti saranno testati in ordine crescente di complessità, iniziando dai moduli di base fino alla versione integrata. I test di accettazione verranno eseguiti sotto la supervisione del gruppo, verificando la conformità ai requisiti funzionali e prestazionali.
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 GARANZIE DI QUALITÀ
 La garanzia della qualità del software sarà assicurata attraverso un insieme di procedure e controlli mirati a garantire che il prodotto finale soddisfi i requisiti definiti.
 Revisione dei requisiti e del design: ogni documento e modello progettuale sarà rivisto in gruppo per verificarne la completezza e la coerenza con gli obiettivi del progetto.
@@ -239,34 +152,6 @@ Gestione delle modifiche: eventuali correzioni o miglioramenti saranno tracciati
 
 
 Verifica finale: prima della consegna, il software sarà sottoposto a un test di accettazione finale per confermare la conformità alle specifiche e la stabilità del sistema.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 PACCHETTI DI LAVORO
@@ -316,8 +201,6 @@ Il progetto è suddiviso nei seguenti macro-blocchi, che verranno poi scomposti 
 	o	Modifiche grafiche per interfaccia più user-friendly
 
 
-
-
 RISORSE
 
 1-	Risorse umane:
@@ -356,35 +239,6 @@ Costi di Personale:
 Nulli. Il lavoro fa parte del percorso formativo universitario. Non sono previsti compensi economici.
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 CAMBIAMENTI
 Nel corso del progetto potranno verificarsi modifiche ai requisiti o all’implementazione di grande impatto sul progetto. È quindi necessario gestire tali cambiamenti in modo ordinato e tracciabile, per evitare incoerenze o perdite di qualità del progetto.
 Poiché il progetto segue un approccio iterativo e leggero, i cambiamenti corposi saranno gestiti in maniera agile: ogni nuova iterazione di questo tipo introdurrà miglioramenti del software con una documentazione ben dettagliata.
@@ -402,35 +256,6 @@ Le modifiche che comportano aggiornamenti alla documentazione tecnica (diagrammi
 
 
 Questo approccio permette di mantenere un controllo chiaro sulle versioni del software e di prevenire modifiche non tracciate che potrebbero compromettere la qualità e aumentare i tempi di sviluppo.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 CONSEGNA

@@ -43,8 +43,8 @@ public class FirebaseService {
 	 * se future.complete(null) --> tutto ok se future.complete(!=null) --> errore
 	 * invia eccezione
 	 * 
-	 * @param utente utente da salvare nel db
-	 * @return future funzione terminata, con o senza eccezioni
+	 * @param utente Utente da salvare nel db
+	 * @return future Funzione terminata, con o senza eccezioni
 	 */
 
 	public CompletableFuture<Void> salvaUtente(Utente utente) {
@@ -121,7 +121,7 @@ public class FirebaseService {
 	}
 	
 	/**
-	 * Verifica se esite già un utente con lo stesso username, cercando nel databse
+	 * Verifica se esiste già un utente con lo stesso username, cercando nel database
 	 * utenti/username Se esiste restituisce quell'utente, se non esiste restituisce
 	 * null e si può completare la registrazione
 	 * 

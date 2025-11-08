@@ -159,7 +159,8 @@ public class RegisterView extends VerticalLayout {
 					else {
 
 						Notification.show("Lo username : " + username + " e' già in uso, prova con un altro!", 3000,
-								Notification.Position.TOP_CENTER);
+								Notification.Position.TOP_CENTER).getElement().getThemeList().add("error");
+			        	   ;
 
 					}
 
