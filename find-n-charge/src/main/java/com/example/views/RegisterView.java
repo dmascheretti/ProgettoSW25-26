@@ -29,13 +29,12 @@ import com.vaadin.flow.spring.annotation.UIScope;
 @UIScope
 public class RegisterView extends VerticalLayout {
 
-	
 	private final FirebaseService firebaseService;
 	private final UI ui;
 
 	public RegisterView(FirebaseService firebaseService) {
-		
-		this.firebaseService=firebaseService;
+
+		this.firebaseService = firebaseService;
 		this.ui = UI.getCurrent();
 
 		setSizeFull();
@@ -92,61 +91,83 @@ public class RegisterView extends VerticalLayout {
 		submitButton.getElement().getThemeList().add("success");
 		submitButton.getStyle().set("margin-top", "var(--lumo-space-l)");
 		submitButton.addClickListener(e -> {
-			
 
-			 	String nome = nomeField.getValue();
-			    String cognome = cognomeField.getValue();
-			    String email = emailField.getValue();
-			    String username = usernameField.getValue();
-			    String password = passwordField.getValue();
-			    String conferma = confirmPasswordField.getValue();
-			    
-			    /*
-			     * controlli base
-			     */
-			    
-			    String errore = RegisterValidator.verificaDati(nome, cognome, username, email, password, conferma);
-			    if (errore != null) {
-			        Notification.show(errore, 3000, Notification.Position.TOP_CENTER)
-			                    .getElement().getThemeList().add("error");
-			        return;
-			    }
-			    //creo utente solo dopo aver fatto i controlli
-			   
-			    
-			    	Utente nuovoUtente = new Utente(nome, cognome, username, email, password);
-			    
-			    /*
-			     * in modo asicrono salvo utente nel database
-			     * il thenRun() permette di lavorare in background e non bloccare la UI principale della
-			     * registerView
-			     * 
-			     * quando salvaUtente termina procede con la registrazione (o eventualmente eccezione)
-			     * se salvaUtente() notifica null, tutto ok --> eseguo thenRun()
-			     * se salvaUtente() notifica != null allora thenRun() riceve notifica di eccezione, non viene
-			     * eseguito, ed esegue .exceptionally (errore del database)
-			     */
-			    
-			    firebaseService.salvaUtente(nuovoUtente)
-                .thenRun(() -> ui.access(() -> {
-                    Notification.show("Registrazione completata! Benvenuto, " + username + ".",
-                            3000, Notification.Position.TOP_CENTER);
-                    ui.navigate("");
-                }))
-                
-                //gestione e messaggio di errore
-                
-                .exceptionally(ex -> {
-                    ui.access(() -> {
-                        Notification.show("Errore durante il salvataggio: " + ex.getMessage(),
-                                4000, Notification.Position.TOP_CENTER)
-                                .getElement().getThemeList().add("error");
-                    });
-                    return null;
-                });
+			String nome = nomeField.getValue();
+			String cognome = cognomeField.getValue();
+			String email = emailField.getValue();
+			String username = usernameField.getValue();
+			String password = passwordField.getValue();
+			String conferma = confirmPasswordField.getValue();
+
+			/*
+			 * controlli base
+			 */
+
+			String errore = RegisterValidator.verificaDati(nome, cognome, username, email, password, conferma);
+			if (errore != null) {
+				Notification.show(errore, 3000, Notification.Position.TOP_CENTER).getElement().getThemeList()
+						.add("error");
+				return;
+			}
+
+			/*
+			 * verifico se lo username esiste già in modo asincrono
+			 * 
+			 * se la funzione resistuisce un utente nullo allora non è stato trovato se la
+			 * funzione restituisce un utente non nullo allora esiste già
+			 * 
+			 * se utente==null salvo nuovo utente con quello username
+			 */
+
+			firebaseService.verificaUtente(username).thenAccept(utente -> {
+				getUI().ifPresent(ui -> ui.access(() -> {
+
+					if (utente == null) {
+
+						Utente nuovoUtente = new Utente(nome, cognome, username, email, password);
+
+						/*
+						 * in modo asicrono salvo utente nel database il thenRun() permette di lavorare
+						 * in background e non bloccare la UI principale della registerView
+						 * 
+						 * quando salvaUtente termina procede con la registrazione (o eventualmente
+						 * eccezione) se salvaUtente() notifica null, tutto ok --> eseguo thenRun() se
+						 * salvaUtente() notifica != null allora thenRun() riceve notifica di eccezione,
+						 * non viene eseguito, ed esegue .exceptionally (errore del database)
+						 */
+
+						firebaseService.salvaUtente(nuovoUtente).thenRun(() -> ui.access(() -> {
+							Notification.show("Registrazione completata! Benvenuto, " + username + ".", 3000,
+									Notification.Position.TOP_CENTER);
+							ui.navigate("");
+						}))
+
+								// gestione e messaggio di errore
+
+								.exceptionally(ex -> {
+									ui.access(() -> {
+										Notification
+												.show("Errore durante il salvataggio: " + ex.getMessage(), 4000,
+														Notification.Position.TOP_CENTER)
+												.getElement().getThemeList().add("error");
+									});
+									return null;
+								});
+
+					}
+
+					else {
+
+						Notification.show("Lo username : " + username + " e' già in uso, prova con un altro!", 3000,
+								Notification.Position.TOP_CENTER);
+
+					}
+
+				}));
+
+			});
 
 		});
-		
 
 		// Box di testo
 		Span text = new Span("Hai già un account? ");

@@ -119,6 +119,57 @@ public class FirebaseService {
 
 		return future;
 	}
+	
+	/**
+	 * Verifica se esite già un utente con lo stesso username, cercando nel databse
+	 * utenti/username Se esiste restituisce quell'utente, se non esiste restituisce
+	 * null e si può completare la registrazione
+	 * 
+	 * @param username da cercare nel db
+	 * @return future che può contenere o non contenere un utente
+	 */
+
+	public CompletableFuture<Utente> verificaUtente(String username) {
+		CompletableFuture<Utente> future = new CompletableFuture<>();
+
+		/*
+		 * Cerca direttamente il nodo utente usando l'username come chiave aggiornando
+		 * la lettura con il listener
+		 */
+		DatabaseReference userRef = utenti.child(username);
+		userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+			@Override
+
+			public void onDataChange(DataSnapshot dataSnapshot) {
+				/*
+				 * se esiste quel nodo entra nell'if, altrimenti restituisce
+				 * future.complete(null) utente trovato --> future.complete(utente) -->
+				 * registrazione non possibile utente non trovato --> future.complete(null) -->
+				 * registrazione possibile
+				 */
+				if (dataSnapshot.exists()) {
+					Utente utente = dataSnapshot.getValue(Utente.class);
+					future.complete(utente);
+				} else {
+					// utente non trovato
+					future.complete(null);
+				}
+			}
+
+			/*
+			 * gestione errori di sistema e database, vado nella gestione eccezioni in
+			 * LoginView
+			 */
+			@Override
+			public void onCancelled(DatabaseError databaseError) {
+				System.err.println("Errore nel database " + databaseError.getMessage());
+				future.completeExceptionally(databaseError.toException());
+			}
+		});
+
+		return future;
+	}
+	
 
 	/**
 	 * Metodo per recuperare in modo asincrono l'elenco di tutti le colonnine del

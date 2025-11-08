@@ -11,9 +11,12 @@
   15.30-16.15 + 17.15-18.45 Creazione branch per issue, implemetazione del controllo di esistenza dell'utente durante la fase di login e implementazione della funziona nella classe FirebaseService, aggiunta documentazione varia 
 
 07/11/2025 Mascheretti Davide 
-Creazione branch per risolvere issue del problema del doppio click, analisi delle possibili motivazioni, risoluzione della issue, creazione classe per controllo dati in fase di registrazione
+	Creazione branch per risolvere issue del problema del doppio click, analisi delle possibili motivazioni, risoluzione della issue, creazione classe per controllo dati in fase di registrazione. Creato classe per controlli che vengono effettuati in register view in modo da rendere la classe più leggibile e devidere al meglio i ruoli tra classi
 
 07/11/2025	Tommaso Maistrello
 	17.30-19.00 Creata MainLayout.java, strutturata come home page del progetto. In alto presenta una barra con titolo e tasto del menù. Quest'ultimo si apre sulla sinistra e permette di navigare attraverso le altre pagine dell'app web.
 Modificata la Route di MapView.java in modo tale che si apra direttamente all'avvio di LoginView. Create classi di profilo e colonnine senza implementarle.
 	20.00-22.00 Creato un pacchetto contenente i modelli delle componenti del database. Creato il modello (la classe) della colonnina. In MapView.java: Creata visualizzazione colonnine sulla mappa tramite marker. Le colonnine verranno aggiunte al firebase tramite pagina admin. Creata la sidebar della scheda colonnina una volta cliccato il marker. In FirebaseService.java, implementata la logica per leggere le colonnine del firebase in modalità asincrona rifacendomi al modello proposto da Mascheretti per gli utenti.
+
+8/11/2025 Mascheretti Davide
+	9-10.45 Aggiunta funzione per verificare se lo username è gia esistente in FirebaseService e richiamata poi da RegisterView. Risolti problemi di conflitti con modifche in stash (motivo per cui una parte della regsiterView appare eliminata e poi riaggiunta con modifiche effettive). aggiunta di documentazione dei nuovi metodi e delle modiiche effettuate.
