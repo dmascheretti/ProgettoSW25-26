@@ -8,11 +8,11 @@ import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.server.VaadinSession;
 import com.example.MainLayout;
 import com.example.models.Prenotazione;
-import com.vaadin.flow.component.textfield.TextField;
-import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.notification.Notification;
+import com.example.models.Utente;
+import com.vaadin.flow.component.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,30 +21,19 @@ import java.util.List;
 @PageTitle("Find&Charge - Prenotazioni")
 public class ReservationView extends VerticalLayout {
 
-    private TextField userField = new TextField("Utente");
-    private Button searchButton = new Button("Cerca prenotazioni");
     private Grid<Prenotazione> reservationGrid = new Grid<>(Prenotazione.class);
 
     public ReservationView() {
         setSpacing(true);
         setPadding(true);
-
-        add(userField, searchButton, reservationGrid);
+		Utente utente = (Utente) VaadinSession.getCurrent().getAttribute("utente");
+        add(new Text("Ciao "+utente.getUsername() +"! Ecco le tue prenotazioni...") ,reservationGrid);
 
         // Configurazione griglia (visualizzazione dei campi di ogni prenotazione)
         reservationGrid.setColumns("nomeColonnina", "data", "inizio");
-
-        searchButton.getElement().getThemeList().add("success"); // Tema verde
-        searchButton.addClickListener(e -> {
-            String user = userField.getValue();
-            if (user == null || user.isEmpty()) {
-                Notification.show("Inserisci un nome utente");
-                return;
-            }
-            // Dati fittizi: solo per mostrare come apparirebbe la UI
-            reservationGrid.setItems(loadMockReservationsForUser(user));
-        });
+        reservationGrid.setItems(loadMockReservationsForUser(utente.getUsername()));
     }
+    
 
     //Mock di prenotazioni (solo per esempio)
     private List<Prenotazione> loadMockReservationsForUser(String user) {
