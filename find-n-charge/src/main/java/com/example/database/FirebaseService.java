@@ -2,12 +2,13 @@
  * Classe FirebaseService svolge tutte le funzioni di controllo utenti, controllo prenotazioni e salvataggio
  * dati all'interno del database
  * Tutte le funzioni lavorano in maniera asincrona usando CompletableFuture
- * @author Davide Mascheretti, Tommaso Maistrello
+ * @author Davide Mascheretti, Tommaso Maistrello, Francesco Valenari
  */
 
 package com.example.database;
 
 import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
@@ -223,6 +224,7 @@ public class FirebaseService {
 		});
 		return future;
 	}
+<<<<<<< Updated upstream
 	/**
 	 * Restituisce una lista filtrata di prenotazioni in base all'utente che viene passato.
 	 * La funzione cerca nel database sotto al nodo prenotazione tutte le prenotazione che tra le informiazioni
@@ -272,5 +274,23 @@ public class FirebaseService {
         //ritorno la lista filtrata delle prenotazioni dell'utente
         return future;
         }
+=======
+	
+	public CompletableFuture<List<Colonnina>> cercaColonnine(String query) {
+	    String filtro = query == null ? "" : query.toLowerCase();
+
+	    return getAllColonnine().thenApply(lista -> 
+	        lista.stream()
+	             .filter(c -> {
+	                 String nome = c.getNome() != null ? c.getNome().toLowerCase() : "";
+	                 String indirizzo = c.getIndirizzo() != null ? c.getIndirizzo().toLowerCase() : "";
+	                 String comune = c.getComune() != null ? c.getComune().toLowerCase() : "";
+	                 return nome.contains(filtro) || indirizzo.contains(filtro) || comune.contains(filtro);
+	             })
+	             .collect(Collectors.toList())
+	    );
+	}
+
+>>>>>>> Stashed changes
 
 }
