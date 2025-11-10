@@ -179,53 +179,8 @@ public class FirebaseService {
 	}
 	
 
-	/**
-	 * Metodo per recuperare in modo asincrono l'elenco di tutti le colonnine del
-	 * database. Per ogni colonnina letta, la chiave del nodo viene impostato come
-	 * identificativo dell'oggetto.
-	 *
-	 * @return se tutto avviene correttamente ritorna l'elenco di tutte le
-	 *         colonnine. Se il nodo "colonnine" è vuoto o non esiste, la lista sarà
-	 *         vuota. Se avviene un errore durante la lettura del db, partirà
-	 *         un'eccezione.
-	 */
-	public CompletableFuture<List<Colonnina>> getAllColonnine() {
 
-		// Oggetto che permette al programma di non fermarsi perchè sa che conterrà la
-		// lista che sta cercando
-		CompletableFuture<List<Colonnina>> future = new CompletableFuture<>();
-
-		// Legge il nodo colonnine
-		colonnine.addListenerForSingleValueEvent(new ValueEventListener() {
-
-			// Se li legge senza problemi
-			@Override
-			public void onDataChange(DataSnapshot dataSnapshot) { // Istantanea dei dati
-				List<Colonnina> listaColonnine = new ArrayList<>();
-				if (dataSnapshot.exists()) {
-					for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-						Colonnina colonnina = snapshot.getValue(Colonnina.class); // Acquisisce tutti i dati delle
-																					// colonnine
-						if (colonnina != null) {
-							colonnina.setId(snapshot.getKey()); // Salva la chiave univoca come id
-							listaColonnine.add(colonnina);
-						}
-					}
-				}
-				future.complete(listaColonnine); // Restituisce la lista (piena o vuota)
-			}
-
-			// Se trova errori
-			@Override
-			public void onCancelled(DatabaseError databaseError) {
-				System.err.println("Errore nel caricamento colonnine: " + databaseError.getMessage());
-				future.completeExceptionally(databaseError.toException());
-			}
-		});
-		return future;
-	}
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
+	
 	/**
 	 * Restituisce una lista filtrata di prenotazioni in base all'utente che viene passato.
 	 * La funzione cerca nel database sotto al nodo prenotazione tutte le prenotazione che tra le informiazioni
@@ -275,28 +230,65 @@ public class FirebaseService {
         //ritorno la lista filtrata delle prenotazioni dell'utente
         return future;
         }
-=======
-=======
->>>>>>> Stashed changes
-	
-	public CompletableFuture<List<Colonnina>> cercaColonnine(String query) {
-	    String filtro = query == null ? "" : query.toLowerCase();
 
-	    return getAllColonnine().thenApply(lista -> 
-	        lista.stream()
-	             .filter(c -> {
-	                 String nome = c.getNome() != null ? c.getNome().toLowerCase() : "";
-	                 String indirizzo = c.getIndirizzo() != null ? c.getIndirizzo().toLowerCase() : "";
-	                 String comune = c.getComune() != null ? c.getComune().toLowerCase() : "";
-	                 return nome.contains(filtro) || indirizzo.contains(filtro) || comune.contains(filtro);
-	             })
-	             .collect(Collectors.toList())
-	    );
-	}
 
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
+/**
+ * Metodo per recuperare in modo asincrono l'elenco di tutti le colonnine del
+ * database. Per ogni colonnina letta, la chiave del nodo viene impostato come
+ * identificativo dell'oggetto.
+ *
+ * @return se tutto avviene correttamente ritorna l'elenco di tutte le
+ *         colonnine. Se il nodo "colonnine" è vuoto o non esiste, la lista sarà
+ *         vuota. Se avviene un errore durante la lettura del db, partirà
+ *         un'eccezione.
+ */
+public CompletableFuture<List<Colonnina>> getAllColonnine() {
 
+	// Oggetto che permette al programma di non fermarsi perchè sa che conterrà la
+	// lista che sta cercando
+	CompletableFuture<List<Colonnina>> future = new CompletableFuture<>();
+
+	// Legge il nodo colonnine
+	colonnine.addListenerForSingleValueEvent(new ValueEventListener() {
+
+		// Se li legge senza problemi
+		@Override
+		public void onDataChange(DataSnapshot dataSnapshot) { // Istantanea dei dati
+			List<Colonnina> listaColonnine = new ArrayList<>();
+			if (dataSnapshot.exists()) {
+				for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+					Colonnina colonnina = snapshot.getValue(Colonnina.class); // Acquisisce tutti i dati delle
+																				// colonnine
+					if (colonnina != null) {
+						colonnina.setId(snapshot.getKey()); // Salva la chiave univoca come id
+						listaColonnine.add(colonnina);
+					}
+				}
+			}
+			future.complete(listaColonnine); // Restituisce la lista (piena o vuota)
+		}
+
+		// Se trova errori
+		@Override
+		public void onCancelled(DatabaseError databaseError) {
+			System.err.println("Errore nel caricamento colonnine: " + databaseError.getMessage());
+			future.completeExceptionally(databaseError.toException());
+		}
+	});
+	return future;
+}
+public CompletableFuture<List<Colonnina>> cercaColonnine(String query) {
+    String filtro = query == null ? "" : query.toLowerCase();
+
+    return getAllColonnine().thenApply(lista -> 
+        lista.stream()
+             .filter(c -> {
+                 String nome = c.getNome() != null ? c.getNome().toLowerCase() : "";
+                 String indirizzo = c.getIndirizzo() != null ? c.getIndirizzo().toLowerCase() : "";
+                 String comune = c.getComune() != null ? c.getComune().toLowerCase() : "";
+                 return nome.contains(filtro) || indirizzo.contains(filtro) || comune.contains(filtro);
+             })
+             .collect(Collectors.toList())
+    );
+}
 }
