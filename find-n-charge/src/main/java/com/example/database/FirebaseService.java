@@ -223,19 +223,36 @@ public class FirebaseService {
 		});
 		return future;
 	}
-	
+	/**
+	 * Restituisce una lista filtrata di prenotazioni in base all'utente che viene passato.
+	 * La funzione cerca nel database sotto al nodo prenotazione tutte le prenotazione che tra le informiazioni
+	 * hanno come username il nome passato. Quindi prenotazioni/numprenotazione/utenteUSername deve essere
+	 * uguale a username.
+	 * 
+	 * L'utilizzo di completableFuture permette di lavorare in maniera asincorna e ottenere un risultato 
+	 * solo dopo aver analizzato tutto il database.
+	 * 
+	 * @param username da cercare nelle prenotazioni per ottenere la sua lista filtrata
+	 * @return lista di prenotazioni tramite un future
+	 */
 	public CompletableFuture<List<Prenotazione>> getAllReservation(String username){
 		CompletableFuture<List<Prenotazione>> future = new CompletableFuture<>();
+		//cerco nel nodo prenotazioni i figli che hanno utenteUsername uguale a username
         prenotazioni.orderByChild("utenteUsername").equalTo(username)
         .addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+            	//creo lista di prenotazioni
                 List<Prenotazione> prenotazioni = new ArrayList<>();
+                /*
+                 * Aggiunge alla lista tutte le prenotazioni il cui utenteUsername corrisponde a username
+                 */
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Prenotazione p = snapshot.getValue(Prenotazione.class);
                     prenotazioni.add(p);
                 }
                
+                //finito il for salvo nel future la lista
                 future.complete(prenotazioni);
                 
             }
@@ -251,6 +268,8 @@ public class FirebaseService {
 			
 			
         });
+        
+        //ritorno la lista filtrata delle prenotazioni dell'utente
         return future;
         }
 
