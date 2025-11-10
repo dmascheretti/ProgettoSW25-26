@@ -12,19 +12,24 @@ import java.util.concurrent.CompletableFuture;
 import org.springframework.stereotype.Service;
 
 import com.example.models.Colonnina;
+import com.example.models.Prenotazione;
 import com.example.models.Utente;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.google.api.services.storage.model.Notification;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.vaadin.flow.component.Text;
 
 @Service
 public class FirebaseService {
 	private final DatabaseReference utenti;
 	private final DatabaseReference colonnine;
+	private final DatabaseReference prenotazioni;
 
 	/**
 	 * Inizializzazione del riferimento al nodo "utenti" del database
@@ -33,6 +38,8 @@ public class FirebaseService {
 	public FirebaseService() {
 		this.utenti = FirebaseDatabase.getInstance().getReference("utenti");
 		this.colonnine = FirebaseDatabase.getInstance().getReference("colonnine");
+		this.prenotazioni= FirebaseDatabase.getInstance().getReference("prenotazioni");
+		
 	}
 
 	/**
@@ -216,5 +223,35 @@ public class FirebaseService {
 		});
 		return future;
 	}
+	
+	public CompletableFuture<List<Prenotazione>> getAllReservation(String username){
+		CompletableFuture<List<Prenotazione>> future = new CompletableFuture<>();
+        prenotazioni.orderByChild("utenteUsername").equalTo(username)
+        .addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                List<Prenotazione> prenotazioni = new ArrayList<>();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    Prenotazione p = snapshot.getValue(Prenotazione.class);
+                    prenotazioni.add(p);
+                }
+               
+                future.complete(prenotazioni);
+                
+            }
+
+			@Override
+			public void onCancelled(DatabaseError databaseError) {
+				// TODO Auto-generated method stub
+				System.err.println("Errore nel caricamento colonnine: " + databaseError.getMessage());
+				future.completeExceptionally(databaseError.toException());
+				
+			}
+
+			
+			
+        });
+        return future;
+        }
 
 }

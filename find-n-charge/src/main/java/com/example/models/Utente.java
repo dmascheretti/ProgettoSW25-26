@@ -1,5 +1,6 @@
 package com.example.models;
 
+
 public class Utente {
 	
 	private String nome, cognome, username, email, password;
