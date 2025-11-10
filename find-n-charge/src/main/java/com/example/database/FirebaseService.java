@@ -225,6 +225,7 @@ public class FirebaseService {
 		return future;
 	}
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 	/**
 	 * Restituisce una lista filtrata di prenotazioni in base all'utente che viene passato.
 	 * La funzione cerca nel database sotto al nodo prenotazione tutte le prenotazione che tra le informiazioni
@@ -275,6 +276,8 @@ public class FirebaseService {
         return future;
         }
 =======
+=======
+>>>>>>> Stashed changes
 	
 	public CompletableFuture<List<Colonnina>> cercaColonnine(String query) {
 	    String filtro = query == null ? "" : query.toLowerCase();
@@ -291,6 +294,9 @@ public class FirebaseService {
 	    );
 	}
 
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 
 }
