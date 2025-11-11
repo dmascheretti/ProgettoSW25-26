@@ -8,6 +8,12 @@ package com.example.views;
 
 import com.example.MainLayout;
 import com.example.models.Colonnina;
+import com.example.models.Prenotazione;
+import com.example.models.Utente;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -18,6 +24,8 @@ import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.ClientCallable;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.combobox.ComboBox;
+import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.html.Span;
@@ -28,6 +36,7 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
+import com.vaadin.flow.server.VaadinSession;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @PageTitle("Find&Charge - Mappa")
@@ -43,12 +52,15 @@ public class MapView extends HorizontalLayout {
 	private VerticalLayout stationSidebar;
 	private H3 sidebarTitle;
 	private VerticalLayout sidebarDetails;
+	private DatePicker bookingDatePicker; // Calendario interattivo
+	private ComboBox<String> bookingTimeSlot; // Menù a tendina con gli slot orari
 	private Button prenotaButton;
 	private com.vaadin.flow.shared.Registration prenotaButtonListener; // Per avere un solo linstener attivo
 
 	// Serve Firebase con la lista della colonnine del database
 	private FirebaseService firebaseService;
 	private List<Colonnina> colonnine;
+	private Colonnina colonninaSelezionata;
 	private ObjectMapper objectMapper = new ObjectMapper(); // Per tradurre gli oggetti da Java a JSON
 
 	public MapView(@Autowired FirebaseService firebaseService) {
@@ -101,12 +113,44 @@ public class MapView extends HorizontalLayout {
 		sidebarDetails = new VerticalLayout();
 		sidebarDetails.setSpacing(false); // Rimuove spazio extra tra le righe
 		sidebarDetails.setPadding(false); // Rimuove padding
+
+		bookingDatePicker = new DatePicker("Giorno");
+		bookingDatePicker.setMin(LocalDate.now()); // Non si può prenotare nel passato
+		bookingDatePicker.getStyle().set("width", "100%");
+		bookingDatePicker.getStyle().set("--lumo-primary-text-color", "var(--lumo-success-text-color)");
+
+		bookingTimeSlot = new ComboBox<>("Orario (slot 30 min)");
+		bookingTimeSlot.setItems(generateTimeSlots()); // Carica gli slot
+		bookingTimeSlot.getStyle().set("width", "100%");
+		bookingTimeSlot.getStyle().set("--lumo-primary-text-color", "var(--lumo-success-text-color)");
+
 		prenotaButton = new Button("Prenota ora");
 		prenotaButton.getElement().getThemeList().add("success");
 		prenotaButton.getStyle().set("margin-top", "var(--lumo-space-l)");
 
-		sidebar.add(closeButton, sidebarTitle, sidebarDetails, prenotaButton);
+		sidebar.add(closeButton, sidebarTitle, sidebarDetails, bookingDatePicker, bookingTimeSlot, prenotaButton);
+
 		return sidebar;
+	}
+
+	/**
+	 * Metodo per generare la lista degli slot orari
+	 * 
+	 * @return Lista di stringhe con formato: "HH:mm"
+	 */
+	private List<String> generateTimeSlots() {
+
+		List<String> slots = new ArrayList<>();
+
+		LocalTime time = LocalTime.MIDNIGHT;
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+
+		// Uno slot ogni 30 minuti -> 48 slot in 24 ore
+		for (int i = 0; i < 48; i++) {
+			slots.add(time.format(formatter));
+			time = time.plusMinutes(30);
+		}
+		return slots;
 	}
 
 	/**
@@ -206,7 +250,7 @@ public class MapView extends HorizontalLayout {
 			ex.printStackTrace();
 			ui.access(() -> {
 				Notification.show("Errore nel caricamento delle colonnine: " + ex.getMessage(), 3000,
-						Notification.Position.TOP_CENTER);
+						Notification.Position.TOP_CENTER).getElement().getThemeList().add("error");
 			});
 			return null;
 		});
@@ -224,35 +268,102 @@ public class MapView extends HorizontalLayout {
 		// Esegue sul thread UI principale
 		getUI().ifPresent(ui -> ui.access(() -> {
 
-			// Trova la colonnina nella lista
-			Colonnina selectedStation = colonnine.stream().filter(c -> stationId.equals(c.getId())).findFirst()
+			// Trova la colonnina nella lista e la salva nella variabile d'istanza
+			this.colonninaSelezionata = colonnine.stream().filter(c -> stationId.equals(c.getId())).findFirst()
 					.orElse(null);
 
-			if (selectedStation != null) {
+			// Controlla la variabile d'istanza
+			if (colonninaSelezionata != null) {
 
 				// Mette i dati della colonnina nella sidebar
-				sidebarTitle.setText(selectedStation.getNome());
+				sidebarTitle.setText(colonninaSelezionata.getNome());
 				// Pulisci i dettagli vecchi
 				sidebarDetails.removeAll();
-				sidebarDetails.add(
-						new Span("Indirizzo: " + selectedStation.getIndirizzo() + ", " + selectedStation.getComune()),
-						new Span("Stato: " + selectedStation.getStato()));
+				sidebarDetails.add( // Span serve per poter mandare a capo le righe
+						new Span("Indirizzo: " + colonninaSelezionata.getIndirizzo() + ", "
+								+ colonninaSelezionata.getComune()),
+						new Span("Stato: " + colonninaSelezionata.getStato()));
 
+				// Pulisce i campi di prenotazione precedenti
+				bookingDatePicker.setValue(null);
+				bookingTimeSlot.setValue(null);
+
+				// Deve esistere solo un listener alla volta per leggere la colonnina corretta
 				if (prenotaButtonListener != null) {
 					prenotaButtonListener.remove();
-					prenotaButtonListener = null; // Pulisce la variabile così sappiamo che è attivo un solo listener al
-													// massimo
+					prenotaButtonListener = null;
 				}
 
+				// Aggiunge il listener che chiama handlePrenotazione
 				prenotaButtonListener = prenotaButton.addClickListener(e -> {
-					// PRENOTAZIONE DA IMPLEMENTARE
+					gestisciPrenotazione(); // Trova colonninaSelezionata
 				});
 
 				// Mostra la sidebar
 				stationSidebar.setVisible(true);
+
 			} else {
-				Notification.show("Errore: Dati colonnina non trovati.", 2000, Notification.Position.MIDDLE);
+				Notification.show("Errore: Dati colonnina non trovati.", 2000, Notification.Position.TOP_CENTER)
+						.getElement().getThemeList().add("error");
 			}
 		}));
+	}
+
+	/**
+	 * Metodo per gestire la logica di prenotazione
+	 */
+	private void gestisciPrenotazione() {
+
+		Utente utenteCorrente = (Utente) VaadinSession.getCurrent().getAttribute("utente");
+		LocalDate dataSelezionata = bookingDatePicker.getValue();
+		String orarioSelezionato = bookingTimeSlot.getValue();
+
+		// Controlli
+		if (utenteCorrente == null) {
+			Notification.show("Errore: Utente non loggato. Effettua il login per prenotare.", 3000,
+					Notification.Position.TOP_CENTER).getElement().getThemeList().add("error");
+
+			// In caso reindirizziamo alla pagina di login
+			getUI().ifPresent(ui -> ui.navigate("login"));
+			return;
+		}
+		if (dataSelezionata == null) {
+			Notification.show("Seleziona una data.", 2000, Notification.Position.TOP_CENTER).getElement().getThemeList()
+					.add("error");
+			return;
+		}
+		if (orarioSelezionato == null || orarioSelezionato.isEmpty()) {
+			Notification.show("Seleziona un orario.", 2000, Notification.Position.TOP_CENTER).getElement()
+					.getThemeList().add("error");
+			return;
+		}
+		if (colonninaSelezionata == null) {
+			Notification.show("Errore: Nessuna colonnina selezionata.", 2000, Notification.Position.TOP_CENTER)
+					.getElement().getThemeList().add("error");
+			return;
+		}
+
+		// Crea l'oggetto Prenotazione
+		String dataString = dataSelezionata.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")); // Formatta la stringa
+																								// della data
+		Prenotazione prenotazione = new Prenotazione(colonninaSelezionata.getNome(), utenteCorrente.getUsername(),
+				dataString, orarioSelezionato);
+
+		// Salvataggio prenotazione
+		firebaseService.salvaPrenotazione(prenotazione).thenRun(() -> {
+			// Successo
+			getUI().ifPresent(ui -> ui.access(() -> {
+				Notification.show("Prenotazione confermata per " + orarioSelezionato + " il " + dataString, 3000,
+						Notification.Position.TOP_CENTER).getElement().getThemeList().add("success");
+				stationSidebar.setVisible(false); // Nasconde la sidebar
+			}));
+		}).exceptionally(ex -> {
+			// Errore
+			getUI().ifPresent(ui -> ui.access(() -> {
+				Notification.show("Errore prenotazione: " + ex.getCause().getMessage(), 4000,
+						Notification.Position.TOP_CENTER).getElement().getThemeList().add("error");
+			}));
+			return null;
+		});
 	}
 }

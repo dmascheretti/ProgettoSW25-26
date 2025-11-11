@@ -291,4 +291,10 @@ public CompletableFuture<List<Colonnina>> cercaColonnine(String query) {
              .collect(Collectors.toList())
     );
 }
+	//METODO DA IMPLEMENTARE PER SALVARE LE PRENOTAZIONI. VERRA' USATO PER CONTROLLARE CHE NON ESISTI GIA' UNA PRENOTAZIONE PER QUELLA DATA E ORA
+	public CompletableFuture<Void> salvaPrenotazione(Prenotazione prenotazione) {
+		CompletableFuture<Void> future = new CompletableFuture<>();
+	
+		return future;
+	}
 }
