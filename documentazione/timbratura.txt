@@ -26,3 +26,4 @@ Tutte le fasi precedenti sono contenute all'interno del file meeting
 
 11/11/2025		Maistrello Tommaso
 			09.00-10.15 Implementata la scelta della data e ora per prenotare la colonnina nella sidebar. Implementata anche la logica della prenotazione con i vari controlli di esistenza. 
+			11.00-11.45 Implementato il layout che gestisce le pagine admin seguendo le caratteristiche del MainLayout.java.
