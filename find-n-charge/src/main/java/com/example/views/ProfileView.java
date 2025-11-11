@@ -22,7 +22,7 @@ public class ProfileView extends VerticalLayout {
         Utente utente = (Utente) VaadinSession.getCurrent().getAttribute("utente");
         
         H3 titolo= new H3("Ciao "+utente.getUsername()+"! Ecco la tua pagina di profilo");
-        
+        titolo.getStyle().set("color", "#008000");
 		Paragraph nome = new Paragraph("Nome: "+utente.getNome());
 		Paragraph cognome = new Paragraph("Cognome: "+utente.getCognome());
 		Paragraph mail = new Paragraph("Mail: "+utente.getEmail());

@@ -46,7 +46,7 @@ public class ReservationView extends VerticalLayout {
         //salvo utente che è nell'applicazione
 		Utente utente = (Utente) VaadinSession.getCurrent().getAttribute("utente");
 		H3 titolo = new H3("Ciao "+utente.getUsername() +"! Ecco le tue prenotazioni...");  
-		titolo.getStyle().set("color", "#013220");
+		titolo.getStyle().set("color", "#008000");
         
      // Configurazione griglia (visualizzazione dei campi di ogni prenotazione)
         reservationGrid.setColumns("nomeColonnina", "data", "inizio");
