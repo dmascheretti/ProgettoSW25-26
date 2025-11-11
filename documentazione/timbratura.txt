@@ -25,9 +25,15 @@ Tutte le fasi precedenti sono contenute all'interno del file meeting
 			9-10.45 Aggiunta funzione per verificare se lo username è gia esistente in FirebaseService e richiamata poi da RegisterView. Risolti problemi di conflitti con 				modifche in stash (motivo per cui una parte della regsiterView appare eliminata e poi riaggiunta con modifiche effettive). aggiunta di documentazione dei nuovi metodi 			e delle modiiche effettuate.
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 11/11/2025		Maistrello Tommaso
 			09.00-10.15 Implementata la scelta della data e ora per prenotare la colonnina nella sidebar. Implementata anche la logica della prenotazione con i vari controlli di esistenza. 
 			11.00-11.45 Implementato il layout che gestisce le pagine admin seguendo le caratteristiche del MainLayout.java.
+=======
+10/11/2025 		Mascheretti Davide + Morgera Claudio
+			14.30-16.30 Implementazione della classe ReservationVew e di FirebaseService per la visualizzazione delle prenotazioni dell'utente , aggiunta documentazione varia.
+			Ora nella pagina di prenotazioni si visualizza tutto correttamente.
+>>>>>>> Stashed changes
 =======
 10/11/2025 		Mascheretti Davide + Morgera Claudio
 			14.30-16.30 Implementazione della classe ReservationVew e di FirebaseService per la visualizzazione delle prenotazioni dell'utente , aggiunta documentazione varia.
