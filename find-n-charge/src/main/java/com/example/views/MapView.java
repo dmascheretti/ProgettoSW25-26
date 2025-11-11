@@ -291,12 +291,13 @@ public class MapView extends HorizontalLayout {
 				// Deve esistere solo un listener alla volta per leggere la colonnina corretta
 				if (prenotaButtonListener != null) {
 					prenotaButtonListener.remove();
-					prenotaButtonListener = null;
+					prenotaButtonListener = null; // Pulisce la variabile così sappiamo che è attivo un solo listener al
+													// massimo
 				}
 
-				// Aggiunge il listener che chiama handlePrenotazione
+				// Aggiunge il listener che chiama il metodo per gestire la prenotazione 
 				prenotaButtonListener = prenotaButton.addClickListener(e -> {
-					gestisciPrenotazione(); // Trova colonninaSelezionata
+					gestisciPrenotazione(); 
 				});
 
 				// Mostra la sidebar
