@@ -10,7 +10,7 @@ import com.example.MainLayout;
 import com.example.models.Colonnina;
 import com.example.models.Prenotazione;
 import com.example.models.Utente;
-import com.example.util.RegisterValidator;
+import com.example.util.DataValidator;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -258,8 +258,6 @@ public class MapView extends HorizontalLayout {
 		});
 
 	}
-	
-	
 
 	/**
 	 * Metodo richiamato da JS quando un marker viene cliccato e attiva la sidebar.
@@ -298,103 +296,89 @@ public class MapView extends HorizontalLayout {
 					prenotaButtonListener = null; // Pulisce la variabile così sappiamo che è attivo un solo listener al
 													// massimo
 				}
-	
 
-				// Aggiunge il listener che chiama il metodo per gestire la prenotazione 
+				// Aggiunge il listener che chiama il metodo per gestire la prenotazione
 				prenotaButtonListener = prenotaButton.addClickListener(e -> {
 					Utente utenteCorrente = (Utente) VaadinSession.getCurrent().getAttribute("utente");
 					LocalDate dataSelezionata = bookingDatePicker.getValue();
 					String orarioSelezionato = bookingTimeSlot.getValue();
-					
-					/*
-					 * controllo messo qui per problemi con eccezioni con LocalDate, gli altri sono fatti di seguito
-					 */
-					if (dataSelezionata == null) {
-				        Notification.show("Seleziona una data e un orario prima di prenotare.", 3000, Notification.Position.TOP_CENTER)
-				                .getElement().getThemeList().add("error");
-				        return;
-				    }
-					
 
-				    String dataString = dataSelezionata.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-					
 					if (utenteCorrente == null) {
 						Notification.show("Errore: Utente non loggato. Effettua il login per prenotare.", 3000,
 								Notification.Position.TOP_CENTER).getElement().getThemeList().add("error");
 
 						// In caso reindirizziamo alla pagina di login
-						getUI().ifPresent(ui2 -> ui.navigate("login"));
+						getUI().ifPresent(ui2 -> ui.navigate(""));
 						return;
 					}
-					
-					String errore=RegisterValidator.verificaPrenotazione(colonninaSelezionata.getId(), dataString, orarioSelezionato);
-					
+					/*
+					 * controllo messo qui per problemi con eccezioni con LocalDate, gli altri sono
+					 * fatti di seguito
+					 */
+
+					String errore = DataValidator.verificaPrenotazione(colonninaSelezionata.getId(), dataSelezionata,
+							orarioSelezionato);
+
 					if (errore != null) {
 						Notification.show(errore, 3000, Notification.Position.TOP_CENTER).getElement().getThemeList()
 								.add("error");
 						return;
 					}
-					
-					
-					firebaseService.cercaPrenotazione(colonninaSelezionata,
-							dataString, orarioSelezionato).thenAccept(prenotazione -> {
-						getUI().ifPresent(ui1 -> ui.access(() -> {
-								
-					
-					if(prenotazione==null) {
-						Prenotazione p=new Prenotazione(colonninaSelezionata.getNome(), utenteCorrente.getUsername(),
-								dataString, orarioSelezionato);		
-					firebaseService.salvaPrenotazione(p).thenRun(() -> ui.access(() -> {
-						// Successo
-						
-							Notification.show("Prenotazione confermata per " + orarioSelezionato + " il " + dataString, 3000,
-									Notification.Position.TOP_CENTER).getElement().getThemeList().add("success");
-							stationSidebar.setVisible(false); // Nasconde la sidebar
-						
-					}))
-					.exceptionally(ex -> {
-						ui.access(() -> {
-							Notification
-									.show("Errore durante il salvataggio: " + ex.getMessage(), 4000,
-											Notification.Position.TOP_CENTER)
-									.getElement().getThemeList().add("error");
-						});
-						return null;
-					});
-				
-					}
-					else {
-						Notification
-						.show("Impossibile effettuare la prenotazione, lo slot e' gia occupato", 4000,
-								Notification.Position.TOP_CENTER)
-						.getElement().getThemeList().add("error");
-						
-					}
-					
-						}));
-						
-						
+
+					String dataString = dataSelezionata.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+
+					firebaseService.cercaPrenotazione(colonninaSelezionata, dataString, orarioSelezionato)
+							.thenAccept(prenotazione -> {
+								getUI().ifPresent(ui1 -> ui.access(() -> {
+
+									if (prenotazione == null) {
+										Prenotazione p = new Prenotazione(colonninaSelezionata.getNome(),
+												utenteCorrente.getUsername(), dataString, orarioSelezionato);
+										firebaseService.salvaPrenotazione(p).thenRun(() -> ui.access(() -> {
+											// Successo
+
+											Notification
+													.show("Prenotazione confermata per " + orarioSelezionato + " il "
+															+ dataString, 3000, Notification.Position.TOP_CENTER)
+													.getElement().getThemeList().add("success");
+											stationSidebar.setVisible(false); // Nasconde la sidebar
+
+										})).exceptionally(ex -> {
+											ui.access(() -> {
+												Notification
+														.show("Errore durante il salvataggio: " + ex.getMessage(), 4000,
+																Notification.Position.TOP_CENTER)
+														.getElement().getThemeList().add("error");
+											});
+											return null;
+										});
+
+									} else {
+										Notification
+												.show("Impossibile effettuare la prenotazione, lo slot e' gia occupato",
+														4000, Notification.Position.TOP_CENTER)
+												.getElement().getThemeList().add("error");
+
+									}
+
+								}));
+
 							});
-					
-								});
+
+				});
 				// Mostra la sidebar
 				stationSidebar.setVisible(true);
 
 			}
-					
-					
-				else {
-					Notification.show("Errore: Dati colonnina non trovati.", 2000, Notification.Position.TOP_CENTER)
-							.getElement().getThemeList().add("error");
-					
-				}
 
-				
-			
-			
-			}));
-	
-			
-		}
-	
+			else {
+				Notification.show("Errore: Dati colonnina non trovati.", 2000, Notification.Position.TOP_CENTER)
+						.getElement().getThemeList().add("error");
+
+			}
+
+		}));
+
+	}
+
 }

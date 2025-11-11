@@ -8,7 +8,7 @@ package com.example.views;
 
 import com.example.database.FirebaseService;
 import com.example.models.Utente;
-import com.example.util.RegisterValidator;
+import com.example.util.DataValidator;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H1;
@@ -103,7 +103,7 @@ public class RegisterView extends VerticalLayout {
 			 * controlli base
 			 */
 
-			String errore = RegisterValidator.verificaDati(nome, cognome, username, email, password, conferma);
+			String errore = DataValidator.verificaDati(nome, cognome, username, email, password, conferma);
 			if (errore != null) {
 				Notification.show(errore, 3000, Notification.Position.TOP_CENTER).getElement().getThemeList()
 						.add("error");

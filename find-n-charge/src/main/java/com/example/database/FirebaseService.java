@@ -39,8 +39,8 @@ public class FirebaseService {
 	public FirebaseService() {
 		this.utenti = FirebaseDatabase.getInstance().getReference("utenti");
 		this.colonnine = FirebaseDatabase.getInstance().getReference("colonnine");
-		this.prenotazioni= FirebaseDatabase.getInstance().getReference("prenotazioni");
-		
+		this.prenotazioni = FirebaseDatabase.getInstance().getReference("prenotazioni");
+
 	}
 
 	/**
@@ -68,22 +68,23 @@ public class FirebaseService {
 		return future; // qui il thenRun() in registrazione capisce che ha finito e prosegue con
 						// esecuzione
 	}
-	
-	
-public CompletableFuture<Void> salvaPrenotazione(Prenotazione p){
-		
-	CompletableFuture<Void> future = new CompletableFuture<>();
-	prenotazioni.child(p.getNomeColonnina()+" "+p.getData()+" "+p.getInizio()).setValue(p, (databaseError, ref) -> {
-		if (databaseError != null) {
-			// errore --> chiama eccezione anche in RegisterView
-			future.completeExceptionally(new RuntimeException(databaseError.getMessage()));
-		} else {
-			future.complete(null);
-		}
-	});
-	return future; // qui il thenRun() in registrazione capisce che ha finito e prosegue con
-					// esecuzione
-}
+
+	public CompletableFuture<Void> salvaPrenotazione(Prenotazione p) {
+
+		CompletableFuture<Void> future = new CompletableFuture<>();
+		prenotazioni.child(p.getNomeColonnina() + " " + p.getData() + " " + p.getInizio()).setValue(p,
+				(databaseError, ref) -> {
+					if (databaseError != null) {
+						// errore --> chiama eccezione anche in RegisterView
+						future.completeExceptionally(new RuntimeException(databaseError.getMessage()));
+					} else {
+						future.complete(null);
+					}
+				});
+		return future; // qui il thenRun() in registrazione capisce che ha finito e prosegue con
+						// esecuzione
+	}
+
 	/**
 	 * 
 	 * cerca nodo con nome pari a username, cerca utente con quello username e
@@ -142,25 +143,23 @@ public CompletableFuture<Void> salvaPrenotazione(Prenotazione p){
 
 		return future;
 	}
-	
-	
+
 	public CompletableFuture<Prenotazione> cercaPrenotazione(Colonnina c, String data, String ora) {
 		CompletableFuture<Prenotazione> future = new CompletableFuture<>();
 
-		DatabaseReference userRef = prenotazioni.child(c.getNome()+" "+data+" "+ora);
+		DatabaseReference userRef = prenotazioni.child(c.getNome() + " " + data + " " + ora);
 		userRef.addListenerForSingleValueEvent(new ValueEventListener() {
 			@Override
 
 			public void onDataChange(DataSnapshot dataSnapshot) {
 				/*
 				 * se esiste quel nodo entra nell'if, altrimenti restituisce
-				 * future.complete(null) 
+				 * future.complete(null)
 				 */
 				if (dataSnapshot.exists()) {
 					Prenotazione p = dataSnapshot.getValue(Prenotazione.class);
-						future.complete(p);
-					}
-				 else {
+					future.complete(p);
+				} else {
 					// utente non trovato
 					future.complete(null);
 				}
@@ -178,11 +177,11 @@ public CompletableFuture<Void> salvaPrenotazione(Prenotazione p){
 
 		return future;
 	}
-	
+
 	/**
-	 * Verifica se esiste già un utente con lo stesso username, cercando nel database
-	 * utenti/username Se esiste restituisce quell'utente, se non esiste restituisce
-	 * null e si può completare la registrazione
+	 * Verifica se esiste già un utente con lo stesso username, cercando nel
+	 * database utenti/username Se esiste restituisce quell'utente, se non esiste
+	 * restituisce null e si può completare la registrazione
 	 * 
 	 * @param username da cercare nel db
 	 * @return future che può contenere o non contenere un utente
@@ -228,122 +227,113 @@ public CompletableFuture<Void> salvaPrenotazione(Prenotazione p){
 
 		return future;
 	}
-	
 
-
-	
 	/**
-	 * Restituisce una lista filtrata di prenotazioni in base all'utente che viene passato.
-	 * La funzione cerca nel database sotto al nodo prenotazione tutte le prenotazione che tra le informiazioni
-	 * hanno come username il nome passato. Quindi prenotazioni/numprenotazione/utenteUSername deve essere
-	 * uguale a username.
+	 * Restituisce una lista filtrata di prenotazioni in base all'utente che viene
+	 * passato. La funzione cerca nel database sotto al nodo prenotazione tutte le
+	 * prenotazione che tra le informiazioni hanno come username il nome passato.
+	 * Quindi prenotazioni/numprenotazione/utenteUSername deve essere uguale a
+	 * username.
 	 * 
-	 * L'utilizzo di completableFuture permette di lavorare in maniera asincorna e ottenere un risultato 
-	 * solo dopo aver analizzato tutto il database.
+	 * L'utilizzo di completableFuture permette di lavorare in maniera asincorna e
+	 * ottenere un risultato solo dopo aver analizzato tutto il database.
 	 * 
-	 * @param username da cercare nelle prenotazioni per ottenere la sua lista filtrata
+	 * @param username da cercare nelle prenotazioni per ottenere la sua lista
+	 *                 filtrata
 	 * @return lista di prenotazioni tramite un future
 	 */
-	public CompletableFuture<List<Prenotazione>> getAllReservation(String username){
+	public CompletableFuture<List<Prenotazione>> getAllReservation(String username) {
 		CompletableFuture<List<Prenotazione>> future = new CompletableFuture<>();
-		//cerco nel nodo prenotazioni i figli che hanno utenteUsername uguale a username
-        prenotazioni.orderByChild("utente").equalTo(username)
-        .addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-            	//creo lista di prenotazioni
-                List<Prenotazione> prenotazioni = new ArrayList<>();
-                /*
-                 * Aggiunge alla lista tutte le prenotazioni il cui utenteUsername corrisponde a username
-                 */
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    Prenotazione p = snapshot.getValue(Prenotazione.class);
-                    prenotazioni.add(p);
-                }
-               
-                //finito il for salvo nel future la lista
-                future.complete(prenotazioni);
-                
-            }
+		// cerco nel nodo prenotazioni i figli che hanno utenteUsername uguale a
+		// username
+		prenotazioni.orderByChild("utente").equalTo(username).addListenerForSingleValueEvent(new ValueEventListener() {
+			@Override
+			public void onDataChange(DataSnapshot dataSnapshot) {
+				// creo lista di prenotazioni
+				List<Prenotazione> prenotazioni = new ArrayList<>();
+				/*
+				 * Aggiunge alla lista tutte le prenotazioni il cui utenteUsername corrisponde a
+				 * username
+				 */
+				for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+					Prenotazione p = snapshot.getValue(Prenotazione.class);
+					prenotazioni.add(p);
+				}
+
+				// finito il for salvo nel future la lista
+				future.complete(prenotazioni);
+
+			}
 
 			@Override
 			public void onCancelled(DatabaseError databaseError) {
 				// TODO Auto-generated method stub
 				System.err.println("Errore nel caricamento colonnine: " + databaseError.getMessage());
 				future.completeExceptionally(databaseError.toException());
-				
+
 			}
 
-			
-			
-        });
-        
-        //ritorno la lista filtrata delle prenotazioni dell'utente
-        return future;
-        }
+		});
 
+		// ritorno la lista filtrata delle prenotazioni dell'utente
+		return future;
+	}
 
-/**
- * Metodo per recuperare in modo asincrono l'elenco di tutti le colonnine del
- * database. Per ogni colonnina letta, la chiave del nodo viene impostato come
- * identificativo dell'oggetto.
- *
- * @return se tutto avviene correttamente ritorna l'elenco di tutte le
- *         colonnine. Se il nodo "colonnine" è vuoto o non esiste, la lista sarà
- *         vuota. Se avviene un errore durante la lettura del db, partirà
- *         un'eccezione.
- */
-public CompletableFuture<List<Colonnina>> getAllColonnine() {
+	/**
+	 * Metodo per recuperare in modo asincrono l'elenco di tutti le colonnine del
+	 * database. Per ogni colonnina letta, la chiave del nodo viene impostato come
+	 * identificativo dell'oggetto.
+	 *
+	 * @return se tutto avviene correttamente ritorna l'elenco di tutte le
+	 *         colonnine. Se il nodo "colonnine" è vuoto o non esiste, la lista sarà
+	 *         vuota. Se avviene un errore durante la lettura del db, partirà
+	 *         un'eccezione.
+	 */
+	public CompletableFuture<List<Colonnina>> getAllColonnine() {
 
-	// Oggetto che permette al programma di non fermarsi perchè sa che conterrà la
-	// lista che sta cercando
-	CompletableFuture<List<Colonnina>> future = new CompletableFuture<>();
+		// Oggetto che permette al programma di non fermarsi perchè sa che conterrà la
+		// lista che sta cercando
+		CompletableFuture<List<Colonnina>> future = new CompletableFuture<>();
 
-	// Legge il nodo colonnine
-	colonnine.addListenerForSingleValueEvent(new ValueEventListener() {
+		// Legge il nodo colonnine
+		colonnine.addListenerForSingleValueEvent(new ValueEventListener() {
 
-		// Se li legge senza problemi
-		@Override
-		public void onDataChange(DataSnapshot dataSnapshot) { // Istantanea dei dati
-			List<Colonnina> listaColonnine = new ArrayList<>();
-			if (dataSnapshot.exists()) {
-				for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-					Colonnina colonnina = snapshot.getValue(Colonnina.class); // Acquisisce tutti i dati delle
-																				// colonnine
-					if (colonnina != null) {
-						colonnina.setId(snapshot.getKey()); // Salva la chiave univoca come id
-						listaColonnine.add(colonnina);
+			// Se li legge senza problemi
+			@Override
+			public void onDataChange(DataSnapshot dataSnapshot) { // Istantanea dei dati
+				List<Colonnina> listaColonnine = new ArrayList<>();
+				if (dataSnapshot.exists()) {
+					for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+						Colonnina colonnina = snapshot.getValue(Colonnina.class); // Acquisisce tutti i dati delle
+																					// colonnine
+						if (colonnina != null) {
+							colonnina.setId(snapshot.getKey()); // Salva la chiave univoca come id
+							listaColonnine.add(colonnina);
+						}
 					}
 				}
+				future.complete(listaColonnine); // Restituisce la lista (piena o vuota)
 			}
-			future.complete(listaColonnine); // Restituisce la lista (piena o vuota)
-		}
 
-		// Se trova errori
-		@Override
-		public void onCancelled(DatabaseError databaseError) {
-			System.err.println("Errore nel caricamento colonnine: " + databaseError.getMessage());
-			future.completeExceptionally(databaseError.toException());
-		}
-	});
-	return future;
-}
-public CompletableFuture<List<Colonnina>> cercaColonnine(String query) {
-    String filtro = query == null ? "" : query.toLowerCase();
+			// Se trova errori
+			@Override
+			public void onCancelled(DatabaseError databaseError) {
+				System.err.println("Errore nel caricamento colonnine: " + databaseError.getMessage());
+				future.completeExceptionally(databaseError.toException());
+			}
+		});
+		return future;
+	}
 
-    return getAllColonnine().thenApply(lista -> 
-        lista.stream()
-             .filter(c -> {
-                 String nome = c.getNome() != null ? c.getNome().toLowerCase() : "";
-                 String indirizzo = c.getIndirizzo() != null ? c.getIndirizzo().toLowerCase() : "";
-                 String comune = c.getComune() != null ? c.getComune().toLowerCase() : "";
-                 return nome.contains(filtro) || indirizzo.contains(filtro) || comune.contains(filtro);
-             })
-             .collect(Collectors.toList())
-    );
-}
-	
-	
-	
-	
+	public CompletableFuture<List<Colonnina>> cercaColonnine(String query) {
+		String filtro = query == null ? "" : query.toLowerCase();
+
+		return getAllColonnine().thenApply(lista -> lista.stream().filter(c -> {
+			String nome = c.getNome() != null ? c.getNome().toLowerCase() : "";
+			String indirizzo = c.getIndirizzo() != null ? c.getIndirizzo().toLowerCase() : "";
+			String comune = c.getComune() != null ? c.getComune().toLowerCase() : "";
+			return nome.contains(filtro) || indirizzo.contains(filtro) || comune.contains(filtro);
+		}).collect(Collectors.toList()));
+	}
+
 }
