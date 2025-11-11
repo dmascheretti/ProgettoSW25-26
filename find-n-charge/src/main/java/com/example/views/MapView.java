@@ -258,6 +258,8 @@ public class MapView extends HorizontalLayout {
 		});
 
 	}
+	
+	
 
 	/**
 	 * Metodo richiamato da JS quando un marker viene cliccato e attiva la sidebar.
@@ -304,11 +306,15 @@ public class MapView extends HorizontalLayout {
 					LocalDate dataSelezionata = bookingDatePicker.getValue();
 					String orarioSelezionato = bookingTimeSlot.getValue();
 					
+					/*
+					 * controllo messo qui per problemi con eccezioni con LocalDate, gli altri sono fatti di seguito
+					 */
 					if (dataSelezionata == null) {
 				        Notification.show("Seleziona una data e un orario prima di prenotare.", 3000, Notification.Position.TOP_CENTER)
 				                .getElement().getThemeList().add("error");
 				        return;
 				    }
+					
 
 				    String dataString = dataSelezionata.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 					
@@ -329,9 +335,15 @@ public class MapView extends HorizontalLayout {
 						return;
 					}
 					
-					Prenotazione p=new Prenotazione(colonninaSelezionata.getNome(), utenteCorrente.getUsername(),
-							dataString, orarioSelezionato);					
 					
+					firebaseService.cercaPrenotazione(colonninaSelezionata,
+							dataString, orarioSelezionato).thenAccept(prenotazione -> {
+						getUI().ifPresent(ui1 -> ui.access(() -> {
+								
+					
+					if(prenotazione==null) {
+						Prenotazione p=new Prenotazione(colonninaSelezionata.getNome(), utenteCorrente.getUsername(),
+								dataString, orarioSelezionato);		
 					firebaseService.salvaPrenotazione(p).thenRun(() -> ui.access(() -> {
 						// Successo
 						
@@ -349,24 +361,40 @@ public class MapView extends HorizontalLayout {
 						});
 						return null;
 					});
+				
+					}
+					else {
+						Notification
+						.show("Impossibile effettuare la prenotazione, lo slot e' gia occupato", 4000,
+								Notification.Position.TOP_CENTER)
+						.getElement().getThemeList().add("error");
+						
+					}
 					
-                });
+						}));
+						
+						
+							});
+					
+								});
+				// Mostra la sidebar
+				stationSidebar.setVisible(true);
+
+			}
 					
 					
-				} else {
+				else {
 					Notification.show("Errore: Dati colonnina non trovati.", 2000, Notification.Position.TOP_CENTER)
 							.getElement().getThemeList().add("error");
 					
 				}
 
-				// Mostra la sidebar
-				stationSidebar.setVisible(true);
-
+				
 			
 			
 			}));
-		
-			}
-			
+	
 			
 		}
+	
+}

@@ -73,7 +73,7 @@ public class FirebaseService {
 public CompletableFuture<Void> salvaPrenotazione(Prenotazione p){
 		
 	CompletableFuture<Void> future = new CompletableFuture<>();
-	prenotazioni.child(p.getData()+" "+p.getInizio()).setValue(p, (databaseError, ref) -> {
+	prenotazioni.child(p.getNomeColonnina()+" "+p.getData()+" "+p.getInizio()).setValue(p, (databaseError, ref) -> {
 		if (databaseError != null) {
 			// errore --> chiama eccezione anche in RegisterView
 			future.completeExceptionally(new RuntimeException(databaseError.getMessage()));
@@ -132,6 +132,42 @@ public CompletableFuture<Void> salvaPrenotazione(Prenotazione p){
 			/*
 			 * gestione errori di sistema e database, vado nella gestione eccezioni in
 			 * LoginView
+			 */
+			@Override
+			public void onCancelled(DatabaseError databaseError) {
+				System.err.println("Errore nel database " + databaseError.getMessage());
+				future.completeExceptionally(databaseError.toException());
+			}
+		});
+
+		return future;
+	}
+	
+	
+	public CompletableFuture<Prenotazione> cercaPrenotazione(Colonnina c, String data, String ora) {
+		CompletableFuture<Prenotazione> future = new CompletableFuture<>();
+
+		DatabaseReference userRef = prenotazioni.child(c.getNome()+" "+data+" "+ora);
+		userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+			@Override
+
+			public void onDataChange(DataSnapshot dataSnapshot) {
+				/*
+				 * se esiste quel nodo entra nell'if, altrimenti restituisce
+				 * future.complete(null) 
+				 */
+				if (dataSnapshot.exists()) {
+					Prenotazione p = dataSnapshot.getValue(Prenotazione.class);
+						future.complete(p);
+					}
+				 else {
+					// utente non trovato
+					future.complete(null);
+				}
+			}
+
+			/*
+			 * gestione errori di sistema e database, vado nella gestione eccezioni
 			 */
 			@Override
 			public void onCancelled(DatabaseError databaseError) {
