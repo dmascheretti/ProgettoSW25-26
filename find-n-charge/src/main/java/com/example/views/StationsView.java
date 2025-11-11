@@ -8,12 +8,12 @@ package com.example.views;
 import com.example.MainLayout;
 import com.example.database.FirebaseService;
 import com.example.models.Colonnina;
-import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.Text;
-import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
@@ -22,38 +22,36 @@ import com.vaadin.flow.router.Route;
 
 public class StationsView extends VerticalLayout {
 private Grid<Colonnina> colonGrid = new Grid<>(Colonnina.class);
-private FirebaseService firebaseService = new FirebaseService(); // ✅ istanza
+private FirebaseService firebaseService = new FirebaseService(); // è un'istanza di FirebaseSystem
 
-	// Classe per l'elenco delle colonnine (senza vederle dalla mappa)
+	// Classe per l'elenco delle colonnine (indipendente dalla mappa)
 	public StationsView() {
 		setSpacing(true);
         setPadding(true);
-		Text t = new Text("Questa è la pagina delle colonnine");
-		
+        
+        //Titolo
+		H3 titolo = new H3("Queste sono le colonnine più vicine a te");
+		titolo.getStyle().set("color", "#013220");
+		//Barra di ricerca per nome o indirizzo delle colonnine
 		TextField searchField = new TextField("Cerca");
+		searchField.getElement().getThemeList().add("success");
         searchField.setPlaceholder("Nome o indirizzo...");
         searchField.setWidth("300px");
-
-        Button searchButton = new Button("Filtra");
-
         // EVENTO DI RICERCA → chiama cercaColonnine()
-        searchButton.addClickListener(e -> {
-            String query = searchField.getValue();
-            aggiornaGridConFiltro(query);
+        searchField.setValueChangeMode(ValueChangeMode.EAGER);
+        searchField.addValueChangeListener(e -> {
+            aggiornaGridConFiltro(e.getValue());
         });
-
-        // Enter per cercare
-        searchField.addKeyPressListener(Key.ENTER, e -> {
-            String query = searchField.getValue();
-            aggiornaGridConFiltro(query);
-        });
+        
+        //Istruzioni per prenotare una colonnina su questa pagina
+        Text istruz = new Text("Puoi effettuare una prenotazione direttamente su questa pagina...Ti basterà premere sul nome della colonnina interessata");
 
         colonGrid.setColumns("nome", "tipo", "stato", "indirizzo", "comune");
 
         // Caricamento iniziale senza filtri
         aggiornaGridConFiltro("");
 
-		add(t,searchField, searchButton, colonGrid);
+		add(titolo, searchField, istruz, colonGrid);
     }
 
     private void aggiornaGridConFiltro(String query) {

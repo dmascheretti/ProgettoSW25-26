@@ -5,6 +5,7 @@
  */
 package com.example.views;
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
@@ -44,11 +45,12 @@ public class ReservationView extends VerticalLayout {
         setPadding(true);
         //salvo utente che è nell'applicazione
 		Utente utente = (Utente) VaadinSession.getCurrent().getAttribute("utente");
-        add(new Text("Ciao "+utente.getUsername() +"! Ecco le tue prenotazioni..."));      
+		H3 titolo = new H3("Ciao "+utente.getUsername() +"! Ecco le tue prenotazioni...");  
+		titolo.getStyle().set("color", "#013220");
         
      // Configurazione griglia (visualizzazione dei campi di ogni prenotazione)
         reservationGrid.setColumns("nomeColonnina", "data", "inizio");
-         add(reservationGrid);
+         add(titolo, reservationGrid);
          
          /*
           * Chiamo funzione da firebaseService che restituisce la lista delle prenotazioni
