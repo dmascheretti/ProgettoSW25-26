@@ -1,5 +1,6 @@
 /**
- * Classe MainLayout: è la pagina principale della web app; attraverso questa pagina è possibile accedere a tutte le altre pagine grazie al menù
+ * Classe AdminLayout: è la pagina principale vista dall'admin; attraverso questa pagina l'admin ha a disposizione diversi link tramite il menù laterale.
+ * La pagina admin serve per gestire la web app. Si possono vedere statistiche e gestire tutto ciò che riguarda il Firebase.
  * 
  * @author Tommaso Maistrello
  */
@@ -19,23 +20,22 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.RouterLink;
 import com.vaadin.flow.server.VaadinSession;
-import com.example.views.ReservationView;
-import com.example.views.StationsView;
-import com.example.models.Utente;
-import com.example.views.MapView;
-import com.example.views.ProfileView;
+import com.example.admin.AdminColonnineView;
+import com.example.admin.AdminDashboardView;
+import com.example.admin.AdminPrenotazioniView;
+import com.example.admin.AdminUtentiView;
 
 //Non ha Route perchè è solo un contenitore
 @PageTitle("Find&Charge")
 
-public class MainLayout extends AppLayout {
+public class AdminLayout extends AppLayout {
 
-	public MainLayout() {
+	public AdminLayout() {
 
 		// Tasto dell'hamburger menu
 		DrawerToggle toggle = new DrawerToggle();
 
-		H1 title = new H1("FIND&CHARGE");
+		H1 title = new H1("FIND&CHARGE - PAGINA ADMIN");
 		title.getStyle().set("font-size", "var(--lumo-font-size-l)");
 
 		// Barra superiore
@@ -58,10 +58,11 @@ public class MainLayout extends AppLayout {
 		Div spacer = new Div();
 
 		// Voci del menu
-		drawerMenu.add(createMenuLink(MapView.class, "Mappa", VaadinIcon.GLOBE),
-				createMenuLink(ProfileView.class, "Profilo", VaadinIcon.USER),
-				createMenuLink(ReservationView.class, "Prenotazioni", VaadinIcon.LIST),
-				createMenuLink(StationsView.class, "Colonnine", VaadinIcon.MAP_MARKER), spacer, logoutButton);
+		drawerMenu.add(createMenuLink(AdminDashboardView.class, "Dashboard", VaadinIcon.DASHBOARD),
+				createMenuLink(AdminColonnineView.class, "Gestione colonnine", VaadinIcon.PLUG),
+				createMenuLink(AdminUtentiView.class, "Gestione utenti", VaadinIcon.USER),
+				createMenuLink(AdminPrenotazioniView.class, "Gestione prenotazioni", VaadinIcon.CALENDAR),
+				logoutButton);
 
 		// Espande lo spacer in modo da occupare tutto lo spazio extra disponibile
 		// all'interno di draweMenu (non utilizzato)
