@@ -68,7 +68,22 @@ public class FirebaseService {
 		return future; // qui il thenRun() in registrazione capisce che ha finito e prosegue con
 						// esecuzione
 	}
-
+	
+	
+public CompletableFuture<Void> salvaPrenotazione(Prenotazione p){
+		
+	CompletableFuture<Void> future = new CompletableFuture<>();
+	prenotazioni.child(p.getData()+" "+p.getInizio()).setValue(p, (databaseError, ref) -> {
+		if (databaseError != null) {
+			// errore --> chiama eccezione anche in RegisterView
+			future.completeExceptionally(new RuntimeException(databaseError.getMessage()));
+		} else {
+			future.complete(null);
+		}
+	});
+	return future; // qui il thenRun() in registrazione capisce che ha finito e prosegue con
+					// esecuzione
+}
 	/**
 	 * 
 	 * cerca nodo con nome pari a username, cerca utente con quello username e
@@ -196,7 +211,7 @@ public class FirebaseService {
 	public CompletableFuture<List<Prenotazione>> getAllReservation(String username){
 		CompletableFuture<List<Prenotazione>> future = new CompletableFuture<>();
 		//cerco nel nodo prenotazioni i figli che hanno utenteUsername uguale a username
-        prenotazioni.orderByChild("utenteUsername").equalTo(username)
+        prenotazioni.orderByChild("utente").equalTo(username)
         .addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -291,10 +306,8 @@ public CompletableFuture<List<Colonnina>> cercaColonnine(String query) {
              .collect(Collectors.toList())
     );
 }
-	//METODO DA IMPLEMENTARE PER SALVARE LE PRENOTAZIONI. VERRA' USATO PER CONTROLLARE CHE NON ESISTI GIA' UNA PRENOTAZIONE PER QUELLA DATA E ORA
-	public CompletableFuture<Void> salvaPrenotazione(Prenotazione prenotazione) {
-		CompletableFuture<Void> future = new CompletableFuture<>();
 	
-		return future;
-	}
+	
+	
+	
 }

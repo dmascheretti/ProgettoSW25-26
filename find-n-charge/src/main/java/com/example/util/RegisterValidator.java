@@ -4,6 +4,8 @@
  */
 package com.example.util;
 
+import com.vaadin.flow.component.notification.Notification;
+
 public class RegisterValidator {
 
 	/*
@@ -36,4 +38,21 @@ public class RegisterValidator {
 
         return null; // Nessun errore
     }
+    
+    public static String verificaPrenotazione(String c, String d, String t) { 
+    
+    if(d == null) {
+		return "Seleziona una data.";
+	}
+	if (t == null || t.isEmpty()) {
+	
+		return "Seleziona un orario.";
+	}
+	if (c == null) {
+		
+		return "Errore: Nessuna colonnina selezionata.";
+	}
+	
+	return null;
+}
 }
