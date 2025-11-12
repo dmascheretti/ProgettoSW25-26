@@ -33,7 +33,8 @@ public class FirebaseService {
 	private final DatabaseReference prenotazioni;
 
 	/**
-	 * Inizializzazione del riferimento al nodo "utenti" del database
+	 * Inizializzazione del riferimento al nodo "utenti", "colonnine" e
+	 * "prenotazioni" del database
 	 */
 
 	public FirebaseService() {
@@ -48,49 +49,65 @@ public class FirebaseService {
 	 * CompletableFuture permette di lavorare in maniera asincrona in background con
 	 * la UI standard dell'app
 	 * 
-	 * se future.complete(null) --> tutto ok se future.complete(!=null) --> errore
-	 * invia eccezione
+	 * se futureUtente.complete(null) --> tutto ok se futureUtente.complete(!=null)
+	 * --> errore invia eccezione
 	 * 
 	 * @param utente Utente da salvare nel db
-	 * @return future Funzione terminata, con o senza eccezioni
+	 * @return futureUtente Funzione terminata, con o senza eccezioni
 	 */
 
 	public CompletableFuture<Void> salvaUtente(Utente utente) {
-		CompletableFuture<Void> future = new CompletableFuture<>();
+		CompletableFuture<Void> futureUtente = new CompletableFuture<>();
 		utenti.child(utente.getUsername()).setValue(utente, (databaseError, ref) -> {
 			if (databaseError != null) {
 				// errore --> chiama eccezione anche in RegisterView
-				future.completeExceptionally(new RuntimeException(databaseError.getMessage()));
+				futureUtente.completeExceptionally(new RuntimeException(databaseError.getMessage()));
 			} else {
-				future.complete(null);
+				futureUtente.complete(null);
 			}
 		});
-		return future; // qui il thenRun() in registrazione capisce che ha finito e prosegue con
-						// esecuzione
+		return futureUtente; // qui il thenRun() in registrazione capisce che ha finito e prosegue con
+		// esecuzione
 	}
 
+	/**
+	 * Salva all'interno del database la prenotazione con sottodonodo di
+	 * "prenotazioni" del tipo nome colnonnina + data + orario (sottoforma di
+	 * stringa)
+	 * 
+	 * Se trova errore nel caricamento il futurePrenotazione viene completato con un
+	 * eccezione, altrimenti viene completato con null.
+	 * 
+	 * @param p Prenotazione da salvare nel database
+	 * @return futurePrenotazione (completato con null o con eccezione)
+	 */
 	public CompletableFuture<Void> salvaPrenotazione(Prenotazione p) {
 
-		CompletableFuture<Void> future = new CompletableFuture<>();
+		CompletableFuture<Void> futurePrenotazione = new CompletableFuture<>();
+		/*
+		 * Salva nel db prenotazioni/"nome colonnina + data + orario"
+		 */
 		prenotazioni.child(p.getNomeColonnina() + " " + p.getData() + " " + p.getInizio()).setValue(p,
 				(databaseError, ref) -> {
 					if (databaseError != null) {
 						// errore --> chiama eccezione anche in RegisterView
-						future.completeExceptionally(new RuntimeException(databaseError.getMessage()));
+						futurePrenotazione.completeExceptionally(new RuntimeException(databaseError.getMessage()));
 					} else {
-						future.complete(null);
+						futurePrenotazione.complete(null);
 					}
 				});
-		return future; // qui il thenRun() in registrazione capisce che ha finito e prosegue con
-						// esecuzione
+		return futurePrenotazione; // qui il thenRun() in registrazione capisce che ha finito e prosegue con
+		// esecuzione
 	}
 
 	/**
 	 * 
-	 * cerca nodo con nome pari a username, cerca utente con quello username e
-	 * verifica password e user corrette
+	 * Cerca sottonodo di "utenti" con nome uguale a username passato nella funzione
 	 * 
-	 * restituisce un CompletableFuture che puo essere nullo o non nullo (con
+	 * Richiama utente con quello username e verifica che la passowrd inserita sia
+	 * corretta
+	 * 
+	 * Restituisce un CompletableFuture che puo essere nullo o non nullo (con
 	 * utente)
 	 * 
 	 * @param username username da cercare
@@ -102,8 +119,7 @@ public class FirebaseService {
 		CompletableFuture<Utente> future = new CompletableFuture<>();
 
 		/*
-		 * Cerca direttamente il nodo utente usando l'username come chiave aggiornando
-		 * la lettura con il listener
+		 *Cerco in "utenti" se esiste un figlio con chiave username
 		 */
 		DatabaseReference userRef = utenti.child(username);
 		userRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -111,7 +127,7 @@ public class FirebaseService {
 
 			public void onDataChange(DataSnapshot dataSnapshot) {
 				/*
-				 * se esiste quel nodo entra nell'if, altrimenti restituisce
+				 *Se esiste quel nodo entra nell'if, altrimenti restituisce
 				 * future.complete(null) restituisce future.complete(null) anche se la password
 				 * non corrisponde all'utente inserito
 				 */
@@ -144,9 +160,27 @@ public class FirebaseService {
 		return future;
 	}
 
+	/**
+	 * Controlla nel database se esiste una prenotazione con la stessa colonnina,
+	 * data e orario passato nella funzione.
+	 * 
+	 * Se non esiste siginifica che lo slot e libero. Crea allora la prenotazione e
+	 * completa il future. Se esiste significa che lo slot è occupato e la
+	 * prenotazione non può andare a buon fine.
+	 * 
+	 * @param c    colonnina della prenotazione
+	 * @param data della prenotazione
+	 * @param ora  della prenotazione
+	 * @return future completato o con null (slot occupato, prenotazione non
+	 *         possibile) o con p (slot libero, prenotazione possibile)
+	 */
+
 	public CompletableFuture<Prenotazione> cercaPrenotazione(Colonnina c, String data, String ora) {
 		CompletableFuture<Prenotazione> future = new CompletableFuture<>();
 
+		/*
+		 * Verifico l'esistenza di un nodo nel database
+		 */
 		DatabaseReference userRef = prenotazioni.child(c.getNome() + " " + data + " " + ora);
 		userRef.addListenerForSingleValueEvent(new ValueEventListener() {
 			@Override
@@ -157,10 +191,11 @@ public class FirebaseService {
 				 * future.complete(null)
 				 */
 				if (dataSnapshot.exists()) {
+					// slot occupato, prenotazione non possibile
 					Prenotazione p = dataSnapshot.getValue(Prenotazione.class);
 					future.complete(p);
 				} else {
-					// utente non trovato
+					// slot libero, prenotazione possibile
 					future.complete(null);
 				}
 			}
@@ -180,7 +215,7 @@ public class FirebaseService {
 
 	/**
 	 * Verifica se esiste già un utente con lo stesso username, cercando nel
-	 * database utenti/username Se esiste restituisce quell'utente, se non esiste
+	 * database utenti/username. Se esiste restituisce quell'utente, se non esiste
 	 * restituisce null e si può completare la registrazione
 	 * 
 	 * @param username da cercare nel db

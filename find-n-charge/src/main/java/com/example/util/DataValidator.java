@@ -11,13 +11,20 @@ import com.vaadin.flow.component.notification.Notification;
 
 public class DataValidator {
 
-	/*
-	 * metodo statico (della classe) per controllare la velidità dei campi inseiriti
+	/**
+	 * Metodo statico (della classe) per controllare la velidità dei campi inseiriti
 	 * 1-i campi non possono essere vuoti 2-le password devono coincidere 3-la
 	 * password deve essere lunga almeno 6 caratteri 4-la mail deve essere del
 	 * tipo @ e dominio
+	 * 
+	 * @param nome
+	 * @param cognome
+	 * @param username
+	 * @param email
+	 * @param password
+	 * @param password_conferma
+	 * @return messaggio di errore / null
 	 */
-
 	public static String verificaDati(String nome, String cognome, String username, String email, String password,
 			String password_conferma) {
 
@@ -40,6 +47,17 @@ public class DataValidator {
 
 		return null; // Nessun errore
 	}
+
+	/**
+	 * 
+	 * Metodo statico per verificare i dati inseriti nel campo della prenotazione
+	 * (non devono essere nulli o vuoti)
+	 * 
+	 * @param c colonnina
+	 * @param d data
+	 * @param t orario
+	 * @return
+	 */
 
 	public static String verificaPrenotazione(String c, LocalDate d, String t) {
 

@@ -297,11 +297,16 @@ public class MapView extends HorizontalLayout {
 													// massimo
 				}
 
-				// Aggiunge il listener che chiama il metodo per gestire la prenotazione
+				// Logica di salvataggio prenotazione
 				prenotaButtonListener = prenotaButton.addClickListener(e -> {
+					/*
+					 * Salvo utente, data e orario al click
+					 */
 					Utente utenteCorrente = (Utente) VaadinSession.getCurrent().getAttribute("utente");
 					LocalDate dataSelezionata = bookingDatePicker.getValue();
 					String orarioSelezionato = bookingTimeSlot.getValue();
+
+					// se utente è null torno al login
 
 					if (utenteCorrente == null) {
 						Notification.show("Errore: Utente non loggato. Effettua il login per prenotare.", 3000,
@@ -311,9 +316,10 @@ public class MapView extends HorizontalLayout {
 						getUI().ifPresent(ui2 -> ui.navigate(""));
 						return;
 					}
+
 					/*
-					 * controllo messo qui per problemi con eccezioni con LocalDate, gli altri sono
-					 * fatti di seguito
+					 * Verifico con apposita classe errori riguardo colonnina, data e orario nulli.
+					 * Se non presenti non permette prenotazione.
 					 */
 
 					String errore = DataValidator.verificaPrenotazione(colonninaSelezionata.getId(), dataSelezionata,
@@ -325,17 +331,27 @@ public class MapView extends HorizontalLayout {
 						return;
 					}
 
+					// La data viene salvata qui per evitare eccezioni dati da LocalDate
+
 					String dataString = dataSelezionata.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 
+					/*
+					 * Chiamo funzione di firebase per verificare se la prenotazione è possibile
+					 */
 					firebaseService.cercaPrenotazione(colonninaSelezionata, dataString, orarioSelezionato)
 							.thenAccept(prenotazione -> {
+								// Non posso usare la ui precedente, uso ui1
 								getUI().ifPresent(ui1 -> ui.access(() -> {
 
+									/*
+									 * Se il nodo non esiste la prenotazione è possibile
+									 */
+
 									if (prenotazione == null) {
+										// Salvo oggetto prenotazione e chiamo la funzione di firebase
 										Prenotazione p = new Prenotazione(colonninaSelezionata.getNome(),
 												utenteCorrente.getUsername(), dataString, orarioSelezionato);
 										firebaseService.salvaPrenotazione(p).thenRun(() -> ui.access(() -> {
-											// Successo
 
 											Notification
 													.show("Prenotazione confermata per " + orarioSelezionato + " il "
@@ -343,17 +359,26 @@ public class MapView extends HorizontalLayout {
 													.getElement().getThemeList().add("success");
 											stationSidebar.setVisible(false); // Nasconde la sidebar
 
-										})).exceptionally(ex -> {
-											ui.access(() -> {
-												Notification
-														.show("Errore durante il salvataggio: " + ex.getMessage(), 4000,
-																Notification.Position.TOP_CENTER)
-														.getElement().getThemeList().add("error");
-											});
-											return null;
-										});
+										}))
+												/*
+												 * Eccezioni del databse (es non trovato o problemi durante caricamento
+												 * dati)
+												 */
+												 
+												.exceptionally(ex -> {
+													ui.access(() -> {
+														Notification
+																.show("Errore durante il salvataggio: "
+																		+ ex.getMessage(), 4000,
+																		Notification.Position.TOP_CENTER)
+																.getElement().getThemeList().add("error");
+													});
+													return null;
+												});
 
-									} else {
+									}
+									// Caso in cui lo slot scelto non è libero
+									else {
 										Notification
 												.show("Impossibile effettuare la prenotazione, lo slot e' gia occupato",
 														4000, Notification.Position.TOP_CENTER)
@@ -371,6 +396,7 @@ public class MapView extends HorizontalLayout {
 
 			}
 
+			// Caso dati colonnina non trovati
 			else {
 				Notification.show("Errore: Dati colonnina non trovati.", 2000, Notification.Position.TOP_CENTER)
 						.getElement().getThemeList().add("error");
