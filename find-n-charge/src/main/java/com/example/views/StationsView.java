@@ -78,21 +78,37 @@ public class StationsView extends VerticalLayout {
 		Text istruz = new Text(
 				"Puoi effettuare una prenotazione direttamente su questa pagina...Ti basterà premere sul nome della colonnina interessata");
 
-		// Colonna cliccabile per "nome"
+		// Aggiunta Colonna di bottoni, targati col nome delle colonnine,che permettono la prenotazione
 		colonGrid.removeAllColumns();
 		colonGrid.addComponentColumn(col -> {
-			com.vaadin.flow.component.button.Button btn = new com.vaadin.flow.component.button.Button(col.getNome());
-			btn.addClickListener(e -> showSidebar(col));
-			btn.getStyle().set("color", tema).set("text-decoration", "underline").set("background", "none")
-					.set("border", "none");
-			return btn;
-		}).setHeader("Nome");
+		    Button btn = new Button(col.getNome());
+		    btn.addClickListener(e -> showSidebar(col));
+		    btn.getStyle().set("color", tema)
+		                  .set("text-decoration", "underline")
+		                  .set("background", "none")
+		                  .set("border", "none");
+		    return btn;
+		}).setHeader("Nome")
+		  .setComparator(Colonnina::getNome)
+		  .setSortable(true);
+		
+		//Colonne con altre informazioni delle colonnine
+		colonGrid.addColumn(Colonnina::getTipo)
+		         .setHeader("Tipo")
+		         .setSortable(true);
 
-		// Altre colonne normali
-		colonGrid.addColumn(Colonnina::getTipo).setHeader("Tipo");
-		colonGrid.addColumn(Colonnina::getStato).setHeader("Stato");
-		colonGrid.addColumn(Colonnina::getIndirizzo).setHeader("Indirizzo");
-		colonGrid.addColumn(Colonnina::getComune).setHeader("Comune");
+		colonGrid.addColumn(Colonnina::getStato)
+		         .setHeader("Stato")
+		         .setSortable(true);
+
+		colonGrid.addColumn(Colonnina::getIndirizzo)
+		         .setHeader("Indirizzo")
+		         .setSortable(true);
+
+		colonGrid.addColumn(Colonnina::getComune)
+		         .setHeader("Comune")
+		         .setSortable(true);
+
 
 		// Caricamento iniziale senza filtri
 		aggiornaGridConFiltro("");
