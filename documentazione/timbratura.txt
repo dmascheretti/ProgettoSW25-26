@@ -36,5 +36,11 @@ Tutte le fasi precedenti sono contenute all'interno del file meeting
 			Mascheretti Davide
 			14.30-17.10 Implementato il salvataggio nel db delle prenotazioni e del controllo su colonnina, data e ora. Aggiunta funzione per svolgere questo in FirebaseService
 			(salvataggio e verifica). La parte di documentazione verrà poi aggiunta.
+
+12/11/2025 		22.00-23.00 Modiche al project plan (punti da 1 a 6)
+
+13/11/2025		22.00-23.30 Modifiche al project plan (punti da 7 a 13)
+
+14/11/2025		10.15-12.15 Diviso logica di controllo e salvataggio da MapView a PrenotazioneService
 			
 
