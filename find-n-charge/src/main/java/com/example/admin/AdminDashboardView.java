@@ -1,16 +1,23 @@
+/**
+ * Pagina della dashboard dell'amministratore. Permette all'amministratore di avere tutte le informazioni sotto controllo in modo semplice e intuitivo.
+ *  
+ * @author Maistrello Tommaso
+ */
 package com.example.admin;
 
 import com.example.AdminLayout;
 import com.example.admin.components.KpiCard;
+import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.H2;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
 import com.example.database.FirebaseService;
-
 import jakarta.annotation.security.RolesAllowed;
 
 @PageTitle("Find&Charge | Dashboard")
@@ -22,20 +29,28 @@ public class AdminDashboardView extends VerticalLayout {
 	private FirebaseService fb;
 
 	public AdminDashboardView(FirebaseService fb) {
-		this.fb=fb;
+		this.fb = fb;
 
 		setSizeFull(); // Occupa tutto lo spazio
 		setSpacing(true);
 		setPadding(true);
 
 		H1 titolo = new H1("Dashboard");
+		Button refresh = new Button(VaadinIcon.REFRESH.create());
+		refresh.addThemeVariants(ButtonVariant.LUMO_LARGE);
+		refresh.getElement().getThemeList().add("success");
+		HorizontalLayout upperBar = new HorizontalLayout(titolo, refresh);
+		upperBar.setWidthFull();
+		upperBar.setPadding(true);
+		upperBar.setJustifyContentMode(JustifyContentMode.BETWEEN); // Titolo a sx, bottone a dx
+		upperBar.setDefaultVerticalComponentAlignment(Alignment.CENTER); // Allinea al centro verticalmente
 
-		add(titolo, createKpiLayout());
+		add(upperBar, createKpiLayout());
 
 	}
 
 	/**
-	 * Metodo per creare un layout orizzontale con le KpiCard
+	 * Metodo per creare un layout verticale con le KpiCard
 	 */
 	private VerticalLayout createKpiLayout() {
 
@@ -60,30 +75,61 @@ public class AdminDashboardView extends VerticalLayout {
 
 		VerticalLayout kpiLayout = new VerticalLayout(utentiAndColonnineLayout, prenotazioniAndSegnalazioniLayout);
 		kpiLayout.setWidthFull();
-
+		kpiLayout.setPadding(false);
 		kpiLayout.setSpacing(true);
 
 		return kpiLayout;
 	}
 
 	private HorizontalLayout kpiUtenti() {
-		// Assegnazione dei dati
-		
-		//DA IMPLEMENTARE
-		fb.contaUtenti().thenAccept(num -> {
-			String utentiTotali=num.toString();
-		}).exceptionally(null);
-		
-		
-		String utentiNuovi = FirebaseService.contaUtentiNuovi();
-		
-		String utentiAttivi= FirebaseService.contaUtentiAttivi();
-		
 
 		// Creazione delle card
-		KpiCard utentiCard = new KpiCard("Utenti totali", utentiTotali);
-		KpiCard utentiNuoviCard = new KpiCard("Nuovi utenti", utentiNuovi);
-		KpiCard utentiAttiviCard = new KpiCard("Utenti attivi", utentiAttivi);
+		KpiCard utentiCard = new KpiCard("Utenti totali", "");
+		KpiCard utentiNuoviCard = new KpiCard("Nuovi utenti", "");
+		KpiCard utentiAttiviCard = new KpiCard("Utenti attivi", "");
+
+		fb.contaUtenti().thenAccept(num -> {
+
+			String utentiTotali = num.toString();
+
+			getUI().ifPresent(ui -> {
+				ui.access(() -> {
+					utentiCard.setNumber(utentiTotali);
+				});
+			});
+		}).exceptionally(ex -> {
+
+			getUI().ifPresent(ui -> {
+				ui.access(() -> {
+					utentiCard.setNumber("Errore");
+				});
+			});
+			return null;
+		});
+
+		/*
+		 * fb.contaUtentiNuovi().thenAccept(num -> {
+		 * 
+		 * String utentiNuovi = num.toString();
+		 * 
+		 * getUI().ifPresent(ui -> { ui.access(() -> {
+		 * utentiNuoviCard.setNumber(utentiNuovi); }); }); }).exceptionally(ex -> {
+		 * 
+		 * getUI().ifPresent(ui -> { ui.access(() -> {
+		 * utentiNuoviCard.setNumber("Errore"); }); }); return null; });
+		 * 
+		 * fb.contaUtentiAttivi().thenAccept(num -> {
+		 * 
+		 * String utentiAttivi = num.toString();
+		 * 
+		 * getUI().ifPresent(ui -> { ui.access(() -> {
+		 * utentiAttiviCard.setNumber(utentiAttivi); }); }); }).exceptionally(ex -> {
+		 * 
+		 * getUI().ifPresent(ui -> { ui.access(() -> {
+		 * utentiAttiviCard.setNumber("Errore"); }); }); return null; });
+		 */
+
+		// Creazione delle card
 
 		utentiAttiviCard.getStyle().set("background-color", "var(--lumo-success-color-10pct)");
 		utentiAttiviCard.getStyle().set("border-color", "var(--lumo-success-color)");
@@ -91,6 +137,7 @@ public class AdminDashboardView extends VerticalLayout {
 		HorizontalLayout kpiUtentiLayout = new HorizontalLayout(utentiCard, utentiNuoviCard, utentiAttiviCard);
 		kpiUtentiLayout.setWidthFull();
 		kpiUtentiLayout.setSpacing(true);
+
 		// Fa in modo che le card si espandano per riempire lo spazio
 		kpiUtentiLayout.expand(utentiCard, utentiNuoviCard, utentiAttiviCard);
 		return kpiUtentiLayout;
@@ -98,18 +145,61 @@ public class AdminDashboardView extends VerticalLayout {
 
 	private HorizontalLayout kpiColonnine() {
 
-		// Assegnazione dei dati
-		fb.contaColonnine().thenAccept(ris->{
-			String colonnineTotali=ris.toString();
-		});
-		
-		String colonnineLibere = FirebaseService.contaColonnineLibere();
-		String colonnineGuaste = FirebaseService.contaColonnineGuaste();
-
 		// Creazione delle card
-		KpiCard colonnineTotaliCard = new KpiCard("Colonnine totali", colonnineTotali);
-		KpiCard colonnineLibereCard = new KpiCard("Colonnine libere", colonnineLibere);
-		KpiCard colonnineGuasteCard = new KpiCard("Colonnine guaste", colonnineGuaste);
+		KpiCard colonnineTotaliCard = new KpiCard("Colonnine totali", "");
+		KpiCard colonnineLibereCard = new KpiCard("Colonnine libere", "");
+		KpiCard colonnineGuasteCard = new KpiCard("Colonnine guaste", "");
+
+		fb.contaColonnine().thenAccept(num -> {
+
+			String colonnineTotali = num.toString();
+
+			getUI().ifPresent(ui -> {
+				ui.access(() -> {
+					colonnineTotaliCard.setNumber(colonnineTotali);
+				});
+			});
+		}).exceptionally(ex -> {
+
+			getUI().ifPresent(ui -> {
+				ui.access(() -> {
+					colonnineTotaliCard.setNumber("Errore");
+				});
+			});
+			return null;
+		});
+
+		fb.contaColonnineLibere().thenAccept(num -> {
+
+			String colonnineLibere = num.toString();
+
+			getUI().ifPresent(ui -> {
+				ui.access(() -> {
+					colonnineLibereCard.setNumber(colonnineLibere);
+				});
+			});
+		}).exceptionally(ex -> {
+
+			getUI().ifPresent(ui -> {
+				ui.access(() -> {
+					colonnineLibereCard.setNumber("Errore");
+				});
+			});
+			return null;
+		});
+
+		/*
+		 * fb.contaColonnineGuaste().thenAccept(num -> {
+		 * 
+		 * String colonnineGuaste = num.toString();
+		 * 
+		 * getUI().ifPresent(ui -> { ui.access(() -> {
+		 * colonnineGuasteCard.setNumber(colonnineGuaste); }); }); }).exceptionally(ex
+		 * -> {
+		 * 
+		 * getUI().ifPresent(ui -> { ui.access(() -> {
+		 * colonnineGuasteCard.setNumber("Errore"); }); }); return null; });
+		 */
 
 		colonnineLibereCard.getStyle().set("background-color", "var(--lumo-success-color-10pct)");
 		colonnineLibereCard.getStyle().set("border-color", "var(--lumo-success-color)");
@@ -120,6 +210,7 @@ public class AdminDashboardView extends VerticalLayout {
 				colonnineGuasteCard);
 		kpiColonnineLayout.setWidthFull();
 		kpiColonnineLayout.setSpacing(true);
+
 		// Fa in modo che le card si espandano per riempire lo spazio
 		kpiColonnineLayout.expand(colonnineTotaliCard, colonnineLibereCard, colonnineGuasteCard);
 		return kpiColonnineLayout;
@@ -127,17 +218,30 @@ public class AdminDashboardView extends VerticalLayout {
 
 	private HorizontalLayout kpiPrenotazioni() {
 
-		// Assegnazione dei dati
-		
-		fb.contaPrenotazioni().thenAccept(ris->{
-			String prenotazioniTotali=ris.toString();
-		});
-		
-		String prenotazioniNuove = contaPrenotazioniNuove();
-
 		// Creazione delle card
-		KpiCard prenotazioniTotaliCard = new KpiCard("Prenotazioni totali", prenotazioniTotali);
-		KpiCard prenotazioniNuoveCard = new KpiCard("Nuove prenotazioni", prenotazioniNuove);
+		KpiCard prenotazioniTotaliCard = new KpiCard("Prenotazioni totali", "");
+		KpiCard prenotazioniNuoveCard = new KpiCard("Nuove prenotazioni", "");
+
+		fb.contaPrenotazioni().thenAccept(num -> {
+
+			String prenotazioniTotali = num.toString();
+
+			getUI().ifPresent(ui -> {
+				ui.access(() -> {
+					prenotazioniTotaliCard.setNumber(prenotazioniTotali);
+				});
+			});
+		}).exceptionally(ex -> {
+
+			getUI().ifPresent(ui -> {
+				ui.access(() -> {
+					prenotazioniTotaliCard.setNumber("Errore");
+				});
+			});
+			return null;
+		});
+
+		// String prenotazioniNuove = contaPrenotazioniNuove();
 
 		HorizontalLayout kpiColonnineLayout = new HorizontalLayout(prenotazioniTotaliCard, prenotazioniNuoveCard);
 		kpiColonnineLayout.setWidthFull();
@@ -150,14 +254,14 @@ public class AdminDashboardView extends VerticalLayout {
 	private HorizontalLayout kpiSegnalazioni() {
 
 		// Assegnazione dei dati
-		String segnalazioniTotali = FirebaseService.contaSegnalazioniTotali();
-		String segnalazioniNuove = FirebaseService.contaSegnalazioniNuove();
-		String segnalazioniVecchie = FirebaseService.contaSegnalazioniPassate();
+		// String segnalazioniTotali = FirebaseService.contaSegnalazioniTotali();
+		// String segnalazioniNuove = FirebaseService.contaSegnalazioniNuove();
+		// String segnalazioniVecchie = FirebaseService.contaSegnalazioniPassate();
 
 		// Creazione delle card
-		KpiCard segnalazioniTotaliCard = new KpiCard("Segnalazioni totali", segnalazioniTotali);
-		KpiCard segnalazioniNuoveCard = new KpiCard("Nuove segnalazioni", segnalazioniNuove);
-		KpiCard segnalazioniVecchieCard = new KpiCard("Segnalazioni vecchie", segnalazioniVecchie);
+		KpiCard segnalazioniTotaliCard = new KpiCard("Segnalazioni totali", "");
+		KpiCard segnalazioniNuoveCard = new KpiCard("Nuove segnalazioni", "");
+		KpiCard segnalazioniVecchieCard = new KpiCard("Segnalazioni vecchie", "");
 
 		segnalazioniNuoveCard.getStyle().set("background-color", "var(--lumo-error-color-10pct)");
 		segnalazioniNuoveCard.getStyle().set("border-color", "var(--lumo-error-color)");
