@@ -11,6 +11,7 @@ import com.example.models.Colonnina;
 import com.example.models.Prenotazione;
 import com.example.models.Utente;
 import com.example.util.DataValidator;
+import com.example.util.PrenotazioneService;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -61,6 +62,7 @@ public class MapView extends HorizontalLayout {
 
 	// Serve Firebase con la lista della colonnine del database
 	private FirebaseService firebaseService;
+	private PrenotazioneService prenotazioneService;
 	private List<Colonnina> colonnine;
 	private Colonnina colonninaSelezionata;
 	private ObjectMapper objectMapper = new ObjectMapper(); // Per tradurre gli oggetti da Java a JSON
@@ -68,6 +70,7 @@ public class MapView extends HorizontalLayout {
 	public MapView(@Autowired FirebaseService firebaseService) {
 
 		this.firebaseService = firebaseService;
+		this.prenotazioneService = new PrenotazioneService(firebaseService);
 
 		setSizeFull();
 		setPadding(false);
@@ -276,6 +279,7 @@ public class MapView extends HorizontalLayout {
 
 			// Controlla la variabile d'istanza
 			if (colonninaSelezionata != null) {
+				stationSidebar.setVisible(true);
 
 				// Mette i dati della colonnina nella sidebar
 				sidebarTitle.setText(colonninaSelezionata.getNome());
@@ -313,7 +317,7 @@ public class MapView extends HorizontalLayout {
 								Notification.Position.TOP_CENTER).getElement().getThemeList().add("error");
 
 						// In caso reindirizziamo alla pagina di login
-						getUI().ifPresent(ui2 -> ui.navigate(""));
+						getUI().ifPresent(ui1 -> ui.navigate(""));
 						return;
 					}
 
@@ -336,75 +340,43 @@ public class MapView extends HorizontalLayout {
 					String dataString = dataSelezionata.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 
 					/*
-					 * Chiamo funzione di firebase per verificare se la prenotazione è possibile
+					 * Chiamata di classe esterna per verifica sul database
 					 */
-					firebaseService.cercaPrenotazione(colonninaSelezionata, dataString, orarioSelezionato)
-							.thenAccept(prenotazione -> {
-								// Non posso usare la ui precedente, uso ui1
-								getUI().ifPresent(ui1 -> ui.access(() -> {
+					prenotazioneService.prenota(colonninaSelezionata, utenteCorrente, dataString, orarioSelezionato)
+							.thenAccept(ris -> {
+								getUI().ifPresent(ui1 -> ui1.access(() -> {
 
-									/*
-									 * Se il nodo non esiste la prenotazione è possibile
-									 */
+									// Se prenotazione effettuata, ris==true
 
-									if (prenotazione == null) {
-										// Salvo oggetto prenotazione e chiamo la funzione di firebase
-										Prenotazione p = new Prenotazione(colonninaSelezionata.getNome(),
-												utenteCorrente.getUsername(), dataString, orarioSelezionato);
-										firebaseService.salvaPrenotazione(p).thenRun(() -> ui.access(() -> {
+									if (ris) {
+										Notification
+												.show("Prenotazione confermata per " + orarioSelezionato + " il "
+														+ dataString, 3000, Notification.Position.TOP_CENTER)
+												.getElement().getThemeList().add("success");
 
-											Notification
-													.show("Prenotazione confermata per " + orarioSelezionato + " il "
-															+ dataString, 3000, Notification.Position.TOP_CENTER)
-													.getElement().getThemeList().add("success");
-											stationSidebar.setVisible(false); // Nasconde la sidebar
-
-										}))
-												/*
-												 * Eccezioni del databse (es non trovato o problemi durante caricamento
-												 * dati)
-												 */
-												 
-												.exceptionally(ex -> {
-													ui.access(() -> {
-														Notification
-																.show("Errore durante il salvataggio: "
-																		+ ex.getMessage(), 4000,
-																		Notification.Position.TOP_CENTER)
-																.getElement().getThemeList().add("error");
-													});
-													return null;
-												});
+										stationSidebar.setVisible(false);
 
 									}
-									// Caso in cui lo slot scelto non è libero
+									// Prenotazione non effettuata, ris==false
 									else {
-										Notification
-												.show("Impossibile effettuare la prenotazione, lo slot e' gia occupato",
-														4000, Notification.Position.TOP_CENTER)
-												.getElement().getThemeList().add("error");
+										Notification.show(
 
+												"Impossibile effettuare la prenotazione, lo slot è già occupato", 4000,
+												Notification.Position.TOP_CENTER).getElement().getThemeList()
+												.add("error");
 									}
 
 								}));
 
 							});
-
 				});
-				// Mostra la sidebar
-				stationSidebar.setVisible(true);
 
-			}
-
-			// Caso dati colonnina non trovati
-			else {
+			} else {
 				Notification.show("Errore: Dati colonnina non trovati.", 2000, Notification.Position.TOP_CENTER)
 						.getElement().getThemeList().add("error");
-
 			}
 
 		}));
-
 	}
 
 }
