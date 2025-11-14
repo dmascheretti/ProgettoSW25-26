@@ -19,8 +19,10 @@ import jakarta.annotation.security.RolesAllowed;
 @RolesAllowed("ADMIN")
 
 public class AdminDashboardView extends VerticalLayout {
+	private FirebaseService fb;
 
-	public AdminDashboardView() {
+	public AdminDashboardView(FirebaseService fb) {
+		this.fb=fb;
 
 		setSizeFull(); // Occupa tutto lo spazio
 		setSpacing(true);
@@ -65,11 +67,18 @@ public class AdminDashboardView extends VerticalLayout {
 	}
 
 	private HorizontalLayout kpiUtenti() {
-
 		// Assegnazione dei dati
-		String utentiTotali = FirebaseService.contaUtenti();
+		
+		//DA IMPLEMENTARE
+		fb.contaUtenti().thenAccept(num -> {
+			String utentiTotali=num.toString();
+		}).exceptionally(null);
+		
+		
 		String utentiNuovi = FirebaseService.contaUtentiNuovi();
-		String utentiAttivi = FirebaseService.contaUtentiAttivi();
+		
+		String utentiAttivi= FirebaseService.contaUtentiAttivi();
+		
 
 		// Creazione delle card
 		KpiCard utentiCard = new KpiCard("Utenti totali", utentiTotali);
@@ -90,7 +99,10 @@ public class AdminDashboardView extends VerticalLayout {
 	private HorizontalLayout kpiColonnine() {
 
 		// Assegnazione dei dati
-		String colonnineTotali = FirebaseService.contaColonnine();
+		fb.contaColonnine().thenAccept(ris->{
+			String colonnineTotali=ris.toString();
+		});
+		
 		String colonnineLibere = FirebaseService.contaColonnineLibere();
 		String colonnineGuaste = FirebaseService.contaColonnineGuaste();
 
@@ -116,7 +128,11 @@ public class AdminDashboardView extends VerticalLayout {
 	private HorizontalLayout kpiPrenotazioni() {
 
 		// Assegnazione dei dati
-		String prenotazioniTotali = FirebaseService.contaPrenotazioni();
+		
+		fb.contaPrenotazioni().thenAccept(ris->{
+			String prenotazioniTotali=ris.toString();
+		});
+		
 		String prenotazioniNuove = contaPrenotazioniNuove();
 
 		// Creazione delle card

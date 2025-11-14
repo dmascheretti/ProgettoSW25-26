@@ -23,6 +23,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.vaadin.flow.component.Text;
 
@@ -371,4 +372,130 @@ public class FirebaseService {
 		}).collect(Collectors.toList()));
 	}
 
+	public CompletableFuture<Integer> contaUtenti() {
+		CompletableFuture<Integer> future = new CompletableFuture<>();
+		
+		utenti.addListenerForSingleValueEvent(new ValueEventListener() {
+
+			@Override
+			public void onDataChange(DataSnapshot snapshot) {
+				// TODO Auto-generated method stub
+				int count=0;
+				
+				if(snapshot.exists()) {
+					count=(int) snapshot.getChildrenCount();
+				}
+				
+				future.complete(count);
+			}
+
+			@Override
+			public void onCancelled(DatabaseError databaseError) {
+				// Gestione errore standard, come negli altri metodi
+				System.err.println("Errore nel contare gli utenti: " + databaseError.getMessage());
+				future.completeExceptionally(databaseError.toException());
+			}
+			
+			
+			
+		});
+		return future;
+		
+	}
+	
+	public CompletableFuture<Integer> contaColonnine() {
+		CompletableFuture<Integer> future = new CompletableFuture<>();
+		
+		colonnine.addListenerForSingleValueEvent(new ValueEventListener() {
+
+			@Override
+			public void onDataChange(DataSnapshot snapshot) {
+				// TODO Auto-generated method stub
+				int count=0;
+				
+				if(snapshot.exists()) {
+					count=(int) snapshot.getChildrenCount();
+				}
+				
+				future.complete(count);
+			}
+
+			@Override
+			public void onCancelled(DatabaseError databaseError) {
+				// Gestione errore standard, come negli altri metodi
+				System.err.println("Errore nel contare le colonnine: " + databaseError.getMessage());
+				future.completeExceptionally(databaseError.toException());
+			}
+			
+			
+			
+		});
+		return future;
+		
+	}
+	
+	public CompletableFuture<Integer> contaColonnineLibere() {
+		CompletableFuture<Integer> future = new CompletableFuture<>();
+		
+		Query colonnineLibere = colonnine.orderByChild("stato").equalTo("Libera");
+		colonnineLibere.addListenerForSingleValueEvent(new ValueEventListener() {
+
+			@Override
+			public void onDataChange(DataSnapshot snapshot) {
+				// TODO Auto-generated method stub
+				int count=0;
+				
+				if(snapshot.exists()) {
+					count=(int) snapshot.getChildrenCount();
+				}
+				
+				future.complete(count);
+			}
+
+			@Override
+			public void onCancelled(DatabaseError databaseError) {
+				// Gestione errore standard, come negli altri metodi
+				System.err.println("Errore nel contare le colonnine: " + databaseError.getMessage());
+				future.completeExceptionally(databaseError.toException());
+			}
+			
+			
+			
+		});
+		return future;
+		
+	}
+	
+	
+	public CompletableFuture<Integer> contaPrenotazioni() {
+		CompletableFuture<Integer> future = new CompletableFuture<>();
+		
+		prenotazioni.addListenerForSingleValueEvent(new ValueEventListener() {
+
+			@Override
+			public void onDataChange(DataSnapshot snapshot) {
+				// TODO Auto-generated method stub
+				int count=0;
+				
+				if(snapshot.exists()) {
+					count=(int) snapshot.getChildrenCount();
+				}
+				
+				future.complete(count);
+			}
+
+			@Override
+			public void onCancelled(DatabaseError databaseError) {
+				// Gestione errore standard, come negli altri metodi
+				System.err.println("Errore nel contare le colonnine: " + databaseError.getMessage());
+				future.completeExceptionally(databaseError.toException());
+			}
+			
+			
+			
+		});
+		return future;
+		
+	}
+	
 }
