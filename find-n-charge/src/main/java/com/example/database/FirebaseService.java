@@ -70,6 +70,8 @@ public class FirebaseService {
 		// esecuzione
 	}
 
+	
+	
 	/**
 	 * Salva all'interno del database la prenotazione con sottodonodo di
 	 * "prenotazioni" del tipo nome colnonnina + data + orario (sottoforma di
@@ -88,6 +90,25 @@ public class FirebaseService {
 		 * Salva nel db prenotazioni/"nome colonnina + data + orario"
 		 */
 		prenotazioni.child(p.getNomeColonnina() + " " + p.getData() + " " + p.getInizio()).setValue(p,
+				(databaseError, ref) -> {
+					if (databaseError != null) {
+						// errore --> chiama eccezione anche in RegisterView
+						futurePrenotazione.completeExceptionally(new RuntimeException(databaseError.getMessage()));
+					} else {
+						futurePrenotazione.complete(null);
+					}
+				});
+		return futurePrenotazione; // qui il thenRun() in registrazione capisce che ha finito e prosegue con
+		// esecuzione
+	}
+	
+	public CompletableFuture<Void> cancellaPrenotazione(Prenotazione p) {
+
+		CompletableFuture<Void> futurePrenotazione = new CompletableFuture<>();
+		/*
+		 * Salva nel db prenotazioni/"nome colonnina + data + orario"
+		 */
+		prenotazioni.child(p.getNomeColonnina() + " " + p.getData() + " " + p.getInizio()).setValue(null,
 				(databaseError, ref) -> {
 					if (databaseError != null) {
 						// errore --> chiama eccezione anche in RegisterView

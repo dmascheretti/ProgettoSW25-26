@@ -9,18 +9,19 @@ import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.server.VaadinSession;
 import com.example.MainLayout;
 import com.example.models.Colonnina;
 import com.example.models.Prenotazione;
 import com.example.models.Utente;
-import com.google.api.services.storage.model.Notification;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.vaadin.flow.component.Text;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.example.database.FirebaseService;
 
@@ -36,16 +37,20 @@ import java.util.concurrent.CompletableFuture;
 @PageTitle("Find&Charge - Prenotazioni")
 
 public class ReservationView extends VerticalLayout {
+	
+	
 
     private Grid<Prenotazione> reservationGrid = new Grid<>(Prenotazione.class);
     private CompletableFuture<List<Prenotazione>> listaPreno;
     private final FirebaseService prenotazioniRef;
+    private final UI ui;
 
     /**
      *Costruttore che genera la griglia contenente tutte le prenotazioni dell'utente
      * @param fb Database per accedere ai dati prenotazione
      */
     public ReservationView(FirebaseService fb) {
+    	this.ui = UI.getCurrent();
     	this.prenotazioniRef=fb;
         setSpacing(true);
         setPadding(true);
@@ -84,9 +89,9 @@ public class ReservationView extends VerticalLayout {
         
         
         // bottone per la cancellazione 
-        reservationGrid.addComponentColumn(col -> {
+        reservationGrid.addComponentColumn(p -> {
 		    Button btn = new Button("Cancella");
-		    btn.addClickListener(e -> cancellaPrenot());
+		    btn.addClickListener(e -> cancellaPrenot(p));
 		    btn.getStyle().set("color", "red")
 		                  .set("text-decoration", "underline")
 		                  .set("background", "none")
@@ -120,7 +125,26 @@ public class ReservationView extends VerticalLayout {
  }
 
     //Prototipo di funzione di cancellazione (TODO)
-	private void cancellaPrenot() {
+	private void cancellaPrenot(Prenotazione p) {
+		
+		prenotazioniRef.cancellaPrenotazione(p).thenRun(() -> getUI().ifPresent(ui -> ui.access(() -> {
+			Notification.show("Prenotazione eliminata con successo", 3000,
+					Notification.Position.TOP_CENTER);
+			
+			getUI().ifPresent(ui1 -> ui1.getPage().reload());
+		})))
+
+				// gestione e messaggio di errore
+
+		.exceptionally(ex -> {
+			getUI().ifPresent(ui -> ui.access(() -> { // <-- CORREZIONE 2: getUI() e (ui -> ui.access(...))
+				Notification
+						.show("Errore durante il salvataggio: " + ex.getMessage(), 4000,
+								Notification.Position.TOP_CENTER)
+						.getElement().getThemeList().add("error");
+			}));
+			return null;
+				});
 	}
   
 
