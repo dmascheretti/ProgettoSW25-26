@@ -5,8 +5,10 @@
  */
 package com.example.views;
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.data.renderer.ComponentRenderer;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.component.notification.Notification;
@@ -63,40 +65,26 @@ public class ReservationView extends VerticalLayout {
         reservationGrid.setColumns("nomeColonnina", "data", "inizio");
         
         reservationGrid.addColumn(prenotazione -> {
-            try {
-                // Parsing delle stringhe data/ora
-                DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-                DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
-
-                LocalDate dataPren = LocalDate.parse(prenotazione.getData(), dateFormatter);
-                LocalTime oraPren = LocalTime.parse(prenotazione.getInizio(), timeFormatter);
-
-                LocalDateTime prenotazioneDateTime = LocalDateTime.of(dataPren, oraPren);
-                LocalDateTime now = LocalDateTime.now();
-
-                if (prenotazioneDateTime.isBefore(now.minusMinutes(30))) { // se già iniziata da più di 30 min
-                    return "Passata";
-                } else if (prenotazioneDateTime.isBefore(now)) {// se già iniziata da meno di 30 min
-                    return "Attiva";
-                } else {
-                    return "Futura";
-                }
-            } catch (Exception e) {
-                return "—"; // in caso di errore parsing
-            }
+        	String stato = calcolaStato(prenotazione);
+            return stato;
         }).setHeader("Stato")
         .setSortable(true);
         
         
         // bottone per la cancellazione 
         reservationGrid.addComponentColumn(p -> {
-		    Button btn = new Button("Cancella");
-		    btn.addClickListener(e -> cancellaPrenot(p));
-		    btn.getStyle().set("color", "red")
-		                  .set("text-decoration", "underline")
-		                  .set("background", "none")
-		                  .set("border", "none");
-		    return btn;
+        	String stato = calcolaStato(p);
+            if (stato.equals("Passata")) {
+                return null;
+            } else {
+            	Button btn = new Button("Cancella");
+    		    btn.addClickListener(e -> cancellaPrenot(p));
+    		    btn.getStyle().set("color", "red")
+    		                  .set("text-decoration", "underline")
+    		                  .set("background", "none")
+    		                  .set("border", "none");
+    		    return btn;
+            }
 		});
         add(titolo, reservationGrid);
          
@@ -119,11 +107,35 @@ public class ReservationView extends VerticalLayout {
             ex.printStackTrace();
             return null;
         });
+        
 			
 			
 			
  }
 
+    private String calcolaStato(Prenotazione prenotazione) {
+        try {
+            DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+
+            LocalDate dataPren = LocalDate.parse(prenotazione.getData(), dateFormatter);
+            LocalTime oraPren = LocalTime.parse(prenotazione.getInizio(), timeFormatter);
+            LocalDateTime prenDateTime = LocalDateTime.of(dataPren, oraPren);
+            LocalDateTime now = LocalDateTime.now();
+
+            if (prenDateTime.isBefore(now.minusMinutes(30))) {
+                return "Passata";
+            } else if (prenDateTime.isBefore(now)) {
+                return "Attiva";
+            } else {
+                return "Futura";
+            }
+        } catch (Exception e) {
+            return "";
+        }
+    }
+    
+    
     //Prototipo di funzione di cancellazione (TODO)
 	private void cancellaPrenot(Prenotazione p) {
 		
