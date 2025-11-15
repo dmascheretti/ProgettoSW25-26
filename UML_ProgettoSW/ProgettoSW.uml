@@ -122,6 +122,37 @@ Utente non ancora iscritto</body>
     <ownedEnd xmi:type="uml:Property" xmi:id="_cKHA0K3aEfCnv4jACvPNJg" name="utente" type="_62ziAK22EfCPWdBPKOLA8Q" association="_cKFysK3aEfCnv4jACvPNJg"/>
     <ownedEnd xmi:type="uml:Property" xmi:id="_cKHA0a3aEfCnv4jACvPNJg" name="accesso" type="_Dn8ngK23EfCPWdBPKOLA8Q" association="_cKFysK3aEfCnv4jACvPNJg"/>
   </packagedElement>
+  <packagedElement xmi:type="uml:Interaction" xmi:id="_O3NewMIPEfCJO_aOLPnAPg" name="Interaction11">
+    <lifeline xmi:type="uml:Lifeline" xmi:id="_ZnyFYMIPEfCJO_aOLPnAPg" name="Utente" coveredBy="_1kpY4MIPEfCJO_aOLPnAPg _4r39oMIREfCJO_aOLPnAPg _7aMlEMIREfCJO_aOLPnAPg _BQrQQMISEfCJO_aOLPnAPg _Q1dz0MISEfCJO_aOLPnAPg _Q1g3IMISEfCJO_aOLPnAPg"/>
+    <lifeline xmi:type="uml:Lifeline" xmi:id="_btbjQMIPEfCJO_aOLPnAPg" name="MapView" coveredBy="_XRMzEMIQEfCJO_aOLPnAPg _1kp_8MIPEfCJO_aOLPnAPg _XRNaIMIQEfCJO_aOLPnAPg _4r4ksMIREfCJO_aOLPnAPg _7aMlEcIREfCJO_aOLPnAPg _BQr3UMISEfCJO_aOLPnAPg"/>
+    <lifeline xmi:type="uml:Lifeline" xmi:id="_nRfcUMIPEfCJO_aOLPnAPg" name=":UI"/>
+    <lifeline xmi:type="uml:Lifeline" xmi:id="_pKT_IMIPEfCJO_aOLPnAPg" name="DataValidator"/>
+    <lifeline xmi:type="uml:Lifeline" xmi:id="_tJVZcMIPEfCJO_aOLPnAPg" name="PrenotazioniService"/>
+    <lifeline xmi:type="uml:Lifeline" xmi:id="_xfGf0MIPEfCJO_aOLPnAPg" name="FirebaseService"/>
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_1kpY4MIPEfCJO_aOLPnAPg" name="Message7SendEvent" covered="_ZnyFYMIPEfCJO_aOLPnAPg" message="_1kg2AMIPEfCJO_aOLPnAPg"/>
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_XRMzEMIQEfCJO_aOLPnAPg" name="Message10SendEvent" covered="_btbjQMIPEfCJO_aOLPnAPg" message="_XRK94MIQEfCJO_aOLPnAPg"/>
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_1kp_8MIPEfCJO_aOLPnAPg" name="Message7ReceiveEvent" covered="_btbjQMIPEfCJO_aOLPnAPg" message="_1kg2AMIPEfCJO_aOLPnAPg"/>
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_XRNaIMIQEfCJO_aOLPnAPg" name="Message10ReceiveEvent" covered="_btbjQMIPEfCJO_aOLPnAPg" message="_XRK94MIQEfCJO_aOLPnAPg"/>
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_4r39oMIREfCJO_aOLPnAPg" name="Message14SendEvent" covered="_ZnyFYMIPEfCJO_aOLPnAPg" message="_4r2vgMIREfCJO_aOLPnAPg"/>
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_7aMlEMIREfCJO_aOLPnAPg" name="Message16SendEvent" covered="_ZnyFYMIPEfCJO_aOLPnAPg" message="_7aKv4MIREfCJO_aOLPnAPg"/>
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_BQrQQMISEfCJO_aOLPnAPg" name="Message18SendEvent" covered="_ZnyFYMIPEfCJO_aOLPnAPg" message="_BQqCIMISEfCJO_aOLPnAPg"/>
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_BQr3UMISEfCJO_aOLPnAPg" name="Message18ReceiveEvent" covered="_btbjQMIPEfCJO_aOLPnAPg" message="_BQqCIMISEfCJO_aOLPnAPg"/>
+    <fragment xmi:type="uml:CombinedFragment" xmi:id="_Q1dz0MISEfCJO_aOLPnAPg" name="CombinedFragment21" covered="_ZnyFYMIPEfCJO_aOLPnAPg" interactionOperator="alt">
+      <operand xmi:type="uml:InteractionOperand" xmi:id="_Q1g3IMISEfCJO_aOLPnAPg" name="" covered="_ZnyFYMIPEfCJO_aOLPnAPg"/>
+    </fragment>
+    <fragment xmi:type="uml:CombinedFragment" xmi:id="_2-PMkMIQEfCJO_aOLPnAPg" name="CombinedFragment13" interactionOperator="par">
+      <operand xmi:type="uml:InteractionOperand" xmi:id="_2-Ro0MIQEfCJO_aOLPnAPg" name="InteractionOperand0">
+        <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_4r4ksMIREfCJO_aOLPnAPg" name="Message14ReceiveEvent" covered="_btbjQMIPEfCJO_aOLPnAPg" message="_4r2vgMIREfCJO_aOLPnAPg"/>
+        <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_7aMlEcIREfCJO_aOLPnAPg" name="Message16ReceiveEvent" covered="_btbjQMIPEfCJO_aOLPnAPg" message="_7aKv4MIREfCJO_aOLPnAPg"/>
+        <guard xmi:type="uml:InteractionConstraint" xmi:id="_2-Ro0cIQEfCJO_aOLPnAPg" name="guard"/>
+      </operand>
+    </fragment>
+    <message xmi:type="uml:Message" xmi:id="_1kg2AMIPEfCJO_aOLPnAPg" name="onMarkerClick(statioID)" messageSort="asynchCall" receiveEvent="_1kp_8MIPEfCJO_aOLPnAPg" sendEvent="_1kpY4MIPEfCJO_aOLPnAPg"/>
+    <message xmi:type="uml:Message" xmi:id="_XRK94MIQEfCJO_aOLPnAPg" name="apriSidebar()" receiveEvent="_XRNaIMIQEfCJO_aOLPnAPg" sendEvent="_XRMzEMIQEfCJO_aOLPnAPg"/>
+    <message xmi:type="uml:Message" xmi:id="_4r2vgMIREfCJO_aOLPnAPg" name="inserisciData(date)" messageSort="asynchCall" receiveEvent="_4r4ksMIREfCJO_aOLPnAPg" sendEvent="_4r39oMIREfCJO_aOLPnAPg"/>
+    <message xmi:type="uml:Message" xmi:id="_7aKv4MIREfCJO_aOLPnAPg" name="inserisciOra(ora)" messageSort="asynchCall" receiveEvent="_7aMlEcIREfCJO_aOLPnAPg" sendEvent="_7aMlEMIREfCJO_aOLPnAPg"/>
+    <message xmi:type="uml:Message" xmi:id="_BQqCIMISEfCJO_aOLPnAPg" name="clickPrenota()" messageSort="asynchCall" receiveEvent="_BQr3UMISEfCJO_aOLPnAPg" sendEvent="_BQrQQMISEfCJO_aOLPnAPg"/>
+  </packagedElement>
   <profileApplication xmi:type="uml:ProfileApplication" xmi:id="_szdM8K2_EfCDm6AtkyEGow">
     <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_szfCIK2_EfCDm6AtkyEGow" source="http://www.eclipse.org/uml2/2.0.0/UML">
       <references xmi:type="ecore:EPackage" href="pathmap://PAPYRUS_ACTIONLANGUAGE_PROFILE/ActionLanguage-Profile.profile.uml#_Kv8EIKFXEeS_KNX0nfvIVQ"/>
