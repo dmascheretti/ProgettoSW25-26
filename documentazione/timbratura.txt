@@ -42,5 +42,7 @@ Tutte le fasi precedenti sono contenute all'interno del file meeting
 13/11/2025		22.00-23.30 Modifiche al project plan (punti da 7 a 13)
 
 14/11/2025		10.15-12.15 Diviso logica di controllo e salvataggio da MapView a PrenotazioneService
+
+15/11/2025		11.00-12.30 + 16.30.17.45 Stesura diagramma di sequenza prima a mano e poi inizio dell'implementazione su papyrus con non poche difficoltà
 			
 
