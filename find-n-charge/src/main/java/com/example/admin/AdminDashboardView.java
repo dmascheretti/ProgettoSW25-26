@@ -1,6 +1,5 @@
 /**
  * Pagina della dashboard dell'amministratore. Permette all'amministratore di avere tutte le informazioni sotto controllo in modo semplice e intuitivo.
- *  
  * @author Maistrello Tommaso
  */
 package com.example.admin;
@@ -19,14 +18,34 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
 import com.example.database.FirebaseService;
 import jakarta.annotation.security.RolesAllowed;
+import com.vaadin.flow.router.AfterNavigationEvent;
+import com.vaadin.flow.router.AfterNavigationObserver;
 
 @PageTitle("Find&Charge | Dashboard")
 @Route(value = "dashboard", layout = AdminLayout.class) // Carica la pagina nel layout dell'admin
 @RouteAlias(value = "admin", layout = AdminLayout.class)
 @RolesAllowed("ADMIN")
 
-public class AdminDashboardView extends VerticalLayout {
+// AfterNavigationObserver serve per caricare i dati in automatico non appena viene aperta la pagina
+public class AdminDashboardView extends VerticalLayout implements AfterNavigationObserver {
+
 	private FirebaseService fb;
+
+	// Utenti
+	private KpiCard utentiCard;
+	private KpiCard utentiNuoviCard;
+	private KpiCard utentiAttiviCard;
+	// Colonnine
+	private KpiCard colonnineTotaliCard;
+	private KpiCard colonnineLibereCard;
+	private KpiCard colonnineGuasteCard;
+	// Prenotazioni
+	private KpiCard prenotazioniTotaliCard;
+	private KpiCard prenotazioniNuoveCard;
+	// Segnalazioni
+	private KpiCard segnalazioniTotaliCard;
+	private KpiCard segnalazioniNuoveCard;
+	private KpiCard segnalazioniVecchieCard;
 
 	public AdminDashboardView(FirebaseService fb) {
 		this.fb = fb;
@@ -45,12 +64,34 @@ public class AdminDashboardView extends VerticalLayout {
 		upperBar.setJustifyContentMode(JustifyContentMode.BETWEEN); // Titolo a sx, bottone a dx
 		upperBar.setDefaultVerticalComponentAlignment(Alignment.CENTER); // Allinea al centro verticalmente
 
-		add(upperBar, createKpiLayout());
+		// Creazione kpiCards
+		VerticalLayout kpiLayout = createKpiLayout();
+
+		add(upperBar, kpiLayout);
+
+		// Quando si schiaccia il tasto di refresh, i dati devono essere aggiornati
+		refresh.addClickListener(e -> {
+			loadKpiData();
+		});
 
 	}
 
 	/**
-	 * Metodo per creare un layout verticale con le KpiCard
+	 * Metodo richiamato da Vaadin in automatico al caricamento della pagina. In
+	 * questo modo i dati sono subito aggiornati.
+	 */
+	@Override
+	public void afterNavigation(AfterNavigationEvent event) {
+
+		loadKpiData();
+
+	}
+
+	/**
+	 * Metodo per creare un layout con le KpiCard. Dividiamo la sezione in quattro
+	 * parti, ognuna per ogni gestione.
+	 * 
+	 * @return il layout descritto.
 	 */
 	private VerticalLayout createKpiLayout() {
 
@@ -59,20 +100,22 @@ public class AdminDashboardView extends VerticalLayout {
 		H2 prenotazioni = new H2("Gestione prenotazioni");
 		H2 segnalazioni = new H2("Gestione segnalazioni");
 
+		// Layout di gestione utenti e colonnine
 		VerticalLayout utentiLayout = new VerticalLayout(utenti, kpiUtenti());
 		VerticalLayout colonnineLayout = new VerticalLayout(colonnine, kpiColonnine());
+		HorizontalLayout utentiAndColonnineLayout = new HorizontalLayout(utentiLayout, colonnineLayout);
+		utentiAndColonnineLayout.setWidthFull();
+		utentiAndColonnineLayout.expand(utentiLayout, colonnineLayout);
 
+		// Layout di gestione prenotazioni e segnalazioni
 		VerticalLayout prenotazioniLayout = new VerticalLayout(prenotazioni, kpiPrenotazioni());
 		VerticalLayout segnalazioniLayout = new VerticalLayout(segnalazioni, kpiSegnalazioni());
-
-		HorizontalLayout utentiAndColonnineLayout = new HorizontalLayout(utentiLayout, colonnineLayout);
 		HorizontalLayout prenotazioniAndSegnalazioniLayout = new HorizontalLayout(prenotazioniLayout,
 				segnalazioniLayout);
-		utentiAndColonnineLayout.setWidthFull();
 		prenotazioniAndSegnalazioniLayout.setWidthFull();
-		utentiAndColonnineLayout.expand(utentiLayout, colonnineLayout);
 		prenotazioniAndSegnalazioniLayout.expand(prenotazioniLayout, segnalazioniLayout);
 
+		// Unisce i due layout
 		VerticalLayout kpiLayout = new VerticalLayout(utentiAndColonnineLayout, prenotazioniAndSegnalazioniLayout);
 		kpiLayout.setWidthFull();
 		kpiLayout.setPadding(false);
@@ -81,32 +124,18 @@ public class AdminDashboardView extends VerticalLayout {
 		return kpiLayout;
 	}
 
-	private HorizontalLayout kpiUtenti() {
+	/**
+	 * Metodo per il caricamento di tutte le KPI.
+	 */
+	private void loadKpiData() {
 
-		// Creazione delle card
-		KpiCard utentiCard = new KpiCard("Utenti totali", "");
-		KpiCard utentiNuoviCard = new KpiCard("Nuovi utenti", "");
-		KpiCard utentiAttiviCard = new KpiCard("Utenti attivi", "");
-
+		// Utenti
 		fb.contaUtenti().thenAccept(num -> {
-
-			String utentiTotali = num.toString();
-
-			getUI().ifPresent(ui -> {
-				ui.access(() -> {
-					utentiCard.setNumber(utentiTotali);
-				});
-			});
+			getUI().ifPresent(ui -> ui.access(() -> utentiCard.setNumber(num.toString())));
 		}).exceptionally(ex -> {
-
-			getUI().ifPresent(ui -> {
-				ui.access(() -> {
-					utentiCard.setNumber("Errore");
-				});
-			});
+			getUI().ifPresent(ui -> ui.access(() -> utentiCard.setNumber("Errore")));
 			return null;
 		});
-
 		/*
 		 * fb.contaUtentiNuovi().thenAccept(num -> {
 		 * 
@@ -129,65 +158,19 @@ public class AdminDashboardView extends VerticalLayout {
 		 * utentiAttiviCard.setNumber("Errore"); }); }); return null; });
 		 */
 
-		// Creazione delle card
-
-		utentiAttiviCard.getStyle().set("background-color", "var(--lumo-success-color-10pct)");
-		utentiAttiviCard.getStyle().set("border-color", "var(--lumo-success-color)");
-
-		HorizontalLayout kpiUtentiLayout = new HorizontalLayout(utentiCard, utentiNuoviCard, utentiAttiviCard);
-		kpiUtentiLayout.setWidthFull();
-		kpiUtentiLayout.setSpacing(true);
-
-		// Fa in modo che le card si espandano per riempire lo spazio
-		kpiUtentiLayout.expand(utentiCard, utentiNuoviCard, utentiAttiviCard);
-		return kpiUtentiLayout;
-	}
-
-	private HorizontalLayout kpiColonnine() {
-
-		// Creazione delle card
-		KpiCard colonnineTotaliCard = new KpiCard("Colonnine totali", "");
-		KpiCard colonnineLibereCard = new KpiCard("Colonnine libere", "");
-		KpiCard colonnineGuasteCard = new KpiCard("Colonnine guaste", "");
-
+		// Colonnine
 		fb.contaColonnine().thenAccept(num -> {
-
-			String colonnineTotali = num.toString();
-
-			getUI().ifPresent(ui -> {
-				ui.access(() -> {
-					colonnineTotaliCard.setNumber(colonnineTotali);
-				});
-			});
+			getUI().ifPresent(ui -> ui.access(() -> colonnineTotaliCard.setNumber(num.toString())));
 		}).exceptionally(ex -> {
-
-			getUI().ifPresent(ui -> {
-				ui.access(() -> {
-					colonnineTotaliCard.setNumber("Errore");
-				});
-			});
+			getUI().ifPresent(ui -> ui.access(() -> colonnineTotaliCard.setNumber("Errore")));
 			return null;
 		});
-
 		fb.contaColonnineLibere().thenAccept(num -> {
-
-			String colonnineLibere = num.toString();
-
-			getUI().ifPresent(ui -> {
-				ui.access(() -> {
-					colonnineLibereCard.setNumber(colonnineLibere);
-				});
-			});
+			getUI().ifPresent(ui -> ui.access(() -> colonnineLibereCard.setNumber(num.toString())));
 		}).exceptionally(ex -> {
-
-			getUI().ifPresent(ui -> {
-				ui.access(() -> {
-					colonnineLibereCard.setNumber("Errore");
-				});
-			});
+			getUI().ifPresent(ui -> ui.access(() -> colonnineLibereCard.setNumber("Errore")));
 			return null;
 		});
-
 		/*
 		 * fb.contaColonnineGuaste().thenAccept(num -> {
 		 * 
@@ -201,6 +184,59 @@ public class AdminDashboardView extends VerticalLayout {
 		 * colonnineGuasteCard.setNumber("Errore"); }); }); return null; });
 		 */
 
+		// Prenotazioni
+		fb.contaPrenotazioni().thenAccept(num -> {
+			getUI().ifPresent(ui -> ui.access(() -> prenotazioniTotaliCard.setNumber(num.toString())));
+		}).exceptionally(ex -> {
+			getUI().ifPresent(ui -> ui.access(() -> prenotazioniTotaliCard.setNumber("Errore")));
+			return null;
+		});
+		// String prenotazioniNuove = contaPrenotazioniNuove();
+
+		// Segnalazioni
+		// String segnalazioniTotali = FirebaseService.contaSegnalazioniTotali();
+		// String segnalazioniNuove = FirebaseService.contaSegnalazioniNuove();
+		// String segnalazioniVecchie = FirebaseService.contaSegnalazioniPassate();
+
+	}
+
+	/**
+	 * Metodo per creare le card e inserirle nel layout.
+	 * 
+	 * @return il layout delle kpi degli utenti.
+	 */
+	private HorizontalLayout kpiUtenti() {
+
+		// Creazione delle card (inizialmente senza dati)
+		utentiCard = new KpiCard("Utenti totali", "...");
+		utentiNuoviCard = new KpiCard("Nuovi utenti", "...");
+		utentiAttiviCard = new KpiCard("Utenti attivi", "...");
+
+		utentiAttiviCard.getStyle().set("background-color", "var(--lumo-success-color-10pct)");
+		utentiAttiviCard.getStyle().set("border-color", "var(--lumo-success-color)");
+
+		HorizontalLayout kpiUtentiLayout = new HorizontalLayout(utentiCard, utentiNuoviCard, utentiAttiviCard);
+		kpiUtentiLayout.setWidthFull();
+		kpiUtentiLayout.setSpacing(true);
+
+		// Fa in modo che le card si espandano per riempire lo spazio
+		kpiUtentiLayout.expand(utentiCard, utentiNuoviCard, utentiAttiviCard);
+
+		return kpiUtentiLayout;
+	}
+
+	/**
+	 * Metodo per creare le card e inserirle nel layout.
+	 * 
+	 * @return il layout delle kpi delle colonnine.
+	 */
+	private HorizontalLayout kpiColonnine() {
+
+		// Creazione delle card (inizialmente senza dati)
+		colonnineTotaliCard = new KpiCard("Colonnine totali", "...");
+		colonnineLibereCard = new KpiCard("Colonnine libere", "...");
+		colonnineGuasteCard = new KpiCard("Colonnine guaste", "...");
+
 		colonnineLibereCard.getStyle().set("background-color", "var(--lumo-success-color-10pct)");
 		colonnineLibereCard.getStyle().set("border-color", "var(--lumo-success-color)");
 		colonnineGuasteCard.getStyle().set("background-color", "var(--lumo-error-color-10pct)");
@@ -213,55 +249,42 @@ public class AdminDashboardView extends VerticalLayout {
 
 		// Fa in modo che le card si espandano per riempire lo spazio
 		kpiColonnineLayout.expand(colonnineTotaliCard, colonnineLibereCard, colonnineGuasteCard);
+
 		return kpiColonnineLayout;
 	}
 
+	/**
+	 * Metodo per creare le card e inserirle nel layout.
+	 * 
+	 * @return il layout delle kpi delle prenotazioni.
+	 */
 	private HorizontalLayout kpiPrenotazioni() {
 
-		// Creazione delle card
-		KpiCard prenotazioniTotaliCard = new KpiCard("Prenotazioni totali", "");
-		KpiCard prenotazioniNuoveCard = new KpiCard("Nuove prenotazioni", "");
-
-		fb.contaPrenotazioni().thenAccept(num -> {
-
-			String prenotazioniTotali = num.toString();
-
-			getUI().ifPresent(ui -> {
-				ui.access(() -> {
-					prenotazioniTotaliCard.setNumber(prenotazioniTotali);
-				});
-			});
-		}).exceptionally(ex -> {
-
-			getUI().ifPresent(ui -> {
-				ui.access(() -> {
-					prenotazioniTotaliCard.setNumber("Errore");
-				});
-			});
-			return null;
-		});
-
-		// String prenotazioniNuove = contaPrenotazioniNuove();
+		// Creazione delle card (inizialmente senza dati)
+		prenotazioniTotaliCard = new KpiCard("Prenotazioni totali", "...");
+		prenotazioniNuoveCard = new KpiCard("Nuove prenotazioni", "...");
 
 		HorizontalLayout kpiColonnineLayout = new HorizontalLayout(prenotazioniTotaliCard, prenotazioniNuoveCard);
 		kpiColonnineLayout.setWidthFull();
 		kpiColonnineLayout.setSpacing(true);
+
 		// Fa in modo che le card si espandano per riempire lo spazio
 		kpiColonnineLayout.expand(prenotazioniTotaliCard, prenotazioniNuoveCard);
+
 		return kpiColonnineLayout;
 	}
 
+	/**
+	 * Metodo per creare le card e inserirle nel layout.
+	 * 
+	 * @return il layout delle kpi delle segnalazioni.
+	 */
 	private HorizontalLayout kpiSegnalazioni() {
 
-		// Assegnazione dei dati
-		// String segnalazioniTotali = FirebaseService.contaSegnalazioniTotali();
-		// String segnalazioniNuove = FirebaseService.contaSegnalazioniNuove();
-		// String segnalazioniVecchie = FirebaseService.contaSegnalazioniPassate();
-
-		// Creazione delle card
-		KpiCard segnalazioniTotaliCard = new KpiCard("Segnalazioni totali", "");
-		KpiCard segnalazioniNuoveCard = new KpiCard("Nuove segnalazioni", "");
-		KpiCard segnalazioniVecchieCard = new KpiCard("Segnalazioni vecchie", "");
+		// Creazione delle card (inizialmente senza dati)
+		segnalazioniTotaliCard = new KpiCard("Segnalazioni totali", "...");
+		segnalazioniNuoveCard = new KpiCard("Nuove segnalazioni", "...");
+		segnalazioniVecchieCard = new KpiCard("Segnalazioni vecchie", "...");
 
 		segnalazioniNuoveCard.getStyle().set("background-color", "var(--lumo-error-color-10pct)");
 		segnalazioniNuoveCard.getStyle().set("border-color", "var(--lumo-error-color)");
@@ -270,8 +293,10 @@ public class AdminDashboardView extends VerticalLayout {
 				segnalazioniVecchieCard);
 		kpiUtentiLayout.setWidthFull();
 		kpiUtentiLayout.setSpacing(true);
+
 		// Fa in modo che le card si espandano per riempire lo spazio
 		kpiUtentiLayout.expand(segnalazioniTotaliCard, segnalazioniNuoveCard, segnalazioniVecchieCard);
+
 		return kpiUtentiLayout;
 	}
 }
