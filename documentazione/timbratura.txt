@@ -51,14 +51,23 @@ Tutte le fasi precedenti sono contenute all'interno del file meeting
 			14.30-17.10 Implementato il salvataggio nel db delle prenotazioni e del controllo su colonnina, data e ora. Aggiunta funzione per svolgere questo in FirebaseService
 			(salvataggio e verifica). La parte di documentazione verrà poi aggiunta.
 
+			Mascheretti Davide
 12/11/2025 		22.00-23.00 Modiche al project plan (punti da 1 a 6)
 
-13/11/2025		22.00-23.30 Modifiche al project plan (punti da 7 a 13)
+13/11/2025		Mascheretti Davide
+			22.00-23.30 Modifiche al project plan (punti da 7 a 13)
+			Valenari Francesco
+			Aggiunta stato e prototipo di cancellazione nella lista prenotazioni in StationView
 
+			Mascheretti Davide
 14/11/2025		10.15-12.15 Diviso logica di controllo e salvataggio da MapView a PrenotazioneService
 
+			Mascheretti Davide
 15/11/2025		11.00-12.30 + 16.30.17.45 Stesura diagramma di sequenza prima a mano e poi inizio dell'implementazione su papyrus con non poche difficoltà
 			
-13/11/2025		Valenari Francesco
-			Aggiunta stato e prototipo di cancellazione nella lista prenotazioni in StationView
-15/11/2025		Aggiunta possibilità di cancellazione solo per prenotazioni attive o future
+
+15/11/2025		Valenari Francesco
+			Aggiunta possibilità di cancellazione solo per prenotazioni attive o future
+
+16/11/2025		Mascheretti Davide
+			9.00-9.30 + 16.00-17.00 Finito il sequence diagram (prima versione). Da controllare con gruppo.
