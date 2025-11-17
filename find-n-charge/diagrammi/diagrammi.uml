@@ -13,15 +13,29 @@
     <ownedAttribute xmi:type="uml:Property" xmi:id="_NSH64MFMEfC8Fs08X5KQoQ" name="username" visibility="private">
       <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
     </ownedAttribute>
+    <ownedAttribute xmi:type="uml:Property" xmi:id="_svEm8MFtEfC8Fs08X5KQoQ" name="mail" visibility="private">
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:type="uml:Property" xmi:id="_wCazYMOkEfC_XcjUDQ-4qg" name="password" visibility="private" isUnique="false">
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+    </ownedAttribute>
     <ownedOperation xmi:type="uml:Operation" xmi:id="_i5HAsMFoEfC8Fs08X5KQoQ" name="PrenotaColonnina" visibility="private">
-      <ownedParameter xmi:type="uml:Parameter" xmi:id="_HW9L4MFrEfC8Fs08X5KQoQ" name="Parameter1" isUnique="false">
+      <ownedParameter xmi:type="uml:Parameter" xmi:id="_HW9L4MFrEfC8Fs08X5KQoQ" name="IdColonnina" isUnique="false">
         <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+      </ownedParameter>
+      <ownedParameter xmi:type="uml:Parameter" xmi:id="_gZmfEMFtEfC8Fs08X5KQoQ" name="Parameter2" visibility="public" isUnique="false" direction="return" effect="create">
+        <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Boolean"/>
       </ownedParameter>
     </ownedOperation>
   </packagedElement>
   <packagedElement xmi:type="uml:Class" xmi:id="_soh6UMDOEfC8Fs08X5KQoQ" name="Auto" visibility="public">
-    <ownedAttribute xmi:type="uml:Property" xmi:id="_zDEU0MDOEfC8Fs08X5KQoQ" name="targa" visibility="private"/>
+    <ownedAttribute xmi:type="uml:Property" xmi:id="_zDEU0MDOEfC8Fs08X5KQoQ" name="targa" visibility="private">
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+    </ownedAttribute>
     <ownedAttribute xmi:type="uml:Property" xmi:id="_JWjGEMFgEfC8Fs08X5KQoQ" name="capacityBatteria" visibility="private" isUnique="false">
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Integer"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:type="uml:Property" xmi:id="_bzDLgMOuEfC_XcjUDQ-4qg" name="statoCarica" visibility="private" isUnique="false">
       <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Integer"/>
     </ownedAttribute>
   </packagedElement>
@@ -39,10 +53,8 @@
     </ownedEnd>
   </packagedElement>
   <packagedElement xmi:type="uml:Class" xmi:id="_lwoc4MFnEfC8Fs08X5KQoQ" name="Colonnina" visibility="public">
-    <ownedAttribute xmi:type="uml:Property" xmi:id="_qzmAcMFnEfC8Fs08X5KQoQ" name="postiLiberi" visibility="private" isUnique="false">
+    <ownedAttribute xmi:type="uml:Property" xmi:id="_Ml6GMMOeEfC_XcjUDQ-4qg" name="Id" visibility="private">
       <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Integer"/>
-      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_2Td1sMFqEfC8Fs08X5KQoQ" name="LiteralInteger1" value="1"/>
-      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_2To00MFqEfC8Fs08X5KQoQ" name="LiteralUnlimitedNatural1" value="1"/>
     </ownedAttribute>
   </packagedElement>
   <packagedElement xmi:type="uml:Enumeration" xmi:id="_3gmekMFnEfC8Fs08X5KQoQ" name="Stato">
@@ -51,5 +63,31 @@
     <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="_MP2U0MFoEfC8Fs08X5KQoQ" name="prenotata"/>
     <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="_OIkJ8MFoEfC8Fs08X5KQoQ" name="guasta"/>
   </packagedElement>
-  <packagedElement xmi:type="uml:Class" xmi:id="_ciigMMFoEfC8Fs08X5KQoQ" name="PostiAuto"/>
+  <packagedElement xmi:type="uml:Class" xmi:id="_wymP8MOgEfC_XcjUDQ-4qg" name="Prenotazioni">
+    <ownedAttribute xmi:type="uml:Property" xmi:id="_4iFEIMOgEfC_XcjUDQ-4qg" name="Id" visibility="private">
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:type="uml:Property" xmi:id="_WPZH8MOpEfC_XcjUDQ-4qg" name="nomeColonnia" visibility="private" isUnique="false">
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:type="uml:Property" xmi:id="_eX-YoMOpEfC_XcjUDQ-4qg" name="data" visibility="private" isUnique="false">
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:type="uml:Property" xmi:id="_YD4H4MOqEfC_XcjUDQ-4qg" name="oraInizio" visibility="private" isUnique="false">
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:type="uml:Property" xmi:id="_o0j20MOqEfC_XcjUDQ-4qg" name="utente" visibility="private" isUnique="false">
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_eTsH0MOkEfC_XcjUDQ-4qg" name="effettua" visibility="private" memberEnd="_eUVBAMOkEfC_XcjUDQ-4qg _eUeK8MOkEfC_XcjUDQ-4qg">
+    <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_eUMeIMOkEfC_XcjUDQ-4qg" source="org.eclipse.papyrus">
+      <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_eURWoMOkEfC_XcjUDQ-4qg" key="nature" value="UML_Nature"/>
+    </eAnnotations>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_eUVBAMOkEfC_XcjUDQ-4qg" name="prenotazioni" visibility="private" type="_wymP8MOgEfC_XcjUDQ-4qg" association="_eTsH0MOkEfC_XcjUDQ-4qg">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_GciTMMOpEfC_XcjUDQ-4qg" name="LiteralInteger1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_GdShIMOpEfC_XcjUDQ-4qg" name="LiteralUnlimitedNatural1" value="*"/>
+    </ownedEnd>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_eUeK8MOkEfC_XcjUDQ-4qg" name="utente" visibility="private" type="_y_bc4MDMEfC8Fs08X5KQoQ" association="_eTsH0MOkEfC_XcjUDQ-4qg"/>
+  </packagedElement>
 </uml:Model>
