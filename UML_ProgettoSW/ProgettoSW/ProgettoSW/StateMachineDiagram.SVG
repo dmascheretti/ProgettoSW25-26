@@ -160,115 +160,115 @@
                 <path d="M-1 -1 L1659 -1 L1659 886 L-1 886 L-1 -1 Z"/>
             </clipPath>
             <clipPath clipPathUnits="userSpaceOnUse" id="clipPath37">
-                <path d="M649 709 L797 709 L797 731 L649 731 L649 709 Z"/>
-            </clipPath>
-            <clipPath clipPathUnits="userSpaceOnUse" id="clipPath38">
-                <path d="M687 719 L694 719 L694 741 L687 741 L687 719 Z"/>
-            </clipPath>
-            <clipPath clipPathUnits="userSpaceOnUse" id="clipPath39">
-                <path d="M694 624 L712 624 L712 637 L694 637 L694 624 Z"/>
-            </clipPath>
-            <clipPath clipPathUnits="userSpaceOnUse" id="clipPath40">
-                <path d="M143 76 L150 76 L150 98 L143 98 L143 76 Z"/>
-            </clipPath>
-            <clipPath clipPathUnits="userSpaceOnUse" id="clipPath41">
-                <path d="M122 93 L135 93 L135 112 L122 112 L122 93 Z"/>
-            </clipPath>
-            <clipPath clipPathUnits="userSpaceOnUse" id="clipPath42">
-                <path d="M369 149 L625 149 L625 171 L369 171 L369 149 Z"/>
-            </clipPath>
-            <clipPath clipPathUnits="userSpaceOnUse" id="clipPath43">
-                <path d="M477 119 L484 119 L484 141 L477 141 L477 119 Z"/>
-            </clipPath>
-            <clipPath clipPathUnits="userSpaceOnUse" id="clipPath44">
-                <path d="M594 144 L612 144 L612 157 L594 157 L594 144 Z"/>
-            </clipPath>
-            <clipPath clipPathUnits="userSpaceOnUse" id="clipPath45">
-                <path d="M695 193 L799 193 L799 215 L695 215 L695 193 Z"/>
-            </clipPath>
-            <clipPath clipPathUnits="userSpaceOnUse" id="clipPath46">
-                <path d="M801 187 L808 187 L808 209 L801 209 L801 187 Z"/>
-            </clipPath>
-            <clipPath clipPathUnits="userSpaceOnUse" id="clipPath47">
-                <path d="M783 214 L796 214 L796 232 L783 232 L783 214 Z"/>
-            </clipPath>
-            <clipPath clipPathUnits="userSpaceOnUse" id="clipPath48">
                 <path d="M1407 199 L1414 199 L1414 221 L1407 221 L1407 199 Z"/>
             </clipPath>
-            <clipPath clipPathUnits="userSpaceOnUse" id="clipPath49">
+            <clipPath clipPathUnits="userSpaceOnUse" id="clipPath38">
                 <path d="M904 214 L917 214 L917 232 L904 232 L904 214 Z"/>
             </clipPath>
-            <clipPath clipPathUnits="userSpaceOnUse" id="clipPath50">
-                <path d="M889 648 L1361 648 L1361 670 L889 670 L889 648 Z"/>
+            <clipPath clipPathUnits="userSpaceOnUse" id="clipPath39">
+                <path d="M369 149 L625 149 L625 171 L369 171 L369 149 Z"/>
             </clipPath>
-            <clipPath clipPathUnits="userSpaceOnUse" id="clipPath51">
-                <path d="M1097 609 L1104 609 L1104 631 L1097 631 L1097 609 Z"/>
+            <clipPath clipPathUnits="userSpaceOnUse" id="clipPath40">
+                <path d="M477 119 L484 119 L484 141 L477 141 L477 119 Z"/>
             </clipPath>
-            <clipPath clipPathUnits="userSpaceOnUse" id="clipPath52">
-                <path d="M1234 634 L1252 634 L1252 647 L1234 647 L1234 634 Z"/>
+            <clipPath clipPathUnits="userSpaceOnUse" id="clipPath41">
+                <path d="M594 144 L612 144 L612 157 L594 157 L594 144 Z"/>
             </clipPath>
-            <clipPath clipPathUnits="userSpaceOnUse" id="clipPath53">
-                <path d="M789 409 L960 409 L960 431 L789 431 L789 409 Z"/>
-            </clipPath>
-            <clipPath clipPathUnits="userSpaceOnUse" id="clipPath54">
-                <path d="M827 427 L834 427 L834 449 L827 449 L827 427 Z"/>
-            </clipPath>
-            <clipPath clipPathUnits="userSpaceOnUse" id="clipPath55">
-                <path d="M844 365 L857 365 L857 383 L844 383 L844 365 Z"/>
-            </clipPath>
-            <clipPath clipPathUnits="userSpaceOnUse" id="clipPath56">
-                <path d="M1229 69 L1371 69 L1371 91 L1229 91 L1229 69 Z"/>
-            </clipPath>
-            <clipPath clipPathUnits="userSpaceOnUse" id="clipPath57">
-                <path d="M1138 79 L1145 79 L1145 101 L1138 101 L1138 79 Z"/>
-            </clipPath>
-            <clipPath clipPathUnits="userSpaceOnUse" id="clipPath58">
-                <path d="M304 94 L317 94 L317 112 L304 112 L304 94 Z"/>
-            </clipPath>
-            <clipPath clipPathUnits="userSpaceOnUse" id="clipPath59">
-                <path d="M1070 487 L1203 487 L1203 509 L1070 509 L1070 487 Z"/>
-            </clipPath>
-            <clipPath clipPathUnits="userSpaceOnUse" id="clipPath60">
-                <path d="M1139 431 L1146 431 L1146 453 L1139 453 L1139 431 Z"/>
-            </clipPath>
-            <clipPath clipPathUnits="userSpaceOnUse" id="clipPath61">
-                <path d="M1333 369 L1352 369 L1352 383 L1333 383 L1333 369 Z"/>
-            </clipPath>
-            <clipPath clipPathUnits="userSpaceOnUse" id="clipPath62">
-                <path d="M222 269 L398 269 L398 291 L222 291 L222 269 Z"/>
-            </clipPath>
-            <clipPath clipPathUnits="userSpaceOnUse" id="clipPath63">
-                <path d="M267 269 L274 269 L274 291 L267 291 L267 269 Z"/>
-            </clipPath>
-            <clipPath clipPathUnits="userSpaceOnUse" id="clipPath64">
-                <path d="M284 249 L297 249 L297 267 L284 267 L284 249 Z"/>
-            </clipPath>
-            <clipPath clipPathUnits="userSpaceOnUse" id="clipPath65">
-                <path d="M629 449 L812 449 L812 471 L629 471 L629 449 Z"/>
-            </clipPath>
-            <clipPath clipPathUnits="userSpaceOnUse" id="clipPath66">
-                <path d="M747 427 L754 427 L754 449 L747 449 L747 427 Z"/>
-            </clipPath>
-            <clipPath clipPathUnits="userSpaceOnUse" id="clipPath67">
-                <path d="M724 494 L737 494 L737 512 L724 512 L724 494 Z"/>
-            </clipPath>
-            <clipPath clipPathUnits="userSpaceOnUse" id="clipPath68">
-                <path d="M74 269 L187 269 L187 291 L74 291 L74 269 Z"/>
-            </clipPath>
-            <clipPath clipPathUnits="userSpaceOnUse" id="clipPath69">
-                <path d="M167 269 L174 269 L174 291 L167 291 L167 269 Z"/>
-            </clipPath>
-            <clipPath clipPathUnits="userSpaceOnUse" id="clipPath70">
-                <path d="M144 294 L157 294 L157 312 L144 312 L144 294 Z"/>
-            </clipPath>
-            <clipPath clipPathUnits="userSpaceOnUse" id="clipPath71">
+            <clipPath clipPathUnits="userSpaceOnUse" id="clipPath42">
                 <path d="M1031 392 L1194 392 L1194 414 L1031 414 L1031 392 Z"/>
             </clipPath>
-            <clipPath clipPathUnits="userSpaceOnUse" id="clipPath72">
+            <clipPath clipPathUnits="userSpaceOnUse" id="clipPath43">
                 <path d="M1106 447 L1113 447 L1113 469 L1106 469 L1106 447 Z"/>
             </clipPath>
-            <clipPath clipPathUnits="userSpaceOnUse" id="clipPath73">
+            <clipPath clipPathUnits="userSpaceOnUse" id="clipPath44">
                 <path d="M939 498 L958 498 L958 512 L939 512 L939 498 Z"/>
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="clipPath45">
+                <path d="M789 409 L960 409 L960 431 L789 431 L789 409 Z"/>
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="clipPath46">
+                <path d="M827 427 L834 427 L834 449 L827 449 L827 427 Z"/>
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="clipPath47">
+                <path d="M844 365 L857 365 L857 383 L844 383 L844 365 Z"/>
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="clipPath48">
+                <path d="M1229 69 L1371 69 L1371 91 L1229 91 L1229 69 Z"/>
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="clipPath49">
+                <path d="M1138 79 L1145 79 L1145 101 L1138 101 L1138 79 Z"/>
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="clipPath50">
+                <path d="M304 94 L317 94 L317 112 L304 112 L304 94 Z"/>
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="clipPath51">
+                <path d="M889 648 L1361 648 L1361 670 L889 670 L889 648 Z"/>
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="clipPath52">
+                <path d="M1097 609 L1104 609 L1104 631 L1097 631 L1097 609 Z"/>
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="clipPath53">
+                <path d="M1234 634 L1252 634 L1252 647 L1234 647 L1234 634 Z"/>
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="clipPath54">
+                <path d="M222 269 L398 269 L398 291 L222 291 L222 269 Z"/>
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="clipPath55">
+                <path d="M267 269 L274 269 L274 291 L267 291 L267 269 Z"/>
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="clipPath56">
+                <path d="M284 249 L297 249 L297 267 L284 267 L284 249 Z"/>
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="clipPath57">
+                <path d="M695 193 L799 193 L799 215 L695 215 L695 193 Z"/>
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="clipPath58">
+                <path d="M801 187 L808 187 L808 209 L801 209 L801 187 Z"/>
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="clipPath59">
+                <path d="M783 214 L796 214 L796 232 L783 232 L783 214 Z"/>
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="clipPath60">
+                <path d="M629 449 L812 449 L812 471 L629 471 L629 449 Z"/>
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="clipPath61">
+                <path d="M747 427 L754 427 L754 449 L747 449 L747 427 Z"/>
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="clipPath62">
+                <path d="M724 494 L737 494 L737 512 L724 512 L724 494 Z"/>
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="clipPath63">
+                <path d="M74 269 L187 269 L187 291 L74 291 L74 269 Z"/>
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="clipPath64">
+                <path d="M167 269 L174 269 L174 291 L167 291 L167 269 Z"/>
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="clipPath65">
+                <path d="M144 294 L157 294 L157 312 L144 312 L144 294 Z"/>
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="clipPath66">
+                <path d="M143 76 L150 76 L150 98 L143 98 L143 76 Z"/>
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="clipPath67">
+                <path d="M122 93 L135 93 L135 112 L122 112 L122 93 Z"/>
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="clipPath68">
+                <path d="M989 309 L1228 309 L1228 331 L989 331 L989 309 Z"/>
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="clipPath69">
+                <path d="M1107 339 L1114 339 L1114 361 L1107 361 L1107 339 Z"/>
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="clipPath70">
+                <path d="M969 324 L987 324 L987 337 L969 337 L969 324 Z"/>
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="clipPath71">
+                <path d="M649 709 L797 709 L797 731 L649 731 L649 709 Z"/>
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="clipPath72">
+                <path d="M687 719 L694 719 L694 741 L687 741 L687 719 Z"/>
+            </clipPath>
+            <clipPath clipPathUnits="userSpaceOnUse" id="clipPath73">
+                <path d="M694 624 L712 624 L712 637 L694 637 L694 624 Z"/>
             </clipPath>
             <clipPath clipPathUnits="userSpaceOnUse" id="clipPath74">
                 <path d="M1049 249 L1182 249 L1182 271 L1049 271 L1049 249 Z"/>
@@ -280,13 +280,13 @@
                 <path d="M1234 264 L1252 264 L1252 277 L1234 277 L1234 264 Z"/>
             </clipPath>
             <clipPath clipPathUnits="userSpaceOnUse" id="clipPath77">
-                <path d="M989 309 L1228 309 L1228 331 L989 331 L989 309 Z"/>
+                <path d="M1070 487 L1203 487 L1203 509 L1070 509 L1070 487 Z"/>
             </clipPath>
             <clipPath clipPathUnits="userSpaceOnUse" id="clipPath78">
-                <path d="M1107 339 L1114 339 L1114 361 L1107 361 L1107 339 Z"/>
+                <path d="M1139 431 L1146 431 L1146 453 L1139 453 L1139 431 Z"/>
             </clipPath>
             <clipPath clipPathUnits="userSpaceOnUse" id="clipPath79">
-                <path d="M969 324 L987 324 L987 337 L969 337 L969 324 Z"/>
+                <path d="M1333 369 L1352 369 L1352 383 L1333 383 L1333 369 Z"/>
             </clipPath>
         </defs>
         <g font-size="15px" fill="url(#linearGradient1)" font-family="'Segoe UI'" stroke-linejoin="round" stroke="url(#linearGradient1)" stroke-width="0" stroke-miterlimit="0">
@@ -327,170 +327,170 @@
             <rect x="610" y="110" clip-path="url(#clipPath33)" fill="none" width="940" rx="10" ry="10" height="700"/>
             <line y2="34" fill="none" x1="11" clip-path="url(#clipPath34)" x2="1649" y1="34"/>
             <rect x="10" y="10" clip-path="url(#clipPath35)" fill="none" width="1637" rx="10" ry="10" height="864"/>
-            <line clip-path="url(#clipPath36)" fill="none" text-rendering="optimizeLegibility" x1="770" x2="770" y1="650" y2="710"/>
-            <line clip-path="url(#clipPath36)" fill="none" text-rendering="optimizeLegibility" x1="770" x2="670" y1="710" y2="710"/>
-            <line clip-path="url(#clipPath36)" fill="none" text-rendering="optimizeLegibility" x1="670" x2="670" y1="710" y2="630"/>
-            <line clip-path="url(#clipPath36)" fill="none" text-rendering="optimizeLegibility" x1="670" x2="710" y1="630" y2="630"/>
-            <text text-rendering="optimizeLegibility" x="650" xml:space="preserve" y="727" clip-path="url(#clipPath37)" stroke="none">Click su un diverso Pin</text>
-            <text text-rendering="optimizeLegibility" x="688" xml:space="preserve" y="737" clip-path="url(#clipPath38)" stroke="none"> </text>
-            <line clip-path="url(#clipPath39)" fill="none" text-rendering="optimizeLegibility" x1="695" x2="710" y1="635" y2="630"/>
-            <line clip-path="url(#clipPath39)" fill="none" text-rendering="optimizeLegibility" x1="710" x2="695" y1="630" y2="625"/>
-            <line clip-path="url(#clipPath36)" fill="none" text-rendering="optimizeLegibility" x1="124" x2="130" y1="68" y2="110"/>
-            <text text-rendering="optimizeLegibility" x="144" xml:space="preserve" y="94" clip-path="url(#clipPath40)" stroke="none"> </text>
-            <line clip-path="url(#clipPath41)" fill="none" text-rendering="optimizeLegibility" x1="123" x2="130" y1="96" y2="110"/>
-            <line clip-path="url(#clipPath41)" fill="none" text-rendering="optimizeLegibility" x1="130" x2="133" y1="110" y2="94"/>
-            <line clip-path="url(#clipPath36)" fill="none" text-rendering="optimizeLegibility" x1="350" x2="610" y1="150" y2="150"/>
-            <text text-rendering="optimizeLegibility" x="370" xml:space="preserve" y="167" clip-path="url(#clipPath42)" stroke="none">Click su "Accedi" [Credenziali corrette]</text>
-            <text text-rendering="optimizeLegibility" x="478" xml:space="preserve" y="137" clip-path="url(#clipPath43)" stroke="none"> </text>
-            <line clip-path="url(#clipPath44)" fill="none" text-rendering="optimizeLegibility" x1="595" x2="610" y1="155" y2="150"/>
-            <line clip-path="url(#clipPath44)" fill="none" text-rendering="optimizeLegibility" x1="610" x2="595" y1="150" y2="145"/>
-            <line clip-path="url(#clipPath36)" fill="none" text-rendering="optimizeLegibility" x1="784" x2="790" y1="168" y2="230"/>
-            <text text-rendering="optimizeLegibility" x="696" xml:space="preserve" y="211" clip-path="url(#clipPath45)" stroke="none">/ Carica Mappa</text>
-            <text text-rendering="optimizeLegibility" x="802" xml:space="preserve" y="205" clip-path="url(#clipPath46)" stroke="none"> </text>
-            <line clip-path="url(#clipPath47)" fill="none" text-rendering="optimizeLegibility" x1="784" x2="790" y1="216" y2="230"/>
-            <line clip-path="url(#clipPath47)" fill="none" text-rendering="optimizeLegibility" x1="790" x2="794" y1="230" y2="215"/>
             <line clip-path="url(#clipPath36)" fill="none" text-rendering="optimizeLegibility" x1="1470" x2="1510" y1="590" y2="590"/>
             <line clip-path="url(#clipPath36)" fill="none" text-rendering="optimizeLegibility" x1="1510" x2="1510" y1="590" y2="190"/>
             <line clip-path="url(#clipPath36)" fill="none" text-rendering="optimizeLegibility" x1="1510" x2="910" y1="190" y2="190"/>
             <line clip-path="url(#clipPath36)" fill="none" text-rendering="optimizeLegibility" x1="910" x2="910" y1="190" y2="230"/>
-            <text text-rendering="optimizeLegibility" x="1408" xml:space="preserve" y="217" clip-path="url(#clipPath48)" stroke="none"> </text>
-            <line clip-path="url(#clipPath49)" fill="none" text-rendering="optimizeLegibility" x1="905" x2="910" y1="215" y2="230"/>
-            <line clip-path="url(#clipPath49)" fill="none" text-rendering="optimizeLegibility" x1="910" x2="915" y1="230" y2="215"/>
-            <line clip-path="url(#clipPath36)" fill="none" text-rendering="optimizeLegibility" x1="950" x2="1250" y1="640" y2="640"/>
-            <text text-rendering="optimizeLegibility" x="890" xml:space="preserve" y="666" clip-path="url(#clipPath50)" stroke="none">Click su "Prenota" [Fascia oraria selezionata] [Disponibilità confermata]</text>
-            <text text-rendering="optimizeLegibility" x="1098" xml:space="preserve" y="627" clip-path="url(#clipPath51)" stroke="none"> </text>
-            <line clip-path="url(#clipPath52)" fill="none" text-rendering="optimizeLegibility" x1="1235" x2="1250" y1="645" y2="640"/>
-            <line clip-path="url(#clipPath52)" fill="none" text-rendering="optimizeLegibility" x1="1250" x2="1235" y1="640" y2="635"/>
+            <text text-rendering="optimizeLegibility" x="1408" xml:space="preserve" y="217" clip-path="url(#clipPath37)" stroke="none"> </text>
+            <line clip-path="url(#clipPath38)" fill="none" text-rendering="optimizeLegibility" x1="905" x2="910" y1="215" y2="230"/>
+            <line clip-path="url(#clipPath38)" fill="none" text-rendering="optimizeLegibility" x1="910" x2="915" y1="230" y2="215"/>
+            <line clip-path="url(#clipPath36)" fill="none" text-rendering="optimizeLegibility" x1="350" x2="610" y1="150" y2="150"/>
+            <text text-rendering="optimizeLegibility" x="370" xml:space="preserve" y="167" clip-path="url(#clipPath39)" stroke="none">Click su "Accedi" [Credenziali corrette]</text>
+            <text text-rendering="optimizeLegibility" x="478" xml:space="preserve" y="137" clip-path="url(#clipPath40)" stroke="none"> </text>
+            <line clip-path="url(#clipPath41)" fill="none" text-rendering="optimizeLegibility" x1="595" x2="610" y1="155" y2="150"/>
+            <line clip-path="url(#clipPath41)" fill="none" text-rendering="optimizeLegibility" x1="610" x2="595" y1="150" y2="145"/>
+            <line clip-path="url(#clipPath36)" fill="none" text-rendering="optimizeLegibility" x1="1260" x2="940" y1="370" y2="510"/>
+            <text text-rendering="optimizeLegibility" x="1032" xml:space="preserve" y="410" clip-path="url(#clipPath42)" stroke="none">Click su Pin della Mappa</text>
+            <text text-rendering="optimizeLegibility" x="1107" xml:space="preserve" y="465" clip-path="url(#clipPath43)" stroke="none"> </text>
+            <line clip-path="url(#clipPath44)" fill="none" text-rendering="optimizeLegibility" x1="952" x2="940" y1="499" y2="510"/>
+            <line clip-path="url(#clipPath44)" fill="none" text-rendering="optimizeLegibility" x1="940" x2="956" y1="510" y2="509"/>
             <line clip-path="url(#clipPath36)" fill="none" text-rendering="optimizeLegibility" x1="850" x2="850" y1="510" y2="366"/>
-            <text text-rendering="optimizeLegibility" x="790" xml:space="preserve" y="427" clip-path="url(#clipPath53)" stroke="none">Click su mappa, Click su X</text>
-            <text text-rendering="optimizeLegibility" x="828" xml:space="preserve" y="445" clip-path="url(#clipPath54)" stroke="none"> </text>
-            <line clip-path="url(#clipPath55)" fill="none" text-rendering="optimizeLegibility" x1="855" x2="850" y1="381" y2="366"/>
-            <line clip-path="url(#clipPath55)" fill="none" text-rendering="optimizeLegibility" x1="850" x2="845" y1="366" y2="381"/>
+            <text text-rendering="optimizeLegibility" x="790" xml:space="preserve" y="427" clip-path="url(#clipPath45)" stroke="none">Click su mappa, Click su X</text>
+            <text text-rendering="optimizeLegibility" x="828" xml:space="preserve" y="445" clip-path="url(#clipPath46)" stroke="none"> </text>
+            <line clip-path="url(#clipPath47)" fill="none" text-rendering="optimizeLegibility" x1="855" x2="850" y1="381" y2="366"/>
+            <line clip-path="url(#clipPath47)" fill="none" text-rendering="optimizeLegibility" x1="850" x2="845" y1="366" y2="381"/>
             <line clip-path="url(#clipPath36)" fill="none" text-rendering="optimizeLegibility" x1="1470" x2="1610" y1="330" y2="330"/>
             <line clip-path="url(#clipPath36)" fill="none" text-rendering="optimizeLegibility" x1="1610" x2="1610" y1="330" y2="70"/>
             <line clip-path="url(#clipPath36)" fill="none" text-rendering="optimizeLegibility" x1="1610" x2="310" y1="70" y2="70"/>
             <line clip-path="url(#clipPath36)" fill="none" text-rendering="optimizeLegibility" x1="310" x2="310" y1="70" y2="110"/>
-            <text text-rendering="optimizeLegibility" x="1230" xml:space="preserve" y="87" clip-path="url(#clipPath56)" stroke="none">Click su "Disconnetti"</text>
-            <text text-rendering="optimizeLegibility" x="1139" xml:space="preserve" y="97" clip-path="url(#clipPath57)" stroke="none"> </text>
-            <line clip-path="url(#clipPath58)" fill="none" text-rendering="optimizeLegibility" x1="305" x2="310" y1="95" y2="110"/>
-            <line clip-path="url(#clipPath58)" fill="none" text-rendering="optimizeLegibility" x1="310" x2="315" y1="110" y2="95"/>
-            <line clip-path="url(#clipPath36)" fill="none" text-rendering="optimizeLegibility" x1="950" x2="1350" y1="550" y2="370"/>
-            <text text-rendering="optimizeLegibility" x="1071" xml:space="preserve" y="505" clip-path="url(#clipPath59)" stroke="none">Click su Icona Menù</text>
-            <text text-rendering="optimizeLegibility" x="1140" xml:space="preserve" y="449" clip-path="url(#clipPath60)" stroke="none"> </text>
-            <line clip-path="url(#clipPath61)" fill="none" text-rendering="optimizeLegibility" x1="1338" x2="1350" y1="381" y2="370"/>
-            <line clip-path="url(#clipPath61)" fill="none" text-rendering="optimizeLegibility" x1="1350" x2="1334" y1="370" y2="372"/>
+            <text text-rendering="optimizeLegibility" x="1230" xml:space="preserve" y="87" clip-path="url(#clipPath48)" stroke="none">Click su "Disconnetti"</text>
+            <text text-rendering="optimizeLegibility" x="1139" xml:space="preserve" y="97" clip-path="url(#clipPath49)" stroke="none"> </text>
+            <line clip-path="url(#clipPath50)" fill="none" text-rendering="optimizeLegibility" x1="305" x2="310" y1="95" y2="110"/>
+            <line clip-path="url(#clipPath50)" fill="none" text-rendering="optimizeLegibility" x1="310" x2="315" y1="110" y2="95"/>
+            <line clip-path="url(#clipPath36)" fill="none" text-rendering="optimizeLegibility" x1="950" x2="1250" y1="640" y2="640"/>
+            <text text-rendering="optimizeLegibility" x="890" xml:space="preserve" y="666" clip-path="url(#clipPath51)" stroke="none">Click su "Prenota" [Fascia oraria selezionata] [Disponibilità confermata]</text>
+            <text text-rendering="optimizeLegibility" x="1098" xml:space="preserve" y="627" clip-path="url(#clipPath52)" stroke="none"> </text>
+            <line clip-path="url(#clipPath53)" fill="none" text-rendering="optimizeLegibility" x1="1235" x2="1250" y1="645" y2="640"/>
+            <line clip-path="url(#clipPath53)" fill="none" text-rendering="optimizeLegibility" x1="1250" x2="1235" y1="640" y2="635"/>
             <line clip-path="url(#clipPath36)" fill="none" text-rendering="optimizeLegibility" x1="290" x2="290" y1="310" y2="250"/>
-            <text text-rendering="optimizeLegibility" x="223" xml:space="preserve" y="287" clip-path="url(#clipPath62)" stroke="none">Click su "torna all'accesso"</text>
-            <text text-rendering="optimizeLegibility" x="268" xml:space="preserve" y="287" clip-path="url(#clipPath63)" stroke="none"> </text>
-            <line clip-path="url(#clipPath64)" fill="none" text-rendering="optimizeLegibility" x1="295" x2="290" y1="265" y2="250"/>
-            <line clip-path="url(#clipPath64)" fill="none" text-rendering="optimizeLegibility" x1="290" x2="285" y1="250" y2="265"/>
+            <text text-rendering="optimizeLegibility" x="223" xml:space="preserve" y="287" clip-path="url(#clipPath54)" stroke="none">Click su "torna all'accesso"</text>
+            <text text-rendering="optimizeLegibility" x="268" xml:space="preserve" y="287" clip-path="url(#clipPath55)" stroke="none"> </text>
+            <line clip-path="url(#clipPath56)" fill="none" text-rendering="optimizeLegibility" x1="295" x2="290" y1="265" y2="250"/>
+            <line clip-path="url(#clipPath56)" fill="none" text-rendering="optimizeLegibility" x1="290" x2="285" y1="250" y2="265"/>
+            <line clip-path="url(#clipPath36)" fill="none" text-rendering="optimizeLegibility" x1="784" x2="790" y1="168" y2="230"/>
+            <text text-rendering="optimizeLegibility" x="696" xml:space="preserve" y="211" clip-path="url(#clipPath57)" stroke="none">/ Carica Mappa</text>
+            <text text-rendering="optimizeLegibility" x="802" xml:space="preserve" y="205" clip-path="url(#clipPath58)" stroke="none"> </text>
+            <line clip-path="url(#clipPath59)" fill="none" text-rendering="optimizeLegibility" x1="784" x2="790" y1="216" y2="230"/>
+            <line clip-path="url(#clipPath59)" fill="none" text-rendering="optimizeLegibility" x1="790" x2="794" y1="230" y2="215"/>
             <line clip-path="url(#clipPath36)" fill="none" text-rendering="optimizeLegibility" x1="730" x2="730" y1="366" y2="510"/>
-            <text text-rendering="optimizeLegibility" x="630" xml:space="preserve" y="467" clip-path="url(#clipPath65)" stroke="none">Click su un Pin della Mappa</text>
-            <text text-rendering="optimizeLegibility" x="748" xml:space="preserve" y="445" clip-path="url(#clipPath66)" stroke="none"> </text>
-            <line clip-path="url(#clipPath67)" fill="none" text-rendering="optimizeLegibility" x1="725" x2="730" y1="495" y2="510"/>
-            <line clip-path="url(#clipPath67)" fill="none" text-rendering="optimizeLegibility" x1="730" x2="735" y1="510" y2="495"/>
+            <text text-rendering="optimizeLegibility" x="630" xml:space="preserve" y="467" clip-path="url(#clipPath60)" stroke="none">Click su un Pin della Mappa</text>
+            <text text-rendering="optimizeLegibility" x="748" xml:space="preserve" y="445" clip-path="url(#clipPath61)" stroke="none"> </text>
+            <line clip-path="url(#clipPath62)" fill="none" text-rendering="optimizeLegibility" x1="725" x2="730" y1="495" y2="510"/>
+            <line clip-path="url(#clipPath62)" fill="none" text-rendering="optimizeLegibility" x1="730" x2="735" y1="510" y2="495"/>
             <line clip-path="url(#clipPath36)" fill="none" text-rendering="optimizeLegibility" x1="150" x2="150" y1="250" y2="310"/>
-            <text text-rendering="optimizeLegibility" x="75" xml:space="preserve" y="287" clip-path="url(#clipPath68)" stroke="none">Click su "iscriviti"</text>
-            <text text-rendering="optimizeLegibility" x="168" xml:space="preserve" y="287" clip-path="url(#clipPath69)" stroke="none"> </text>
-            <line clip-path="url(#clipPath70)" fill="none" text-rendering="optimizeLegibility" x1="145" x2="150" y1="295" y2="310"/>
-            <line clip-path="url(#clipPath70)" fill="none" text-rendering="optimizeLegibility" x1="150" x2="155" y1="310" y2="295"/>
-            <line clip-path="url(#clipPath36)" fill="none" text-rendering="optimizeLegibility" x1="1260" x2="940" y1="370" y2="510"/>
-            <text text-rendering="optimizeLegibility" x="1032" xml:space="preserve" y="410" clip-path="url(#clipPath71)" stroke="none">Click su Pin della Mappa</text>
-            <text text-rendering="optimizeLegibility" x="1107" xml:space="preserve" y="465" clip-path="url(#clipPath72)" stroke="none"> </text>
-            <line clip-path="url(#clipPath73)" fill="none" text-rendering="optimizeLegibility" x1="952" x2="940" y1="499" y2="510"/>
-            <line clip-path="url(#clipPath73)" fill="none" text-rendering="optimizeLegibility" x1="940" x2="956" y1="510" y2="509"/>
+            <text text-rendering="optimizeLegibility" x="75" xml:space="preserve" y="287" clip-path="url(#clipPath63)" stroke="none">Click su "iscriviti"</text>
+            <text text-rendering="optimizeLegibility" x="168" xml:space="preserve" y="287" clip-path="url(#clipPath64)" stroke="none"> </text>
+            <line clip-path="url(#clipPath65)" fill="none" text-rendering="optimizeLegibility" x1="145" x2="150" y1="295" y2="310"/>
+            <line clip-path="url(#clipPath65)" fill="none" text-rendering="optimizeLegibility" x1="150" x2="155" y1="310" y2="295"/>
+            <line clip-path="url(#clipPath36)" fill="none" text-rendering="optimizeLegibility" x1="124" x2="130" y1="68" y2="110"/>
+            <text text-rendering="optimizeLegibility" x="144" xml:space="preserve" y="94" clip-path="url(#clipPath66)" stroke="none"> </text>
+            <line clip-path="url(#clipPath67)" fill="none" text-rendering="optimizeLegibility" x1="123" x2="130" y1="96" y2="110"/>
+            <line clip-path="url(#clipPath67)" fill="none" text-rendering="optimizeLegibility" x1="130" x2="133" y1="110" y2="94"/>
+            <line clip-path="url(#clipPath36)" fill="none" text-rendering="optimizeLegibility" x1="1250" x2="970" y1="330" y2="330"/>
+            <text text-rendering="optimizeLegibility" x="990" xml:space="preserve" y="327" clip-path="url(#clipPath68)" stroke="none">Click su Icona Menù, Click su mappa</text>
+            <text text-rendering="optimizeLegibility" x="1108" xml:space="preserve" y="357" clip-path="url(#clipPath69)" stroke="none"> </text>
+            <line clip-path="url(#clipPath70)" fill="none" text-rendering="optimizeLegibility" x1="985" x2="970" y1="325" y2="330"/>
+            <line clip-path="url(#clipPath70)" fill="none" text-rendering="optimizeLegibility" x1="970" x2="985" y1="330" y2="335"/>
+            <line clip-path="url(#clipPath36)" fill="none" text-rendering="optimizeLegibility" x1="770" x2="770" y1="650" y2="710"/>
+            <line clip-path="url(#clipPath36)" fill="none" text-rendering="optimizeLegibility" x1="770" x2="670" y1="710" y2="710"/>
+            <line clip-path="url(#clipPath36)" fill="none" text-rendering="optimizeLegibility" x1="670" x2="670" y1="710" y2="630"/>
+            <line clip-path="url(#clipPath36)" fill="none" text-rendering="optimizeLegibility" x1="670" x2="710" y1="630" y2="630"/>
+            <text text-rendering="optimizeLegibility" x="650" xml:space="preserve" y="727" clip-path="url(#clipPath71)" stroke="none">Click su un diverso Pin</text>
+            <text text-rendering="optimizeLegibility" x="688" xml:space="preserve" y="737" clip-path="url(#clipPath72)" stroke="none"> </text>
+            <line clip-path="url(#clipPath73)" fill="none" text-rendering="optimizeLegibility" x1="695" x2="710" y1="635" y2="630"/>
+            <line clip-path="url(#clipPath73)" fill="none" text-rendering="optimizeLegibility" x1="710" x2="695" y1="630" y2="625"/>
+            <line clip-path="url(#clipPath36)" fill="none" text-rendering="optimizeLegibility" x1="970" x2="1250" y1="270" y2="270"/>
+            <text text-rendering="optimizeLegibility" x="1050" xml:space="preserve" y="267" clip-path="url(#clipPath74)" stroke="none">Click su Icona Menù</text>
+            <text text-rendering="optimizeLegibility" x="1108" xml:space="preserve" y="257" clip-path="url(#clipPath75)" stroke="none"> </text>
+            <line clip-path="url(#clipPath76)" fill="none" text-rendering="optimizeLegibility" x1="1235" x2="1250" y1="275" y2="270"/>
+            <line clip-path="url(#clipPath76)" fill="none" text-rendering="optimizeLegibility" x1="1250" x2="1235" y1="270" y2="265"/>
+            <line clip-path="url(#clipPath36)" fill="none" text-rendering="optimizeLegibility" x1="950" x2="1350" y1="550" y2="370"/>
+            <text text-rendering="optimizeLegibility" x="1071" xml:space="preserve" y="505" clip-path="url(#clipPath77)" stroke="none">Click su Icona Menù</text>
+            <text text-rendering="optimizeLegibility" x="1140" xml:space="preserve" y="449" clip-path="url(#clipPath78)" stroke="none"> </text>
+            <line clip-path="url(#clipPath79)" fill="none" text-rendering="optimizeLegibility" x1="1338" x2="1350" y1="381" y2="370"/>
+            <line clip-path="url(#clipPath79)" fill="none" text-rendering="optimizeLegibility" x1="1350" x2="1334" y1="370" y2="372"/>
+            <line clip-path="url(#clipPath36)" fill="none" text-rendering="optimizeLegibility" x1="150" x2="150" y1="250" y2="310"/>
+            <text text-rendering="optimizeLegibility" x="75" xml:space="preserve" y="287" clip-path="url(#clipPath63)" stroke="none">Click su "iscriviti"</text>
+            <text text-rendering="optimizeLegibility" x="168" xml:space="preserve" y="287" clip-path="url(#clipPath64)" stroke="none"> </text>
+            <line clip-path="url(#clipPath65)" fill="none" text-rendering="optimizeLegibility" x1="145" x2="150" y1="295" y2="310"/>
+            <line clip-path="url(#clipPath65)" fill="none" text-rendering="optimizeLegibility" x1="150" x2="155" y1="310" y2="295"/>
+            <line clip-path="url(#clipPath36)" fill="none" text-rendering="optimizeLegibility" x1="290" x2="290" y1="310" y2="250"/>
+            <text text-rendering="optimizeLegibility" x="223" xml:space="preserve" y="287" clip-path="url(#clipPath54)" stroke="none">Click su "torna all'accesso"</text>
+            <text text-rendering="optimizeLegibility" x="268" xml:space="preserve" y="287" clip-path="url(#clipPath55)" stroke="none"> </text>
+            <line clip-path="url(#clipPath56)" fill="none" text-rendering="optimizeLegibility" x1="295" x2="290" y1="265" y2="250"/>
+            <line clip-path="url(#clipPath56)" fill="none" text-rendering="optimizeLegibility" x1="290" x2="285" y1="250" y2="265"/>
+            <line clip-path="url(#clipPath36)" fill="none" text-rendering="optimizeLegibility" x1="350" x2="610" y1="150" y2="150"/>
+            <text text-rendering="optimizeLegibility" x="370" xml:space="preserve" y="167" clip-path="url(#clipPath39)" stroke="none">Click su "Accedi" [Credenziali corrette]</text>
+            <text text-rendering="optimizeLegibility" x="478" xml:space="preserve" y="137" clip-path="url(#clipPath40)" stroke="none"> </text>
+            <line clip-path="url(#clipPath41)" fill="none" text-rendering="optimizeLegibility" x1="595" x2="610" y1="155" y2="150"/>
+            <line clip-path="url(#clipPath41)" fill="none" text-rendering="optimizeLegibility" x1="610" x2="595" y1="150" y2="145"/>
+            <line clip-path="url(#clipPath36)" fill="none" text-rendering="optimizeLegibility" x1="784" x2="790" y1="168" y2="230"/>
+            <text text-rendering="optimizeLegibility" x="696" xml:space="preserve" y="211" clip-path="url(#clipPath57)" stroke="none">/ Carica Mappa</text>
+            <text text-rendering="optimizeLegibility" x="802" xml:space="preserve" y="205" clip-path="url(#clipPath58)" stroke="none"> </text>
+            <line clip-path="url(#clipPath59)" fill="none" text-rendering="optimizeLegibility" x1="784" x2="790" y1="216" y2="230"/>
+            <line clip-path="url(#clipPath59)" fill="none" text-rendering="optimizeLegibility" x1="790" x2="794" y1="230" y2="215"/>
             <line clip-path="url(#clipPath36)" fill="none" text-rendering="optimizeLegibility" x1="970" x2="1250" y1="270" y2="270"/>
             <text text-rendering="optimizeLegibility" x="1050" xml:space="preserve" y="267" clip-path="url(#clipPath74)" stroke="none">Click su Icona Menù</text>
             <text text-rendering="optimizeLegibility" x="1108" xml:space="preserve" y="257" clip-path="url(#clipPath75)" stroke="none"> </text>
             <line clip-path="url(#clipPath76)" fill="none" text-rendering="optimizeLegibility" x1="1235" x2="1250" y1="275" y2="270"/>
             <line clip-path="url(#clipPath76)" fill="none" text-rendering="optimizeLegibility" x1="1250" x2="1235" y1="270" y2="265"/>
             <line clip-path="url(#clipPath36)" fill="none" text-rendering="optimizeLegibility" x1="1250" x2="970" y1="330" y2="330"/>
-            <text text-rendering="optimizeLegibility" x="990" xml:space="preserve" y="327" clip-path="url(#clipPath77)" stroke="none">Click su Icona Menù, Click su mappa</text>
-            <text text-rendering="optimizeLegibility" x="1108" xml:space="preserve" y="357" clip-path="url(#clipPath78)" stroke="none"> </text>
-            <line clip-path="url(#clipPath79)" fill="none" text-rendering="optimizeLegibility" x1="985" x2="970" y1="325" y2="330"/>
-            <line clip-path="url(#clipPath79)" fill="none" text-rendering="optimizeLegibility" x1="970" x2="985" y1="330" y2="335"/>
-            <line clip-path="url(#clipPath36)" fill="none" text-rendering="optimizeLegibility" x1="150" x2="150" y1="250" y2="310"/>
-            <text text-rendering="optimizeLegibility" x="75" xml:space="preserve" y="287" clip-path="url(#clipPath68)" stroke="none">Click su "iscriviti"</text>
-            <text text-rendering="optimizeLegibility" x="168" xml:space="preserve" y="287" clip-path="url(#clipPath69)" stroke="none"> </text>
-            <line clip-path="url(#clipPath70)" fill="none" text-rendering="optimizeLegibility" x1="145" x2="150" y1="295" y2="310"/>
-            <line clip-path="url(#clipPath70)" fill="none" text-rendering="optimizeLegibility" x1="150" x2="155" y1="310" y2="295"/>
-            <line clip-path="url(#clipPath36)" fill="none" text-rendering="optimizeLegibility" x1="290" x2="290" y1="310" y2="250"/>
-            <text text-rendering="optimizeLegibility" x="223" xml:space="preserve" y="287" clip-path="url(#clipPath62)" stroke="none">Click su "torna all'accesso"</text>
-            <text text-rendering="optimizeLegibility" x="268" xml:space="preserve" y="287" clip-path="url(#clipPath63)" stroke="none"> </text>
-            <line clip-path="url(#clipPath64)" fill="none" text-rendering="optimizeLegibility" x1="295" x2="290" y1="265" y2="250"/>
-            <line clip-path="url(#clipPath64)" fill="none" text-rendering="optimizeLegibility" x1="290" x2="285" y1="250" y2="265"/>
-            <line clip-path="url(#clipPath36)" fill="none" text-rendering="optimizeLegibility" x1="350" x2="610" y1="150" y2="150"/>
-            <text text-rendering="optimizeLegibility" x="370" xml:space="preserve" y="167" clip-path="url(#clipPath42)" stroke="none">Click su "Accedi" [Credenziali corrette]</text>
-            <text text-rendering="optimizeLegibility" x="478" xml:space="preserve" y="137" clip-path="url(#clipPath43)" stroke="none"> </text>
-            <line clip-path="url(#clipPath44)" fill="none" text-rendering="optimizeLegibility" x1="595" x2="610" y1="155" y2="150"/>
-            <line clip-path="url(#clipPath44)" fill="none" text-rendering="optimizeLegibility" x1="610" x2="595" y1="150" y2="145"/>
-            <line clip-path="url(#clipPath36)" fill="none" text-rendering="optimizeLegibility" x1="784" x2="790" y1="168" y2="230"/>
-            <text text-rendering="optimizeLegibility" x="696" xml:space="preserve" y="211" clip-path="url(#clipPath45)" stroke="none">/ Carica Mappa</text>
-            <text text-rendering="optimizeLegibility" x="802" xml:space="preserve" y="205" clip-path="url(#clipPath46)" stroke="none"> </text>
-            <line clip-path="url(#clipPath47)" fill="none" text-rendering="optimizeLegibility" x1="784" x2="790" y1="216" y2="230"/>
-            <line clip-path="url(#clipPath47)" fill="none" text-rendering="optimizeLegibility" x1="790" x2="794" y1="230" y2="215"/>
-            <line clip-path="url(#clipPath36)" fill="none" text-rendering="optimizeLegibility" x1="970" x2="1250" y1="270" y2="270"/>
-            <text text-rendering="optimizeLegibility" x="1050" xml:space="preserve" y="267" clip-path="url(#clipPath74)" stroke="none">Click su Icona Menù</text>
-            <text text-rendering="optimizeLegibility" x="1108" xml:space="preserve" y="257" clip-path="url(#clipPath75)" stroke="none"> </text>
-            <line clip-path="url(#clipPath76)" fill="none" text-rendering="optimizeLegibility" x1="1235" x2="1250" y1="275" y2="270"/>
-            <line clip-path="url(#clipPath76)" fill="none" text-rendering="optimizeLegibility" x1="1250" x2="1235" y1="270" y2="265"/>
-            <line clip-path="url(#clipPath36)" fill="none" text-rendering="optimizeLegibility" x1="1250" x2="970" y1="330" y2="330"/>
-            <text text-rendering="optimizeLegibility" x="990" xml:space="preserve" y="327" clip-path="url(#clipPath77)" stroke="none">Click su Icona Menù, Click su mappa</text>
-            <text text-rendering="optimizeLegibility" x="1108" xml:space="preserve" y="357" clip-path="url(#clipPath78)" stroke="none"> </text>
-            <line clip-path="url(#clipPath79)" fill="none" text-rendering="optimizeLegibility" x1="985" x2="970" y1="325" y2="330"/>
-            <line clip-path="url(#clipPath79)" fill="none" text-rendering="optimizeLegibility" x1="970" x2="985" y1="330" y2="335"/>
+            <text text-rendering="optimizeLegibility" x="990" xml:space="preserve" y="327" clip-path="url(#clipPath68)" stroke="none">Click su Icona Menù, Click su mappa</text>
+            <text text-rendering="optimizeLegibility" x="1108" xml:space="preserve" y="357" clip-path="url(#clipPath69)" stroke="none"> </text>
+            <line clip-path="url(#clipPath70)" fill="none" text-rendering="optimizeLegibility" x1="985" x2="970" y1="325" y2="330"/>
+            <line clip-path="url(#clipPath70)" fill="none" text-rendering="optimizeLegibility" x1="970" x2="985" y1="330" y2="335"/>
             <line clip-path="url(#clipPath36)" fill="none" text-rendering="optimizeLegibility" x1="730" x2="730" y1="366" y2="510"/>
-            <text text-rendering="optimizeLegibility" x="630" xml:space="preserve" y="467" clip-path="url(#clipPath65)" stroke="none">Click su un Pin della Mappa</text>
-            <text text-rendering="optimizeLegibility" x="748" xml:space="preserve" y="445" clip-path="url(#clipPath66)" stroke="none"> </text>
-            <line clip-path="url(#clipPath67)" fill="none" text-rendering="optimizeLegibility" x1="725" x2="730" y1="495" y2="510"/>
-            <line clip-path="url(#clipPath67)" fill="none" text-rendering="optimizeLegibility" x1="730" x2="735" y1="510" y2="495"/>
+            <text text-rendering="optimizeLegibility" x="630" xml:space="preserve" y="467" clip-path="url(#clipPath60)" stroke="none">Click su un Pin della Mappa</text>
+            <text text-rendering="optimizeLegibility" x="748" xml:space="preserve" y="445" clip-path="url(#clipPath61)" stroke="none"> </text>
+            <line clip-path="url(#clipPath62)" fill="none" text-rendering="optimizeLegibility" x1="725" x2="730" y1="495" y2="510"/>
+            <line clip-path="url(#clipPath62)" fill="none" text-rendering="optimizeLegibility" x1="730" x2="735" y1="510" y2="495"/>
             <line clip-path="url(#clipPath36)" fill="none" text-rendering="optimizeLegibility" x1="770" x2="770" y1="650" y2="710"/>
             <line clip-path="url(#clipPath36)" fill="none" text-rendering="optimizeLegibility" x1="770" x2="670" y1="710" y2="710"/>
             <line clip-path="url(#clipPath36)" fill="none" text-rendering="optimizeLegibility" x1="670" x2="670" y1="710" y2="630"/>
             <line clip-path="url(#clipPath36)" fill="none" text-rendering="optimizeLegibility" x1="670" x2="710" y1="630" y2="630"/>
-            <text text-rendering="optimizeLegibility" x="650" xml:space="preserve" y="727" clip-path="url(#clipPath37)" stroke="none">Click su un diverso Pin</text>
-            <text text-rendering="optimizeLegibility" x="688" xml:space="preserve" y="737" clip-path="url(#clipPath38)" stroke="none"> </text>
-            <line clip-path="url(#clipPath39)" fill="none" text-rendering="optimizeLegibility" x1="695" x2="710" y1="635" y2="630"/>
-            <line clip-path="url(#clipPath39)" fill="none" text-rendering="optimizeLegibility" x1="710" x2="695" y1="630" y2="625"/>
+            <text text-rendering="optimizeLegibility" x="650" xml:space="preserve" y="727" clip-path="url(#clipPath71)" stroke="none">Click su un diverso Pin</text>
+            <text text-rendering="optimizeLegibility" x="688" xml:space="preserve" y="737" clip-path="url(#clipPath72)" stroke="none"> </text>
+            <line clip-path="url(#clipPath73)" fill="none" text-rendering="optimizeLegibility" x1="695" x2="710" y1="635" y2="630"/>
+            <line clip-path="url(#clipPath73)" fill="none" text-rendering="optimizeLegibility" x1="710" x2="695" y1="630" y2="625"/>
             <line clip-path="url(#clipPath36)" fill="none" text-rendering="optimizeLegibility" x1="850" x2="850" y1="510" y2="366"/>
-            <text text-rendering="optimizeLegibility" x="790" xml:space="preserve" y="427" clip-path="url(#clipPath53)" stroke="none">Click su mappa, Click su X</text>
-            <text text-rendering="optimizeLegibility" x="828" xml:space="preserve" y="445" clip-path="url(#clipPath54)" stroke="none"> </text>
-            <line clip-path="url(#clipPath55)" fill="none" text-rendering="optimizeLegibility" x1="855" x2="850" y1="381" y2="366"/>
-            <line clip-path="url(#clipPath55)" fill="none" text-rendering="optimizeLegibility" x1="850" x2="845" y1="366" y2="381"/>
+            <text text-rendering="optimizeLegibility" x="790" xml:space="preserve" y="427" clip-path="url(#clipPath45)" stroke="none">Click su mappa, Click su X</text>
+            <text text-rendering="optimizeLegibility" x="828" xml:space="preserve" y="445" clip-path="url(#clipPath46)" stroke="none"> </text>
+            <line clip-path="url(#clipPath47)" fill="none" text-rendering="optimizeLegibility" x1="855" x2="850" y1="381" y2="366"/>
+            <line clip-path="url(#clipPath47)" fill="none" text-rendering="optimizeLegibility" x1="850" x2="845" y1="366" y2="381"/>
             <line clip-path="url(#clipPath36)" fill="none" text-rendering="optimizeLegibility" x1="950" x2="1250" y1="640" y2="640"/>
-            <text text-rendering="optimizeLegibility" x="890" xml:space="preserve" y="666" clip-path="url(#clipPath50)" stroke="none">Click su "Prenota" [Fascia oraria selezionata] [Disponibilità confermata]</text>
-            <text text-rendering="optimizeLegibility" x="1098" xml:space="preserve" y="627" clip-path="url(#clipPath51)" stroke="none"> </text>
-            <line clip-path="url(#clipPath52)" fill="none" text-rendering="optimizeLegibility" x1="1235" x2="1250" y1="645" y2="640"/>
-            <line clip-path="url(#clipPath52)" fill="none" text-rendering="optimizeLegibility" x1="1250" x2="1235" y1="640" y2="635"/>
+            <text text-rendering="optimizeLegibility" x="890" xml:space="preserve" y="666" clip-path="url(#clipPath51)" stroke="none">Click su "Prenota" [Fascia oraria selezionata] [Disponibilità confermata]</text>
+            <text text-rendering="optimizeLegibility" x="1098" xml:space="preserve" y="627" clip-path="url(#clipPath52)" stroke="none"> </text>
+            <line clip-path="url(#clipPath53)" fill="none" text-rendering="optimizeLegibility" x1="1235" x2="1250" y1="645" y2="640"/>
+            <line clip-path="url(#clipPath53)" fill="none" text-rendering="optimizeLegibility" x1="1250" x2="1235" y1="640" y2="635"/>
             <line clip-path="url(#clipPath36)" fill="none" text-rendering="optimizeLegibility" x1="1260" x2="940" y1="370" y2="510"/>
-            <text text-rendering="optimizeLegibility" x="1032" xml:space="preserve" y="410" clip-path="url(#clipPath71)" stroke="none">Click su Pin della Mappa</text>
-            <text text-rendering="optimizeLegibility" x="1107" xml:space="preserve" y="465" clip-path="url(#clipPath72)" stroke="none"> </text>
-            <line clip-path="url(#clipPath73)" fill="none" text-rendering="optimizeLegibility" x1="952" x2="940" y1="499" y2="510"/>
-            <line clip-path="url(#clipPath73)" fill="none" text-rendering="optimizeLegibility" x1="940" x2="956" y1="510" y2="509"/>
+            <text text-rendering="optimizeLegibility" x="1032" xml:space="preserve" y="410" clip-path="url(#clipPath42)" stroke="none">Click su Pin della Mappa</text>
+            <text text-rendering="optimizeLegibility" x="1107" xml:space="preserve" y="465" clip-path="url(#clipPath43)" stroke="none"> </text>
+            <line clip-path="url(#clipPath44)" fill="none" text-rendering="optimizeLegibility" x1="952" x2="940" y1="499" y2="510"/>
+            <line clip-path="url(#clipPath44)" fill="none" text-rendering="optimizeLegibility" x1="940" x2="956" y1="510" y2="509"/>
             <line clip-path="url(#clipPath36)" fill="none" text-rendering="optimizeLegibility" x1="1470" x2="1510" y1="590" y2="590"/>
             <line clip-path="url(#clipPath36)" fill="none" text-rendering="optimizeLegibility" x1="1510" x2="1510" y1="590" y2="190"/>
             <line clip-path="url(#clipPath36)" fill="none" text-rendering="optimizeLegibility" x1="1510" x2="910" y1="190" y2="190"/>
             <line clip-path="url(#clipPath36)" fill="none" text-rendering="optimizeLegibility" x1="910" x2="910" y1="190" y2="230"/>
-            <text text-rendering="optimizeLegibility" x="1408" xml:space="preserve" y="217" clip-path="url(#clipPath48)" stroke="none"> </text>
-            <line clip-path="url(#clipPath49)" fill="none" text-rendering="optimizeLegibility" x1="905" x2="910" y1="215" y2="230"/>
-            <line clip-path="url(#clipPath49)" fill="none" text-rendering="optimizeLegibility" x1="910" x2="915" y1="230" y2="215"/>
+            <text text-rendering="optimizeLegibility" x="1408" xml:space="preserve" y="217" clip-path="url(#clipPath37)" stroke="none"> </text>
+            <line clip-path="url(#clipPath38)" fill="none" text-rendering="optimizeLegibility" x1="905" x2="910" y1="215" y2="230"/>
+            <line clip-path="url(#clipPath38)" fill="none" text-rendering="optimizeLegibility" x1="910" x2="915" y1="230" y2="215"/>
             <line clip-path="url(#clipPath36)" fill="none" text-rendering="optimizeLegibility" x1="124" x2="130" y1="68" y2="110"/>
-            <text text-rendering="optimizeLegibility" x="144" xml:space="preserve" y="94" clip-path="url(#clipPath40)" stroke="none"> </text>
-            <line clip-path="url(#clipPath41)" fill="none" text-rendering="optimizeLegibility" x1="123" x2="130" y1="96" y2="110"/>
-            <line clip-path="url(#clipPath41)" fill="none" text-rendering="optimizeLegibility" x1="130" x2="133" y1="110" y2="94"/>
+            <text text-rendering="optimizeLegibility" x="144" xml:space="preserve" y="94" clip-path="url(#clipPath66)" stroke="none"> </text>
+            <line clip-path="url(#clipPath67)" fill="none" text-rendering="optimizeLegibility" x1="123" x2="130" y1="96" y2="110"/>
+            <line clip-path="url(#clipPath67)" fill="none" text-rendering="optimizeLegibility" x1="130" x2="133" y1="110" y2="94"/>
             <line clip-path="url(#clipPath36)" fill="none" text-rendering="optimizeLegibility" x1="1470" x2="1610" y1="330" y2="330"/>
             <line clip-path="url(#clipPath36)" fill="none" text-rendering="optimizeLegibility" x1="1610" x2="1610" y1="330" y2="70"/>
             <line clip-path="url(#clipPath36)" fill="none" text-rendering="optimizeLegibility" x1="1610" x2="310" y1="70" y2="70"/>
             <line clip-path="url(#clipPath36)" fill="none" text-rendering="optimizeLegibility" x1="310" x2="310" y1="70" y2="110"/>
-            <text text-rendering="optimizeLegibility" x="1230" xml:space="preserve" y="87" clip-path="url(#clipPath56)" stroke="none">Click su "Disconnetti"</text>
-            <text text-rendering="optimizeLegibility" x="1139" xml:space="preserve" y="97" clip-path="url(#clipPath57)" stroke="none"> </text>
-            <line clip-path="url(#clipPath58)" fill="none" text-rendering="optimizeLegibility" x1="305" x2="310" y1="95" y2="110"/>
-            <line clip-path="url(#clipPath58)" fill="none" text-rendering="optimizeLegibility" x1="310" x2="315" y1="110" y2="95"/>
+            <text text-rendering="optimizeLegibility" x="1230" xml:space="preserve" y="87" clip-path="url(#clipPath48)" stroke="none">Click su "Disconnetti"</text>
+            <text text-rendering="optimizeLegibility" x="1139" xml:space="preserve" y="97" clip-path="url(#clipPath49)" stroke="none"> </text>
+            <line clip-path="url(#clipPath50)" fill="none" text-rendering="optimizeLegibility" x1="305" x2="310" y1="95" y2="110"/>
+            <line clip-path="url(#clipPath50)" fill="none" text-rendering="optimizeLegibility" x1="310" x2="315" y1="110" y2="95"/>
             <line clip-path="url(#clipPath36)" fill="none" text-rendering="optimizeLegibility" x1="950" x2="1350" y1="550" y2="370"/>
-            <text text-rendering="optimizeLegibility" x="1071" xml:space="preserve" y="505" clip-path="url(#clipPath59)" stroke="none">Click su Icona Menù</text>
-            <text text-rendering="optimizeLegibility" x="1140" xml:space="preserve" y="449" clip-path="url(#clipPath60)" stroke="none"> </text>
-            <line clip-path="url(#clipPath61)" fill="none" text-rendering="optimizeLegibility" x1="1338" x2="1350" y1="381" y2="370"/>
-            <line clip-path="url(#clipPath61)" fill="none" text-rendering="optimizeLegibility" x1="1350" x2="1334" y1="370" y2="372"/>
+            <text text-rendering="optimizeLegibility" x="1071" xml:space="preserve" y="505" clip-path="url(#clipPath77)" stroke="none">Click su Icona Menù</text>
+            <text text-rendering="optimizeLegibility" x="1140" xml:space="preserve" y="449" clip-path="url(#clipPath78)" stroke="none"> </text>
+            <line clip-path="url(#clipPath79)" fill="none" text-rendering="optimizeLegibility" x1="1338" x2="1350" y1="381" y2="370"/>
+            <line clip-path="url(#clipPath79)" fill="none" text-rendering="optimizeLegibility" x1="1350" x2="1334" y1="370" y2="372"/>
         </g>
     </g>
     <rect x="10" y="10" fill-opacity="0" width="1638" id="Applicazione" height="865" stroke-opacity="0"/>
