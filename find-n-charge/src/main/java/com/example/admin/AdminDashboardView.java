@@ -20,6 +20,13 @@ import com.example.database.FirebaseService;
 import jakarta.annotation.security.RolesAllowed;
 import com.vaadin.flow.router.AfterNavigationEvent;
 import com.vaadin.flow.router.AfterNavigationObserver;
+import com.github.appreciated.apexcharts.ApexCharts;
+import com.github.appreciated.apexcharts.ApexChartsBuilder;
+import com.github.appreciated.apexcharts.config.builder.*;
+import com.github.appreciated.apexcharts.config.chart.Type;
+import com.github.appreciated.apexcharts.config.chart.builder.ZoomBuilder;
+import com.github.appreciated.apexcharts.helper.Series;
+import java.util.concurrent.CompletableFuture;
 
 @PageTitle("Find&Charge | Dashboard")
 @Route(value = "dashboard", layout = AdminLayout.class) // Carica la pagina nel layout dell'admin
@@ -30,6 +37,7 @@ import com.vaadin.flow.router.AfterNavigationObserver;
 public class AdminDashboardView extends VerticalLayout implements AfterNavigationObserver {
 
 	private FirebaseService fb;
+	private ApexCharts bookingsChart;
 
 	// Utenti
 	private KpiCard utentiCard;
@@ -64,14 +72,19 @@ public class AdminDashboardView extends VerticalLayout implements AfterNavigatio
 		upperBar.setJustifyContentMode(JustifyContentMode.BETWEEN); // Titolo a sx, bottone a dx
 		upperBar.setDefaultVerticalComponentAlignment(Alignment.CENTER); // Allinea al centro verticalmente
 
+		H2 chartTitle = new H2("Andamento Settimanale");
+
 		// Creazione kpiCards
 		VerticalLayout kpiLayout = createKpiLayout();
+		// Creazione grafico
+		this.bookingsChart = createBookingsChart();
 
-		add(upperBar, kpiLayout);
+		add(upperBar, kpiLayout, chartTitle, this.bookingsChart);
 
 		// Quando si schiaccia il tasto di refresh, i dati devono essere aggiornati
 		refresh.addClickListener(e -> {
 			loadKpiData();
+			loadChartData();
 		});
 
 	}
@@ -84,6 +97,7 @@ public class AdminDashboardView extends VerticalLayout implements AfterNavigatio
 	public void afterNavigation(AfterNavigationEvent event) {
 
 		loadKpiData();
+		loadChartData();
 
 	}
 
@@ -298,5 +312,61 @@ public class AdminDashboardView extends VerticalLayout implements AfterNavigatio
 		kpiUtentiLayout.expand(segnalazioniTotaliCard, segnalazioniNuoveCard, segnalazioniVecchieCard);
 
 		return kpiUtentiLayout;
+	}
+
+	/**
+	 * Crea un grafico a linee inizialmente vuoto che riceverà i dati.
+	 * 
+	 * @return il grafico.
+	 */
+	private ApexCharts createBookingsChart() {
+
+		Integer[] emptyData = { 0, 0, 0, 0, 0, 0, 0 }; // Dati di default
+		String[] days = { "Lun", "Mar", "Mer", "Gio", "Ven", "Sab", "Dom" }; // Settimana completa precedente
+
+		ApexCharts chart = ApexChartsBuilder.get().withChart(ChartBuilder.get().withType(Type.LINE) // Tipo di grafico
+																									// (a linee)
+				.withZoom(ZoomBuilder.get().withEnabled(false).build()) // Disabilita lo zoom
+				.withHeight("500px") // Altezza
+				.build()).withSeries(new Series<>("Prenotazioni", emptyData), new Series<>("Nuovi Utenti", emptyData)) // Dati
+				.withXaxis(XAxisBuilder.get().withCategories(days) // Etichette asse X
+						.build())
+				.withYaxis(YAxisBuilder.get().build()).withLegend(LegendBuilder.get().withShow(true).build()) // Mostra
+																												// legenda
+				.build();
+
+		return chart;
+	}
+
+	/**
+	 * Carica i dati per il grafico da Firebase in modo asincrono e aggiorna il
+	 * grafico quando sono pronti.
+	 */
+	private void loadChartData() {
+
+		// Avvia entrambe le chiamate in parallelo
+		CompletableFuture<Integer[]> futureBookings = fb.getDatiGraficoPrenotazioni();
+		CompletableFuture<Integer[]> futureUsers = fb.getDatiGraficoUtenti();
+
+		// Quando sono finite entrambe le chiamate:
+		CompletableFuture.allOf(futureBookings, futureUsers).thenAccept(voidResult -> {
+
+			// Ottiene i dati da Firebase
+			Integer[] bookingsData = futureBookings.join();
+			Integer[] usersData = futureUsers.join();
+
+			getUI().ifPresent(ui -> {
+				ui.access(() -> {
+					// Aggiorna il grafico con i nuovi dati
+					bookingsChart.updateSeries(new Series<>("Prenotazioni", bookingsData),
+							new Series<>("Nuovi Utenti", usersData));
+				});
+			});
+
+		}).exceptionally(ex -> {
+			// Gestione errori
+			ex.printStackTrace();
+			return null;
+		});
 	}
 }
