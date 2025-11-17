@@ -350,7 +350,7 @@ public class MapView extends HorizontalLayout {
 									if (prenotazione == null) {
 										// Salvo oggetto prenotazione e chiamo la funzione di firebase
 										Prenotazione p = new Prenotazione(colonninaSelezionata.getNome(),
-												utenteCorrente.getUsername(), dataString, orarioSelezionato);
+												utenteCorrente.getUsername(), dataString, orarioSelezionato, java.time.LocalDate.now().toString());
 										firebaseService.salvaPrenotazione(p).thenRun(() -> ui.access(() -> {
 
 											Notification

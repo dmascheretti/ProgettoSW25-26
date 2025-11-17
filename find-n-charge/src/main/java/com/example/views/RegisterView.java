@@ -6,6 +6,8 @@
 
 package com.example.views;
 
+import org.threeten.bp.LocalDate;
+
 import com.example.database.FirebaseService;
 import com.example.models.Utente;
 import com.example.util.DataValidator;
@@ -124,7 +126,7 @@ public class RegisterView extends VerticalLayout {
 
 					if (utente == null) {
 
-						Utente nuovoUtente = new Utente(nome, cognome, username, email, password);
+						Utente nuovoUtente = new Utente(nome, cognome, username, email, password, LocalDate.now().toString());
 
 						/*
 						 * in modo asicrono salvo utente nel database il thenRun() permette di lavorare

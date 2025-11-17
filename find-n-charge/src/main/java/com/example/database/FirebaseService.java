@@ -15,6 +15,9 @@ import org.springframework.stereotype.Service;
 import com.example.models.Colonnina;
 import com.example.models.Prenotazione;
 import com.example.models.Utente;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -434,11 +437,11 @@ public class FirebaseService {
 		
 	}
 	
-	public CompletableFuture<Integer> contaColonnineLibere() {
+	public CompletableFuture<Integer> contaColonnineLG(String msg) {
 		CompletableFuture<Integer> future = new CompletableFuture<>();
 		
-		Query colonnineLibere = colonnine.orderByChild("stato").equalTo("Libera");
-		colonnineLibere.addListenerForSingleValueEvent(new ValueEventListener() {
+		Query colonnineCount = colonnine.orderByChild("stato").equalTo(msg);
+		colonnineCount.addListenerForSingleValueEvent(new ValueEventListener() {
 
 			@Override
 			public void onDataChange(DataSnapshot snapshot) {
@@ -497,5 +500,92 @@ public class FirebaseService {
 		return future;
 		
 	}
+
+	public CompletableFuture<Integer> contaPrenotazioniNuove() {
+			CompletableFuture<Integer> future = new CompletableFuture<>();
+			
+			prenotazioni.addListenerForSingleValueEvent(new ValueEventListener() {
+
+				@Override
+				public void onDataChange(DataSnapshot snapshot) {
+					// TODO Auto-generated method stub
+					int count=0;
+					
+					if (snapshot.exists()) {
+		                // Prendo la data di oggi
+		                LocalDate today = LocalDate.now();
+		                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd"); // Adatta al formato della tua stringa
+		                String todayStr = today.format(formatter);
+		                
+		                // Itero su tutte le prenotazioni
+		                for (DataSnapshot prenotazioneSnap : snapshot.getChildren()) {
+		                    String dataPrenotazione = prenotazioneSnap.child("timestamp").getValue(String.class);
+		                    if (todayStr.equals(dataPrenotazione)) {
+		                        count++;
+		                    }
+		                }
+		            }
+		            
+		            future.complete(count);
+		        }
+
+				@Override
+				public void onCancelled(DatabaseError databaseError) {
+					// Gestione errore standard, come negli altri metodi
+					System.err.println("Errore nel contare le colonnine: " + databaseError.getMessage());
+					future.completeExceptionally(databaseError.toException());
+				}
+				
+				
+				
+			});
+			return future;
+			
+		}
+	
+	
+	public CompletableFuture<Integer> contaUtentiNuovi() {
+		CompletableFuture<Integer> future = new CompletableFuture<>();
+		
+		utenti.addListenerForSingleValueEvent(new ValueEventListener() {
+
+			@Override
+			public void onDataChange(DataSnapshot snapshot) {
+				// TODO Auto-generated method stub
+				int count=0;
+				
+				if (snapshot.exists()) {
+	                // Prendo la data di oggi
+	                LocalDate today = LocalDate.now();
+	                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd"); // Adatta al formato della tua stringa
+	                String todayStr = today.format(formatter);
+	                
+	                // Itero su tutte le prenotazioni
+	                for (DataSnapshot utenteSnap : snapshot.getChildren()) {
+	                    String data = utenteSnap.child("timestamp").getValue(String.class);
+	                    if (todayStr.equals(data)) {
+	                        count++;
+	                    }
+	                }
+	            }
+	            
+	            future.complete(count);
+	        }
+
+			@Override
+			public void onCancelled(DatabaseError databaseError) {
+				// Gestione errore standard, come negli altri metodi
+				System.err.println("Errore nel contare le colonnine: " + databaseError.getMessage());
+				future.completeExceptionally(databaseError.toException());
+			}
+			
+			
+			
+		});
+		return future;
+		
+	}
+
+	
 	
 }

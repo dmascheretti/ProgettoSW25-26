@@ -4,7 +4,7 @@ import com.example.database.FirebaseService;
 
 public class Utente {
 	
-	private String nome, cognome, username, email, password;
+	private String nome, cognome, username, email, password, timestamp;
 
 	/*
 	 * costruttore necessario per firebase
@@ -13,13 +13,15 @@ public class Utente {
 		
 	}
 	
-	public Utente(String nome, String cognome, String username, String email, String password) {
+	public Utente(String nome, String cognome, String username, String email, String password, String timestamp) {
 		// TODO Auto-generated constructor stub
 		this.setNome(nome);
 		this.setCognome(cognome);
 		this.setEmail(email);
 		this.setPassword(password);
 		this.setUsername(username);
+		this.setTimestamp(timestamp);
+		
 	}
 
 	public String getUsername() {
@@ -60,6 +62,14 @@ public class Utente {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public String getTimestamp() {
+		return timestamp;
+	}
+
+	public void setTimestamp(String timestamp) {
+		this.timestamp = timestamp;
 	}
 
 }

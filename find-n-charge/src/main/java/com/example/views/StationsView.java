@@ -233,7 +233,7 @@ public class StationsView extends VerticalLayout {
 				}
 
 				Prenotazione p = new Prenotazione(colonninaSelezionata.getNome(), utenteCorrente.getUsername(),
-						dataString, orario);
+						dataString, orario,java.time.LocalDate.now().toString());
 
 				firebaseService.salvaPrenotazione(p).thenRun(() -> {
 					ui.access(() -> {

@@ -10,16 +10,18 @@ public class Prenotazione {
 	private String utente;
 	private String data; 
 	private String inizio;
+	private String timestamp;
 
 	public Prenotazione() {
 		
 	}
 	
-	public Prenotazione(String nome ,String utente, String localDate, String inizio) {
+	public Prenotazione(String nome ,String utente, String localDate, String inizio, String ts) {
 		this.setNomeColonnina(nome);
 		this.utente=utente;
 		this.setData(localDate);
 		this.setInizio(inizio);
+		this.timestamp=ts;
 		
 	}
 
@@ -49,6 +51,10 @@ public class Prenotazione {
 
 	public void setInizio(String inizio) {
 		this.inizio = inizio;
+	}
+
+	public String getTimestamp() {
+		return timestamp;
 	}
 	
 }
