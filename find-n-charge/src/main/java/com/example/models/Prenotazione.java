@@ -1,3 +1,6 @@
+/**
+ * Classe oggetto prenotazione
+ */
 package com.example.models;
 
 import java.time.LocalTime;

@@ -1,3 +1,6 @@
+/**
+ * Classe oggetto utente
+ */
 package com.example.models;
 
 import com.example.database.FirebaseService;

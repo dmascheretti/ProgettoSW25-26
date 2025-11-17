@@ -11,9 +11,11 @@ import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
+import org.threeten.bp.LocalTime;
 
 import com.example.models.Colonnina;
 import com.example.models.Prenotazione;
+import com.example.models.Recensione;
 import com.example.models.Utente;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +33,7 @@ public class FirebaseService {
 	private final DatabaseReference utenti;
 	private final DatabaseReference colonnine;
 	private final DatabaseReference prenotazioni;
+	private final DatabaseReference recensioni;
 
 	/**
 	 * Inizializzazione del riferimento al nodo "utenti", "colonnine" e
@@ -41,6 +44,7 @@ public class FirebaseService {
 		this.utenti = FirebaseDatabase.getInstance().getReference("utenti");
 		this.colonnine = FirebaseDatabase.getInstance().getReference("colonnine");
 		this.prenotazioni = FirebaseDatabase.getInstance().getReference("prenotazioni");
+		this.recensioni = FirebaseDatabase.getInstance().getReference("recensioni per colonnine");
 
 	}
 
@@ -120,6 +124,65 @@ public class FirebaseService {
 		return futurePrenotazione; // qui il thenRun() in registrazione capisce che ha finito e prosegue con
 		// esecuzione
 	}
+	
+	
+	/**
+	 * Permette all'utente di cambiare la password 
+	 * @param u Utente loggato
+	 * @param password 
+	 * @return
+	 */
+	
+	public CompletableFuture<Void> cambiaPassword(Utente u, String nuovaPassword) {
+		CompletableFuture<Void> cambio = new CompletableFuture<>();
+		
+		if (nuovaPassword == null || nuovaPassword.length() < 6) {
+	        cambio.completeExceptionally(new IllegalArgumentException("La password deve essere lunga almeno 6 caratteri"));
+	        return cambio;
+	    }
+		
+		utenti.child(u.getUsername()).child("password").setValue(nuovaPassword, (databaseError, ref) -> {
+
+			if (databaseError != null) {
+				cambio.completeExceptionally(new RuntimeException(databaseError.getMessage()));
+				
+			} 
+	
+			else {
+				cambio.complete(null);
+			}
+		});
+		return cambio;
+	}
+	
+	/**
+	 * Permette all'utente di cambiare la password 
+	 * @param u Utente loggato
+	 * @param password 
+	 * @return
+	 */
+	
+	public CompletableFuture<Void> cambiaMail(Utente u, String nuovaMail) {
+
+		CompletableFuture<Void> cambio = new CompletableFuture<>();
+		
+		if (!nuovaMail.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")) {
+	        cambio.completeExceptionally(new IllegalArgumentException("La mail non è valida"));
+	        return cambio;
+	    }
+
+		utenti.child(u.getUsername()).child("mail").setValue(nuovaMail, (databaseError, ref) -> {
+
+			if (databaseError != null) {
+				// errore --> chiama eccezione anche in RegisterView
+				cambio.completeExceptionally(new RuntimeException(databaseError.getMessage()));
+			} else {
+				cambio.complete(null);
+			}
+		});
+		return cambio;
+	}
+	
 
 	/**
 	 * 
@@ -391,5 +454,29 @@ public class FirebaseService {
 			return nome.contains(filtro) || indirizzo.contains(filtro) || comune.contains(filtro);
 		}).collect(Collectors.toList()));
 	}
-
+	
+	/**
+	 * Aggiunge recensione sotto il nodo recensioni/colonnina
+	 * @param u Utente che ha scritto la recensione
+	 * @param c Colonnina selezionata
+	 * @param mess Messaggio 
+	 * @param stelle Valutazione
+	 * @return
+	 */
+	public CompletableFuture<Void> aggiungiRecensione(Utente u, Colonnina c, String mess, int stelle) {
+		CompletableFuture<Void> recensione = new CompletableFuture<>();
+		
+		Recensione r=new Recensione(u.getUsername(),mess,stelle);
+		
+		recensioni.child(c.getNome()).push().setValue(r, (databaseError, ref) -> {
+			if (databaseError != null) {
+				// errore --> chiama eccezione
+				recensione.completeExceptionally(new RuntimeException(databaseError.getMessage()));
+			} else {
+				recensione.complete(null);
+			}
+		});
+		return recensione; // qui il thenRun() in registrazione capisce che ha finito e prosegue con
+		// esecuzione
+	}
 }

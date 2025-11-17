@@ -28,5 +28,7 @@ public class ProfileView extends VerticalLayout {
 		Paragraph mail = new Paragraph("Mail: "+utente.getEmail());
 		add(titolo, nome, cognome, mail);
 	}
+	
+	//QUI DA IMPLEMENTARE I CAMBIA PASSWORD E CAMBIA MAIL CON THENRUN
 
 }
