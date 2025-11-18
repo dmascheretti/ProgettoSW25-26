@@ -30,6 +30,12 @@ public class PrenotazioneService {
 	 *         cercaPrenotazione
 	 */
 
+
+	private String generaId() {
+		 String prenotazioneId = java.util.UUID.randomUUID().toString();
+		 return prenotazioneId;
+	}
+	
 	public CompletableFuture<Boolean> verifica(Colonnina c, String data, String orario) {
 		CompletableFuture<Boolean> future = new CompletableFuture<>();
 
@@ -84,7 +90,7 @@ public class PrenotazioneService {
 			 * Se verifica restituisce future.complete (true) --> salvo la prenotazione
 			 */
 
-			Prenotazione p = new Prenotazione(c.getNome(), u.getUsername(), data, orario);
+			Prenotazione p = new Prenotazione(generaId(),c.getNome(), u.getUsername(), data, orario);
 
 			// Chiamo funzione del database, se salvataggio completato future.complete(true)
 
@@ -101,5 +107,7 @@ public class PrenotazioneService {
 				});
 		return future;
 	}
+	
+	
 
 }

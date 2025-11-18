@@ -19,14 +19,6 @@
     <ownedAttribute xmi:type="uml:Property" xmi:id="_wCazYMOkEfC_XcjUDQ-4qg" name="password" visibility="private" isUnique="false">
       <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
     </ownedAttribute>
-    <ownedOperation xmi:type="uml:Operation" xmi:id="_i5HAsMFoEfC8Fs08X5KQoQ" name="PrenotaColonnina" visibility="private">
-      <ownedParameter xmi:type="uml:Parameter" xmi:id="_HW9L4MFrEfC8Fs08X5KQoQ" name="IdColonnina" isUnique="false">
-        <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
-      </ownedParameter>
-      <ownedParameter xmi:type="uml:Parameter" xmi:id="_gZmfEMFtEfC8Fs08X5KQoQ" name="Parameter2" visibility="public" isUnique="false" direction="return" effect="create">
-        <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Boolean"/>
-      </ownedParameter>
-    </ownedOperation>
   </packagedElement>
   <packagedElement xmi:type="uml:Class" xmi:id="_soh6UMDOEfC8Fs08X5KQoQ" name="Auto" visibility="public">
     <ownedAttribute xmi:type="uml:Property" xmi:id="_zDEU0MDOEfC8Fs08X5KQoQ" name="targa" visibility="private">
@@ -56,6 +48,9 @@
     <ownedAttribute xmi:type="uml:Property" xmi:id="_Ml6GMMOeEfC_XcjUDQ-4qg" name="Id" visibility="private">
       <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Integer"/>
     </ownedAttribute>
+    <ownedAttribute xmi:type="uml:Property" xmi:id="_Kx7xoMRjEfCIGrcBvi_zzQ" name="nome" visibility="private">
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+    </ownedAttribute>
   </packagedElement>
   <packagedElement xmi:type="uml:Enumeration" xmi:id="_3gmekMFnEfC8Fs08X5KQoQ" name="Stato">
     <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="_Evp50MFoEfC8Fs08X5KQoQ" name="libera"/>
@@ -74,9 +69,6 @@
       <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
     </ownedAttribute>
     <ownedAttribute xmi:type="uml:Property" xmi:id="_YD4H4MOqEfC_XcjUDQ-4qg" name="oraInizio" visibility="private" isUnique="false">
-      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
-    </ownedAttribute>
-    <ownedAttribute xmi:type="uml:Property" xmi:id="_o0j20MOqEfC_XcjUDQ-4qg" name="utente" visibility="private" isUnique="false">
       <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
     </ownedAttribute>
   </packagedElement>

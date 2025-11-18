@@ -9,6 +9,7 @@ import org.threeten.bp.LocalDate;
 
 public class Prenotazione {
 	
+	private  String id;
 	private String nomeColonnina;
 	private String utente;
 	private String data; 
@@ -18,7 +19,8 @@ public class Prenotazione {
 		
 	}
 	
-	public Prenotazione(String nome ,String utente, String localDate, String inizio) {
+	public Prenotazione(String id, String nome ,String utente, String localDate, String inizio) {
+		this.id=id;
 		this.setNomeColonnina(nome);
 		this.utente=utente;
 		this.setData(localDate);
@@ -52,6 +54,10 @@ public class Prenotazione {
 
 	public void setInizio(String inizio) {
 		this.inizio = inizio;
+	}
+
+	public String getId() {
+		return id;
 	}
 	
 }
