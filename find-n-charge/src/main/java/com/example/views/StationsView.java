@@ -17,6 +17,7 @@ import com.example.models.Colonnina;
 import com.example.models.Prenotazione;
 import com.example.models.Utente;
 import com.example.util.DataValidator;
+import com.example.util.PrenotazioneService;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
@@ -41,6 +42,7 @@ public class StationsView extends VerticalLayout {
 	private String tema = "#008000";
 	private Grid<Colonnina> colonGrid = new Grid<>(Colonnina.class);
 	private FirebaseService firebaseService = new FirebaseService(); // è un'istanza di FirebaseSystem
+	private PrenotazioneService prenotazioneService = new PrenotazioneService(firebaseService);
 	private VerticalLayout stationSidebar;
 	private H3 sidebarTitle;
 	private VerticalLayout sidebarDetails;
@@ -223,32 +225,25 @@ public class StationsView extends VerticalLayout {
 			return;
 		}
 
-		firebaseService.cercaPrenotazione(colonninaSelezionata, dataString, orario).thenAccept(prenotazione -> {
-			getUI().ifPresent(ui -> ui.access(() -> {
+		prenotazioneService.prenota(colonninaSelezionata, utenteCorrente, dataString, orario)
+        .thenAccept(success -> {
 
-				if (prenotazione != null) {
-					Notification.show("Slot già occupato.", 3000, Notification.Position.TOP_CENTER).getElement()
-							.getThemeList().add("error");
-					return;
-				}
+            getUI().ifPresent(ui -> ui.access(() -> {
 
-				Prenotazione p = new Prenotazione(colonninaSelezionata.getNome(), utenteCorrente.getUsername(),
-						dataString, orario,java.time.LocalDate.now().toString());
+                if (!success) {
+                    Notification.show("Slot occupato o errore durante la prenotazione!", 
+                            3000, Notification.Position.TOP_CENTER)
+                            .getElement().getThemeList().add("error");
+                    return;
+                }
 
-				firebaseService.salvaPrenotazione(p).thenRun(() -> {
-					ui.access(() -> {
-						Notification.show("Prenotazione confermata!", 3000, Notification.Position.TOP_CENTER)
-								.getElement().getThemeList().add("success");
-						stationSidebar.setVisible(false);
-					});
-				}).exceptionally(ex -> {
-					ui.access(() -> Notification
-							.show("Errore: " + ex.getMessage(), 3000, Notification.Position.TOP_CENTER).getElement()
-							.getThemeList().add("error"));
-					return null;
-				});
+                Notification.show("Prenotazione confermata!", 
+                        3000, Notification.Position.TOP_CENTER)
+                        .getElement().getThemeList().add("success");
 
-			}));
-		});
-	}
-}
+                stationSidebar.setVisible(false);
+
+            }));
+
+        });
+}}

@@ -1,3 +1,6 @@
+/**
+ * Classe oggetto prenotazione
+ */
 package com.example.models;
 
 import java.time.LocalTime;
@@ -6,6 +9,7 @@ import org.threeten.bp.LocalDate;
 
 public class Prenotazione {
 	
+	private  String id;
 	private String nomeColonnina;
 	private String utente;
 	private String data; 
@@ -16,7 +20,8 @@ public class Prenotazione {
 		
 	}
 	
-	public Prenotazione(String nome ,String utente, String localDate, String inizio, String ts) {
+	public Prenotazione(String id, String nome ,String utente, String localDate, String inizio, String ts) {
+		this.id=id;
 		this.setNomeColonnina(nome);
 		this.utente=utente;
 		this.setData(localDate);
@@ -55,6 +60,9 @@ public class Prenotazione {
 
 	public String getTimestamp() {
 		return timestamp;
+}
+	public String getId() {
+		return id;
 	}
 	
 }

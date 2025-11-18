@@ -1,5 +1,5 @@
 /**
- * CLasse RegisterValidator utilizzata da RegisterView per vericare la correttezza dei campi inseriti
+ * CLasse RegisterValidator utilizzata per vericare la correttezza dei campi inseriti
  * @author Davide Mascheretti
  */
 package com.example.util;

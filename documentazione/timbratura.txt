@@ -1,5 +1,8 @@
 Tutte le fasi precedenti sono contenute all'interno del file meeting
 
+03/11/2025 		Valenari Francesco
+			Creazione diagrammi uml (UseCaseDiagram e StateMachineDiagram) seguendo le prime idee del progetto
+
 04/11/2025 		Maistrello Tommaso
 			09.00-11.00 Creazione della LoginView con indirizzamento alla pagina di registrazione in caso non si abbia un account. Creazione file application.properties per 			runnare il programma.
 			11.00-12.00 Creazione della RegisterView con indirizzamento alla pagina di accesso in caso si abbia già un account.
@@ -21,20 +24,59 @@ Tutte le fasi precedenti sono contenute all'interno del file meeting
 			Modificata la Route di MapView.java in modo tale che si apra direttamente all'avvio di LoginView. Create classi di profilo e colonnine senza implementarle.
 			20.00-22.00 Creato un pacchetto contenente i modelli delle componenti del database. Creato il modello (la classe) della colonnina. In MapView.java: Creata 				visualizzazione colonnine sulla mappa tramite marker. Le colonnine verranno aggiunte al firebase tramite pagina admin. Creata la sidebar della scheda colonnina una 			volta cliccato il marker. In FirebaseService.java, implementata la logica per leggere le colonnine del firebase in modalità asincrona rifacendomi al modello 				proposto da Mascheretti per gli utenti.
 
+07/11/2025		Valenari Francesco 
+			Creazione prototipi classi Prenotazione e ReservationView, primo approccio a vaadin con qualche difficoltà.
+
 8/11/2025		Mascheretti Davide
 			9-10.45 Aggiunta funzione per verificare se lo username è gia esistente in FirebaseService e richiamata poi da RegisterView. Risolti problemi di conflitti con 				modifche in stash (motivo per cui una parte della regsiterView appare eliminata e poi riaggiunta con modifiche effettive). aggiunta di documentazione dei nuovi 			metodi e delle modiiche effettuate.
 
+9/11/2025		Valenari Francesco
+			Miglioramento grafica e usabilità della pagina prenotazioni
 
 10/11/2025 		Mascheretti Davide + Morgera Claudio
 			14.30-16.30 Implementazione della classe ReservationVew e di FirebaseService per la visualizzazione delle prenotazioni dell'utente , aggiunta documentazione varia.
 			Ora nella pagina di prenotazioni si visualizza tutto correttamente.
 
+10/11/2025		Valenari Francesco
+			Realizzazione Classe StationsView operativa, implementazione backend in FirebaseService, difficoltà nella gestione dei stashed changes
 
 11/11/2025		Maistrello Tommaso
 			09.00-10.15 Implementata la scelta della data e ora per prenotare la colonnina nella sidebar. Implementata anche la logica della prenotazione con i vari controlli 			di esistenza. 
 			11.00-11.45 Implementato il layout che gestisce le pagine admin seguendo le caratteristiche del MainLayout.java.
+
+11/11/2025		Valenari Francesco
+			Miglioramento grafica e presetazione delle viste nel menù
+
 			Mascheretti Davide
 			14.30-17.10 Implementato il salvataggio nel db delle prenotazioni e del controllo su colonnina, data e ora. Aggiunta funzione per svolgere questo in FirebaseService
 			(salvataggio e verifica). La parte di documentazione verrà poi aggiunta.
+
+			Mascheretti Davide
+12/11/2025 		22.00-23.00 Modiche al project plan (punti da 1 a 6)
+
+13/11/2025		Mascheretti Davide
+			22.00-23.30 Modifiche al project plan (punti da 7 a 13)
+			Valenari Francesco
+			Aggiunta stato e prototipo di cancellazione nella lista prenotazioni in StationView
+
+			Mascheretti Davide
+14/11/2025		10.15-12.15 Diviso logica di controllo e salvataggio da MapView a PrenotazioneService
+
+14/11/2025              Morgera Claudio
+                        14.00-15.00 Creazione del class diagramma e prime classi
+
+			Mascheretti Davide
+15/11/2025		11.00-12.30 + 16.30.17.45 Stesura diagramma di sequenza prima a mano e poi inizio dell'implementazione su papyrus con non poche difficoltà
 			
 
+15/11/2025		Valenari Francesco
+			Aggiunta possibilità di cancellazione solo per prenotazioni attive o future
+
+16/11/2025		Mascheretti Davide
+			9.00-9.30 + 16.00-17.00 Finito il sequence diagram (prima versione). Da controllare con gruppo.
+
+17/11/2025              Morgera Claudio
+                        10.00-11.30 Modifiche apportate al class diagramma e creazione classe auto
+
+18/11/2025              Morgera Claudio
+                        10.30-12.30 Refactorig logica delle prenotazioni e apportate modifiche al class diagram

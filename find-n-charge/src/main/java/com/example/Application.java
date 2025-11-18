@@ -1,3 +1,6 @@
+/**
+ * Classe iniziale necessaria per startare l'applicazione
+ */
 package com.example;
 
 import org.springframework.boot.SpringApplication;
