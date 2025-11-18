@@ -1,3 +1,8 @@
+/**
+ * Classe AdminPrenotazioniView che permette all'amministratore di consultare e gestire tutte le prenotazioni
+ * 
+ * @author Francesco Valenari
+ */
 package com.example.admin;
 
 import java.time.LocalDate;
@@ -48,18 +53,13 @@ public class AdminPrenotazioniView extends VerticalLayout{
         
 		// bottone per la cancellazione 
         prenoGrid.addComponentColumn(p -> {
-        	String stato = calcolaStato(p);
-            if (stato.equals("Passata")) {
-                return null;
-            } else {
-            	Button btn = new Button("Cancella");
-    		    btn.addClickListener(e -> cancellaPrenot(p));
-    		    btn.getStyle().set("color", "red")
-    		                  .set("text-decoration", "underline")
-    		                  .set("background", "none")
-    		                  .set("border", "none");
-    		    return btn;
-            }
+        	Button btn = new Button("Cancella");
+		    btn.addClickListener(e -> cancellaPrenot(p));
+		    btn.getStyle().set("color", "red")
+		                  .set("text-decoration", "underline")
+		                  .set("background", "none")
+		                  .set("border", "none");
+		    return btn;
 		});
         add(titolo, prenoGrid);
         /*
@@ -68,11 +68,11 @@ public class AdminPrenotazioniView extends VerticalLayout{
          * L'utilizzo di thenAccept permette di lavorare in maniera asincrona ed è necessaria per 
          * utilizzare il CompletableFuture in getAllReservation
          */
-       prenotazioniRef.getAllReservation(lista -> {
+       prenotazioniRef.getAllReservation().thenAccept(lista -> {
 			getUI().ifPresent(ui -> ui.access(() -> {
 				
 				//aggiungo la lista alla griglia 
-				reservationGrid.setItems(lista);
+				prenoGrid.setItems(lista);
 				
 			}));
 			

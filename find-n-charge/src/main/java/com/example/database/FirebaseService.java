@@ -401,6 +401,40 @@ public class FirebaseService {
 		// ritorno la lista filtrata delle prenotazioni dell'utente
 		return future;
 	}
+	
+	
+	public CompletableFuture<List<Prenotazione>> getAllReservation() {
+		CompletableFuture<List<Prenotazione>> future = new CompletableFuture<>();
+		// cerco nel nodo prenotazioni
+		prenotazioni.addListenerForSingleValueEvent(new ValueEventListener() {
+			@Override
+			public void onDataChange(DataSnapshot dataSnapshot) {
+				// creo lista di prenotazioni
+				List<Prenotazione> prenotazioni = new ArrayList<>();
+				for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+					Prenotazione p = snapshot.getValue(Prenotazione.class);
+					prenotazioni.add(p);
+				}
+
+				// finito il for salvo nel future la lista
+				future.complete(prenotazioni);
+
+			}
+
+			@Override
+			public void onCancelled(DatabaseError databaseError) {
+				// TODO Auto-generated method stub
+				System.err.println("Errore nel caricamento colonnine: " + databaseError.getMessage());
+				future.completeExceptionally(databaseError.toException());
+
+			}
+
+		});
+
+		// ritorno la lista filtrata delle prenotazioni dell'utente
+		return future;
+	}
+	
 
 	/**
 	 * Metodo per recuperare in modo asincrono l'elenco di tutti le colonnine del
