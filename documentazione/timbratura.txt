@@ -77,3 +77,6 @@ Tutte le fasi precedenti sono contenute all'interno del file meeting
 
 17/11/2025              Morgera Claudio
                         10.00-11.30 Modifiche apportate al class diagramma e creazione classe auto
+
+18/11/2025              Morgera Claudio
+                        10.30-12.30 Refactorig logica delle prenotazioni e apportate modifiche al class diagram
