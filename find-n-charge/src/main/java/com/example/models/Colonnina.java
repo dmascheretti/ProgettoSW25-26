@@ -11,7 +11,7 @@ public class Colonnina {
 	private String id;
 	private String nome;
 	private String tipo;
-	private Stato stato;
+	private String stato;
 	private double latitudine;
 	private double longitudine;
 	private String indirizzo;
@@ -44,11 +44,11 @@ public class Colonnina {
 		this.tipo = tipo;
 	}
 
-	public Stato getStato() {
+	public String getStato() {
 		return stato;
 	}
 
-	public void setStato(Stato stato) {
+	public void setStato(String stato) {
 		this.stato = stato;
 	}
 
