@@ -517,7 +517,6 @@ public class FirebaseService {
 		                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd"); // Adatta al formato della tua stringa
 		                String todayStr = today.format(formatter);
 		                
-		                // Itero su tutte le prenotazioni
 		                for (DataSnapshot prenotazioneSnap : snapshot.getChildren()) {
 		                    String dataPrenotazione = prenotazioneSnap.child("timestamp").getValue(String.class);
 		                    if (todayStr.equals(dataPrenotazione)) {
@@ -585,6 +584,60 @@ public class FirebaseService {
 		return future;
 		
 	}
+	
+	
+	public CompletableFuture<List<Utente>> getAllUtenti() {
+
+		// Oggetto che permette al programma di non fermarsi perchè sa che conterrà la
+		// lista che sta cercando
+		CompletableFuture<List<Utente>> future = new CompletableFuture<>();
+
+		// Legge il nodo utenti
+		utenti.addListenerForSingleValueEvent(new ValueEventListener() {
+
+			// Se li legge senza problemi
+			@Override
+			public void onDataChange(DataSnapshot dataSnapshot) {
+				List<Utente> listaUtenti = new ArrayList<>();
+				if (dataSnapshot.exists()) {
+					for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+						Utente u = snapshot.getValue(Utente.class); // Acquisisce tutti i dati degli
+																					// utenti
+						if (u != null) {
+							listaUtenti.add(u);
+						}
+					}
+				}
+				future.complete(listaUtenti); // Restituisce la lista (piena o vuota)
+			}
+
+			// Se trova errori
+			@Override
+			public void onCancelled(DatabaseError databaseError) {
+				System.err.println("Errore nel caricamento colonnine: " + databaseError.getMessage());
+				future.completeExceptionally(databaseError.toException());
+			}
+		});
+		return future;
+	}
+	
+	public CompletableFuture<Void> cancellaUtente(Utente u) {
+
+		CompletableFuture<Void> futureUtente = new CompletableFuture<>();
+		
+		utenti.child(u.getUsername()).setValue(null,
+				(databaseError, ref) -> {
+					if (databaseError != null) {
+						// errore --> chiama eccezione anche in RegisterView
+						futureUtente.completeExceptionally(new RuntimeException(databaseError.getMessage()));
+					} else {
+						futureUtente.complete(null);
+					}
+				});
+		return futureUtente; // qui il thenRun() in registrazione capisce che ha finito e prosegue con
+		// esecuzione
+	}
+	
 
 	
 	

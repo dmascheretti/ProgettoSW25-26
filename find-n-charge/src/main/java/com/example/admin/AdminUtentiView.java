@@ -75,6 +75,7 @@ public class AdminUtentiView extends VerticalLayout {
 		});
 
 	}
+	
 
 	private void banUtente(Utente u) {
 
@@ -97,5 +98,7 @@ public class AdminUtentiView extends VerticalLayout {
 					return null;
 				});
 	}
+	
 
+		
 }
