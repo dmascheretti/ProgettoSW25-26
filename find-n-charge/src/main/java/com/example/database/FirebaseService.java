@@ -17,6 +17,9 @@ import com.example.models.Colonnina;
 import com.example.models.Prenotazione;
 import com.example.models.Recensione;
 import com.example.models.Utente;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,6 +28,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.vaadin.flow.component.Text;
 
@@ -454,6 +458,273 @@ public class FirebaseService {
 			return nome.contains(filtro) || indirizzo.contains(filtro) || comune.contains(filtro);
 		}).collect(Collectors.toList()));
 	}
+
+	public CompletableFuture<Integer> contaUtenti() {
+		CompletableFuture<Integer> future = new CompletableFuture<>();
+		
+		utenti.addListenerForSingleValueEvent(new ValueEventListener() {
+
+			@Override
+			public void onDataChange(DataSnapshot snapshot) {
+				// TODO Auto-generated method stub
+				int count=0;
+				
+				if(snapshot.exists()) {
+					count=(int) snapshot.getChildrenCount();
+				}
+				
+				future.complete(count);
+			}
+
+			@Override
+			public void onCancelled(DatabaseError databaseError) {
+				// Gestione errore standard, come negli altri metodi
+				System.err.println("Errore nel contare gli utenti: " + databaseError.getMessage());
+				future.completeExceptionally(databaseError.toException());
+			}
+			
+			
+			
+		});
+		return future;
+		
+	}
+	
+	public CompletableFuture<Integer> contaColonnine() {
+		CompletableFuture<Integer> future = new CompletableFuture<>();
+		
+		colonnine.addListenerForSingleValueEvent(new ValueEventListener() {
+
+			@Override
+			public void onDataChange(DataSnapshot snapshot) {
+				// TODO Auto-generated method stub
+				int count=0;
+				
+				if(snapshot.exists()) {
+					count=(int) snapshot.getChildrenCount();
+				}
+				
+				future.complete(count);
+			}
+
+			@Override
+			public void onCancelled(DatabaseError databaseError) {
+				// Gestione errore standard, come negli altri metodi
+				System.err.println("Errore nel contare le colonnine: " + databaseError.getMessage());
+				future.completeExceptionally(databaseError.toException());
+			}
+			
+			
+			
+		});
+		return future;
+		
+	}
+	
+	public CompletableFuture<Integer> contaColonnineLG(String msg) {
+		CompletableFuture<Integer> future = new CompletableFuture<>();
+		
+		Query colonnineCount = colonnine.orderByChild("stato").equalTo(msg);
+		colonnineCount.addListenerForSingleValueEvent(new ValueEventListener() {
+
+			@Override
+			public void onDataChange(DataSnapshot snapshot) {
+				// TODO Auto-generated method stub
+				int count=0;
+				
+				if(snapshot.exists()) {
+					count=(int) snapshot.getChildrenCount();
+				}
+				
+				future.complete(count);
+			}
+
+			@Override
+			public void onCancelled(DatabaseError databaseError) {
+				// Gestione errore standard, come negli altri metodi
+				System.err.println("Errore nel contare le colonnine: " + databaseError.getMessage());
+				future.completeExceptionally(databaseError.toException());
+			}
+			
+			
+			
+		});
+		return future;
+		
+	}
+	
+	
+	public CompletableFuture<Integer> contaPrenotazioni() {
+		CompletableFuture<Integer> future = new CompletableFuture<>();
+		
+		prenotazioni.addListenerForSingleValueEvent(new ValueEventListener() {
+
+			@Override
+			public void onDataChange(DataSnapshot snapshot) {
+				// TODO Auto-generated method stub
+				int count=0;
+				
+				if(snapshot.exists()) {
+					count=(int) snapshot.getChildrenCount();
+				}
+				
+				future.complete(count);
+			}
+
+			@Override
+			public void onCancelled(DatabaseError databaseError) {
+				// Gestione errore standard, come negli altri metodi
+				System.err.println("Errore nel contare le colonnine: " + databaseError.getMessage());
+				future.completeExceptionally(databaseError.toException());
+			}
+			
+			
+			
+		});
+		return future;
+		
+	}
+
+	public CompletableFuture<Integer> contaPrenotazioniNuove() {
+			CompletableFuture<Integer> future = new CompletableFuture<>();
+			
+			prenotazioni.addListenerForSingleValueEvent(new ValueEventListener() {
+
+				@Override
+				public void onDataChange(DataSnapshot snapshot) {
+					// TODO Auto-generated method stub
+					int count=0;
+					
+					if (snapshot.exists()) {
+		                // Prendo la data di oggi
+		                LocalDate today = LocalDate.now();
+		                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd"); // Adatta al formato della tua stringa
+		                String todayStr = today.format(formatter);
+		                
+		                for (DataSnapshot prenotazioneSnap : snapshot.getChildren()) {
+		                    String dataPrenotazione = prenotazioneSnap.child("timestamp").getValue(String.class);
+		                    if (todayStr.equals(dataPrenotazione)) {
+		                        count++;
+		                    }
+		                }
+		            }
+		            
+		            future.complete(count);
+		        }
+
+				@Override
+				public void onCancelled(DatabaseError databaseError) {
+					// Gestione errore standard, come negli altri metodi
+					System.err.println("Errore nel contare le colonnine: " + databaseError.getMessage());
+					future.completeExceptionally(databaseError.toException());
+				}
+				
+				
+				
+			});
+			return future;
+			
+		}
+	
+	
+	public CompletableFuture<Integer> contaUtentiNuovi() {
+		CompletableFuture<Integer> future = new CompletableFuture<>();
+		
+		utenti.addListenerForSingleValueEvent(new ValueEventListener() {
+
+			@Override
+			public void onDataChange(DataSnapshot snapshot) {
+				// TODO Auto-generated method stub
+				int count=0;
+				
+				if (snapshot.exists()) {
+	                // Prendo la data di oggi
+	                LocalDate today = LocalDate.now();
+	                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd"); // Adatta al formato della tua stringa
+	                String todayStr = today.format(formatter);
+	                
+	                // Itero su tutte le prenotazioni
+	                for (DataSnapshot utenteSnap : snapshot.getChildren()) {
+	                    String data = utenteSnap.child("timestamp").getValue(String.class);
+	                    if (todayStr.equals(data)) {
+	                        count++;
+	                    }
+	                }
+	            }
+	            
+	            future.complete(count);
+	        }
+
+			@Override
+			public void onCancelled(DatabaseError databaseError) {
+				// Gestione errore standard, come negli altri metodi
+				System.err.println("Errore nel contare le colonnine: " + databaseError.getMessage());
+				future.completeExceptionally(databaseError.toException());
+			}
+			
+			
+			
+		});
+		return future;
+		
+	}
+	
+	
+	public CompletableFuture<List<Utente>> getAllUtenti() {
+
+		// Oggetto che permette al programma di non fermarsi perchè sa che conterrà la
+		// lista che sta cercando
+		CompletableFuture<List<Utente>> future = new CompletableFuture<>();
+
+		// Legge il nodo utenti
+		utenti.addListenerForSingleValueEvent(new ValueEventListener() {
+
+			// Se li legge senza problemi
+			@Override
+			public void onDataChange(DataSnapshot dataSnapshot) {
+				List<Utente> listaUtenti = new ArrayList<>();
+				if (dataSnapshot.exists()) {
+					for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+						Utente u = snapshot.getValue(Utente.class); // Acquisisce tutti i dati degli
+																					// utenti
+						if (u != null) {
+							listaUtenti.add(u);
+						}
+					}
+				}
+				future.complete(listaUtenti); // Restituisce la lista (piena o vuota)
+			}
+
+			// Se trova errori
+			@Override
+			public void onCancelled(DatabaseError databaseError) {
+				System.err.println("Errore nel caricamento colonnine: " + databaseError.getMessage());
+				future.completeExceptionally(databaseError.toException());
+			}
+		});
+		return future;
+	}
+	
+	public CompletableFuture<Void> cancellaUtente(Utente u) {
+
+		CompletableFuture<Void> futureUtente = new CompletableFuture<>();
+		
+		utenti.child(u.getUsername()).setValue(null,
+				(databaseError, ref) -> {
+					if (databaseError != null) {
+						// errore --> chiama eccezione anche in RegisterView
+						futureUtente.completeExceptionally(new RuntimeException(databaseError.getMessage()));
+					} else {
+						futureUtente.complete(null);
+					}
+				});
+		return futureUtente; // qui il thenRun() in registrazione capisce che ha finito e prosegue con
+		// esecuzione
+	}
+	
+
+	
+	
 	
 	/**
 	 * Aggiunge recensione sotto il nodo recensioni/colonnina
