@@ -94,7 +94,7 @@ public class ReservationView extends VerticalLayout {
           * L'utilizzo di thenAccept permette di lavorare in maniera asincrona ed è necessaria per 
           * utilizzare il CompletableFuture in getAllReservation
           */
-        prenotazioniRef.getAllReservation(utente.getUsername()).thenAccept(lista -> {
+        prenotazioniRef.getUtenteReservation(utente.getUsername()).thenAccept(lista -> {
 			getUI().ifPresent(ui -> ui.access(() -> {
 				
 				//aggiungo la lista alla griglia 
@@ -136,7 +136,7 @@ public class ReservationView extends VerticalLayout {
     }
     
     
-    //Prototipo di funzione di cancellazione (TODO)
+    //funzione di cancellazione
 	private void cancellaPrenot(Prenotazione p) {
 		
 		prenotazioniRef.cancellaPrenotazione(p).thenRun(() -> getUI().ifPresent(ui -> ui.access(() -> {

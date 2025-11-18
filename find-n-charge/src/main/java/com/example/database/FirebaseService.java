@@ -365,7 +365,7 @@ public class FirebaseService {
 	 *                 filtrata
 	 * @return lista di prenotazioni tramite un future
 	 */
-	public CompletableFuture<List<Prenotazione>> getAllReservation(String username) {
+	public CompletableFuture<List<Prenotazione>> getUtenteReservation(String username) {
 		CompletableFuture<List<Prenotazione>> future = new CompletableFuture<>();
 		// cerco nel nodo prenotazioni i figli che hanno utenteUsername uguale a
 		// username

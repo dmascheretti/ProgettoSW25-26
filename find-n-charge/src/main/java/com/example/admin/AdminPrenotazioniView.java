@@ -1,13 +1,134 @@
 package com.example.admin;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
+
 import com.example.AdminLayout;
-import com.vaadin.flow.component.html.Div;
+import com.example.database.FirebaseService;
+import com.example.models.Prenotazione;
+import com.vaadin.flow.component.UI;
+import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.html.H3;
+import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
 @Route(value = "gestionePrenotazioni", layout = AdminLayout.class)
 @PageTitle("Find&Charge | Gestione prenotazioni")
 
-public class AdminPrenotazioniView extends Div{
+public class AdminPrenotazioniView extends VerticalLayout{
+	
+	private Grid<Prenotazione> prenoGrid = new Grid<>(Prenotazione.class);
+    private CompletableFuture<List<Prenotazione>> listaPreno;
+    private final FirebaseService prenotazioniRef;
+    private final UI ui;
+    
+    public AdminPrenotazioniView (FirebaseService fb) {
+    	this.ui = UI.getCurrent();
+    	this.prenotazioniRef=fb;
+        setSpacing(true);
+        setPadding(true);
+        H3 titolo = new H3("Lista universale delle prenotazioni...");  
+		titolo.getStyle().set("color", "#008000");
+		
+		
+		prenoGrid.setColumns("nomeColonnina","utente", "data", "inizio");
+        
+        prenoGrid.addColumn(prenotazione -> {
+        	String stato = calcolaStato(prenotazione);
+            return stato;
+        }).setHeader("Stato")
+        .setSortable(true);
+        
+		// bottone per la cancellazione 
+        prenoGrid.addComponentColumn(p -> {
+        	String stato = calcolaStato(p);
+            if (stato.equals("Passata")) {
+                return null;
+            } else {
+            	Button btn = new Button("Cancella");
+    		    btn.addClickListener(e -> cancellaPrenot(p));
+    		    btn.getStyle().set("color", "red")
+    		                  .set("text-decoration", "underline")
+    		                  .set("background", "none")
+    		                  .set("border", "none");
+    		    return btn;
+            }
+		});
+        add(titolo, prenoGrid);
+        /*
+         * Chiamo funzione da firebaseService che restituisce la lista delle prenotazioni
+         * la lista ottenuta va in lista
+         * L'utilizzo di thenAccept permette di lavorare in maniera asincrona ed è necessaria per 
+         * utilizzare il CompletableFuture in getAllReservation
+         */
+       prenotazioniRef.getAllReservation(lista -> {
+			getUI().ifPresent(ui -> ui.access(() -> {
+				
+				//aggiungo la lista alla griglia 
+				reservationGrid.setItems(lista);
+				
+			}));
+			
+			//gestione errori 
+       }).exceptionally(ex -> {
+           ex.printStackTrace();
+           return null;
+       });
+    }
+    
+    
+    private String calcolaStato(Prenotazione prenotazione) {
+        try {
+            DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
 
+            LocalDate dataPren = LocalDate.parse(prenotazione.getData(), dateFormatter);
+            LocalTime oraPren = LocalTime.parse(prenotazione.getInizio(), timeFormatter);
+            LocalDateTime prenDateTime = LocalDateTime.of(dataPren, oraPren);
+            LocalDateTime now = LocalDateTime.now();
+
+            if (prenDateTime.isBefore(now.minusMinutes(30))) {
+                return "Passata";
+            } else if (prenDateTime.isBefore(now)) {
+                return "Attiva";
+            } else {
+                return "Futura";
+            }
+        } catch (Exception e) {
+            return "";
+        }
+    }
+    
+    
+	private void cancellaPrenot(Prenotazione p) {
+		
+		prenotazioniRef.cancellaPrenotazione(p).thenRun(() -> getUI().ifPresent(ui -> ui.access(() -> {
+			Notification.show("Prenotazione eliminata con successo", 3000,
+					Notification.Position.TOP_CENTER);
+			
+			getUI().ifPresent(ui1 -> ui1.getPage().reload());
+		})))
+
+				// gestione e messaggio di errore
+
+		.exceptionally(ex -> {
+			getUI().ifPresent(ui -> ui.access(() -> { // <-- CORREZIONE 2: getUI() e (ui -> ui.access(...))
+				Notification
+						.show("Errore durante il salvataggio: " + ex.getMessage(), 4000,
+								Notification.Position.TOP_CENTER)
+						.getElement().getThemeList().add("error");
+			}));
+			return null;
+				});
+	}
+    
 }
+
+
