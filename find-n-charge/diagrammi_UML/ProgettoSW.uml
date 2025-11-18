@@ -267,6 +267,81 @@ Utente non ancora iscritto</body>
     <message xmi:type="uml:Message" xmi:id="_E1iaEMMCEfCuLOgLF_g-Rg" name="chiudiSidebar()" receiveEvent="_E1unUMMCEfCuLOgLF_g-Rg" sendEvent="_E1pHwMMCEfCuLOgLF_g-Rg"/>
     <message xmi:type="uml:Message" xmi:id="_fit_oMMIEfCDu5bMbCA1XQ" name="future.complete(false)" messageSort="reply" receiveEvent="_fixC8MMIEfCDu5bMbCA1XQ" sendEvent="_fiwb4MMIEfCDu5bMbCA1XQ"/>
   </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_tvvjQMSuEfCa89mz9Yi_sQ" name="Utente" visibility="public">
+    <ownedAttribute xmi:type="uml:Property" xmi:id="_tvvjQcSuEfCa89mz9Yi_sQ" name="nome" visibility="private" isUnique="false">
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:type="uml:Property" xmi:id="_tvvjQsSuEfCa89mz9Yi_sQ" name="cognome" visibility="private" isUnique="false">
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:type="uml:Property" xmi:id="_tvvjQ8SuEfCa89mz9Yi_sQ" name="username" visibility="private">
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:type="uml:Property" xmi:id="_tvvjRMSuEfCa89mz9Yi_sQ" name="mail" visibility="private">
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:type="uml:Property" xmi:id="_tvvjRcSuEfCa89mz9Yi_sQ" name="password" visibility="private" isUnique="false">
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:type="uml:Property" xmi:id="_DhVx4MSwEfCa89mz9Yi_sQ" name="prenotazioni" type="_nhOWEMSvEfCa89mz9Yi_sQ" association="_DhQSUMSwEfCa89mz9Yi_sQ">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_Ted88MSwEfCa89mz9Yi_sQ"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_TehnUMSwEfCa89mz9Yi_sQ" value="*"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:type="uml:Property" xmi:id="_bpD_0sSwEfCa89mz9Yi_sQ" name="auto" type="_VFCHkMSvEfCa89mz9Yi_sQ" aggregation="shared" association="_bpDYwMSwEfCa89mz9Yi_sQ">
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_bpD_1MSwEfCa89mz9Yi_sQ" value="*"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_VFCHkMSvEfCa89mz9Yi_sQ" name="Auto" visibility="public">
+    <ownedAttribute xmi:type="uml:Property" xmi:id="_VFCHkcSvEfCa89mz9Yi_sQ" name="targa" visibility="private">
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:type="uml:Property" xmi:id="_VFCHksSvEfCa89mz9Yi_sQ" name="capacityBatteria" visibility="private" isUnique="false">
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Integer"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:type="uml:Property" xmi:id="_VFCHk8SvEfCa89mz9Yi_sQ" name="statoCarica" visibility="private" isUnique="false">
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Integer"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Enumeration" xmi:id="_YgW-8MSvEfCa89mz9Yi_sQ" name="Stato">
+    <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="_YgW-8cSvEfCa89mz9Yi_sQ" name="libera"/>
+    <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="_YgW-8sSvEfCa89mz9Yi_sQ" name="occupata"/>
+    <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="_YgW-88SvEfCa89mz9Yi_sQ" name="prenotata"/>
+    <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="_YgW-9MSvEfCa89mz9Yi_sQ" name="guasta"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_jC6XsMSvEfCa89mz9Yi_sQ" name="Colonnina" visibility="public">
+    <ownedAttribute xmi:type="uml:Property" xmi:id="_jC6XscSvEfCa89mz9Yi_sQ" name="Id" visibility="private">
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Integer"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:type="uml:Property" xmi:id="_jC6XssSvEfCa89mz9Yi_sQ" name="nome" visibility="private">
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_nhOWEMSvEfCa89mz9Yi_sQ" name="Prenotazioni">
+    <ownedAttribute xmi:type="uml:Property" xmi:id="_nhOWEcSvEfCa89mz9Yi_sQ" name="Id" visibility="private">
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:type="uml:Property" xmi:id="_nhOWEsSvEfCa89mz9Yi_sQ" name="nomeColonnia" visibility="private" isUnique="false">
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:type="uml:Property" xmi:id="_nhOWE8SvEfCa89mz9Yi_sQ" name="data" visibility="private" isUnique="false">
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:type="uml:Property" xmi:id="_nhOWFMSvEfCa89mz9Yi_sQ" name="oraInizio" visibility="private" isUnique="false">
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_DhQSUMSwEfCa89mz9Yi_sQ" name="effettua" visibility="private" memberEnd="_DhVx4MSwEfCa89mz9Yi_sQ _DhWY8MSwEfCa89mz9Yi_sQ">
+    <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_DhSHgMSwEfCa89mz9Yi_sQ" source="org.eclipse.papyrus">
+      <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_DhSHgcSwEfCa89mz9Yi_sQ" key="nature" value="UML_Nature"/>
+    </eAnnotations>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_DhWY8MSwEfCa89mz9Yi_sQ" name="utente" type="_tvvjQMSuEfCa89mz9Yi_sQ" association="_DhQSUMSwEfCa89mz9Yi_sQ"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_bpDYwMSwEfCa89mz9Yi_sQ" name="possiede" visibility="private" memberEnd="_bpD_0sSwEfCa89mz9Yi_sQ _bpEm4MSwEfCa89mz9Yi_sQ">
+    <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_bpD_0MSwEfCa89mz9Yi_sQ" source="org.eclipse.papyrus">
+      <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_bpD_0cSwEfCa89mz9Yi_sQ" key="nature" value="UML_Nature"/>
+    </eAnnotations>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_bpEm4MSwEfCa89mz9Yi_sQ" name="utente" type="_tvvjQMSuEfCa89mz9Yi_sQ" association="_bpDYwMSwEfCa89mz9Yi_sQ"/>
+  </packagedElement>
   <profileApplication xmi:type="uml:ProfileApplication" xmi:id="_szdM8K2_EfCDm6AtkyEGow">
     <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_szfCIK2_EfCDm6AtkyEGow" source="http://www.eclipse.org/uml2/2.0.0/UML">
       <references xmi:type="ecore:EPackage" href="pathmap://PAPYRUS_ACTIONLANGUAGE_PROFILE/ActionLanguage-Profile.profile.uml#_Kv8EIKFXEeS_KNX0nfvIVQ"/>
