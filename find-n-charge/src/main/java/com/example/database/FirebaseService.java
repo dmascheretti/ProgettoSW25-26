@@ -91,6 +91,7 @@ public class FirebaseService {
 	 * @param p Prenotazione da salvare nel database
 	 * @return futurePrenotazione (completato con null o con eccezione)
 	 */
+	
 	public CompletableFuture<Void> salvaPrenotazione(Prenotazione p) {
 
 		CompletableFuture<Void> futurePrenotazione = new CompletableFuture<>();
@@ -402,6 +403,13 @@ public class FirebaseService {
 		return future;
 	}
 	
+	/**
+	 * Permette di ottenere la lista di tutte le prenotazioni presenti nel sistema
+	 * Ogni prenotazione presente nel nodo prenotazioni viene aggiunta alla lista che poi verrà restituita in CompletableFuture
+	 * in modo asincrono.
+	 * 
+	 * @return future.complete(prenotazioni) --> restituisce la lista, future.complete(eccezione) --> errore
+	 */
 	
 	public CompletableFuture<List<Prenotazione>> getAllReservation() {
 		CompletableFuture<List<Prenotazione>> future = new CompletableFuture<>();
@@ -481,6 +489,13 @@ public class FirebaseService {
 		});
 		return future;
 	}
+	
+	/**
+	 * Funzione necessaria per filtrare le colonnine in base alla query.
+	 * Prende tutte le colonnine e la filtra in base ai parametri ricercati dall'utente.
+	 * @param query
+	 * @return lista delle colonnine filtrata
+	 */
 
 	public CompletableFuture<List<Colonnina>> cercaColonnine(String query) {
 		String filtro = query == null ? "" : query.toLowerCase();
@@ -492,6 +507,11 @@ public class FirebaseService {
 			return nome.contains(filtro) || indirizzo.contains(filtro) || comune.contains(filtro);
 		}).collect(Collectors.toList()));
 	}
+	
+	/**
+	 * Conta il numero degli utenti presenti nel database. Conta i figli del nodo utenti.
+	 * @return future.complete(count) --> numero di utenti, future.complete(eccezione) --> errore
+	 */
 
 	public CompletableFuture<Integer> contaUtenti() {
 		CompletableFuture<Integer> future = new CompletableFuture<>();
@@ -524,6 +544,11 @@ public class FirebaseService {
 		
 	}
 	
+	/**
+	 * Conta il numero delle colonnine presenti nel database. Conta i figli del nodo colonnine.
+	 * @return future.complete(count) --> numero di colonnine, future.complete(eccezione) --> errore
+	 */
+	
 	public CompletableFuture<Integer> contaColonnine() {
 		CompletableFuture<Integer> future = new CompletableFuture<>();
 		
@@ -554,6 +579,13 @@ public class FirebaseService {
 		return future;
 		
 	}
+	
+	/**
+	 * Conta il numero di colonnine presenti nel database che sono libere o guaste.
+	 * Conta i figli del nodo colonnine che hanno stato uguale a libero o guasto (in base allo stato passato come string msg)
+	 * @param msg Stringa che rappresenta lo stato : può essere "Libera" o "Guasta"
+	 * @return future.complete(count) --> numero di colonnine con stato=msg, future.complete(eccezione) --> errore
+	 */
 	
 	public CompletableFuture<Integer> contaColonnineLG(String msg) {
 		CompletableFuture<Integer> future = new CompletableFuture<>();
@@ -588,6 +620,11 @@ public class FirebaseService {
 	}
 	
 	
+	/**
+	 * Conta il numero delle prenotazioni presenti nel database. Conta i figli del nodo prenotazioni.
+	 * @return future.complete(count) --> numero di prenotazioni, future.complete(eccezione) --> errore
+	 */
+	
 	public CompletableFuture<Integer> contaPrenotazioni() {
 		CompletableFuture<Integer> future = new CompletableFuture<>();
 		
@@ -618,6 +655,14 @@ public class FirebaseService {
 		return future;
 		
 	}
+	
+	/**
+	 * Conta il numero delle prenotazioni presenti nel database che hanno timestamp (inteso come data di creazione prenotazione)
+	 * ugauale alla data odierna.
+	
+	 * @return future.complete(count) --> numero di prenotazioni che sono state effettuate nella data odierna
+	 * , future.complete(eccezione) --> errore
+	 */
 
 	public CompletableFuture<Integer> contaPrenotazioniNuove() {
 			CompletableFuture<Integer> future = new CompletableFuture<>();
@@ -660,6 +705,12 @@ public class FirebaseService {
 			
 		}
 	
+	/**
+	 * Conta il numero degli utenti presenti nel database che hanno data di iscrizione uguale alla data odierna
+	
+	 * @return future.complete(count) --> numero di utenti che si sono registrati nella data odierna
+	 * , future.complete(eccezione) --> errore
+	 */
 	
 	public CompletableFuture<Integer> contaUtentiNuovi() {
 		CompletableFuture<Integer> future = new CompletableFuture<>();
@@ -704,6 +755,13 @@ public class FirebaseService {
 	}
 	
 	
+	
+	/**
+	 * Permette di ottenere la lista di tutti gli utenti presenti nel sistema
+	 * 
+	 * @return future.complete(listaUtenti) --> restituisce la lista, future.complete(eccezione) --> errore
+	 */
+	
 	public CompletableFuture<List<Utente>> getAllUtenti() {
 
 		// Oggetto che permette al programma di non fermarsi perchè sa che conterrà la
@@ -739,27 +797,54 @@ public class FirebaseService {
 		return future;
 	}
 	
+	/**
+	 * Cancella un utente dal database e insieme anche tutte le sue prenotazioni.
+	 * @param u Utente da eliminare dal sistema
+	 * @return
+	 */
 	public CompletableFuture<Void> cancellaUtente(Utente u) {
 
-		CompletableFuture<Void> futureUtente = new CompletableFuture<>();
-		
-		utenti.child(u.getUsername()).setValue(null,
-				(databaseError, ref) -> {
-					if (databaseError != null) {
-						// errore --> chiama eccezione anche in RegisterView
-						futureUtente.completeExceptionally(new RuntimeException(databaseError.getMessage()));
-					} else {
-						futureUtente.complete(null);
-					}
-				});
-		return futureUtente; // qui il thenRun() in registrazione capisce che ha finito e prosegue con
-		// esecuzione
-	}
-	
+	    CompletableFuture<Void> futureUtente = new CompletableFuture<>();
 
-	
-	
-	
+	    // Cancella l'utente
+	    utenti.child(u.getUsername()).setValue(null, (databaseError, ref) -> {
+
+	        if (databaseError != null) {
+	            futureUtente.completeExceptionally(
+	                    new RuntimeException(databaseError.getMessage()));
+	            return;
+	        }
+
+	        //ottengo tutte le prenotaazioni dell'utente eliminato
+	        getUtenteReservation(u.getUsername()).thenAccept(lista -> {
+
+	            List<CompletableFuture<Void>> prenotazioniUtente = new ArrayList<>();
+	            //per ogni prenotazione presente in lista
+	            for (Prenotazione p : lista) {
+	                
+	            	//cancella la prenotazione e aggiungi la funzione alla lista
+	                CompletableFuture<Void> pren = cancellaPrenotazione(p)
+	                        .thenRun(()->{});
+	                prenotazioniUtente.add(pren);
+	            }
+
+	            // futureUtente termina solo quando sono tutte le funzioni di cancellazione sono state completate
+	            CompletableFuture.allOf(prenotazioniUtente.toArray(new CompletableFuture[0]))
+	                    .thenRun(() -> futureUtente.complete(null))
+	                    .exceptionally(ex -> {
+	                        futureUtente.completeExceptionally(ex);
+	                        return null;
+	                    });
+
+	        }).exceptionally(ex -> {
+	            futureUtente.completeExceptionally(ex);
+	            return null;
+	        });
+	    });
+
+	    return futureUtente;
+	}
+
 	/**
 	 * Aggiunge recensione sotto il nodo recensioni/colonnina
 	 * @param u Utente che ha scritto la recensione
