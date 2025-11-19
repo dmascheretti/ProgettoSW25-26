@@ -66,7 +66,7 @@ Tutte le fasi precedenti sono contenute all'interno del file meeting
                         14.00-15.00 Creazione del class diagramma e prime classi
 
 			Mascheretti Davide
-15/11/2025		11.00-12.30 + 16.30.17.45 Stesura diagramma di sequenza prima a mano e poi inizio dell'implementazione su papyrus con non poche difficoltà
+15/11/2025		11.00-12.30 + 16.30-17.45 Stesura diagramma di sequenza prima a mano e poi inizio dell'implementazione su papyrus con non poche difficoltà
 			
 
 15/11/2025		Valenari Francesco
@@ -77,6 +77,16 @@ Tutte le fasi precedenti sono contenute all'interno del file meeting
 
 17/11/2025              Morgera Claudio
                         10.00-11.30 Modifiche apportate al class diagramma e creazione classe auto
-
+			Mascheretti Davide
+			15.00-17.00 Implementazione su branch principale metodi per cambiare mail e password, implementazione su branch secondario admin_branch dei metodi per interrogare 			il database e ottenere dati da inserire poi nella dashboard admin
+			
 18/11/2025              Morgera Claudio
                         10.30-12.30 Refactorig logica delle prenotazioni e apportate modifiche al class diagram
+			Mascheretti Davide
+			15.00-16.00 + 17.00-17.20 Aggiunta funziona ban utenti e risoluzione issue dopo il branch
+
+19/11/2025		Mascheretti Davide
+			16.00-17.00 Implementato logica che se un utente viene eliminato, anche le sue prenotazioni vengono eliminate		
+
+			
+			
