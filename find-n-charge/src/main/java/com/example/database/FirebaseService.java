@@ -78,6 +78,22 @@ public class FirebaseService {
 		// esecuzione
 	}
 
+
+	
+	public CompletableFuture<Void> salvaColonnina(Colonnina colonnina) {
+		CompletableFuture<Void> futureColonnina = new CompletableFuture<>();
+		colonnine.child(colonnina.getId()).setValue(colonnina, (databaseError, ref) -> {
+			if (databaseError != null) {
+				// errore --> chiama eccezione anche in RegisterView
+				futureColonnina.completeExceptionally(new RuntimeException(databaseError.getMessage()));
+			} else {
+				futureColonnina.complete(null);
+			}
+		});
+		return futureColonnina; // qui il thenRun() in registrazione capisce che ha finito e prosegue con
+		// esecuzione
+	}
+	
 	
 	
 	/**

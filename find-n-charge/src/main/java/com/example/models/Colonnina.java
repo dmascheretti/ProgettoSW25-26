@@ -19,6 +19,17 @@ public class Colonnina {
 
 	public Colonnina() {
 	}
+	
+	public Colonnina(String id, String nome, String tipo, double latitudine, double longitudine, String indirizzo, String comune) {
+		this.id=id;
+		this.nome=nome;
+		this.tipo=tipo;
+		this.stato="libera";
+		this.latitudine=latitudine;
+		this.longitudine=longitudine;
+		this.indirizzo=indirizzo;
+		this.comune=comune;
+	}
 
 	public String getId() {
 		return id;

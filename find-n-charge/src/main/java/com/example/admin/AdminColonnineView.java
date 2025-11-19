@@ -14,7 +14,6 @@ import java.util.List;
 import com.example.AdminLayout;
 import com.example.database.FirebaseService;
 import com.example.models.Colonnina;
-import com.example.util.PrenotazioneService;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.datepicker.DatePicker;
@@ -36,7 +35,6 @@ public class AdminColonnineView extends VerticalLayout {
 	private String tema = "#008000";
 	private Grid<Colonnina> colonGrid = new Grid<>(Colonnina.class);
 	private FirebaseService firebaseService = new FirebaseService(); // è un'istanza di FirebaseSystem
-	private PrenotazioneService prenotazioneService = new PrenotazioneService(firebaseService);
 	private VerticalLayout stationSidebar;
 	private H3 sidebarTitle;
 	private VerticalLayout sidebarDetails;
@@ -44,6 +42,18 @@ public class AdminColonnineView extends VerticalLayout {
 	private DatePicker bookingDatePicker;
 	private ComboBox<String> bookingTimeSlot;
 	private Button prenotaButton;
+	private VerticalLayout nuovaColonninaLayout;
+
+	private TextField idField;
+	private TextField nomeField;
+	private TextField tipoField;
+	private TextField latField;
+	private TextField lonField;
+	private TextField indirizzoField;
+	private TextField comuneField;
+
+	private Button salvaNuovaButton;
+	private Button annullaNuovaButton;
 
 	private com.vaadin.flow.shared.Registration prenotaButtonListener;
 
@@ -56,7 +66,13 @@ public class AdminColonnineView extends VerticalLayout {
 
 		// Titolo
 		H3 titolo = new H3("Lista universale delle colonnine di ricarica");
-		titolo.getStyle().set("color", tema);
+		titolo.getStyle().set("color", tema);	
+		
+		// Bottone per l'inizializzazione inserimento dati di una nuova colonnina
+		Button nuovaColonninaButton = new Button("Nuova colonnina");
+		nuovaColonninaButton.getElement().getThemeList().add("success");
+		nuovaColonninaButton.addClickListener(e -> mostraFormNuovaColonnina());
+		
 		// Barra di ricerca per nome o indirizzo delle colonnine
 		TextField searchField = new TextField("Cerca");
 		searchField.getElement().getThemeList().add("success");
@@ -105,11 +121,75 @@ public class AdminColonnineView extends VerticalLayout {
 		aggiornaGridConFiltro("");
 
 		stationSidebar = createSidebar();
+		nuovaColonninaLayout = createNuovaColonninaLayout();
 		HorizontalLayout layout = new HorizontalLayout(colonGrid, stationSidebar);
 		layout.setSizeFull();
 		layout.expand(colonGrid);
+		
+		
 
-		add(titolo, searchField, layout);
+		add(titolo, nuovaColonninaButton, nuovaColonninaLayout, searchField, layout);
+	}
+	
+	
+	private VerticalLayout createNuovaColonninaLayout() {
+	    VerticalLayout form = new VerticalLayout();
+	    form.setVisible(false);
+	    form.getStyle().set("border", "1px solid var(--lumo-contrast-20pct)");
+	    form.getStyle().set("padding", "var(--lumo-space-m)");
+	    form.getStyle().set("border-radius", "8px");
+
+	    idField = new TextField("ID");
+	    nomeField = new TextField("Nome");
+	    tipoField = new TextField("Tipo");
+	    latField = new TextField("Latitudine");
+	    lonField = new TextField("Longitudine");
+	    indirizzoField = new TextField("Indirizzo");
+	    comuneField = new TextField("Comune");
+
+	    salvaNuovaButton = new Button("Salva");
+	    salvaNuovaButton.getElement().getThemeList().add("success");
+	    salvaNuovaButton.addClickListener(e -> salvaNuovaColonnina());
+
+	    annullaNuovaButton = new Button("Annulla", e -> form.setVisible(false));
+
+	    form.add(
+	        new H3("Nuova colonnina"),
+	        idField, nomeField, tipoField,
+	        latField, lonField,
+	        indirizzoField, comuneField,
+	        new HorizontalLayout(salvaNuovaButton, annullaNuovaButton)
+	    );
+
+	    return form;
+	}
+	
+	private void mostraFormNuovaColonnina() {
+	    nuovaColonninaLayout.setVisible(true);
+	}
+	
+	private void salvaNuovaColonnina() {
+	    try {
+	        Colonnina nuova = new Colonnina(
+	            idField.getValue(),
+	        	nomeField.getValue(),
+	            tipoField.getValue(),
+	            Double.parseDouble(latField.getValue()),
+	            Double.parseDouble(lonField.getValue()),
+	            indirizzoField.getValue(),
+	            comuneField.getValue()
+	        );
+
+	        firebaseService.salvaColonnina(nuova).thenAccept(v -> {
+	            getUI().ifPresent(ui -> ui.access(() -> {
+	                nuovaColonninaLayout.setVisible(false);
+	                aggiornaGridConFiltro(""); // aggiorna tabella
+	            }));
+	        });
+
+	    } catch (Exception e) {
+	        System.out.println("Errore inserimento nuova colonnina: " + e.getMessage());
+	    }
 	}
 	
 	
