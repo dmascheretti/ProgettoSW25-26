@@ -102,7 +102,7 @@ public class MapView extends HorizontalLayout {
 	private VerticalLayout createSidebar() {
 
 		VerticalLayout sidebar = new VerticalLayout();
-		sidebar.setWidth("350px");
+		sidebar.setWidth("35%");
 		sidebar.setHeightFull();
 		sidebar.getStyle().set("background-color", "var(--lumo-base-color)")
 				.set("border-left", "1px solid var(--lumo-contrast-20pct)").set("padding", "var(--lumo-space-m)");
@@ -121,11 +121,19 @@ public class MapView extends HorizontalLayout {
 
 		bookingDatePicker = new DatePicker("Giorno");
 		bookingDatePicker.setMin(LocalDate.now()); // Non si può prenotare nel passato
+		bookingDatePicker.setValue(LocalDate.now()); //Valore di default
 		bookingDatePicker.getStyle().set("width", "100%");
 		bookingDatePicker.getStyle().set("--lumo-primary-text-color", "var(--lumo-success-text-color)");
 
 		bookingTimeSlot = new ComboBox<>("Orario (slot 30 min)");
-		bookingTimeSlot.setItems(generateTimeSlots()); // Carica gli slot
+		
+		//DEVO GENERARE GLI SLOT SOLO DALL'ORARIO ATTUALE SE LA DATA SELEZIONATA E' OGGI
+		if(bookingDatePicker.getValue().equals(LocalDate.now())) {
+			bookingTimeSlot.setItems(generateTodayTimeSlots()); // Carica gli slot
+
+		} else {
+			bookingTimeSlot.setItems(generateTimeSlots()); // Carica gli slot
+		}
 		bookingTimeSlot.getStyle().set("width", "100%");
 		bookingTimeSlot.getStyle().set("--lumo-primary-text-color", "var(--lumo-success-text-color)");
 
@@ -156,6 +164,42 @@ public class MapView extends HorizontalLayout {
 			time = time.plusMinutes(30);
 		}
 		return slots;
+	}
+	
+	/**
+	 * Metodo per generare la lista degli slot orari di oggi
+	 * 
+	 * @return Lista di stringhe con formato: "HH:mm"
+	 */
+	private List<String> generateTodayTimeSlots() {
+	    List<String> slots = new ArrayList<>();
+	    
+	    LocalTime now = LocalTime.now();
+	    int minute = now.getMinute();
+	    LocalTime time;
+	    
+	    // Arrotonda l'orario attuale alla prossima mezz'ora
+	    if (minute < 30) {
+	        time = now.withMinute(30).withSecond(0);
+	    } else {
+	        // Se è oltre i 30 minuti, passa all'ora successiva (15:00)
+	        time = now.plusHours(1).withMinute(0).withSecond(0);
+	    }
+
+	    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+
+	    // Crea slot finchè non raggiunge mezzanotte
+	    while (true) {
+	        slots.add(time.format(formatter));
+	        LocalTime nextTime = time.plusMinutes(30);
+	        
+	        // Se aggiungendo 30 minuti l'orario diventa 00:00 o inferiore all'orario precedente (cambio giorno)
+	        if (nextTime.equals(LocalTime.MIDNIGHT) || nextTime.isBefore(time)) {
+	            break;
+	        }
+	        time = nextTime;
+	    }
+	    return slots;
 	}
 
 	/**
