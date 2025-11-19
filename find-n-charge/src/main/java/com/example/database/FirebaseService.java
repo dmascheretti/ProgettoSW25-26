@@ -455,7 +455,7 @@ public class FirebaseService {
 
 		});
 
-		// ritorno la lista filtrata delle prenotazioni dell'utente
+		// ritorno la lista delle prenotazioni
 		return future;
 	}
 	

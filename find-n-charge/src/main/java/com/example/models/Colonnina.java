@@ -24,7 +24,7 @@ public class Colonnina {
 		this.id=id;
 		this.nome=nome;
 		this.tipo=tipo;
-		this.stato="libera";
+		this.stato="Libera";
 		this.latitudine=latitudine;
 		this.longitudine=longitudine;
 		this.indirizzo=indirizzo;

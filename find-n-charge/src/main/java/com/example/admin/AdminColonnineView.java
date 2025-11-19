@@ -38,6 +38,7 @@ public class AdminColonnineView extends VerticalLayout {
 	private VerticalLayout stationSidebar;
 	private H3 sidebarTitle;
 	private VerticalLayout sidebarDetails;
+	private Colonnina colonninaSelezionata;
 
 	private DatePicker bookingDatePicker;
 	private ComboBox<String> bookingTimeSlot;
@@ -57,7 +58,7 @@ public class AdminColonnineView extends VerticalLayout {
 
 	private com.vaadin.flow.shared.Registration prenotaButtonListener;
 
-	private Colonnina colonninaSelezionata;
+	
 
 	// Classe per l'elenco delle colonnine (indipendente dalla mappa)
 	public AdminColonnineView() {
@@ -88,6 +89,11 @@ public class AdminColonnineView extends VerticalLayout {
 
 		// Aggiunta Colonna di bottoni, targati col nome delle colonnine,che permettono la consultazione delle colonnine
 		colonGrid.removeAllColumns();
+		
+		colonGrid.addColumn(Colonnina::getId)
+        .setHeader("ID")
+        .setSortable(true);
+		
 		colonGrid.addComponentColumn(col -> {
 		    Button btn = new Button(col.getNome());
 		    btn.addClickListener(e -> showSidebar(col));
@@ -127,7 +133,7 @@ public class AdminColonnineView extends VerticalLayout {
 		layout.expand(colonGrid);
 		
 		
-
+		
 		add(titolo, nuovaColonninaButton, nuovaColonninaLayout, searchField, layout);
 	}
 	
@@ -226,8 +232,7 @@ public class AdminColonnineView extends VerticalLayout {
 	}
 
 	private void showSidebar(Colonnina col) {
-		this.colonninaSelezionata = col;
-
+		this.colonninaSelezionata= col;
 		sidebarTitle.setText(col.getNome());
 
 		sidebarDetails.removeAll();
