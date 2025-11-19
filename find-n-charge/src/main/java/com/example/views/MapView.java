@@ -205,14 +205,45 @@ public class MapView extends HorizontalLayout {
 																									// mappa
 						"      attribution: '© OpenStreetMap contributors'" + "    }).addTo(map);" +
 
+						// Funzion che definisce l'icona del marker di default
+						"    var IconBase = L.Icon.extend({" +
+						"        options: {" +
+						"            shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png'," +
+						"            iconSize: [25, 41]," +
+						"            iconAnchor: [12, 41]," +
+						"            popupAnchor: [1, -34]," +
+						"            shadowSize: [41, 41]" +
+						"        }" +
+						"    });" +
+						
+						// Genera tre varianti diverse che saranno utilizzate a seconda dello stato
+						"    var greenIcon = new IconBase({iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png'});" +
+						"    var yellowIcon = new IconBase({iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-gold.png'});" +
+						"    var redIcon = new IconBase({iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png'});" +
+						"    var greyIcon = new IconBase({iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-grey.png'});" + // Colore di default per gestire eventuali problemi di lettura
+						
 						// Trasforma la stringa JSON in un array JS
 						"    var stations = JSON.parse($1);" + // $1 verrà sostituito da stationsJson
 						"    var component = $0;" + // $0 è 'this.getElement()'
+						
+						"    stations.forEach(function(station) {" + // Ciclo su ogni elemento dell'array station
+						
+						"      var selectedIcon;" +
+						"      var st = station.stato ? station.stato.toLowerCase() : '';" +
+						
+						//Controlla lo stato e in base a questo assegna il colore del marker
+						"      if (st === 'libera') {" +
+						"          selectedIcon = greenIcon;" +
+						"      } else if (st === 'prenotata') {" +
+						"          selectedIcon = yellowIcon;" +
+						"      } else if (st === 'occupata') {" +
+						"          selectedIcon = redIcon;" +
+						"      } else {" +
+						"          selectedIcon = greyIcon;" + //Default
+						"      }" +
 
 						// Crea i marker
-						"    stations.forEach(function(station) {" + // Ciclo su ogni elemento dell'array station
-						"      var marker = L.marker([station.lat, station.lon]).addTo(map);" + // Per ogni colonnina
-																								// crea il marker
+						"      var marker = L.marker([station.lat, station.lon], {icon: selectedIcon}).addTo(map);" + // Per ogni colonnina crea il marker del colore giusto
 						"      marker.on('click', function() {" + // Aggiunge il listener di click alla componente
 						"      component.$server.onMarkerClick(station.id);" + "      });});}}, 100);"; // Ciclo ogni
 																										// 100ms
@@ -234,6 +265,7 @@ public class MapView extends HorizontalLayout {
 					map.put("id", c.getId());
 					map.put("lat", c.getLatitudine());
 					map.put("lon", c.getLongitudine());
+					map.put("stato", c.getStato());
 					return map; // Restituisce l'HashMap
 				}).collect(Collectors.toList());
 
