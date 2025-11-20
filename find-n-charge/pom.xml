@@ -35,12 +35,12 @@
 			<id>vaadin-directory</id>
 			<url>https://maven.vaadin.com/directory</url>
 		</repository>
-	
+
 		<!--Grafici-->
 		<repository>
-    		<id>jitpack.io</id>
-    		<url>https://jitpack.io</url>
-  		</repository>
+			<id>jitpack.io</id>
+			<url>https://jitpack.io</url>
+		</repository>
 
 	</repositories>
 
@@ -64,6 +64,19 @@
 			<groupId>com.vaadin</groupId>
 			<artifactId>vaadin-spring-boot-starter</artifactId>
 			<version>${vaadin.version}</version>
+		</dependency>
+
+		<!--ZXing per QR code-->
+		<dependency>
+			<groupId>com.google.zxing</groupId>
+			<artifactId>core</artifactId>
+			<version>3.5.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.google.zxing</groupId>
+			<artifactId>javase</artifactId>
+			<version>3.5.2</version>
 		</dependency>
 
 
@@ -96,12 +109,12 @@
 			<artifactId>vaadin-maps-leaflet-flow</artifactId>
 			<version>4.1.1</version>
 		</dependency>
-		
+
 		<!--Grafici-->
 		<dependency>
-		  <groupId>com.github.appreciated</groupId>
-		  <artifactId>apexcharts</artifactId>
-		  <version>23.0.1</version>
+			<groupId>com.github.appreciated</groupId>
+			<artifactId>apexcharts</artifactId>
+			<version>23.0.1</version>
 		</dependency>
 
 	</dependencies>

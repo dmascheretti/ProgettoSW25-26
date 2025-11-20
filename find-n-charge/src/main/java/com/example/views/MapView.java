@@ -29,6 +29,7 @@ import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H3;
+import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
@@ -374,10 +375,23 @@ public class MapView extends HorizontalLayout {
 				sidebarTitle.setText(colonninaSelezionata.getNome());
 				// Pulisci i dettagli vecchi
 				sidebarDetails.removeAll();
+				
+				sidebarDetails.setAlignItems(Alignment.CENTER);
+				
+				String immagine = colonninaSelezionata.getLinkImmagine();
+				Image image = new Image(immagine, "IMMAGINE COLONNINA");
+				image.setWidth("250px");
+				 image.getStyle()
+		         .set("margin-top", "10px")
+		         .set("margin-bottom", "10px");
+				sidebarDetails.add(image);
+				
 				sidebarDetails.add( // Span serve per poter mandare a capo le righe
 						new Span("Indirizzo: " + colonninaSelezionata.getIndirizzo() + ", "
 								+ colonninaSelezionata.getComune()),
 						new Span("Stato: " + colonninaSelezionata.getStato()));
+					
+					
 
 				// Pulisce i campi di prenotazione precedenti
 				bookingDatePicker.setValue(null);

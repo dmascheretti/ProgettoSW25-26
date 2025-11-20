@@ -86,7 +86,10 @@ Tutte le fasi precedenti sono contenute all'interno del file meeting
 			15.00-16.00 + 17.00-17.20 Aggiunta funziona ban utenti e risoluzione issue dopo il branch
 
 19/11/2025		Mascheretti Davide
-			16.00-17.00 Implementato logica che se un utente viene eliminato, anche le sue prenotazioni vengono eliminate		
+			16.00-17.00 Implementato logica che se un utente viene eliminato, anche le sue prenotazioni vengono eliminate	
+
+20/11/2025		Mascheretti Davide
+			20.45-21.45 Aggiunta classe e dipendenze qr code + pulsante per la visualizzazione e aggiunta immagini alle colonnine quando si clicca sul marker	
 
 			
 			

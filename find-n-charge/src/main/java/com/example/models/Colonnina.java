@@ -16,6 +16,7 @@ public class Colonnina {
 	private double longitudine;
 	private String indirizzo;
 	private String comune;
+	private String linkImmagine;
 
 	public Colonnina() {
 	}
@@ -29,6 +30,7 @@ public class Colonnina {
 		this.longitudine=longitudine;
 		this.indirizzo=indirizzo;
 		this.comune=comune;
+		this.linkImmagine=linkImmagine;
 	}
 
 	public String getId() {
@@ -93,5 +95,9 @@ public class Colonnina {
 
 	public void setComune(String comune) {
 		this.comune = comune;
+	}
+
+	public String getLinkImmagine() {
+		return linkImmagine;
 	}
 }
