@@ -8,11 +8,9 @@ package com.example.views;
 
 import com.example.MainLayout;
 import com.example.models.Colonnina;
-import com.example.models.Prenotazione;
 import com.example.models.Utente;
 import com.example.util.DataValidator;
 import com.example.util.PrenotazioneService;
-
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -84,11 +82,17 @@ public class MapView extends HorizontalLayout {
 		mapDiv = new Div();
 		mapDiv.setSizeFull();
 		mapDiv.setId(mapId);
-		add(mapDiv);
 
 		// Aggiunge mappa e sidebar all'HorizontalLayout
 		add(mapDiv, stationSidebar);
 		expand(mapDiv); // La mappa occupa tutto lo spazio disponibile
+
+		// Codice JS per rendere l'overlay del bookingDatePicker in primo piano
+		// Ora non va più sotto la mappa
+		UI.getCurrent().getElement()
+				.executeJs("const style = document.createElement('style');"
+						+ "style.innerHTML = 'vaadin-date-picker-overlay { z-index: 20000 !important; }';"
+						+ "document.head.appendChild(style);");
 
 		// Carica i file CSS e JS di Leaflet
 		UI.getCurrent().getPage().addStyleSheet("https://unpkg.com/leaflet@1.9.4/dist/leaflet.css");
@@ -121,19 +125,39 @@ public class MapView extends HorizontalLayout {
 
 		bookingDatePicker = new DatePicker("Giorno");
 		bookingDatePicker.setMin(LocalDate.now()); // Non si può prenotare nel passato
-		bookingDatePicker.setValue(LocalDate.now()); //Valore di default
+		bookingDatePicker.setValue(LocalDate.now()); // Valore di default
 		bookingDatePicker.getStyle().set("width", "100%");
 		bookingDatePicker.getStyle().set("--lumo-primary-text-color", "var(--lumo-success-text-color)");
 
 		bookingTimeSlot = new ComboBox<>("Orario (slot 30 min)");
-		
-		//DEVO GENERARE GLI SLOT SOLO DALL'ORARIO ATTUALE SE LA DATA SELEZIONATA E' OGGI
-		if(bookingDatePicker.getValue().equals(LocalDate.now())) {
-			bookingTimeSlot.setItems(generateTodayTimeSlots()); // Carica gli slot
 
-		} else {
-			bookingTimeSlot.setItems(generateTimeSlots()); // Carica gli slot
-		}
+		bookingDatePicker.addValueChangeListener(event -> {
+
+			LocalDate dataSelezionata = event.getValue();
+
+			// Se la modifica è stata fatta da Java (nel metodo onMarkerClick()), ignorala
+			// ed esci
+			if (!event.isFromClient()) {
+				return;
+			}
+
+			// Se l'utente ha tolto la data, non genero slot
+			if (dataSelezionata == null) {
+				bookingTimeSlot.clear(); // Pulisce gli slot vecchi
+				bookingTimeSlot.setEnabled(false); // Disabilita la tendina degli orari
+				return; // Esce dal listener
+			}
+
+			// La data è stata inserita, quindi abilita la tendina
+			bookingTimeSlot.setEnabled(true);
+			if (bookingDatePicker.getValue().equals(LocalDate.now())) {
+				bookingTimeSlot.setItems(generateTodayTimeSlots()); // Carica gli slot di oggi
+			} else {
+				bookingTimeSlot.setItems(generateTimeSlots()); // Carica gli slot di un giorno qualsiasi
+			}
+
+		});
+
 		bookingTimeSlot.getStyle().set("width", "100%");
 		bookingTimeSlot.getStyle().set("--lumo-primary-text-color", "var(--lumo-success-text-color)");
 
@@ -165,41 +189,42 @@ public class MapView extends HorizontalLayout {
 		}
 		return slots;
 	}
-	
+
 	/**
 	 * Metodo per generare la lista degli slot orari di oggi
 	 * 
 	 * @return Lista di stringhe con formato: "HH:mm"
 	 */
 	private List<String> generateTodayTimeSlots() {
-	    List<String> slots = new ArrayList<>();
-	    
-	    LocalTime now = LocalTime.now();
-	    int minute = now.getMinute();
-	    LocalTime time;
-	    
-	    // Arrotonda l'orario attuale alla prossima mezz'ora
-	    if (minute < 30) {
-	        time = now.withMinute(30).withSecond(0);
-	    } else {
-	        // Se è oltre i 30 minuti, passa all'ora successiva (15:00)
-	        time = now.plusHours(1).withMinute(0).withSecond(0);
-	    }
+		List<String> slots = new ArrayList<>();
 
-	    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+		LocalTime now = LocalTime.now();
+		int minute = now.getMinute();
+		LocalTime time;
 
-	    // Crea slot finchè non raggiunge mezzanotte
-	    while (true) {
-	        slots.add(time.format(formatter));
-	        LocalTime nextTime = time.plusMinutes(30);
-	        
-	        // Se aggiungendo 30 minuti l'orario diventa 00:00 o inferiore all'orario precedente (cambio giorno)
-	        if (nextTime.equals(LocalTime.MIDNIGHT) || nextTime.isBefore(time)) {
-	            break;
-	        }
-	        time = nextTime;
-	    }
-	    return slots;
+		// Arrotonda l'orario attuale alla prossima mezz'ora
+		if (minute < 30) {
+			time = now.withMinute(30).withSecond(0);
+		} else {
+			// Se è oltre i 30 minuti, passa all'ora successiva
+			time = now.plusHours(1).withMinute(0).withSecond(0);
+		}
+
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+
+		// Crea slot finchè non raggiunge mezzanotte
+		while (true) {
+			slots.add(time.format(formatter));
+			LocalTime nextTime = time.plusMinutes(30);
+
+			// Se aggiungendo 30 minuti l'orario diventa 00:00 o inferiore all'orario
+			// precedente (cambio giorno)
+			if (nextTime.equals(LocalTime.MIDNIGHT) || nextTime.isBefore(time)) {
+				break;
+			}
+			time = nextTime;
+		}
+		return slots;
 	}
 
 	/**
@@ -250,44 +275,44 @@ public class MapView extends HorizontalLayout {
 						"      attribution: '© OpenStreetMap contributors'" + "    }).addTo(map);" +
 
 						// Funzion che definisce l'icona del marker di default
-						"    var IconBase = L.Icon.extend({" +
-						"        options: {" +
-						"            shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png'," +
-						"            iconSize: [25, 41]," +
-						"            iconAnchor: [12, 41]," +
-						"            popupAnchor: [1, -34]," +
-						"            shadowSize: [41, 41]" +
-						"        }" +
-						"    });" +
-						
+						"    var IconBase = L.Icon.extend({" + "        options: {"
+						+ "            shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',"
+						+ "            iconSize: [25, 41]," + "            iconAnchor: [12, 41],"
+						+ "            popupAnchor: [1, -34]," + "            shadowSize: [41, 41]" + "        }"
+						+ "    });" +
+
 						// Genera tre varianti diverse che saranno utilizzate a seconda dello stato
-						"    var greenIcon = new IconBase({iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png'});" +
-						"    var yellowIcon = new IconBase({iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-gold.png'});" +
-						"    var redIcon = new IconBase({iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png'});" +
-						"    var greyIcon = new IconBase({iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-grey.png'});" + // Colore di default per gestire eventuali problemi di lettura
-						
+						"    var greenIcon = new IconBase({iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png'});"
+						+ "    var yellowIcon = new IconBase({iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-gold.png'});"
+						+ "    var redIcon = new IconBase({iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png'});"
+						+ "    var greyIcon = new IconBase({iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-grey.png'});"
+						+ // Colore di default per gestire eventuali problemi di lettura
+
 						// Trasforma la stringa JSON in un array JS
 						"    var stations = JSON.parse($1);" + // $1 verrà sostituito da stationsJson
 						"    var component = $0;" + // $0 è 'this.getElement()'
-						
+
 						"    stations.forEach(function(station) {" + // Ciclo su ogni elemento dell'array station
-						
-						"      var selectedIcon;" +
-						"      var st = station.stato ? station.stato.toLowerCase() : '';" +
-						
-						//Controlla lo stato e in base a questo assegna il colore del marker
-						"      if (st === 'libera') {" +
-						"          selectedIcon = greenIcon;" +
-						"      } else if (st === 'prenotata') {" +
-						"          selectedIcon = yellowIcon;" +
-						"      } else if (st === 'occupata') {" +
-						"          selectedIcon = redIcon;" +
-						"      } else {" +
-						"          selectedIcon = greyIcon;" + //Default
+
+						"      var selectedIcon;" + "      var st = station.stato ? station.stato.toLowerCase() : '';" +
+
+						// Controlla lo stato e in base a questo assegna il colore del marker
+						"      if (st === 'libera') {" + "          selectedIcon = greenIcon;"
+						+ "      } else if (st === 'prenotata') {" + "          selectedIcon = yellowIcon;"
+						+ "      } else if (st === 'occupata') {" + "          selectedIcon = redIcon;"
+						+ "      } else {" + "          selectedIcon = greyIcon;" + // Default
 						"      }" +
 
 						// Crea i marker
-						"      var marker = L.marker([station.lat, station.lon], {icon: selectedIcon}).addTo(map);" + // Per ogni colonnina crea il marker del colore giusto
+						"      var marker = L.marker([station.lat, station.lon], {icon: selectedIcon}).addTo(map);" + // Per
+																														// ogni
+																														// colonnina
+																														// crea
+																														// il
+																														// marker
+																														// del
+																														// colore
+																														// giusto
 						"      marker.on('click', function() {" + // Aggiunge il listener di click alla componente
 						"      component.$server.onMarkerClick(station.id);" + "      });});}}, 100);"; // Ciclo ogni
 																										// 100ms
