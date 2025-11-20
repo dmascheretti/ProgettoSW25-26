@@ -130,6 +130,7 @@ public class MapView extends HorizontalLayout {
 		bookingDatePicker.getStyle().set("--lumo-primary-text-color", "var(--lumo-success-text-color)");
 
 		bookingTimeSlot = new ComboBox<>("Orario (slot 30 min)");
+		bookingTimeSlot.setEnabled(false);
 
 		bookingDatePicker.addValueChangeListener(event -> {
 
@@ -150,11 +151,9 @@ public class MapView extends HorizontalLayout {
 
 			// La data è stata inserita, quindi abilita la tendina
 			bookingTimeSlot.setEnabled(true);
-			if (bookingDatePicker.getValue().equals(LocalDate.now())) {
-				bookingTimeSlot.setItems(generateTodayTimeSlots()); // Carica gli slot di oggi
-			} else {
-				bookingTimeSlot.setItems(generateTimeSlots()); // Carica gli slot di un giorno qualsiasi
-			}
+
+			// Genera i time slots
+			bookingTimeSlot.setItems(generateTimeSlots(dataSelezionata));
 
 		});
 
@@ -171,59 +170,48 @@ public class MapView extends HorizontalLayout {
 	}
 
 	/**
-	 * Metodo per generare la lista degli slot orari
+	 * Metodo per generare la lista degli slot orari. Se la data è oggi, parte
+	 * dall'orario attuale arrotondato alla mezz'ora successiva. Se la data è
+	 * futura, parte da mezzanotte.
 	 * 
-	 * @return Lista di stringhe con formato: "HH:mm"
+	 * @param date La data per cui generare gli slot.
+	 * @return Lista di stringhe formato "HH:mm".
 	 */
-	private List<String> generateTimeSlots() {
-
+	private List<String> generateTimeSlots(LocalDate date) {
 		List<String> slots = new ArrayList<>();
 
-		LocalTime time = LocalTime.MIDNIGHT;
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
-
-		// Uno slot ogni 30 minuti -> 48 slot in 24 ore
-		for (int i = 0; i < 48; i++) {
-			slots.add(time.format(formatter));
-			time = time.plusMinutes(30);
-		}
-		return slots;
-	}
-
-	/**
-	 * Metodo per generare la lista degli slot orari di oggi
-	 * 
-	 * @return Lista di stringhe con formato: "HH:mm"
-	 */
-	private List<String> generateTodayTimeSlots() {
-		List<String> slots = new ArrayList<>();
-
-		LocalTime now = LocalTime.now();
-		int minute = now.getMinute();
+		// Orario di partenza
 		LocalTime time;
 
-		// Arrotonda l'orario attuale alla prossima mezz'ora
-		if (minute < 30) {
-			time = now.withMinute(30).withSecond(0);
+		// Se la data selezionata è oggi, calcola la prossima mezz'ora, altrimenti parte
+		// da mezzanotte
+		if (date.equals(LocalDate.now())) {
+			LocalTime now = LocalTime.now();
+			if (now.getMinute() < 30) {
+				time = now.withMinute(30).withSecond(0).withNano(0);
+			} else {
+				time = now.plusHours(1).withMinute(0).withSecond(0).withNano(0);
+			}
+
+			if (time.equals(LocalTime.MIDNIGHT)) { // Se siamo nell'ultima mezz'ora del giorno (dopo le 23.40), allora
+													// la lista di slot è vuota per oggi
+				return slots;
+			}
 		} else {
-			// Se è oltre i 30 minuti, passa all'ora successiva
-			time = now.plusHours(1).withMinute(0).withSecond(0);
+			time = LocalTime.MIDNIGHT;
 		}
 
+		// Generazione slots fino al giorno successivo in formato "HH:mm"
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
 
-		// Crea slot finchè non raggiunge mezzanotte
 		while (true) {
 			slots.add(time.format(formatter));
 			LocalTime nextTime = time.plusMinutes(30);
-
-			// Se aggiungendo 30 minuti l'orario diventa 00:00 o inferiore all'orario
-			// precedente (cambio giorno)
-			if (nextTime.equals(LocalTime.MIDNIGHT) || nextTime.isBefore(time)) {
+			if (nextTime.equals(LocalTime.MIDNIGHT))
 				break;
-			}
 			time = nextTime;
 		}
+
 		return slots;
 	}
 
@@ -394,6 +382,7 @@ public class MapView extends HorizontalLayout {
 				// Pulisce i campi di prenotazione precedenti
 				bookingDatePicker.setValue(null);
 				bookingTimeSlot.setValue(null);
+				bookingTimeSlot.setEnabled(false);
 
 				// Deve esistere solo un listener alla volta per leggere la colonnina corretta
 				if (prenotaButtonListener != null) {
