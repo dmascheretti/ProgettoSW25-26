@@ -9,6 +9,7 @@ package com.example.views;
 import com.example.MainLayout;
 import com.example.models.Colonnina;
 import com.example.models.Utente;
+import com.example.util.ColonnineService;
 import com.example.util.DataValidator;
 import com.example.util.PrenotazioneService;
 import java.time.LocalDate;
@@ -57,6 +58,7 @@ public class MapView extends HorizontalLayout {
 	private DatePicker bookingDatePicker; // Calendario interattivo
 	private ComboBox<String> bookingTimeSlot; // Menù a tendina con gli slot orari
 	private Button prenotaButton;
+	private ColonnineService colonnineService;
 	private com.vaadin.flow.shared.Registration prenotaButtonListener; // Per avere un solo linstener attivo
 
 	// Serve Firebase con la lista della colonnine del database
@@ -66,10 +68,11 @@ public class MapView extends HorizontalLayout {
 	private Colonnina colonninaSelezionata;
 	private ObjectMapper objectMapper = new ObjectMapper(); // Per tradurre gli oggetti da Java a JSON
 
-	public MapView(@Autowired FirebaseService firebaseService) {
+	public MapView(@Autowired FirebaseService firebaseService, ColonnineService colonnineService) {
 
 		this.firebaseService = firebaseService;
 		this.prenotazioneService = new PrenotazioneService(firebaseService);
+		this.colonnineService= colonnineService;
 
 		setSizeFull();
 		setPadding(false);
@@ -303,9 +306,14 @@ public class MapView extends HorizontalLayout {
 																														// colore
 																														// giusto
 						"      marker.on('click', function() {" + // Aggiunge il listener di click alla componente
-						"      component.$server.onMarkerClick(station.id);" + "      });});}}, 100);"; // Ciclo ogni
-																										// 100ms
+						"      component.$server.onMarkerClick(station.id);" + "      });});}}, 100);"; // Ciclo ogni// 100ms
 
+		colonnineService.inizializza("Libera").thenRun(()->{
+			
+		});
+		
+		colonnineService.aggiornaStato("Prenotata")
+        .thenRun(() -> {
 		// Se getAllColonnine() ha successo
 		firebaseService.getAllColonnine().thenAccept(stations -> {
 
@@ -349,6 +357,7 @@ public class MapView extends HorizontalLayout {
 			});
 			return null;
 		});
+      });
 
 	}
 

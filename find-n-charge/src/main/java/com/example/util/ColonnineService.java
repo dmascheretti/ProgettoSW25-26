@@ -2,6 +2,7 @@ package com.example.util;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -25,7 +26,7 @@ public class ColonnineService {
 		this.fb=fb;
 	}
 
-	public long getSlotCorrenteTimestamp() {
+	public String getSlotCorrenteTimestamp() {
 	    LocalDateTime now = LocalDateTime.now();
 	    int minuteSlot = (now.getMinute() / 30) * 30;
 
@@ -34,21 +35,39 @@ public class ColonnineService {
 	            now.getHour(), minuteSlot
 	    );
 
-	    return slot.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+	    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+	    return slot.format(formatter);
 	}
 	
-	public CompletableFuture<Void> aggiornaStato() {
+	public CompletableFuture<Void> aggiornaStato(String msg) {
 
-		CompletableFuture<Void> future =fb.getPrenotazioniSlot(getSlotCorrenteTimestamp()).thenCompose(lista -> {
+		CompletableFuture<Void> future =fb.getColonnineSlot(getSlotCorrenteTimestamp()).thenCompose(lista -> {
 	        // lista dei CompletableFuture per aggiornare lo stato
-	        List<CompletableFuture<Void>> updates = new ArrayList<>();
+	        List<CompletableFuture<Void>> listaCF = new ArrayList<>();
 	        
-	        for (Prenotazione p : lista) {
-	            updates.add(fb.cambiaStatoColonnina(p.getNomeColonnina(), "Prenotata"));
+	        for (String c : lista) {
+	        	listaCF.add(fb.cambiaStatoColonnina(c, msg));
 	        }
 
 	        // attendo che tutti terminino
-	        return CompletableFuture.allOf(updates.toArray(new CompletableFuture[0]));
+	        return CompletableFuture.allOf(listaCF.toArray(new CompletableFuture[0]));
+	    });
+		
+		return future;
+	}
+	
+	public CompletableFuture<Void> inizializza(String msg) {
+
+		CompletableFuture<Void> future =fb.getAllColonnine().thenCompose(lista -> {
+	        // lista dei CompletableFuture per aggiornare lo stato
+	        List<CompletableFuture<Void>> listaCF = new ArrayList<>();
+	        
+	        for (Colonnina c : lista) {
+	            listaCF.add(fb.cambiaStatoColonnina(c.getId(), msg));
+	        }
+
+	        // attendo che tutti terminino
+	        return CompletableFuture.allOf(listaCF.toArray(new CompletableFuture[0]));
 	    });
 		
 		return future;

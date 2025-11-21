@@ -9,7 +9,7 @@ import org.threeten.bp.LocalDate;
 
 public class Prenotazione {
 	
-	private  String id;
+	private String id;
 	private String nomeColonnina;
 	private String utente;
 	private String data; 

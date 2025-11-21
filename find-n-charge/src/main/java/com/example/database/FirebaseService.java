@@ -301,7 +301,7 @@ public class FirebaseService {
 		/*
 		 * Verifico l'esistenza di un nodo nel database
 		 */
-		DatabaseReference userRef = prenotazioni.child(c.getNome() + " " + data + " " + ora);
+		DatabaseReference userRef = prenotazioni.child(c.getId() + " " + data + " " + ora);
 		userRef.addListenerForSingleValueEvent(new ValueEventListener() {
 			@Override
 
@@ -521,11 +521,11 @@ public class FirebaseService {
 		return future;
 	}
 	
-	public CompletableFuture<List<Prenotazione>> getPrenotazioniSlot(long ora) {
+	public CompletableFuture<List<String>> getColonnineSlot(String ora) {
 
 		// Oggetto che permette al programma di non fermarsi perchè sa che conterrà la
 		// lista che sta cercando
-		CompletableFuture<List<Prenotazione>> future = new CompletableFuture<>();
+		CompletableFuture<List<String>> future = new CompletableFuture<>();
 
 
 		Query query= prenotazioni.orderByChild("inizio").equalTo(ora);
@@ -535,13 +535,13 @@ public class FirebaseService {
 			// Se li legge senza problemi
 			@Override
 			public void onDataChange(DataSnapshot dataSnapshot) { // Istantanea dei dati
-				List<Prenotazione> lista=new ArrayList<>();
+				List<String> lista=new ArrayList<>();
 				
 				if(dataSnapshot.exists()) {
 					for (DataSnapshot snap : dataSnapshot.getChildren()) {
                     Prenotazione p = snap.getValue(Prenotazione.class);
-                    if (p != null) {
-                        lista.add(p);
+                    if (p != null && !lista.contains(p.getNomeColonnina())) {
+                        lista.add(p.getNomeColonnina());
                     }
                 }
             }
