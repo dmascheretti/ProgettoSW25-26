@@ -94,6 +94,21 @@ public class FirebaseService {
 		// esecuzione
 	}
 	
+	public CompletableFuture<Void> cambiaStatoColonnina(String c, String stato) {
+		CompletableFuture<Void> futureColonnina = new CompletableFuture<>();
+		colonnine.child(c).child("stato").setValue(stato, (databaseError, ref) -> {
+			if (databaseError != null) {
+				// errore --> chiama eccezione anche in RegisterView
+				futureColonnina.completeExceptionally(new RuntimeException(databaseError.getMessage()));
+			} else {
+				futureColonnina.complete(null);
+			}
+		});
+		return futureColonnina; // qui il thenRun() in registrazione capisce che ha finito e prosegue con
+		// esecuzione
+	}
+	
+	
 	
 	
 	/**
@@ -506,6 +521,47 @@ public class FirebaseService {
 		return future;
 	}
 	
+	public CompletableFuture<List<Prenotazione>> getPrenotazioniSlot(long ora) {
+
+		// Oggetto che permette al programma di non fermarsi perchè sa che conterrà la
+		// lista che sta cercando
+		CompletableFuture<List<Prenotazione>> future = new CompletableFuture<>();
+
+
+		Query query= prenotazioni.orderByChild("inizio").equalTo(ora);
+		
+		query.addListenerForSingleValueEvent(new ValueEventListener() {
+
+			// Se li legge senza problemi
+			@Override
+			public void onDataChange(DataSnapshot dataSnapshot) { // Istantanea dei dati
+				List<Prenotazione> lista=new ArrayList<>();
+				
+				if(dataSnapshot.exists()) {
+					for (DataSnapshot snap : dataSnapshot.getChildren()) {
+                    Prenotazione p = snap.getValue(Prenotazione.class);
+                    if (p != null) {
+                        lista.add(p);
+                    }
+                }
+            }
+				
+            future.complete(lista);
+        }
+			
+
+			// Se trova errori
+			@Override
+			public void onCancelled(DatabaseError databaseError) {
+				System.err.println("Errore nel caricamento prenotazioni: " + databaseError.getMessage());
+				future.completeExceptionally(databaseError.toException());
+			}
+		});
+		return future;
+	}
+	
+	
+	
 	/**
 	 * Funzione necessaria per filtrare le colonnine in base alla query.
 	 * Prende tutte le colonnine e la filtra in base ai parametri ricercati dall'utente.
@@ -885,4 +941,7 @@ public class FirebaseService {
 		return recensione; // qui il thenRun() in registrazione capisce che ha finito e prosegue con
 		// esecuzione
 	}
+	
+	
+	
 }
