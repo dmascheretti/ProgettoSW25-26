@@ -8,16 +8,23 @@ package com.example.admin;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.textfield.EmailField;
+import com.vaadin.flow.component.textfield.PasswordField;
+import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.component.notification.Notification;
 import com.example.AdminLayout;
 import com.example.models.Utente;
+import com.example.util.DataValidator;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.dialog.Dialog;
 import com.example.database.FirebaseService;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+
+import org.threeten.bp.LocalDate;
 
 @Route(value = "gestioneUtenti", layout = AdminLayout.class)
 @PageTitle("Find&Charge | Gestione utenti")
@@ -57,7 +64,15 @@ public class AdminUtentiView extends VerticalLayout {
 					.set("border", "none");
 			return btn;
 		});
-		add(titolo, utentiGrid);
+		
+		Button nuovoUtenteBtn = new Button("Nuovo Utente");
+		nuovoUtenteBtn.getStyle()
+		    .set("background-color", "#008000")
+		    .set("color", "white");
+
+		nuovoUtenteBtn.addClickListener(e -> newUtente());
+
+		add(titolo, nuovoUtenteBtn, utentiGrid);
 
 		// Ottiene la lista di utenti da Firebase
 		utentiRef.getAllUtenti().thenAccept(lista -> {
@@ -100,5 +115,116 @@ public class AdminUtentiView extends VerticalLayout {
 	}
 	
 
-		
+	private void newUtente() {
+
+	    VerticalLayout formLayout = new VerticalLayout();
+	    formLayout.setPadding(true);
+	    formLayout.setSpacing(true);
+
+	    H3 titolo = new H3("Crea un nuovo utente");
+	    titolo.getStyle().set("color", "#008000");
+
+	    TextField nome = new TextField("Nome");
+	    TextField cognome = new TextField("Cognome");
+	    TextField username = new TextField("Username");
+	    EmailField email = new EmailField("Email");
+	    PasswordField password = new PasswordField("Password");
+
+	    Button salva = new Button("Salva Utente");
+	    salva.getStyle().set("background-color", "green").set("color", "white");
+
+	    salva.addClickListener(e -> {
+
+	        if (nome.isEmpty() || cognome.isEmpty() || username.isEmpty() || 
+	            email.isEmpty() || password.isEmpty()) {
+
+	            Notification.show("Compila tutti i campi!",
+	                3000, Notification.Position.TOP_CENTER)
+	                .getElement().getThemeList().add("error");
+	            return;
+	        }
+	        
+	        String n= nome.getValue();
+	        String c=cognome.getValue();
+	        String u=username.getValue();
+	        String em=email.getValue();
+	        String p=password.getValue();
+	        
+	        String errore = DataValidator.verificaDati(n, c, u, em, p, p);
+			if (errore != null) {
+				Notification.show(errore, 3000, Notification.Position.TOP_CENTER).getElement().getThemeList()
+						.add("error");
+				return;
+			}
+
+			/*
+			 * verifico se lo username esiste già in modo asincrono
+			 * 
+			 * se la funzione resistuisce un utente nullo allora non è stato trovato se la
+			 * funzione restituisce un utente non nullo allora esiste già
+			 * 
+			 * se utente==null salvo nuovo utente con quello username
+			 */
+
+			utentiRef.verificaUtente(u).thenAccept(utente -> {
+				getUI().ifPresent(ui -> ui.access(() -> {
+
+					if (utente == null) {
+
+						Utente nuovoUtente = new Utente(n,c,u,em,p, LocalDate.now().toString());
+
+						/*
+						 * in modo asicrono salvo utente nel database il thenRun() permette di lavorare
+						 * in background e non bloccare la UI principale della registerView
+						 * 
+						 * quando salvaUtente termina procede con la registrazione (o eventualmente
+						 * eccezione) se salvaUtente() notifica null, tutto ok --> eseguo thenRun() se
+						 * salvaUtente() notifica != null allora thenRun() riceve notifica di eccezione,
+						 * non viene eseguito, ed esegue .exceptionally (errore del database)
+						 */
+
+						utentiRef.salvaUtente(nuovoUtente).thenRun(() -> ui.access(() -> {
+							Notification.show("Registrazione completata! Benvenuto, " + u + ".", 3000,
+									Notification.Position.TOP_CENTER);
+							getUI().ifPresent(ui1 -> ui1.getPage().reload());
+						}))
+
+								// gestione e messaggio di errore
+
+								.exceptionally(ex -> {
+									ui.access(() -> {
+										Notification
+												.show("Errore durante il salvataggio: " + ex.getMessage(), 4000,
+														Notification.Position.TOP_CENTER)
+												.getElement().getThemeList().add("error");
+									});
+									return null;
+								});
+
+					}
+
+					else {
+
+						Notification.show("Lo username : " + u + " e' già in uso, prova con un altro!", 3000,
+								Notification.Position.TOP_CENTER).getElement().getThemeList().add("error");
+			        	   ;
+
+					}
+
+				}));
+
+			});
+
+		});
+	        
+
+	    formLayout.add(titolo, nome, cognome, username, email, password, salva);
+
+	    // Mostra il form in una nuova finestra/dialog
+	    Dialog dialog = new Dialog(formLayout);
+	    dialog.setModal(true);
+	    dialog.setWidth("400px");
+	    dialog.open();
+	    }
+	    
 }
