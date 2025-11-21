@@ -3,11 +3,14 @@
  */
 package com.example.models;
 
+import java.util.List;
+
 import com.example.database.FirebaseService;
 
 public class Utente {
 	
 	private String nome, cognome, username, email, password, timestamp;
+	private List<Auto> autoList;
 
 	/*
 	 * costruttore necessario per firebase
@@ -75,4 +78,12 @@ public class Utente {
 		this.timestamp = timestamp;
 	}
 
-}
+
+	public List<Auto> getAutoList() { 
+		return autoList; 
+		}
+	
+	public void setAutoList(List<Auto> list) { 
+		this.autoList = list; 
+		}
+	}
