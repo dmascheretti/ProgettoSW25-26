@@ -35,7 +35,13 @@ public class MainLayout extends AppLayout {
 		// Tasto dell'hamburger menu
 		DrawerToggle toggle = new DrawerToggle();
 
+		Utente utente = (Utente) VaadinSession.getCurrent().getAttribute("utente");
+
 		H1 title = new H1("FIND&CHARGE");
+		if (!utente.equals(null)) {
+			title.add(" | ");
+			title.add(utente.getUsername());
+		}
 		title.getStyle().set("font-size", "var(--lumo-font-size-l)");
 
 		// Barra superiore
