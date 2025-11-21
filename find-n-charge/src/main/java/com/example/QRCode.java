@@ -16,14 +16,13 @@ import com.google.zxing.qrcode.QRCodeWriter;
 @Service
 public class QRCode {
 
-    public BufferedImage generaQR(String text) throws Exception {
-        int width = 100; //DA MODIFICARE IN BASE ALLE DIMENSIONI
-        int height = 100; //DA MODIFICARE IN BASE ALLE DIMENSIONI
+	public static BufferedImage generaQR(String text) throws Exception {
+		int width = 300; // DA MODIFICARE IN BASE ALLE DIMENSIONI
+		int height = 300; // DA MODIFICARE IN BASE ALLE DIMENSIONI
 
-        QRCodeWriter qrCodeWriter = new QRCodeWriter();
-        BitMatrix bitMatrix = qrCodeWriter.encode(text, BarcodeFormat.QR_CODE, width, height);
-       
+		QRCodeWriter qrCodeWriter = new QRCodeWriter();
+		BitMatrix bitMatrix = qrCodeWriter.encode(text, BarcodeFormat.QR_CODE, width, height);
 
-        return MatrixToImageWriter.toBufferedImage(bitMatrix);
-    }
+		return MatrixToImageWriter.toBufferedImage(bitMatrix);
+	}
 }
