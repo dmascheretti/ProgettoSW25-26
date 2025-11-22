@@ -72,7 +72,7 @@ public class MapView extends HorizontalLayout {
 
 		this.firebaseService = firebaseService;
 		this.prenotazioneService = new PrenotazioneService(firebaseService);
-		this.colonnineService= colonnineService;
+		this.colonnineService = colonnineService;
 
 		setSizeFull();
 		setPadding(false);
@@ -306,58 +306,58 @@ public class MapView extends HorizontalLayout {
 																														// colore
 																														// giusto
 						"      marker.on('click', function() {" + // Aggiunge il listener di click alla componente
-						"      component.$server.onMarkerClick(station.id);" + "      });});}}, 100);"; // Ciclo ogni// 100ms
+						"      component.$server.onMarkerClick(station.id);" + "      });});}}, 100);"; // Ciclo ogni//
+																										// 100ms
 
-		colonnineService.inizializza("Libera").thenRun(()->{
-			
-		});
-		
-		colonnineService.aggiornaStato("Prenotata")
-        .thenRun(() -> {
-		// Se getAllColonnine() ha successo
-		firebaseService.getAllColonnine().thenAccept(stations -> {
+		colonnineService.inizializza("Libera").thenRun(() -> {
+			colonnineService.aggiornaStato("Prenotata").thenRun(() -> {
+				// Se getAllColonnine() ha successo
+				firebaseService.getAllColonnine().thenAccept(stations -> {
 
-			// Memorizza la lista delle colonnine
-			this.colonnine = stations;
+					// Memorizza la lista delle colonnine
+					this.colonnine = stations;
 
-			String stationsJson;
-			try {
-				// Prende i dati che servono per disegnare il marker
-				List<Map<String, Object>> markerData = stations.stream().map(c -> { // Trasforma la lista
-																					// List<Colonnina> in una
-																					// List<Map<String, Object>>
-					// Usa un HashMap esplicito per evitare problemi di inferenza dei tipi
-					Map<String, Object> map = new java.util.HashMap<>();
-					map.put("id", c.getId());
-					map.put("lat", c.getLatitudine());
-					map.put("lon", c.getLongitudine());
-					map.put("stato", c.getStato());
-					return map; // Restituisce l'HashMap
-				}).collect(Collectors.toList());
+					String stationsJson;
+					try {
+						// Prende i dati che servono per disegnare il marker
+						List<Map<String, Object>> markerData = stations.stream().map(c -> { // Trasforma la lista
+																							// List<Colonnina> in una
+																							// List<Map<String, Object>>
+							// Usa un HashMap esplicito per evitare problemi di inferenza dei tipi
+							Map<String, Object> map = new java.util.HashMap<>();
+							map.put("id", c.getId());
+							map.put("lat", c.getLatitudine());
+							map.put("lon", c.getLongitudine());
+							map.put("stato", c.getStato());
+							return map; // Restituisce l'HashMap
+						}).collect(Collectors.toList());
 
-				stationsJson = objectMapper.writeValueAsString(markerData); // Converte la lista Java in una lista JSON
+						stationsJson = objectMapper.writeValueAsString(markerData); // Converte la lista Java in una
+																					// lista JSON
 
-			} catch (JsonProcessingException e) {
-				e.printStackTrace();
-				stationsJson = "[]"; // Array vuoto in caso di errore
-			}
+					} catch (JsonProcessingException e) {
+						e.printStackTrace();
+						stationsJson = "[]"; // Array vuoto in caso di errore
+					}
 
-			// Esegue il JS in modo sicuro sul thread della UI
-			// Dobbiamo usare ui.access() perché siamo in un thread asincrono
-			String finalStationsJson = stationsJson;
-			ui.access(() -> { // Questo thread deve essere eseguito sulla UI perchè deve aggiornarla
-				getElement().executeJs(jsCode, getElement(), finalStationsJson); // Viene eseguito il codice JS
+					// Esegue il JS in modo sicuro sul thread della UI
+					// Dobbiamo usare ui.access() perché siamo in un thread asincrono
+					String finalStationsJson = stationsJson;
+					ui.access(() -> { // Questo thread deve essere eseguito sulla UI perchè deve aggiornarla
+						getElement().executeJs(jsCode, getElement(), finalStationsJson); // Viene eseguito il codice JS
+					});
+
+				}).exceptionally(ex -> { // In caso fallisca getAllColonnine()
+					ex.printStackTrace();
+					ui.access(() -> {
+						Notification.show("Errore nel caricamento delle colonnine: " + ex.getMessage(), 3000,
+								Notification.Position.TOP_CENTER).getElement().getThemeList().add("error");
+					});
+					return null;
+				});
 			});
 
-		}).exceptionally(ex -> { // In caso fallisca getAllColonnine()
-			ex.printStackTrace();
-			ui.access(() -> {
-				Notification.show("Errore nel caricamento delle colonnine: " + ex.getMessage(), 3000,
-						Notification.Position.TOP_CENTER).getElement().getThemeList().add("error");
-			});
-			return null;
 		});
-      });
 
 	}
 
@@ -384,23 +384,19 @@ public class MapView extends HorizontalLayout {
 				sidebarTitle.setText(colonninaSelezionata.getNome());
 				// Pulisci i dettagli vecchi
 				sidebarDetails.removeAll();
-				
+
 				sidebarDetails.setAlignItems(Alignment.CENTER);
-				
+
 				String immagine = colonninaSelezionata.getLinkImmagine();
 				Image image = new Image(immagine, "IMMAGINE COLONNINA");
 				image.setWidth("250px");
-				 image.getStyle()
-		         .set("margin-top", "10px")
-		         .set("margin-bottom", "10px");
+				image.getStyle().set("margin-top", "10px").set("margin-bottom", "10px");
 				sidebarDetails.add(image);
-				
+
 				sidebarDetails.add( // Span serve per poter mandare a capo le righe
 						new Span("Indirizzo: " + colonninaSelezionata.getIndirizzo() + ", "
 								+ colonninaSelezionata.getComune()),
 						new Span("Stato: " + colonninaSelezionata.getStato()));
-					
-					
 
 				// Pulisce i campi di prenotazione precedenti
 				bookingDatePicker.setValue(null);

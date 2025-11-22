@@ -17,6 +17,8 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
 import com.example.database.FirebaseService;
+import com.example.util.ColonnineService;
+
 import jakarta.annotation.security.RolesAllowed;
 import com.vaadin.flow.router.AfterNavigationEvent;
 import com.vaadin.flow.router.AfterNavigationObserver;
@@ -38,6 +40,7 @@ public class AdminDashboardView extends VerticalLayout implements AfterNavigatio
 
 	private FirebaseService fb;
 	private ApexCharts bookingsChart;
+	private ColonnineService cs;
 
 	// Utenti
 	private KpiCard utentiCard;
@@ -55,8 +58,9 @@ public class AdminDashboardView extends VerticalLayout implements AfterNavigatio
 	private KpiCard segnalazioniNuoveCard;
 	private KpiCard segnalazioniVecchieCard;
 
-	public AdminDashboardView(FirebaseService fb) {
+	public AdminDashboardView(FirebaseService fb, ColonnineService cs) {
 		this.fb = fb;
+		this.cs = cs;
 
 		setSizeFull(); // Occupa tutto lo spazio
 		setSpacing(true);
@@ -150,18 +154,27 @@ public class AdminDashboardView extends VerticalLayout implements AfterNavigatio
 			getUI().ifPresent(ui -> ui.access(() -> utentiCard.setNumber("Errore")));
 			return null;
 		});
-		
-		  fb.contaUtentiNuovi().thenAccept(num -> {
-		  
-		  String utentiNuovi = num.toString();
-		  
-		  getUI().ifPresent(ui -> { ui.access(() -> {
-		  utentiNuoviCard.setNumber(utentiNuovi); }); }); }).exceptionally(ex -> {
-		  
-		  getUI().ifPresent(ui -> { ui.access(() -> {
-		  utentiNuoviCard.setNumber("Errore"); }); }); return null; });
-		 
-		  /*
+
+		fb.contaUtentiNuovi().thenAccept(num -> {
+
+			String utentiNuovi = num.toString();
+
+			getUI().ifPresent(ui -> {
+				ui.access(() -> {
+					utentiNuoviCard.setNumber(utentiNuovi);
+				});
+			});
+		}).exceptionally(ex -> {
+
+			getUI().ifPresent(ui -> {
+				ui.access(() -> {
+					utentiNuoviCard.setNumber("Errore");
+				});
+			});
+			return null;
+		});
+
+		/*
 		 * fb.contaUtentiAttivi().thenAccept(num -> {
 		 * 
 		 * String utentiAttivi = num.toString();
@@ -180,22 +193,32 @@ public class AdminDashboardView extends VerticalLayout implements AfterNavigatio
 			getUI().ifPresent(ui -> ui.access(() -> colonnineTotaliCard.setNumber("Errore")));
 			return null;
 		});
-		fb.contaColonnineLG("Libera").thenAccept(num -> {
-			getUI().ifPresent(ui -> ui.access(() -> colonnineLibereCard.setNumber(num.toString())));
+		cs.aggiornaStato("Prenotata").thenRun(() -> {
+			fb.contaColonnineLG("Libera").thenAccept(num -> {
+				getUI().ifPresent(ui -> ui.access(() -> colonnineLibereCard.setNumber(num.toString())));
+			}).exceptionally(ex -> {
+				getUI().ifPresent(ui -> ui.access(() -> colonnineLibereCard.setNumber("Errore")));
+				return null;
+			});
+		});
+		fb.contaColonnineLG("Manutenzione").thenAccept(num -> {
+
+			String colonnineGuaste = num.toString();
+
+			getUI().ifPresent(ui -> {
+				ui.access(() -> {
+					colonnineGuasteCard.setNumber(colonnineGuaste);
+				});
+			});
 		}).exceptionally(ex -> {
-			getUI().ifPresent(ui -> ui.access(() -> colonnineLibereCard.setNumber("Errore")));
+
+			getUI().ifPresent(ui -> {
+				ui.access(() -> {
+					colonnineGuasteCard.setNumber("Errore");
+				});
+			});
 			return null;
 		});
-		 fb.contaColonnineLG("Manutenzione").thenAccept(num -> {
-		  
-		  String colonnineGuaste = num.toString();
-		  
-		  getUI().ifPresent(ui -> { ui.access(() -> {
-		  colonnineGuasteCard.setNumber(colonnineGuaste); }); }); }).exceptionally(ex
-		  -> {
-		  
-		  getUI().ifPresent(ui -> { ui.access(() -> {
-		  colonnineGuasteCard.setNumber("Errore"); }); }); return null; });
 
 		// Prenotazioni
 		fb.contaPrenotazioni().thenAccept(num -> {
@@ -204,7 +227,7 @@ public class AdminDashboardView extends VerticalLayout implements AfterNavigatio
 			getUI().ifPresent(ui -> ui.access(() -> prenotazioniTotaliCard.setNumber("Errore")));
 			return null;
 		});
-		
+
 		fb.contaPrenotazioniNuove().thenAccept(num -> {
 			getUI().ifPresent(ui -> ui.access(() -> prenotazioniNuoveCard.setNumber(num.toString())));
 		}).exceptionally(ex -> {
@@ -348,31 +371,24 @@ public class AdminDashboardView extends VerticalLayout implements AfterNavigatio
 	 * grafico quando sono pronti.
 	 */
 	private void loadChartData() {
-/*
-		// Avvia entrambe le chiamate in parallelo
-		CompletableFuture<Integer[]> futureBookings = fb.getDatiGraficoPrenotazioni();
-		CompletableFuture<Integer[]> futureUsers = fb.getDatiGraficoUtenti();
-
-		// Quando sono finite entrambe le chiamate:
-		CompletableFuture.allOf(futureBookings, futureUsers).thenAccept(voidResult -> {
-
-			// Ottiene i dati da Firebase
-			Integer[] bookingsData = futureBookings.join();
-			Integer[] usersData = futureUsers.join();
-
-			getUI().ifPresent(ui -> {
-				ui.access(() -> {
-					// Aggiorna il grafico con i nuovi dati
-					bookingsChart.updateSeries(new Series<>("Prenotazioni", bookingsData),
-							new Series<>("Nuovi Utenti", usersData));
-				});
-			});
-
-		}).exceptionally(ex -> {
-			// Gestione errori
-			ex.printStackTrace();
-			return null;
-		});
-		*/
+		/*
+		 * // Avvia entrambe le chiamate in parallelo CompletableFuture<Integer[]>
+		 * futureBookings = fb.getDatiGraficoPrenotazioni();
+		 * CompletableFuture<Integer[]> futureUsers = fb.getDatiGraficoUtenti();
+		 * 
+		 * // Quando sono finite entrambe le chiamate:
+		 * CompletableFuture.allOf(futureBookings, futureUsers).thenAccept(voidResult ->
+		 * {
+		 * 
+		 * // Ottiene i dati da Firebase Integer[] bookingsData = futureBookings.join();
+		 * Integer[] usersData = futureUsers.join();
+		 * 
+		 * getUI().ifPresent(ui -> { ui.access(() -> { // Aggiorna il grafico con i
+		 * nuovi dati bookingsChart.updateSeries(new Series<>("Prenotazioni",
+		 * bookingsData), new Series<>("Nuovi Utenti", usersData)); }); });
+		 * 
+		 * }).exceptionally(ex -> { // Gestione errori ex.printStackTrace(); return
+		 * null; });
+		 */
 	}
 }

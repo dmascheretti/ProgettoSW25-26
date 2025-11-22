@@ -89,7 +89,13 @@ Tutte le fasi precedenti sono contenute all'interno del file meeting
 			16.00-17.00 Implementato logica che se un utente viene eliminato, anche le sue prenotazioni vengono eliminate	
 
 20/11/2025		Mascheretti Davide
-			20.45-21.45 Aggiunta classe e dipendenze qr code + pulsante per la visualizzazione e aggiunta immagini alle colonnine quando si clicca sul marker	
+			20.45-21.45 Aggiunta classe e dipendenze qr code + pulsante per la visualizzazione e aggiunta immagini alle colonnine quando si clicca sul marker
+
+21/11/2025		Mascheretti Davide
+			16.00-18.00 Implementazione cambio stato colonnina se esiste una prenotazione nello slot di tempo corrispondente al tempo reale e cambio colore marker.
+
+22/11/2025		Mascheretti Davide
+			11.30-12.30 Modifiche nella dashboard admin per vedere dati aggiornati e creazione classi per dividere firebaseservice (ora è troppo lunga e complessa) + 				refactoring	
 
 			
 			
