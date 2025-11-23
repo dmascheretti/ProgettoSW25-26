@@ -113,7 +113,8 @@ public class RegisterView extends VerticalLayout {
 			}
 
 			/*
-			 * verifico se lo username esiste già in modo asincrono
+			 * verifico se lo username esiste già in modo asincrono, prima verifico utente, al termine prosegue
+			 * con il thenAccept
 			 * 
 			 * se la funzione resistuisce un utente nullo allora non è stato trovato se la
 			 * funzione restituisce un utente non nullo allora esiste già
