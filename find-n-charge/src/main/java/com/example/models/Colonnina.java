@@ -17,11 +17,12 @@ public class Colonnina {
 	private String indirizzo;
 	private String comune;
 	private String linkImmagine;
+	private double potenza;
 
 	public Colonnina() {
 	}
 	
-	public Colonnina(String id, String nome, String tipo, double latitudine, double longitudine, String indirizzo, String comune) {
+	public Colonnina(String id, String nome, String tipo, double latitudine, double longitudine, String indirizzo, String comune, double potenza) {
 		this.id=id;
 		this.nome=nome;
 		this.tipo=tipo;
@@ -31,6 +32,7 @@ public class Colonnina {
 		this.indirizzo=indirizzo;
 		this.comune=comune;
 		this.linkImmagine=linkImmagine;
+		this.setPotenza(potenza);
 	}
 
 	public String getId() {
@@ -99,5 +101,13 @@ public class Colonnina {
 
 	public String getLinkImmagine() {
 		return linkImmagine;
+	}
+
+	public double getPotenza() {
+		return potenza;
+	}
+
+	public void setPotenza(double potenza) {
+		this.potenza = potenza;
 	}
 }

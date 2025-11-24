@@ -4,6 +4,8 @@
  */
 package com.example.models;
 
+import java.time.LocalDateTime;
+
 public class Auto {
 
 	
@@ -11,20 +13,24 @@ public class Auto {
 	private String targa;
 	private String modello;
 	private String tipo;
-	private Utente proprietario;
+	private String proprietario;
 	private  int capacitaBatteria;
-	private int statoCarica;
+	private double statoCaricaIniziale;
+	private LocalDateTime inizioRicarica;
+	private Colonnina colonna;
 	
-	public Auto(){
-		}
-	
-	public Auto(String targa, String modello, String tipo, Utente proprietario) {
+	public Auto(String targa, String modello, String tipo, String proprietario) {
 		this.targa = targa;
 		this.setModello(modello);
 		this.proprietario = proprietario;
+		this.setTipo(tipo);
 		this.capacitaBatteria = setCapacitaBatteria(tipo);
 	}
 
+	public Auto(){
+		}
+	
+	
 	public String getTarga() {
 		return targa;
 	}
@@ -33,11 +39,11 @@ public class Auto {
 		this.targa = targa;
 	}
 
-	public Utente getProprietario() {
+	public String getProprietario() {
 		return proprietario;
 	}
 
-	public void setProprietario(Utente proprietario) {
+	public void setProprietario(String proprietario) {
 		this.proprietario = proprietario;
 	}
 
@@ -49,13 +55,13 @@ public class Auto {
     	
     	switch(tipo) {
     	
-    	case "Berlina": return 65;
+    	case "Berlina (65 kWh)": return 65;
     	
-    	case "Suv": return 100;
+    	case "Suv (100 kWh)": return 100;
     	
-    	case "Utilitaria": return 40;
+    	case "Utilitaria (40 kWh)": return 40;
     	
-    	case "Sportiva": return 75;
+    	case "Sportiva (75 kWh)": return 75;
     	
     	default: return 0;	
     	
@@ -64,12 +70,12 @@ public class Auto {
 		
 	}
 
-	public int getStatoCarica() {
-		return statoCarica;
+	public double getStatoCarica() {
+		return statoCaricaIniziale;
 	}
 
-	public void setStatoCarica(int statoCarica) {
-		this.statoCarica = statoCarica;
+	public void setStatoCarica(double statoCarica) {
+		this.statoCaricaIniziale = statoCarica;
 	}
 
 	public String getModello() {
@@ -78,6 +84,26 @@ public class Auto {
 
 	public void setModello(String modello) {
 		this.modello = modello;
+	}
+
+	public LocalDateTime getInizioRicarica() {
+		return inizioRicarica;
+	}
+
+	public void setInizioRicarica(LocalDateTime inizioRicarica) {
+		this.inizioRicarica = inizioRicarica;
+	}
+
+	public String getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
+	}
+
+	public Colonnina getColonna() {
+		return colonna;
 	}
 	
 	

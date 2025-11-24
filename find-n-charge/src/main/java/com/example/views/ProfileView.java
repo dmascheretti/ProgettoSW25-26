@@ -3,91 +3,99 @@ package com.example.views;
 import com.example.MainLayout;
 import com.example.models.Auto;
 import com.example.models.Utente;
+import com.example.database.FirebaseAutoService;
+import com.example.database.FirebaseService;
 import com.vaadin.flow.component.Text;
+import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.html.Span;
+import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.textfield.PasswordField;
+import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.VaadinSession;
-import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.textfield.PasswordField;
-import com.vaadin.flow.component.textfield.TextField;
-import com.vaadin.flow.component.notification.Notification;
-import com.vaadin.flow.component.notification.NotificationVariant;
-import com.vaadin.flow.data.binder.Binder;
-import com.vaadin.flow.component.combobox.ComboBox;
-import com.example.database.FirebaseService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.vaadin.flow.component.orderedlayout.FlexComponent.Alignment;
 
 @Route(value = "profilo", layout = MainLayout.class)
 @PageTitle("Find&Charge - Profilo")
-
 public class ProfileView extends VerticalLayout {
-	
-	private final FirebaseService firebaseService;
-	// Classe per le informazioni utente e area personale
-	public ProfileView(FirebaseService firebaseService) {
+
+    private final FirebaseService firebaseService;
+    private final FirebaseAutoService firebaseAutoService = new FirebaseAutoService();
+
+    public ProfileView(FirebaseService firebaseService) {
         this.firebaseService = firebaseService;
-		setSpacing(true);
+
+        setSpacing(true);
         setPadding(true);
+
+        // Prendi utente dalla sessione (controllo null per sicurezza)
         Utente utente = (Utente) VaadinSession.getCurrent().getAttribute("utente");
-        
+        if (utente == null) {
+            // Comportamento di fallback (puoi cambiare: redirect, notifica, ecc.)
+            add(new Paragraph("Utente non trovato. Effettua il login."));
+            return;
+        }
+
+        // Header
         H3 titolo = new H3();
         titolo.getStyle().set("color", "#008000");
         Span userSpan = new Span(utente.getUsername());
         userSpan.getStyle()
-                .set("color", "#FF5722")  
+                .set("color", "#FF5722")
                 .set("font-weight", "bold");
+        titolo.add(new Text("Ciao "), userSpan, new Text("! Ecco la tua pagina di profilo"));
 
-        titolo.add(new Text("Ciao "), userSpan, new Text("!\n Ecco la tua pagina di profilo"));
-		Paragraph nome = new Paragraph("Nome: "+utente.getNome());
-		Paragraph cognome = new Paragraph("Cognome: "+utente.getCognome());
-		Paragraph mail = new Paragraph("Mail: "+utente.getEmail());
-		add(titolo, nome, cognome, mail);
-		
-		TextField emailField = new TextField("Nuova Email");
-		Button cambiaMailBtn = new Button("Aggiorna Email");
+        Paragraph nome = new Paragraph("Nome: " + utente.getNome());
+        Paragraph cognome = new Paragraph("Cognome: " + utente.getCognome());
+        Paragraph mail = new Paragraph("Mail: " + utente.getEmail());
 
-		cambiaMailBtn.addClickListener(e -> {
-		    String nuovaEmail = emailField.getValue();
-		    if (nuovaEmail == null || nuovaEmail.isEmpty()) {
-		        Notification notif = Notification.show("Inserisci una email valida");
-		        notif.setPosition(Notification.Position.TOP_CENTER);
-		        return;
-		    }
+        // Email change controls
+        TextField emailField = new TextField("Nuova Email");
+        Button cambiaMailBtn = new Button("Aggiorna Email");
 
-		    getUI().ifPresent(ui -> {
-		        firebaseService.cambiaMail(utente, nuovaEmail)
-		            .thenRun(() -> {
-		                ui.access(() -> {
-		                    // aggiorna utente in sessione
-		                    utente.setEmail(nuovaEmail);
-		                    VaadinSession session = ui.getSession();
-		                    session.setAttribute("utente", utente);
+        cambiaMailBtn.addClickListener(e -> {
+            String nuovaEmail = emailField.getValue();
+            if (nuovaEmail == null || nuovaEmail.isEmpty()) {
+                Notification notif = Notification.show("Inserisci una email valida");
+                notif.setPosition(Notification.Position.TOP_CENTER);
+                return;
+            }
 
-		                    // aggiorna label e mostra notifica
-		                    mail.setText("Mail: " + nuovaEmail);
-		                    Notification notif = Notification.show("Email aggiornata correttamente!");
-		                    notif.setPosition(Notification.Position.TOP_CENTER);
-		                    notif.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+            getUI().ifPresent(ui -> {
+                firebaseService.cambiaMail(utente, nuovaEmail)
+                        .thenRun(() -> ui.access(() -> {
+                            // aggiorna utente in sessione
+                            utente.setEmail(nuovaEmail);
+                            VaadinSession session = ui.getSession();
+                            session.setAttribute("utente", utente);
 
-		                    emailField.clear();
-		                });
-		            })
-		            .exceptionally(ex -> {
-		                ui.access(() -> {
-		                    Notification notif = Notification.show("Inserisci una mail valida!");
-		                    notif.setPosition(Notification.Position.TOP_CENTER);
-		                    notif.addThemeVariants(NotificationVariant.LUMO_ERROR);
-		                });
-		                return null;
-		            });
-		    });
-		});
+                            // aggiorna label e mostra notifica
+                            mail.setText("Mail: " + nuovaEmail);
+                            Notification notif = Notification.show("Email aggiornata correttamente!");
+                            notif.setPosition(Notification.Position.TOP_CENTER);
+                            notif.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
 
+                            emailField.clear();
+                        }))
+                        .exceptionally(ex -> {
+                            ui.access(() -> {
+                                Notification notif = Notification.show("Errore aggiornamento email: " + ex.getMessage());
+                                notif.setPosition(Notification.Position.TOP_CENTER);
+                                notif.addThemeVariants(NotificationVariant.LUMO_ERROR);
+                            });
+                            return null;
+                        });
+            });
+        });
+
+        // Password change (locale - se vuoi integrazione con Firebase, sostituire)
         PasswordField passwordField = new PasswordField("Nuova Password");
         Button cambiaPwdBtn = new Button("Aggiorna Password");
         cambiaPwdBtn.addClickListener(e -> {
@@ -104,49 +112,109 @@ public class ProfileView extends VerticalLayout {
         // --- Aggiungi Auto ---
         TextField targaField = new TextField("Targa");
         TextField modelloField = new TextField("Modello");
-       
+
         ComboBox<String> tipoField = new ComboBox<>("Tipo di auto");
         tipoField.setItems("Berlina (65 kWh)", "Suv (100 kWh)", "Sportiva (75 kWh)", "Utilitaria (40 kWh)");
         tipoField.setPlaceholder("Seleziona il tipo");
         tipoField.setAllowCustomValue(false);
-       
+
         Button aggiungiAutoBtn = new Button("Aggiungi Auto");
+
         aggiungiAutoBtn.addClickListener(e -> {
-            String targa = targaField.getValue();
-            String modello = modelloField.getValue();
+
+            String targa = targaField.getValue() != null ? targaField.getValue().trim() : "";
+            String modello = modelloField.getValue() != null ? modelloField.getValue().trim() : "";
             String tipo = tipoField.getValue();
-            if (!targa.isEmpty() && !modello.isEmpty()) {
-                if (utente.getAutoList() == null) {
-                    utente.setAutoList(new java.util.ArrayList<>());
-                }
-                utente.getAutoList().add(new Auto(targa, modello, tipo, utente));
-                Notification.show("Auto aggiunta correttamente!");
-                targaField.clear();
-                modelloField.clear();
-            } else {
+
+            if (targa.isEmpty() || modello.isEmpty() || tipo == null || tipo.isEmpty()) {
                 Notification.show("Compila tutti i campi dell’auto");
+                return;
             }
+
+            // Crea l'oggetto auto con l'utente (passa l'oggetto utente se il costruttore lo richiede)
+            Auto auto = new Auto(targa, modello, tipo, utente.getUsername());
+
+            // verificaTarga deve restituire CompletableFuture<Auto> (auto esistente) o null se non esiste
+            firebaseAutoService.verificaTarga(targa).thenAccept(autoDB -> {
+
+                getUI().ifPresent(ui -> ui.access(() -> {
+
+                    if (autoDB != null) {
+                        // AUTO GIÀ ESISTE
+                        Notification n = Notification.show(
+                                "La targa è già registrata nel sistema!",
+                                4000,
+                                Notification.Position.TOP_CENTER
+                        );
+                        n.addThemeVariants(NotificationVariant.LUMO_ERROR);
+                        return;
+                    }
+
+                    // AUTO NON ESISTE: SALVA
+                    firebaseAutoService.salvaAuto(auto)
+                            .thenRun(() -> ui.access(() -> {
+                                Notification n = Notification.show(
+                                        "Auto registrata correttamente!",
+                                        3000,
+                                        Notification.Position.TOP_CENTER
+                                );
+                                n.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+
+                                // aggiorna modello locale utente
+                                if (utente.getAutoList() != null) {
+                                    utente.getAutoList().add(auto);
+                                }
+
+                                // pulisci campi
+                                targaField.clear();
+                                modelloField.clear();
+                                tipoField.clear();
+                            }))
+                            .exceptionally(ex -> {
+                                ui.access(() -> {
+                                    Notification n = Notification.show(
+                                            "Errore: " + ex.getMessage(),
+                                            4000,
+                                            Notification.Position.TOP_CENTER
+                                    );
+                                    n.addThemeVariants(NotificationVariant.LUMO_ERROR);
+                                });
+                                return null;
+                            });
+
+                })); // fine ui.access
+
+            }).exceptionally(ex -> {
+                // gestione eventuale errore nella verifica targa
+                getUI().ifPresent(ui -> ui.access(() -> {
+                    Notification n = Notification.show(
+                            "Errore durante la verifica targa: " + ex.getMessage(),
+                            4000,
+                            Notification.Position.TOP_CENTER
+                    );
+                    n.addThemeVariants(NotificationVariant.LUMO_ERROR);
+                }));
+                return null;
+            });
         });
 
-        HorizontalLayout confAuto=new HorizontalLayout(targaField, modelloField, tipoField);
+        // Layout e aggiunta componenti (solo qui, una volta)
+        HorizontalLayout confAuto = new HorizontalLayout(targaField, modelloField, tipoField);
         confAuto.setSpacing(true);
-        // Layout finale
+
         add(
-            titolo,
-            nome,
-            cognome,
-            mail,
-            emailField,
-            cambiaMailBtn,
-            passwordField,
-            cambiaPwdBtn,
-            confAuto,
-            aggiungiAutoBtn
+                titolo,
+                nome,
+                cognome,
+                mail,
+                emailField,
+                cambiaMailBtn,
+                passwordField,
+                cambiaPwdBtn,
+                confAuto,
+                aggiungiAutoBtn
         );
 
         setDefaultHorizontalComponentAlignment(Alignment.START);
-	}}
-    
-	//QUI DA IMPLEMENTARE I CAMBIA PASSWORD E CAMBIA MAIL CON THENRUN
-
-
+    }
+}
