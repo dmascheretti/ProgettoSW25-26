@@ -193,6 +193,9 @@ public class AdminDashboardView extends VerticalLayout implements AfterNavigatio
 			getUI().ifPresent(ui -> ui.access(() -> colonnineTotaliCard.setNumber("Errore")));
 			return null;
 		});
+		
+
+		cs.inizializza("Libera").thenRun(() ->{
 		cs.aggiornaStato("Prenotata").thenRun(() -> {
 			fb.contaColonnineLG("Libera").thenAccept(num -> {
 				getUI().ifPresent(ui -> ui.access(() -> colonnineLibereCard.setNumber(num.toString())));
@@ -201,6 +204,8 @@ public class AdminDashboardView extends VerticalLayout implements AfterNavigatio
 				return null;
 			});
 		});
+		});
+		
 		fb.contaColonnineLG("Manutenzione").thenAccept(num -> {
 
 			String colonnineGuaste = num.toString();

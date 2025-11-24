@@ -540,7 +540,7 @@ public class FirebaseService {
 				if(dataSnapshot.exists()) {
 					for (DataSnapshot snap : dataSnapshot.getChildren()) {
                     Prenotazione p = snap.getValue(Prenotazione.class);
-                    if (p != null && !lista.contains(p.getNomeColonnina())) {
+                    if (p != null && !lista.contains(p.getNomeColonnina()) && p.getData().equals(LocalDate.now().toString())) {
                         lista.add(p.getNomeColonnina());
                     }
                 }

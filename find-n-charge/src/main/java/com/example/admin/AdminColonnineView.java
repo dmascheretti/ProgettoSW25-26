@@ -183,7 +183,7 @@ public class AdminColonnineView extends VerticalLayout {
 	            Double.parseDouble(latField.getValue()),
 	            Double.parseDouble(lonField.getValue()),
 	            indirizzoField.getValue(),
-	            comuneField.getValue()
+	            comuneField.getValue(), 0
 	        );
 
 	        firebaseService.salvaColonnina(nuova).thenAccept(v -> {
