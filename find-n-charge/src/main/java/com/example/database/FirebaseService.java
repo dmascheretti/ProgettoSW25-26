@@ -944,4 +944,45 @@ public class FirebaseService {
 	
 	
 	
-}
+	public CompletableFuture<Integer[]> contaPrenotazioniGiorni(){
+		CompletableFuture<Integer[]> future= new CompletableFuture();
+		prenotazioni.addListenerForSingleValueEvent(new ValueEventListener() {
+
+			// Se li legge senza problemi
+			@Override
+			public void onDataChange(DataSnapshot dataSnapshot) {
+				Integer[] array= new Integer[7];
+					
+					for (DataSnapshot snap : dataSnapshot.getChildren()) {
+						Prenotazione p= snap.getValue(Prenotazione.class);
+						if (p != null && p.getData() != null) {
+		                    try {
+		                        LocalDate data = LocalDate.parse(p.getData());
+		                        int giorno = data.getDayOfWeek().getValue();
+		                        array[giorno - 1]++;
+		                    } catch (Exception e) {
+		                        System.err.println("Errore: ");
+		                    }
+		                }
+		            }
+
+		            future.complete(array);
+					
+			}
+
+			// Se trova errori
+			@Override
+			public void onCancelled(DatabaseError databaseError) {
+				System.err.println("Errore nel caricamento colonnine: " + databaseError.getMessage());
+				future.completeExceptionally(databaseError.toException());
+			}
+		});
+		return future;
+	}
+		
+		
+		
+		
+		
+		
+	}
