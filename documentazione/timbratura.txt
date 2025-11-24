@@ -92,7 +92,7 @@ Tutte le fasi precedenti sono contenute all'interno del file meeting
 			20.45-21.45 Aggiunta classe e dipendenze qr code + pulsante per la visualizzazione e aggiunta immagini alle colonnine quando si clicca sul marker
 
 21/11/2025		Mascheretti Davide
-			16.00-18.00 Implementazione cambio stato colonnina se esiste una prenotazione nello slot di tempo corrispondente al tempo reale e cambio colore marker.
+			16.00-18.00 Implementazione cambio stato colonnina se esiste una prenotazione nello slot di tempo corrispondente al tempo reale e cambio colore marker + inserimento 			immagini colonnine
 
 21/11/2025              Morgera Claudio
                         11.00-13.30 Implementazione logica per cambiare la password e la mail dell‘utente e aggiungere una macchina al profilo.
@@ -101,6 +101,13 @@ Tutte le fasi precedenti sono contenute all'interno del file meeting
 			11.30-12.30 Modifiche nella dashboard admin per vedere dati aggiornati e creazione classi per dividere firebaseservice (ora è troppo lunga e complessa) + 				refactoring	
 22/11/2025              Morgera Claudio
                         11.00-12.00 Salvataggio delle modifiche della mail e della password nel database e piccole aggiunte per estetica di successo ed errore per quest‘ultime.
+			11.00-12.00 Iniziata divisione metodi firebaseService
+
+23/11/2025		Mascheretti Davide
+			11.00-12.00 Conclusa divisione metodi firebaseService
+
+24/11/2025		Mascheretti Davide
+			14.30-15.30 + 17.00-18.00 Risoluzione issue sul colore marker in base allo stato delle colonnine + implementazione funzione per grafico dashboard admin
 
 			
 			

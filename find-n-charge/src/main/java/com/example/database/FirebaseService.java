@@ -21,6 +21,7 @@ import com.example.models.Utente;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import com.google.api.services.storage.model.Notification;
@@ -952,10 +953,11 @@ public class FirebaseService {
 			@Override
 			public void onDataChange(DataSnapshot dataSnapshot) {
 				Integer[] array= new Integer[7];
+				Arrays.fill(array, 0);
 					
 					for (DataSnapshot snap : dataSnapshot.getChildren()) {
 						Prenotazione p= snap.getValue(Prenotazione.class);
-						if (p != null && p.getData() != null) {
+						if (p != null && p.getData() != null ) {
 		                    try {
 		                        LocalDate data = LocalDate.parse(p.getData());
 		                        int giorno = data.getDayOfWeek().getValue();
