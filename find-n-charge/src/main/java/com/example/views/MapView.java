@@ -290,8 +290,7 @@ public class MapView extends HorizontalLayout {
 
 						// Controlla lo stato e in base a questo assegna il colore del marker
 						"      if (st === 'libera') {" + "          selectedIcon = greenIcon;"
-						+ "      } else if (st === 'prenotata') {" + "          selectedIcon = yellowIcon;"
-						+ "      } else if (st === 'occupata') {" + "          selectedIcon = redIcon;"
+						+ "      } else if (st === 'prenotata') {" + "          selectedIcon = redIcon;"
 						+ "      } else {" + "          selectedIcon = greyIcon;" + // Default
 						"      }" +
 
