@@ -55,6 +55,41 @@ public class ProfileView extends VerticalLayout {
         Paragraph nome = new Paragraph("Nome: " + utente.getNome());
         Paragraph cognome = new Paragraph("Cognome: " + utente.getCognome());
         Paragraph mail = new Paragraph("Mail: " + utente.getEmail());
+        
+        HorizontalLayout hl = new HorizontalLayout();
+        hl.setWidthFull();
+        hl.setPadding(true);
+        hl.setSpacing(true);
+
+        firebaseAutoService.listaAutoUtente(utente).thenAccept(lista -> {
+            getUI().ifPresent(ui -> ui.access(() -> {
+
+                hl.removeAll();
+
+                for (Auto a : lista) {
+
+                    VerticalLayout card = new VerticalLayout();
+                    card.setPadding(true);
+                    card.setSpacing(false);
+                    card.setWidth("350px");
+                    card.getStyle().set("border", "1px solid #e0e0e0");
+                    card.getStyle().set("border-radius", "12px");
+                    card.getStyle().set("box-shadow", "0 2px 8px rgba(0,0,0,0.10)");
+                    card.getStyle().set("background-color", "white");
+
+                    H3 titolo2 = new H3(a.getModello());
+                    titolo.getStyle().set("margin-bottom", "0");
+
+                    Paragraph targa = new Paragraph("Targa: " + a.getTarga());
+                    Paragraph carica = new Paragraph("Carica residua: " + a.getStatoCarica() + "%");
+
+                    card.add(titolo2, targa, carica);
+
+                    hl.add(card);
+                }
+            }));
+        });
+
 
         // Email change controls
         TextField emailField = new TextField("Nuova Email");
@@ -207,6 +242,7 @@ public class ProfileView extends VerticalLayout {
                 nome,
                 cognome,
                 mail,
+                hl,
                 emailField,
                 cambiaMailBtn,
                 passwordField,

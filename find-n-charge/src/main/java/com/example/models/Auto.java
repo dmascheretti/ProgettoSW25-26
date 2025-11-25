@@ -25,6 +25,7 @@ public class Auto {
 		this.proprietario = proprietario;
 		this.setTipo(tipo);
 		this.capacitaBatteria = setCapacitaBatteria(tipo);
+		this.setStatoCarica(100);
 	}
 
 	public Auto(){

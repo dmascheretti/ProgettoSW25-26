@@ -1,5 +1,7 @@
 package com.example.database;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -95,4 +97,41 @@ public class FirebaseAutoService {
 	        auto.setStatoCarica(nuovoSoC);
 	        return nuovoSoC;
 	    }
+	 
+	 public CompletableFuture <List<Auto>> listaAutoUtente(Utente u){
+			CompletableFuture <List<Auto>> future= new CompletableFuture<>();
+			ArrayList<Auto> lista= new ArrayList<>();
+			
+			Query q = automobile.orderByChild("proprietario").equalTo(u.getUsername());
+			q.addListenerForSingleValueEvent(new ValueEventListener() {
+
+				@Override
+				public void onDataChange(DataSnapshot snapshot) {
+					
+					lista.clear();
+					
+					if(snapshot.exists()) {
+						for(DataSnapshot d : snapshot.getChildren()) {
+							lista.add(d.getValue(Auto.class));
+							
+					}	
+				}
+
+					future.complete(lista);
+					
+				}
+				@Override
+				public void onCancelled(DatabaseError databaseError) {
+					// Gestione errore standard, come negli altri metodi
+					System.err.println("Errore nel contare le colonnine: " + databaseError.getMessage());
+					future.completeExceptionally(databaseError.toException());
+				}
+				
+				
+				
+			});
+			return future;
+			
+		}
+			
 }
