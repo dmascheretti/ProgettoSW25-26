@@ -376,24 +376,34 @@ public class AdminDashboardView extends VerticalLayout implements AfterNavigatio
 	 * grafico quando sono pronti.
 	 */
 	private void loadChartData() {
-		/*
-		 * // Avvia entrambe le chiamate in parallelo CompletableFuture<Integer[]>
-		 * futureBookings = fb.getDatiGraficoPrenotazioni();
-		 * CompletableFuture<Integer[]> futureUsers = fb.getDatiGraficoUtenti();
-		 * 
-		 * // Quando sono finite entrambe le chiamate:
-		 * CompletableFuture.allOf(futureBookings, futureUsers).thenAccept(voidResult ->
-		 * {
-		 * 
-		 * // Ottiene i dati da Firebase Integer[] bookingsData = futureBookings.join();
-		 * Integer[] usersData = futureUsers.join();
-		 * 
-		 * getUI().ifPresent(ui -> { ui.access(() -> { // Aggiorna il grafico con i
-		 * nuovi dati bookingsChart.updateSeries(new Series<>("Prenotazioni",
-		 * bookingsData), new Series<>("Nuovi Utenti", usersData)); }); });
-		 * 
-		 * }).exceptionally(ex -> { // Gestione errori ex.printStackTrace(); return
-		 * null; });
-		 */
+					
+		// Avvia entrambe le chiamate in parallelo
+		CompletableFuture<Integer[]> futureBookings = fb.contaPrenotazioniGiorni();
+		//CompletableFuture<Integer[]> futureUsers = fb.getDatiGraficoUtenti();
+
+		// Quando sono finite entrambe le chiamate:
+		//CompletableFuture.allOf(futureBookings, futureUsers).thenAccept(voidResult -> {
+		CompletableFuture.allOf(futureBookings).thenAccept(voidResult -> {
+
+			// Ottiene i dati da Firebase
+			Integer[] bookingsData = futureBookings.join();
+			//Integer[] usersData = futureUsers.join();
+
+			getUI().ifPresent(ui -> {
+				ui.access(() -> {
+					// Aggiorna il grafico con i nuovi dati
+					bookingsChart.updateSeries(new Series<>("Prenotazioni", bookingsData)
+							//,new Series<>("Nuovi Utenti", usersData)
+							);
+				});
+			});  
+    
+		}).exceptionally(ex -> {
+			// Gestione errori
+			ex.printStackTrace();
+			return null;
+		});
+					
+		
 	}
 }
