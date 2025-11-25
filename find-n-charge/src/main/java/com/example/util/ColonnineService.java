@@ -63,6 +63,7 @@ public class ColonnineService {
 	        List<CompletableFuture<Void>> listaCF = new ArrayList<>();
 	        
 	        for (Colonnina c : lista) {
+	        	if (!c.getStato().equals("Manutenzione"))
 	            listaCF.add(fb.cambiaStatoColonnina(c.getId(), msg));
 	        }
 

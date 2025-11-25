@@ -37,6 +37,8 @@ public class PrenotazioneService {
 	}
 	
 	public CompletableFuture<Boolean> verifica(Colonnina c, String data, String orario) {
+		
+		
 		CompletableFuture<Boolean> future = new CompletableFuture<>();
 
 		firebaseService.cercaPrenotazione(c, data, orario).thenAccept(ris -> {
@@ -76,6 +78,11 @@ public class PrenotazioneService {
 
 	public CompletableFuture<Boolean> prenota(Colonnina c, Utente u, String data, String orario) {
 		CompletableFuture<Boolean> future = new CompletableFuture<>();
+		
+		if(c.getStato().equals("Manutenzione")) {
+			future.complete(false);
+			return future;
+		}
 
 		verifica(c, data, orario).thenAccept(ris -> {
 			/*
