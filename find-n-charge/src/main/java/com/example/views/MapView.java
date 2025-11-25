@@ -7,15 +7,15 @@
 package com.example.views;
 
 import com.example.MainLayout;
+import com.example.components.Sidebar;
 import com.example.models.Colonnina;
 import com.example.models.Utente;
 import com.example.util.ColonnineService;
 import com.example.util.DataValidator;
 import com.example.util.PrenotazioneService;
+
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -25,21 +25,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.ClientCallable;
 import com.vaadin.flow.component.UI;
-import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.combobox.ComboBox;
-import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.html.H3;
-import com.vaadin.flow.component.html.Image;
-import com.vaadin.flow.component.html.Span;
-import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
-import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
 import com.vaadin.flow.server.VaadinSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 @PageTitle("Find&Charge - Mappa")
@@ -52,14 +45,8 @@ public class MapView extends HorizontalLayout {
 	private String mapId = "map-container-" + System.currentTimeMillis(); // Id univoco -> evita conflitti
 
 	// Componenti per la Sidebar
-	private VerticalLayout stationSidebar;
-	private H3 sidebarTitle;
-	private VerticalLayout sidebarDetails;
-	private DatePicker bookingDatePicker; // Calendario interattivo
-	private ComboBox<String> bookingTimeSlot; // Menù a tendina con gli slot orari
-	private Button prenotaButton;
+	private Sidebar stationSidebar;
 	private ColonnineService colonnineService;
-	private com.vaadin.flow.shared.Registration prenotaButtonListener; // Per avere un solo linstener attivo
 
 	// Serve Firebase con la lista della colonnine del database
 	private FirebaseService firebaseService;
@@ -71,8 +58,8 @@ public class MapView extends HorizontalLayout {
 	public MapView(@Autowired FirebaseService firebaseService, ColonnineService colonnineService) {
 
 		this.firebaseService = firebaseService;
-		this.prenotazioneService = new PrenotazioneService(firebaseService);
-		this.colonnineService = colonnineService;
+        this.prenotazioneService = new PrenotazioneService(firebaseService);
+        this.colonnineService = colonnineService;
 
 		setSizeFull();
 		setPadding(false);
@@ -80,7 +67,8 @@ public class MapView extends HorizontalLayout {
 		getStyle().set("height", "100vh"); // Altrimenti la mappa collassa a 0px
 
 		// Crea la sidebar
-		stationSidebar = createSidebar();
+		stationSidebar = new Sidebar();
+		reservationLogic();
 
 		// Crea il contenitore per la mappa
 		mapDiv = new Div();
@@ -104,119 +92,56 @@ public class MapView extends HorizontalLayout {
 
 	}
 
-	/**
-	 * Crea la scheda colonnina
-	 */
-	private VerticalLayout createSidebar() {
+	private void reservationLogic() {
 
-		VerticalLayout sidebar = new VerticalLayout();
-		sidebar.setWidth("35%");
-		sidebar.setHeightFull();
-		sidebar.getStyle().set("background-color", "var(--lumo-base-color)")
-				.set("border-left", "1px solid var(--lumo-contrast-20pct)").set("padding", "var(--lumo-space-m)");
+		stationSidebar.getPrenotaButton().addClickListener(e -> {
+        
+        LocalDate data = stationSidebar.getDataSelezionata();
+        String orario = stationSidebar.getOrarioSelezionato();
+        Utente utenteCorrente = (Utente) VaadinSession.getCurrent().getAttribute("utente");
 
-		// Di default deve essere nascosta
-		sidebar.setVisible(false);
+        //Controlla che l'utente sia loggato, altrimenti viene reindirizzato alla pagina di login
+        if (utenteCorrente == null) {
+            Notification.show("Errore: Utente non loggato.", 3000, Notification.Position.TOP_CENTER)
+                    .getElement().getThemeList().add("error");
+            UI.getCurrent().navigate("login"); 
+            return;
+        }
 
-		Button closeButton = new Button(VaadinIcon.CLOSE.create(), e -> sidebar.setVisible(false));
-		closeButton.getStyle().set("align-self", "flex-end");
-		closeButton.getElement().getThemeList().add("success");
+        //Deve essere selezionata una colonnina
+        if (colonninaSelezionata == null) {
+            Notification.show("Errore: Nessuna colonnina selezionata.", 3000, Notification.Position.TOP_CENTER)
+                    .getElement().getThemeList().add("error");
+            return;
+        }
 
-		sidebarTitle = new H3("Dettagli");
-		sidebarDetails = new VerticalLayout();
-		sidebarDetails.setSpacing(false); // Rimuove spazio extra tra le righe
-		sidebarDetails.setPadding(false); // Rimuove padding
+        // Verifica che non ci sia già una prenotazione per quello slot
+        String errore = DataValidator.verificaPrenotazione(colonninaSelezionata.getId(), data, orario);
+        if (errore != null) {
+            Notification.show(errore, 3000, Notification.Position.TOP_CENTER)
+                    .getElement().getThemeList().add("error");
+            return;
+        }
 
-		bookingDatePicker = new DatePicker("Giorno");
-		bookingDatePicker.setMin(LocalDate.now()); // Non si può prenotare nel passato
-		bookingDatePicker.setValue(LocalDate.now()); // Valore di default
-		bookingDatePicker.getStyle().set("width", "100%");
-		bookingDatePicker.getStyle().set("--lumo-primary-text-color", "var(--lumo-success-text-color)");
-
-		bookingTimeSlot = new ComboBox<>("Orario (slot 30 min)");
-		bookingTimeSlot.setEnabled(false);
-
-		bookingDatePicker.addValueChangeListener(event -> {
-
-			LocalDate dataSelezionata = event.getValue();
-
-			// Se la modifica è stata fatta da Java (nel metodo onMarkerClick()), ignorala
-			// ed esci
-			if (!event.isFromClient()) {
-				return;
-			}
-
-			// Se l'utente ha tolto la data, non genero slot
-			if (dataSelezionata == null) {
-				bookingTimeSlot.clear(); // Pulisce gli slot vecchi
-				bookingTimeSlot.setEnabled(false); // Disabilita la tendina degli orari
-				return; // Esce dal listener
-			}
-
-			// La data è stata inserita, quindi abilita la tendina
-			bookingTimeSlot.setEnabled(true);
-
-			// Genera i time slots
-			bookingTimeSlot.setItems(generateTimeSlots(dataSelezionata));
-
+        //Scrive la prenotazione nel Firebase
+        String dataString = data.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        
+        prenotazioneService.prenota(colonninaSelezionata, utenteCorrente, dataString, orario)
+            .thenAccept(success -> {
+                getUI().ifPresent(ui -> ui.access(() -> {
+                    if (success) {
+                        Notification.show("Prenotazione confermata per " + orario + " il " + dataString, 
+                                3000, Notification.Position.TOP_CENTER)
+                                .getElement().getThemeList().add("success");
+                        stationSidebar.setVisible(false);
+                    } else {
+                        Notification.show("Slot già occupato o errore server.", 4000, Notification.Position.TOP_CENTER)
+                                .getElement().getThemeList().add("error");
+                    }
+                }));
+            });
 		});
 
-		bookingTimeSlot.getStyle().set("width", "100%");
-		bookingTimeSlot.getStyle().set("--lumo-primary-text-color", "var(--lumo-success-text-color)");
-
-		prenotaButton = new Button("Prenota ora");
-		prenotaButton.getElement().getThemeList().add("success");
-		prenotaButton.getStyle().set("margin-top", "var(--lumo-space-l)");
-
-		sidebar.add(closeButton, sidebarTitle, sidebarDetails, bookingDatePicker, bookingTimeSlot, prenotaButton);
-
-		return sidebar;
-	}
-
-	/**
-	 * Metodo per generare la lista degli slot orari. Se la data è oggi, parte
-	 * dall'orario attuale arrotondato alla mezz'ora successiva. Se la data è
-	 * futura, parte da mezzanotte.
-	 * 
-	 * @param date La data per cui generare gli slot.
-	 * @return Lista di stringhe formato "HH:mm".
-	 */
-	private List<String> generateTimeSlots(LocalDate date) {
-		List<String> slots = new ArrayList<>();
-
-		// Orario di partenza
-		LocalTime time;
-
-		// Se la data selezionata è oggi, calcola la prossima mezz'ora, altrimenti parte
-		// da mezzanotte
-		if (date.equals(LocalDate.now())) {
-			LocalTime now = LocalTime.now();
-			if (now.getMinute() < 30) {
-				time = now.withMinute(30).withSecond(0).withNano(0);
-			} else {
-				time = now.plusHours(1).withMinute(0).withSecond(0).withNano(0);
-			}
-
-			if (time.equals(LocalTime.MIDNIGHT)) { // Se siamo nell'ultima mezz'ora del giorno (dopo le 23.40), allora
-													// la lista di slot è vuota per oggi
-				return slots;
-			}
-		} else {
-			time = LocalTime.MIDNIGHT;
-		}
-
-		// Generazione slots fino al giorno successivo in formato "HH:mm"
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
-
-		while (true) {
-			slots.add(time.format(formatter));
-			LocalTime nextTime = time.plusMinutes(30);
-			if (nextTime.equals(LocalTime.MIDNIGHT))
-				break;
-			time = nextTime;
-		}
-
-		return slots;
 	}
 
 	/**
@@ -377,107 +302,7 @@ public class MapView extends HorizontalLayout {
 
 			// Controlla la variabile d'istanza
 			if (colonninaSelezionata != null) {
-				stationSidebar.setVisible(true);
-
-				// Mette i dati della colonnina nella sidebar
-				sidebarTitle.setText(colonninaSelezionata.getNome());
-				// Pulisci i dettagli vecchi
-				sidebarDetails.removeAll();
-
-				sidebarDetails.setAlignItems(Alignment.CENTER);
-
-				String immagine = colonninaSelezionata.getLinkImmagine();
-				Image image = new Image(immagine, "IMMAGINE COLONNINA");
-				image.setWidth("250px");
-				image.getStyle().set("margin-top", "10px").set("margin-bottom", "10px");
-				sidebarDetails.add(image);
-
-				sidebarDetails.add( // Span serve per poter mandare a capo le righe
-						new Span("Indirizzo: " + colonninaSelezionata.getIndirizzo() + ", "
-								+ colonninaSelezionata.getComune()),
-						new Span("Stato: " + colonninaSelezionata.getStato()));
-
-				// Pulisce i campi di prenotazione precedenti
-				bookingDatePicker.setValue(null);
-				bookingTimeSlot.setValue(null);
-				bookingTimeSlot.setEnabled(false);
-
-				// Deve esistere solo un listener alla volta per leggere la colonnina corretta
-				if (prenotaButtonListener != null) {
-					prenotaButtonListener.remove();
-					prenotaButtonListener = null; // Pulisce la variabile così sappiamo che è attivo un solo listener al
-													// massimo
-				}
-
-				// Logica di salvataggio prenotazione
-				prenotaButtonListener = prenotaButton.addClickListener(e -> {
-					/*
-					 * Salvo utente, data e orario al click
-					 */
-					Utente utenteCorrente = (Utente) VaadinSession.getCurrent().getAttribute("utente");
-					LocalDate dataSelezionata = bookingDatePicker.getValue();
-					String orarioSelezionato = bookingTimeSlot.getValue();
-
-					// se utente è null torno al login
-
-					if (utenteCorrente == null) {
-						Notification.show("Errore: Utente non loggato. Effettua il login per prenotare.", 3000,
-								Notification.Position.TOP_CENTER).getElement().getThemeList().add("error");
-
-						// In caso reindirizziamo alla pagina di login
-						getUI().ifPresent(ui1 -> ui.navigate(""));
-						return;
-					}
-
-					/*
-					 * Verifico con apposita classe errori riguardo colonnina, data e orario nulli.
-					 * Se non presenti non permette prenotazione.
-					 */
-
-					String errore = DataValidator.verificaPrenotazione(colonninaSelezionata.getId(), dataSelezionata,
-							orarioSelezionato);
-
-					if (errore != null) {
-						Notification.show(errore, 3000, Notification.Position.TOP_CENTER).getElement().getThemeList()
-								.add("error");
-						return;
-					}
-
-					// La data viene salvata qui per evitare eccezioni dati da LocalDate
-
-					String dataString = dataSelezionata.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-
-					/*
-					 * Chiamata di classe esterna per verifica sul database
-					 */
-					prenotazioneService.prenota(colonninaSelezionata, utenteCorrente, dataString, orarioSelezionato)
-							.thenAccept(ris -> {
-								getUI().ifPresent(ui1 -> ui1.access(() -> {
-
-									// Se prenotazione effettuata, ris==true
-
-									if (ris) {
-										Notification
-												.show("Prenotazione confermata per " + orarioSelezionato + " il "
-														+ dataString, 3000, Notification.Position.TOP_CENTER)
-												.getElement().getThemeList().add("success");
-
-										stationSidebar.setVisible(false);
-
-									}
-									// Prenotazione non effettuata, ris==false
-									else {
-										Notification.show(
-
-												"Impossibile effettuare la prenotazione, lo slot è già occupato", 4000,
-												Notification.Position.TOP_CENTER).getElement().getThemeList()
-												.add("error");
-									}
-
-								}));
-
-							});
-				});
+				stationSidebar.setDati(colonninaSelezionata);
 
 			} else {
 				Notification.show("Errore: Dati colonnina non trovati.", 2000, Notification.Position.TOP_CENTER)
