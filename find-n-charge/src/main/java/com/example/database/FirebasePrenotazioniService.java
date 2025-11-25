@@ -339,5 +339,14 @@ public class FirebasePrenotazioniService {
 		return future;
 
 	}
-
+	
+	/**
+	 * Metodo per estrarre la lista di orari in cui non è possibile fare una prenotazione perchè già occupati.
+	 * DA IMPLEMENTARE (Ora fake data per testing)
+	 */
+	public CompletableFuture<List<String>> getSlotsOccupati(String colonninaId, String data) {
+	    CompletableFuture<List<String>> future = new CompletableFuture<>();
+	    
+	    return future;
+	}
 }

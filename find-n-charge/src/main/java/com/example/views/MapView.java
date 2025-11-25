@@ -19,6 +19,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import com.example.database.FirebasePrenotazioniService;
 import com.example.database.FirebaseService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -51,6 +53,7 @@ public class MapView extends HorizontalLayout {
 	// Serve Firebase con la lista della colonnine del database
 	private FirebaseService firebaseService;
 	private PrenotazioneService prenotazioneService;
+	private FirebasePrenotazioniService fbp;
 	private List<Colonnina> colonnine;
 	private Colonnina colonninaSelezionata;
 	private ObjectMapper objectMapper = new ObjectMapper(); // Per tradurre gli oggetti da Java a JSON
@@ -59,6 +62,7 @@ public class MapView extends HorizontalLayout {
 
 		this.firebaseService = firebaseService;
         this.prenotazioneService = new PrenotazioneService(firebaseService);
+        this.fbp = new FirebasePrenotazioniService();
         this.colonnineService = colonnineService;
 
 		setSizeFull();
@@ -68,7 +72,9 @@ public class MapView extends HorizontalLayout {
 
 		// Crea la sidebar
 		stationSidebar = new Sidebar();
-		reservationLogic();
+		configuraGestioneOrari();	//Per gestire gli slot orari
+		reservationLogic();	//Per gestire le prenotazioni
+		
 
 		// Crea il contenitore per la mappa
 		mapDiv = new Div();
@@ -143,6 +149,27 @@ public class MapView extends HorizontalLayout {
 		});
 
 	}
+	
+	private void configuraGestioneOrari() {
+        stationSidebar.getBookingDatePicker().addValueChangeListener(e -> {
+            if (!e.isFromClient()) return;
+            
+            LocalDate dataScelta = e.getValue();
+            if (dataScelta == null) return;
+
+            if (colonninaSelezionata != null) {
+                
+                String dataString = dataScelta.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+
+                fbp.getSlotsOccupati(colonninaSelezionata.getId(), dataString)
+                    .thenAccept(listaOccupati -> {
+                        getUI().ifPresent(ui -> ui.access(() -> {
+                            stationSidebar.aggiornaOrari(dataScelta, listaOccupati);
+                        }));
+                    });
+            }
+        });
+    }
 
 	/**
 	 * Sovrascrive il metodo standard di Vaadin che viene chiamato automaticamente

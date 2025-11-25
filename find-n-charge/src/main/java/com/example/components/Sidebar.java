@@ -12,6 +12,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.example.database.FirebasePrenotazioniService;
 import com.example.database.FirebaseService;
 import com.example.models.Colonnina;
 import com.example.models.Utente;
@@ -36,15 +37,10 @@ public class Sidebar extends VerticalLayout {
 	private VerticalLayout details;
 	private DatePicker bookingDatePicker; // Calendario interattivo
 	private ComboBox<String> bookingTimeSlot; // Menù a tendina con gli slot orari
-	private FirebaseService firebaseService;
-	private PrenotazioneService prenotazioneService;
 	private Button prenotaButton;
-	private com.vaadin.flow.shared.Registration prenotaButtonListener; // Per avere un solo linstener attivo
+	private FirebasePrenotazioniService fbp;
 
 	public Sidebar() {
-
-		this.firebaseService = firebaseService;
-		this.prenotazioneService = new PrenotazioneService(firebaseService);
 
 		setWidth("35%");
 		setHeightFull();
@@ -71,31 +67,6 @@ public class Sidebar extends VerticalLayout {
 
 		bookingTimeSlot = new ComboBox<>("Orario (slot 30 min)");
 		bookingTimeSlot.setEnabled(false);
-
-		bookingDatePicker.addValueChangeListener(event -> {
-
-			LocalDate dataSelezionata = event.getValue();
-
-			// Se la modifica è stata fatta da Java (nel metodo onMarkerClick()), ignorala
-			// ed esci
-			if (!event.isFromClient()) {
-				return;
-			}
-
-			// Se l'utente ha tolto la data, non genero slot
-			if (dataSelezionata == null) {
-				bookingTimeSlot.clear(); // Pulisce gli slot vecchi
-				bookingTimeSlot.setEnabled(false); // Disabilita la tendina degli orari
-				return; // Esce dal listener
-			}
-
-			// La data è stata inserita, quindi abilita la tendina
-			bookingTimeSlot.setEnabled(true);
-
-			// Genera i time slots
-			bookingTimeSlot.setItems(generateTimeSlots(dataSelezionata));
-
-		});
 
 		bookingTimeSlot.getStyle().set("width", "100%");
 		bookingTimeSlot.getStyle().set("--lumo-primary-text-color", "var(--lumo-success-text-color)");
@@ -135,6 +106,21 @@ public class Sidebar extends VerticalLayout {
         setVisible(true);
         
 	}
+	
+	public void aggiornaOrari(LocalDate date, List<String> orariOccupati) {
+
+		//Generazione di tutti i time slots
+        List<String> slots = generateTimeSlots(date);
+        
+        //Toglie quelli occupati
+        if (orariOccupati != null && !orariOccupati.isEmpty()) {
+            slots.removeAll(orariOccupati);
+        }
+        
+        // Aggiorna i campi
+        bookingTimeSlot.setItems(slots);
+        bookingTimeSlot.setEnabled(!slots.isEmpty());
+    }
 	
 	/**
 	 * Metodo per generare la lista degli slot orari. Se la data è oggi, parte
@@ -181,6 +167,11 @@ public class Sidebar extends VerticalLayout {
 
 		return slots;
 	}
+	
+	public DatePicker getBookingDatePicker() {
+	    return bookingDatePicker;
+	}
+	
 	public LocalDate getDataSelezionata() {
         return bookingDatePicker.getValue();
     }
