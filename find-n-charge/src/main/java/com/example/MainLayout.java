@@ -38,7 +38,7 @@ public class MainLayout extends AppLayout {
 		Utente utente = (Utente) VaadinSession.getCurrent().getAttribute("utente");
 
 		H1 title = new H1("FIND&CHARGE");
-		if (!utente.equals(null)) {
+		if (utente != null) {
 			title.add(" | ");
 			title.add(utente.getUsername());
 		}

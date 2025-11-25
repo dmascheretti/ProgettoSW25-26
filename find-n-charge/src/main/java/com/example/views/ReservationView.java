@@ -120,7 +120,7 @@ public class ReservationView extends VerticalLayout {
 					dialogLayout.setAlignItems(FlexComponent.Alignment.CENTER);
 					dialog.add(dialogLayout);
 
-					H3 header = new H3(" R Code Prenotazione");
+					H3 header = new H3(" QR Code Prenotazione");
 
 					// Pulsante di chiusura dialog
 					Button closeButton = new Button(VaadinIcon.CLOSE.create(), e -> dialog.close());
