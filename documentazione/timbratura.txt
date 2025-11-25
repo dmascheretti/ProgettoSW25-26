@@ -109,5 +109,8 @@ Tutte le fasi precedenti sono contenute all'interno del file meeting
 24/11/2025		Mascheretti Davide
 			14.30-15.30 + 17.00-18.00 Risoluzione issue sul colore marker in base allo stato delle colonnine + implementazione funzione per grafico dashboard admin
 
+24/11/2025              Morgera Claudio
+                        13.30-16.00 Logica di calcolo per la ricarica dell‘auto e controllo per non salvare auto con stessa targa 
+
 			
 			
