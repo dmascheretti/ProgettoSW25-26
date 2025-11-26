@@ -161,7 +161,7 @@ public class MapView extends HorizontalLayout {
                 
                 String dataString = dataScelta.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 
-                fbp.getSlotsOccupati(colonninaSelezionata.getId(), dataString)
+                fbp.getSlotOccupati(colonninaSelezionata.getId(), dataString)
                     .thenAccept(listaOccupati -> {
                         getUI().ifPresent(ui -> ui.access(() -> {
                             stationSidebar.aggiornaOrari(dataScelta, listaOccupati);

@@ -342,11 +342,38 @@ public class FirebasePrenotazioniService {
 	
 	/**
 	 * Metodo per estrarre la lista di orari in cui non è possibile fare una prenotazione perchè già occupati.
-	 * DA IMPLEMENTARE (Ora fake data per testing)
 	 */
-	public CompletableFuture<List<String>> getSlotsOccupati(String colonninaId, String data) {
-	    CompletableFuture<List<String>> future = new CompletableFuture<>();
-	    
-	    return future;
+	public CompletableFuture<List<String>> getSlotOccupati(String colonnina, String data) {
+		CompletableFuture<List<String>> future = new CompletableFuture<>();
+		// cerco nel nodo prenotazioni
+		prenotazioni.addListenerForSingleValueEvent(new ValueEventListener() {
+			@Override
+			public void onDataChange(DataSnapshot dataSnapshot) {
+				// creo lista di prenotazioni
+				List<String> slot = new ArrayList<>();
+				for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+					Prenotazione p = snapshot.getValue(Prenotazione.class);
+					if(p.getData().equals(data) && p.getNomeColonnina().equals(colonnina))
+					slot.add(p.getInizio());
+				}
+
+				// finito il for salvo nel future la lista
+				future.complete(slot);
+
+			}
+
+			@Override 
+			public void onCancelled(DatabaseError databaseError) {
+				// TODO Auto-generated method stub
+				System.err.println("Errore nel caricamento prenotazioni: " + databaseError.getMessage());
+				future.completeExceptionally(databaseError.toException());
+
+			}
+
+		});
+
+		// ritorno la lista delle prenotazioni
+		return future;
 	}
+		
 }
