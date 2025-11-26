@@ -10,6 +10,7 @@ import java.time.format.DateTimeFormatter;
 
 import com.example.MainLayout;
 import com.example.components.Sidebar;
+import com.example.database.FirebaseAutoService;
 import com.example.database.FirebasePrenotazioniService;
 import com.example.database.FirebaseService;
 import com.example.models.Colonnina;
@@ -37,6 +38,7 @@ public class StationsView extends HorizontalLayout {
 	private Grid<Colonnina> colonGrid = new Grid<>(Colonnina.class);
 	private FirebaseService firebaseService = new FirebaseService(); // è un'istanza di FirebaseSystem
 	private FirebasePrenotazioniService fbp = new FirebasePrenotazioniService();
+	private FirebaseAutoService fba= new FirebaseAutoService();
 	private PrenotazioneService prenotazioneService = new PrenotazioneService(firebaseService);
 	private Sidebar stationSidebar;
 	private Colonnina colonninaSelezionata;
@@ -147,7 +149,7 @@ public class StationsView extends HorizontalLayout {
 				return;
 			}
 			
-			if (autoSelzionata == null) {
+			if (autoSelezionata == null) {
 				Notification.show("Nessuna auto selezionata.", 3000, Notification.Position.TOP_CENTER)
 				.getElement().getThemeList().add("error");
 				return;
@@ -189,6 +191,19 @@ public class StationsView extends HorizontalLayout {
 	
 	        });
 		});
+	}
+	
+	private void configuraAutoUtente() {
+        Utente utenteCorrente = (Utente) VaadinSession.getCurrent().getAttribute("utente");
+
+		fba.getTargheUtente(utenteCorrente)
+		.thenAccept(autoUtente -> {
+			
+			getUI().ifPresent(ui -> ui.access(() -> {
+				stationSidebar.setAuto(autoUtente);
+			}));
+		});
+		
 	}
 	
 	private void configuraGestioneOrari() {

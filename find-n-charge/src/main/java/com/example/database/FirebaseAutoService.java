@@ -133,5 +133,41 @@ public class FirebaseAutoService {
 			return future;
 			
 		}
+	 public CompletableFuture <List<String>> getTargheUtente(Utente u){
+			CompletableFuture <List<String>> future= new CompletableFuture<>();
+			ArrayList<String> lista= new ArrayList<>();
+			
+			Query q = automobile.orderByChild("proprietario").equalTo(u.getUsername());
+			q.addListenerForSingleValueEvent(new ValueEventListener() {
+
+				@Override
+				public void onDataChange(DataSnapshot snapshot) {
+					
+					lista.clear();
+					
+					if(snapshot.exists()) {
+						for(DataSnapshot d : snapshot.getChildren()) {
+							lista.add(d.getValue(Auto.class).getTarga());
+							
+					}	
+				}
+
+					future.complete(lista);
+					
+				}
+				@Override
+				public void onCancelled(DatabaseError databaseError) {
+					// Gestione errore standard, come negli altri metodi
+					System.err.println("Errore: " + databaseError.getMessage());
+					future.completeExceptionally(databaseError.toException());
+				}
+				
+				
+				
+			});
+			return future;
+			
+		}
+
 			
 }

@@ -21,14 +21,14 @@ public class Prenotazione {
 		
 	}
 	
-	public Prenotazione(String id, String nome ,String utente, String localDate, String inizio, String ts) {
+	public Prenotazione(String id, String nome ,String utente, String localDate, String inizio, String ts, String targa) {
 		this.id=id;
 		this.setNomeColonnina(nome);
 		this.utente=utente;
 		this.setData(localDate);
 		this.setInizio(inizio);
 		this.timestamp=ts;
-		this.setTarga("AAAAAA");
+		this.setTarga(targa);
 		
 	}
 

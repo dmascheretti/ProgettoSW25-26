@@ -9,6 +9,7 @@ import java.time.LocalDate;
 import java.util.concurrent.CompletableFuture;
 
 import com.example.database.FirebaseService;
+import com.example.models.Auto;
 import com.example.models.Colonnina;
 import com.example.models.Prenotazione;
 import com.example.models.Utente;
@@ -76,7 +77,7 @@ public class PrenotazioneService {
 	 * @return CompletableFuture in base al successo o errore della funzione
 	 */
 
-	public CompletableFuture<Boolean> prenota(Colonnina c, Utente u, String data, String orario) {
+	public CompletableFuture<Boolean> prenota(Colonnina c, Utente u, String data, String orario, String auto) {
 		CompletableFuture<Boolean> future = new CompletableFuture<>();
 		
 		if(c.getStato().equals("Manutenzione")) {
@@ -97,7 +98,7 @@ public class PrenotazioneService {
 			 * Se verifica restituisce future.complete (true) --> salvo la prenotazione
 			 */
 
-			Prenotazione p = new Prenotazione(generaId(),c.getId(), u.getUsername(), data, orario, LocalDate.now().toString());
+			Prenotazione p = new Prenotazione(generaId(),c.getId(), u.getUsername(), data, orario, LocalDate.now().toString(), auto);
 
 			// Chiamo funzione del database, se salvataggio completato future.complete(true)
 

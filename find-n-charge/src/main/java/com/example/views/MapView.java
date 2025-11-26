@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import com.example.database.FirebaseAutoService;
 import com.example.database.FirebasePrenotazioniService;
 import com.example.database.FirebaseService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -54,6 +55,7 @@ public class MapView extends HorizontalLayout {
 	private FirebaseService firebaseService;
 	private PrenotazioneService prenotazioneService;
 	private FirebasePrenotazioniService fbp;
+	private FirebaseAutoService fba;
 	private List<Colonnina> colonnine;
 	private Colonnina colonninaSelezionata;
 	private ObjectMapper objectMapper = new ObjectMapper(); // Per tradurre gli oggetti da Java a JSON
@@ -63,6 +65,7 @@ public class MapView extends HorizontalLayout {
 		this.firebaseService = firebaseService;
         this.prenotazioneService = new PrenotazioneService(firebaseService);
         this.fbp = new FirebasePrenotazioniService();
+        this.fba = new FirebaseAutoService();
         this.colonnineService = colonnineService;
 
 		setSizeFull();
@@ -74,6 +77,7 @@ public class MapView extends HorizontalLayout {
 		stationSidebar = new Sidebar();
 		configuraGestioneOrari();	//Per gestire gli slot orari
 		reservationLogic();	//Per gestire le prenotazioni
+		configuraAutoUtente();
 		
 
 		// Crea il contenitore per la mappa
@@ -97,6 +101,7 @@ public class MapView extends HorizontalLayout {
 		UI.getCurrent().getPage().addJavaScript("https://unpkg.com/leaflet@1.9.4/dist/leaflet.js");
 
 	}
+
 
 	private void reservationLogic() {
 
@@ -122,7 +127,7 @@ public class MapView extends HorizontalLayout {
             return;
         }
         
-        //Deve essere selezionata una colonnina
+        //Deve essere selezionata una auto
         if (autoSelezionata == null) {
             Notification.show("Errore: Nessuna auto selezionata.", 3000, Notification.Position.TOP_CENTER)
                     .getElement().getThemeList().add("error");
@@ -156,6 +161,19 @@ public class MapView extends HorizontalLayout {
             });
 		});
 
+	}
+	
+	private void configuraAutoUtente() {
+        Utente utenteCorrente = (Utente) VaadinSession.getCurrent().getAttribute("utente");
+
+		fba.getTargheUtente(utenteCorrente)
+		.thenAccept(autoUtente -> {
+			
+			getUI().ifPresent(ui -> ui.access(() -> {
+				stationSidebar.setAuto(autoUtente);
+			}));
+		});
+		
 	}
 	
 	private void configuraGestioneOrari() {
