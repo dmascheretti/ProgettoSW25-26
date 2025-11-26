@@ -6,20 +6,26 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
+import org.springframework.stereotype.Service;
+
+import com.example.models.Auto;
 import com.example.models.Colonnina;
 import com.example.models.Prenotazione;
+import com.example.util.ColonnineService;
+import com.example.util.DataValidator;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-
+@Service
 public class FirebasePrenotazioniService {
 	private final DatabaseReference prenotazioni;
 
 	public FirebasePrenotazioniService() {
 		this.prenotazioni = FirebaseDatabase.getInstance().getReference("prenotazioni");
+
 
 	}
 
@@ -374,6 +380,50 @@ public class FirebasePrenotazioniService {
 
 		// ritorno la lista delle prenotazioni
 		return future;
+	}
+	
+	public CompletableFuture <Boolean> inCarica(Auto a){
+		CompletableFuture <Boolean> inCarica=new CompletableFuture<>();
+		
+		
+		
+		LocalDate today = LocalDate.now();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd"); // Adatta al formato della
+																					// tua stringa
+		String todayStr = today.format(formatter);
+		
+		prenotazioni.addListenerForSingleValueEvent(new ValueEventListener() {
+			@Override
+			public void onDataChange(DataSnapshot dataSnapshot) {
+				
+				Boolean trovata=false;
+				
+				for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+					Prenotazione p = snapshot.getValue(Prenotazione.class);
+					if(p.getTarga()!=null) {
+					if(p.getTarga().equals(a.getTarga()) && p.getData().equals(todayStr) && p.getInizio().equals(DataValidator.getSlotCorrenteTimestamp()))
+							{
+						trovata=true;
+						break;
+					
+				}
+					}
+			}
+				inCarica.complete(trovata);
+				
+			}
+			@Override 
+			public void onCancelled(DatabaseError databaseError) {
+				// TODO Auto-generated method stub
+				System.err.println("Errore nel caricamento prenotazioni: " + databaseError.getMessage());
+				inCarica.completeExceptionally(databaseError.toException());
+
+			}
+
+		});
+
+		// ritorno la lista delle prenotazioni
+		return inCarica;
 	}
 		
 }

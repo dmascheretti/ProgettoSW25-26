@@ -4,6 +4,7 @@ import com.example.MainLayout;
 import com.example.models.Auto;
 import com.example.models.Utente;
 import com.example.database.FirebaseAutoService;
+import com.example.database.FirebasePrenotazioniService;
 import com.example.database.FirebaseService;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.button.Button;
@@ -15,6 +16,7 @@ import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.page.Push;
 import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
@@ -27,10 +29,12 @@ import com.vaadin.flow.component.orderedlayout.FlexComponent.Alignment;
 public class ProfileView extends VerticalLayout {
 
     private final FirebaseService firebaseService;
+    private final FirebasePrenotazioniService fbPrenotazioni;
     private final FirebaseAutoService firebaseAutoService = new FirebaseAutoService();
 
-    public ProfileView(FirebaseService firebaseService) {
+    public ProfileView(FirebaseService firebaseService, FirebasePrenotazioniService fbPrenotazioni) {
         this.firebaseService = firebaseService;
+        this.fbPrenotazioni=fbPrenotazioni;
 
         setSpacing(true);
         setPadding(true);
@@ -82,8 +86,26 @@ public class ProfileView extends VerticalLayout {
 
                     Paragraph targa = new Paragraph("Targa: " + a.getTarga());
                     Paragraph carica = new Paragraph("Carica residua: " + a.getStatoCarica() + "%");
-
+                    
                     card.add(titolo2, targa, carica);
+                    
+                   fbPrenotazioni.inCarica(a).thenAccept(trovata->{
+                	   ui.access(()->{
+                	   Paragraph inCarica;
+                	   if(trovata) {
+                	   inCarica = new Paragraph("Prenotazione attiva");
+                	   }
+                	   else {
+                		 inCarica = new Paragraph("Prenotazione non attiva");
+                	   }
+                       card.add(inCarica);
+                	   
+                	   });
+                   });
+                    
+                    
+
+                    
 
                     hl.add(card);
                 }

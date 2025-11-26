@@ -5,6 +5,8 @@
 package com.example.util;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import com.example.models.Utente;
 import com.vaadin.flow.component.notification.Notification;
@@ -76,5 +78,18 @@ public class DataValidator {
 		}
 
 		return null;
+	}
+	
+	public static String getSlotCorrenteTimestamp() {
+	    LocalDateTime now = LocalDateTime.now();
+	    int minuteSlot = (now.getMinute() / 30) * 30;
+
+	    LocalDateTime slot = LocalDateTime.of(
+	            now.getYear(), now.getMonth(), now.getDayOfMonth(),
+	            now.getHour(), minuteSlot
+	    );
+
+	    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+	    return slot.format(formatter);
 	}
 }

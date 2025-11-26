@@ -15,6 +15,7 @@ public class Prenotazione {
 	private String data; 
 	private String inizio;
 	private String timestamp;
+	private String targa;
 
 	public Prenotazione() {
 		
@@ -27,6 +28,7 @@ public class Prenotazione {
 		this.setData(localDate);
 		this.setInizio(inizio);
 		this.timestamp=ts;
+		this.setTarga("AAAAAA");
 		
 	}
 
@@ -63,6 +65,14 @@ public class Prenotazione {
 }
 	public String getId() {
 		return id;
+	}
+
+	public String getTarga() {
+		return targa;
+	}
+
+	public void setTarga(String targa) {
+		this.targa = targa;
 	}
 	
 }
