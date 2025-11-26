@@ -73,7 +73,6 @@ public class Sidebar extends VerticalLayout {
 		bookingTimeSlot.getStyle().set("--lumo-primary-text-color", "var(--lumo-success-text-color)");
 		
 		autoSelection = new ComboBox<>("Seleziona l'auto da ricaricare");
-		autoSelection.setEnabled(false);
 		autoSelection.getStyle().set("width", "100%");
 		autoSelection.getStyle().set("--lumo-primary-text-color", "var(--lumo-success-text-color)");
 
@@ -112,6 +111,10 @@ public class Sidebar extends VerticalLayout {
 		
         setVisible(true);
         
+	}
+	
+	public void setAuto(List<String> autoUtente) {
+		autoSelection.setItems(autoUtente);
 	}
 	
 	public void aggiornaOrari(LocalDate date, List<String> orariOccupati) {
