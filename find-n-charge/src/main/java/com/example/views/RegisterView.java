@@ -6,9 +6,11 @@
 
 package com.example.views;
 
+import org.springframework.stereotype.Service;
 import org.threeten.bp.LocalDate;
 
 import com.example.database.FirebaseService;
+import com.example.database.FirebaseUtentiService;
 import com.example.models.Utente;
 import com.example.util.DataValidator;
 import com.vaadin.flow.component.UI;
@@ -31,12 +33,14 @@ import com.vaadin.flow.spring.annotation.UIScope;
 @UIScope
 public class RegisterView extends VerticalLayout {
 
-	private final FirebaseService firebaseService;
+	private  FirebaseService firebaseService;
+	private FirebaseUtentiService fbUtenti;
 	private final UI ui;
 
-	public RegisterView(FirebaseService firebaseService) {
+	public RegisterView(FirebaseService firebaseService, FirebaseUtentiService fbUtenti) {
 
 		this.firebaseService = firebaseService;
+		this.fbUtenti=fbUtenti;
 		this.ui = UI.getCurrent();
 
 		setSizeFull();
@@ -122,7 +126,7 @@ public class RegisterView extends VerticalLayout {
 			 * se utente==null salvo nuovo utente con quello username
 			 */
 
-			firebaseService.verificaUtente(username).thenAccept(utente -> {
+			fbUtenti.verificaUtente(username).thenAccept(utente -> {
 				getUI().ifPresent(ui -> ui.access(() -> {
 
 					if (utente == null) {
@@ -139,7 +143,7 @@ public class RegisterView extends VerticalLayout {
 						 * non viene eseguito, ed esegue .exceptionally (errore del database)
 						 */
 
-						firebaseService.salvaUtente(nuovoUtente).thenRun(() -> ui.access(() -> {
+						fbUtenti.salvaUtente(nuovoUtente).thenRun(() -> ui.access(() -> {
 							Notification.show("Registrazione completata! Benvenuto, " + username + ".", 3000,
 									Notification.Position.TOP_CENTER);
 							ui.navigate("");
