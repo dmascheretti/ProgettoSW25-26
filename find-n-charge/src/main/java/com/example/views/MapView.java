@@ -122,7 +122,7 @@ public class MapView extends HorizontalLayout {
             return;
         }
         
-        //Deve essere selezionata una colonnina
+        //Deve essere selezionata una auto
         if (autoSelezionata == null) {
             Notification.show("Errore: Nessuna auto selezionata.", 3000, Notification.Position.TOP_CENTER)
                     .getElement().getThemeList().add("error");

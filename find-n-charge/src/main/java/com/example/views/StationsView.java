@@ -147,7 +147,7 @@ public class StationsView extends HorizontalLayout {
 				return;
 			}
 			
-			if (autoSelzionata == null) {
+			if (autoSelezionata == null) {
 				Notification.show("Nessuna auto selezionata.", 3000, Notification.Position.TOP_CENTER)
 				.getElement().getThemeList().add("error");
 				return;
