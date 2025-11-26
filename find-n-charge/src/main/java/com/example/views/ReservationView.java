@@ -73,7 +73,7 @@ public class ReservationView extends VerticalLayout {
 		
 		// Prenotazioni attive o future
 		NewPrenoGrid.removeAllColumns();
-		NewPrenoGrid.addColumn(Prenotazione::getNomeColonnina).setHeader("Colonnina").setSortable(true);
+		NewPrenoGrid.addColumn(Prenotazione::getIDColonnina).setHeader("Colonnina").setSortable(true);
 		NewPrenoGrid.addColumn(Prenotazione::getData).setHeader("Data").setSortable(true);
 		NewPrenoGrid.addColumn(Prenotazione::getInizio).setHeader("Inizio").setSortable(true);
 		NewPrenoGrid.addColumn(prenotazione -> {
@@ -83,7 +83,7 @@ public class ReservationView extends VerticalLayout {
 		
 		//Prenotazioni passate
 		OldPrenoGrid.removeAllColumns();
-		OldPrenoGrid.addColumn(Prenotazione::getNomeColonnina).setHeader("Colonnina").setSortable(true);
+		OldPrenoGrid.addColumn(Prenotazione::getIDColonnina).setHeader("Colonnina").setSortable(true);
 		OldPrenoGrid.addColumn(Prenotazione::getData).setHeader("Data").setSortable(true);
 		OldPrenoGrid.addColumn(Prenotazione::getInizio).setHeader("Inizio").setSortable(true);
 

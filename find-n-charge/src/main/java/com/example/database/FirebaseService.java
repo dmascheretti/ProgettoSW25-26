@@ -130,7 +130,7 @@ public class FirebaseService {
 		/*
 		 * Salva nel db prenotazioni/"nome colonnina + data + orario"
 		 */
-		prenotazioni.child(p.getNomeColonnina() + " " + p.getData() + " " + p.getInizio()).setValue(p,
+		prenotazioni.child(p.getIDColonnina() + " " + p.getData() + " " + p.getInizio()).setValue(p,
 				(databaseError, ref) -> {
 					if (databaseError != null) {
 						// errore --> chiama eccezione anche in RegisterView
@@ -149,7 +149,7 @@ public class FirebaseService {
 		/*
 		 * Salva nel db prenotazioni/"nome colonnina + data + orario"
 		 */
-		prenotazioni.child(p.getNomeColonnina() + " " + p.getData() + " " + p.getInizio()).setValue(null,
+		prenotazioni.child(p.getIDColonnina() + " " + p.getData() + " " + p.getInizio()).setValue(null,
 				(databaseError, ref) -> {
 					if (databaseError != null) {
 						// errore --> chiama eccezione anche in RegisterView
@@ -541,8 +541,8 @@ public class FirebaseService {
 				if(dataSnapshot.exists()) {
 					for (DataSnapshot snap : dataSnapshot.getChildren()) {
                     Prenotazione p = snap.getValue(Prenotazione.class);
-                    if (p != null && !lista.contains(p.getNomeColonnina()) && p.getData().equals(LocalDate.now().toString())) {
-                        lista.add(p.getNomeColonnina());
+                    if (p != null && !lista.contains(p.getIDColonnina()) && p.getData().equals(LocalDate.now().toString())) {
+                        lista.add(p.getIDColonnina());
                     }
                 }
             }
@@ -992,7 +992,7 @@ public class FirebaseService {
 				List<String> slot = new ArrayList<>();
 				for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
 					Prenotazione p = snapshot.getValue(Prenotazione.class);
-					if(p.getData().equals(data) && p.getNomeColonnina().equals(colonnina))
+					if(p.getData().equals(data) && p.getIDColonnina().equals(colonnina))
 					slot.add(p.getInizio());
 				}
 
