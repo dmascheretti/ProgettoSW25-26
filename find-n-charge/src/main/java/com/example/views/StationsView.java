@@ -10,6 +10,7 @@ import java.time.format.DateTimeFormatter;
 
 import com.example.MainLayout;
 import com.example.components.Sidebar;
+import com.example.database.FirebasePrenotazioniService;
 import com.example.database.FirebaseService;
 import com.example.models.Colonnina;
 import com.example.models.Utente;
@@ -35,6 +36,7 @@ public class StationsView extends HorizontalLayout {
 	private String tema = "#008000";
 	private Grid<Colonnina> colonGrid = new Grid<>(Colonnina.class);
 	private FirebaseService firebaseService = new FirebaseService(); // è un'istanza di FirebaseSystem
+	private FirebasePrenotazioniService fbp = new FirebasePrenotazioniService();
 	private PrenotazioneService prenotazioneService = new PrenotazioneService(firebaseService);
 	private Sidebar stationSidebar;
 	private Colonnina colonninaSelezionata;
@@ -101,8 +103,9 @@ public class StationsView extends HorizontalLayout {
 		aggiornaGridConFiltro("");
 
 		stationSidebar = new Sidebar();
-		reservationLogic();
-		
+		configuraGestioneOrari();	//Per gestire gli slot orari
+		reservationLogic();	//Per gestire le prenotazioni
+				
 		VerticalLayout layout = new VerticalLayout(titolo, searchField, istruz, colonGrid);
 		layout.setSizeFull();
 		layout.expand(colonGrid);
@@ -129,6 +132,7 @@ public class StationsView extends HorizontalLayout {
 			Utente utenteCorrente = (Utente) VaadinSession.getCurrent().getAttribute("utente");
 			LocalDate data = stationSidebar.getDataSelezionata();
 			String orario = stationSidebar.getOrarioSelezionato();
+			String autoSelezionata = stationSidebar.getAutoSelected();
 	
 			if (utenteCorrente == null) {
 				Notification.show("Effettua il login per prenotare.", 3000, Notification.Position.TOP_CENTER).getElement()
@@ -139,6 +143,12 @@ public class StationsView extends HorizontalLayout {
 			
 			if (colonninaSelezionata == null) {
 				Notification.show("Nessuna colonnina selezionata.", 3000, Notification.Position.TOP_CENTER)
+				.getElement().getThemeList().add("error");
+				return;
+			}
+			
+			if (autoSelzionata == null) {
+				Notification.show("Nessuna auto selezionata.", 3000, Notification.Position.TOP_CENTER)
 				.getElement().getThemeList().add("error");
 				return;
 			}
@@ -157,7 +167,7 @@ public class StationsView extends HorizontalLayout {
 	
 			String dataString = data.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));			
 			
-			prenotazioneService.prenota(colonninaSelezionata, utenteCorrente, dataString, orario)
+			prenotazioneService.prenota(colonninaSelezionata, utenteCorrente, dataString, orario, autoSelezionata)
 	        .thenAccept(success -> {
 	
 	            getUI().ifPresent(ui -> ui.access(() -> {
@@ -180,4 +190,26 @@ public class StationsView extends HorizontalLayout {
 	        });
 		});
 	}
+	
+	private void configuraGestioneOrari() {
+        stationSidebar.getBookingDatePicker().addValueChangeListener(e -> {
+            if (!e.isFromClient()) return;
+            
+            LocalDate dataScelta = e.getValue();
+            if (dataScelta == null) return;
+
+            if (colonninaSelezionata != null) {
+                
+                String dataString = dataScelta.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+
+                fbp.getSlotOccupati(colonninaSelezionata.getId(), dataString)
+                    .thenAccept(listaOccupati -> {
+                        getUI().ifPresent(ui -> ui.access(() -> {
+                            stationSidebar.aggiornaOrari(dataScelta, listaOccupati);
+                        }));
+                    });
+            }
+        });
+    }
+
 }

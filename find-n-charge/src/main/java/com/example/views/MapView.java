@@ -104,6 +104,7 @@ public class MapView extends HorizontalLayout {
         
         LocalDate data = stationSidebar.getDataSelezionata();
         String orario = stationSidebar.getOrarioSelezionato();
+        String autoSelezionata = stationSidebar.getAutoSelected(); 
         Utente utenteCorrente = (Utente) VaadinSession.getCurrent().getAttribute("utente");
 
         //Controlla che l'utente sia loggato, altrimenti viene reindirizzato alla pagina di login
@@ -120,6 +121,13 @@ public class MapView extends HorizontalLayout {
                     .getElement().getThemeList().add("error");
             return;
         }
+        
+        //Deve essere selezionata una colonnina
+        if (autoSelezionata == null) {
+            Notification.show("Errore: Nessuna auto selezionata.", 3000, Notification.Position.TOP_CENTER)
+                    .getElement().getThemeList().add("error");
+            return;
+        }
 
         // Verifica che non ci sia già una prenotazione per quello slot
         String errore = DataValidator.verificaPrenotazione(colonninaSelezionata.getId(), data, orario);
@@ -132,7 +140,7 @@ public class MapView extends HorizontalLayout {
         //Scrive la prenotazione nel Firebase
         String dataString = data.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         
-        prenotazioneService.prenota(colonninaSelezionata, utenteCorrente, dataString, orario)
+        prenotazioneService.prenota(colonninaSelezionata, utenteCorrente, dataString, orario, autoSelezionata)
             .thenAccept(success -> {
                 getUI().ifPresent(ui -> ui.access(() -> {
                     if (success) {

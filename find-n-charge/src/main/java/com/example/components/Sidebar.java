@@ -14,6 +14,7 @@ import java.util.List;
 
 import com.example.database.FirebasePrenotazioniService;
 import com.example.database.FirebaseService;
+import com.example.models.Auto;
 import com.example.models.Colonnina;
 import com.example.models.Utente;
 import com.example.util.DataValidator;
@@ -37,6 +38,7 @@ public class Sidebar extends VerticalLayout {
 	private VerticalLayout details;
 	private DatePicker bookingDatePicker; // Calendario interattivo
 	private ComboBox<String> bookingTimeSlot; // Menù a tendina con gli slot orari
+	private ComboBox<String> autoSelection;
 	private Button prenotaButton;
 	private FirebasePrenotazioniService fbp;
 
@@ -67,15 +69,19 @@ public class Sidebar extends VerticalLayout {
 
 		bookingTimeSlot = new ComboBox<>("Orario (slot 30 min)");
 		bookingTimeSlot.setEnabled(false);
-
 		bookingTimeSlot.getStyle().set("width", "100%");
 		bookingTimeSlot.getStyle().set("--lumo-primary-text-color", "var(--lumo-success-text-color)");
+		
+		autoSelection = new ComboBox<>("Seleziona l'auto da ricaricare");
+		autoSelection.setEnabled(false);
+		autoSelection.getStyle().set("width", "100%");
+		autoSelection.getStyle().set("--lumo-primary-text-color", "var(--lumo-success-text-color)");
 
 		prenotaButton = new Button("Prenota ora");
 		prenotaButton.getElement().getThemeList().add("success");
 		prenotaButton.getStyle().set("margin-top", "var(--lumo-space-l)");
 
-		add(closeButton, title, details, bookingDatePicker, bookingTimeSlot, prenotaButton);
+		add(closeButton, title, details, bookingDatePicker, bookingTimeSlot, autoSelection, prenotaButton);
 
 	}	
 
@@ -102,6 +108,7 @@ public class Sidebar extends VerticalLayout {
 		bookingDatePicker.setValue(null);
 		bookingTimeSlot.setValue(null);
 		bookingTimeSlot.setEnabled(false);
+		autoSelection.setValue(null);
 		
         setVisible(true);
         
@@ -183,4 +190,9 @@ public class Sidebar extends VerticalLayout {
     public Button getPrenotaButton() {
         return prenotaButton;
     }
+
+	public String getAutoSelected() {
+		// TODO Auto-generated method stub
+		return autoSelection.getValue();
+	}
 }
