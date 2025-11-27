@@ -9,13 +9,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
-import java.util.concurrent.CompletableFuture;
-
 import com.example.database.FirebaseService;
 import com.example.layout.AdminLayout;
 import com.example.models.Prenotazione;
-import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H3;
@@ -30,12 +26,9 @@ import com.vaadin.flow.router.Route;
 public class AdminPrenotazioniView extends VerticalLayout{
 	
 	private Grid<Prenotazione> prenoGrid = new Grid<>(Prenotazione.class);
-    private CompletableFuture<List<Prenotazione>> listaPreno;
     private final FirebaseService prenotazioniRef;
-    private final UI ui;
     
     public AdminPrenotazioniView (FirebaseService fb) {
-    	this.ui = UI.getCurrent();
     	this.prenotazioniRef=fb;
         setSpacing(true);
         setPadding(true);

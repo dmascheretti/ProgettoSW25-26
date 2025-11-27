@@ -5,45 +5,49 @@
  */
 package com.example.admin;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.imageio.ImageIO;
+
+import com.example.components.Sidebar;
 import com.example.database.FirebaseService;
 import com.example.layout.AdminLayout;
 import com.example.models.Colonnina;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.datepicker.DatePicker;
+import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H3;
+import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.server.StreamResource;
 
 @Route(value = "gestioneColonnine", layout = AdminLayout.class)
 @PageTitle("Find&Charge | Gestione colonnine")
 
-public class AdminColonnineView extends VerticalLayout {
+public class AdminColonnineView extends HorizontalLayout {
 	private String tema = "#008000";
 	private Grid<Colonnina> colonGrid = new Grid<>(Colonnina.class);
 	private FirebaseService firebaseService = new FirebaseService(); // è un'istanza di FirebaseSystem
-	private VerticalLayout stationSidebar;
-	private H3 sidebarTitle;
-	private VerticalLayout sidebarDetails;
+	private Sidebar stationSidebar;
 	private Colonnina colonninaSelezionata;
-
-	private DatePicker bookingDatePicker;
-	private ComboBox<String> bookingTimeSlot;
-	private Button prenotaButton;
-	private VerticalLayout nuovaColonninaLayout;
+	private Dialog nuovaColonninaLayout;
 
 	private TextField idField;
 	private TextField nomeField;
@@ -72,7 +76,7 @@ public class AdminColonnineView extends VerticalLayout {
 		// Bottone per l'inizializzazione inserimento dati di una nuova colonnina
 		Button nuovaColonninaButton = new Button("Nuova colonnina");
 		nuovaColonninaButton.getElement().getThemeList().add("success");
-		nuovaColonninaButton.addClickListener(e -> mostraFormNuovaColonnina());
+		nuovaColonninaButton.addClickListener(e -> mostraDialog());
 		
 		// Barra di ricerca per nome o indirizzo delle colonnine
 		TextField searchField = new TextField("Cerca");
@@ -126,25 +130,30 @@ public class AdminColonnineView extends VerticalLayout {
 		// Caricamento iniziale senza filtri
 		aggiornaGridConFiltro("");
 
-		stationSidebar = createSidebar();
+		stationSidebar = new Sidebar();
+		stationSidebar.setHeightFull();
+		stationSidebar.setWidth("400px");
+		stationSidebar.getStyle().set("background-color", "white");
+		stationSidebar.getStyle().set("box-shadow", "5px 0 15px rgba(0,0,0,0.1)");
+		stationSidebar.setVisible(false);
+		
 		nuovaColonninaLayout = createNuovaColonninaLayout();
-		HorizontalLayout layout = new HorizontalLayout(colonGrid, stationSidebar);
+		VerticalLayout layout = new VerticalLayout(titolo, nuovaColonninaButton, nuovaColonninaLayout, searchField, colonGrid);
 		layout.setSizeFull();
 		layout.expand(colonGrid);
 		
 		
 		
-		add(titolo, nuovaColonninaButton, nuovaColonninaLayout, searchField, layout);
+		add(layout, stationSidebar);
 	}
 	
 	
-	private VerticalLayout createNuovaColonninaLayout() {
-	    VerticalLayout form = new VerticalLayout();
-	    form.setVisible(false);
-	    form.getStyle().set("border", "1px solid var(--lumo-contrast-20pct)");
-	    form.getStyle().set("padding", "var(--lumo-space-m)");
-	    form.getStyle().set("border-radius", "8px");
-
+	private Dialog createNuovaColonninaLayout() {
+		
+		Dialog dialog = new Dialog();
+		VerticalLayout dialogLayout = new VerticalLayout();
+		dialogLayout.setAlignItems(FlexComponent.Alignment.CENTER);
+		
 	    idField = new TextField("ID");
 	    nomeField = new TextField("Nome");
 	    tipoField = new TextField("Tipo");
@@ -157,21 +166,33 @@ public class AdminColonnineView extends VerticalLayout {
 	    salvaNuovaButton.getElement().getThemeList().add("success");
 	    salvaNuovaButton.addClickListener(e -> salvaNuovaColonnina());
 
-	    annullaNuovaButton = new Button("Annulla", e -> form.setVisible(false));
+	    salvaNuovaButton.addClickListener(e-> salvaNuovaColonnina());
+	    annullaNuovaButton = new Button("Annulla", e -> dialog.close());
 
-	    form.add(
+	    HorizontalLayout infoLayout = new HorizontalLayout(nomeField, tipoField);
+	    infoLayout.setAlignItems(FlexComponent.Alignment.CENTER);
+	    HorizontalLayout indirizzoLayout = new HorizontalLayout(indirizzoField, comuneField);
+	    indirizzoLayout.setAlignItems(FlexComponent.Alignment.CENTER);
+	    HorizontalLayout coordinateLayout = new HorizontalLayout(latField, lonField);
+	    coordinateLayout.setAlignItems(FlexComponent.Alignment.CENTER);
+	    
+	    dialogLayout.add(
 	        new H3("Nuova colonnina"),
-	        idField, nomeField, tipoField,
-	        latField, lonField,
-	        indirizzoField, comuneField,
+	        idField, infoLayout,
+	        coordinateLayout,
+	        indirizzoLayout,
 	        new HorizontalLayout(salvaNuovaButton, annullaNuovaButton)
 	    );
 
-	    return form;
+	    dialog.add(dialogLayout);
+	    return dialog;
 	}
 	
-	private void mostraFormNuovaColonnina() {
-	    nuovaColonninaLayout.setVisible(true);
+	private void mostraDialog() {
+	    nuovaColonninaLayout.open();
+	}
+	private void nascondiDialog() {
+	    nuovaColonninaLayout.close();
 	}
 	
 	private void salvaNuovaColonnina() {
@@ -196,72 +217,16 @@ public class AdminColonnineView extends VerticalLayout {
 	    } catch (Exception e) {
 	        System.out.println("Errore inserimento nuova colonnina: " + e.getMessage());
 	    }
-	}
-	
-	
-	private VerticalLayout createSidebar() {
-		VerticalLayout sidebar = new VerticalLayout();
-		sidebar.setWidth("350px");
-		sidebar.setHeightFull();
-		sidebar.getStyle().set("background-color", "var(--lumo-base-color)")
-				.set("border-left", "1px solid var(--lumo-contrast-20pct)").set("padding", "var(--lumo-space-m)");
-
-		sidebar.setVisible(false);
-
-		Button closeButton = new Button(VaadinIcon.CLOSE.create(), e -> sidebar.setVisible(false));
-		closeButton.getStyle().set("align-self", "flex-end");
-		closeButton.getElement().getThemeList().add("success");
-
-		sidebarTitle = new H3("Dettagli colonnina");
-		sidebarDetails = new VerticalLayout();
-		sidebarDetails.setSpacing(false);
-		sidebarDetails.setPadding(false);
-
-		bookingDatePicker = new DatePicker("Giorno");
-		bookingDatePicker.setMin(LocalDate.now());
-
-		bookingTimeSlot = new ComboBox<>("Orario (slot 30 min)");
-		bookingTimeSlot.setItems(generateTimeSlots());
-
-		prenotaButton = new Button("Prenota ora");
-		prenotaButton.getElement().getThemeList().add("success");
-
-		sidebar.add(closeButton, sidebarTitle, sidebarDetails, bookingDatePicker, bookingTimeSlot, prenotaButton);
-
-		return sidebar;
+	    nascondiDialog();
 	}
 
 	private void showSidebar(Colonnina col) {
-		this.colonninaSelezionata= col;
-		sidebarTitle.setText(col.getNome());
-
-		sidebarDetails.removeAll();
-		sidebarDetails.add(new Span("Indirizzo: " + col.getIndirizzo() + ", " + col.getComune()),
-				new Span("Stato: " + col.getStato()));
-
-		bookingDatePicker.clear();
-		bookingTimeSlot.clear();
-
-		if (prenotaButtonListener != null) {
-			prenotaButtonListener.remove();
-			prenotaButtonListener = null;
-		}
-
-		//prenotaButtonListener = prenotaButton.addClickListener(e -> effettuaPrenotazione());
-
-		stationSidebar.setVisible(true);
-	}
-
-	private List<String> generateTimeSlots() {
-		List<String> slots = new ArrayList<>();
-		LocalTime t = LocalTime.MIDNIGHT;
-		DateTimeFormatter fmt = DateTimeFormatter.ofPattern("HH:mm");
-
-		for (int i = 0; i < 48; i++) {
-			slots.add(t.format(fmt));
-			t = t.plusMinutes(30);
-		}
-		return slots;
+	    this.colonninaSelezionata = col;
+	
+	    stationSidebar.setDati(col);
+	    stationSidebar.getPrenotaButton().setVisible(false);
+	    
+	    stationSidebar.setVisible(true);
 	}
 
 	private void aggiornaGridConFiltro(String query) {

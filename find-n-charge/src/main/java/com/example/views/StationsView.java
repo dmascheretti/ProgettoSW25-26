@@ -110,7 +110,6 @@ public class StationsView extends HorizontalLayout {
 		stationSidebar = new Sidebar();
 		stationSidebar.setHeightFull();							// Occupa tutta l'altezza disponibile
 		stationSidebar.getStyle().set("overflow-y", "auto"); 	// Abilita lo scroll solo per la sidebar
-		stationSidebar.getStyle().set("z-index", "1000");    	// Sidebar sopra alla mappa
 		
 		configuraGestioneOrari();	//Per gestire gli slot orari
 		reservationLogic();	//Per gestire le prenotazioni

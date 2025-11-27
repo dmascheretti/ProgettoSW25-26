@@ -7,6 +7,8 @@ package com.example.admin;
 
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H3;
+import com.vaadin.flow.component.orderedlayout.FlexComponent;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.EmailField;
 import com.vaadin.flow.component.textfield.PasswordField;
@@ -21,10 +23,6 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.example.database.FirebaseService;
 import com.example.layout.AdminLayout;
-
-import java.util.List;
-import java.util.concurrent.CompletableFuture;
-
 import org.threeten.bp.LocalDate;
 
 @Route(value = "gestioneUtenti", layout = AdminLayout.class)
@@ -34,7 +32,6 @@ public class AdminUtentiView extends VerticalLayout {
 
 	private Grid<Utente> utentiGrid = new Grid<>(Utente.class);
 	private final FirebaseService utentiRef;
-	private final UI ui;
 
 	/**
 	 * Costruttore che genera la griglia contenente tutti gli utenti
@@ -43,7 +40,6 @@ public class AdminUtentiView extends VerticalLayout {
 	 */
 	public AdminUtentiView(FirebaseService fb) {
 
-		this.ui = UI.getCurrent();
 		this.utentiRef = fb;
 		setSpacing(true);
 		setPadding(true);
@@ -67,9 +63,7 @@ public class AdminUtentiView extends VerticalLayout {
 		});
 		
 		Button nuovoUtenteBtn = new Button("Nuovo Utente");
-		nuovoUtenteBtn.getStyle()
-		    .set("background-color", "#008000")
-		    .set("color", "white");
+	    nuovoUtenteBtn.getElement().getThemeList().add("success");
 
 		nuovoUtenteBtn.addClickListener(e -> newUtente());
 
@@ -118,6 +112,8 @@ public class AdminUtentiView extends VerticalLayout {
 
 	private void newUtente() {
 
+		Dialog dialog= new Dialog();
+
 	    VerticalLayout formLayout = new VerticalLayout();
 	    formLayout.setPadding(true);
 	    formLayout.setSpacing(true);
@@ -132,8 +128,10 @@ public class AdminUtentiView extends VerticalLayout {
 	    PasswordField password = new PasswordField("Password");
 
 	    Button salva = new Button("Salva Utente");
-	    salva.getStyle().set("background-color", "green").set("color", "white");
-
+	    salva.getElement().getThemeList().add("success");
+	    
+	    Button annulla = new Button("Annulla", e -> dialog.close());
+	    
 	    salva.addClickListener(e -> {
 
 	        if (nome.isEmpty() || cognome.isEmpty() || username.isEmpty() || 
@@ -218,13 +216,21 @@ public class AdminUtentiView extends VerticalLayout {
 
 		});
 	        
+	    HorizontalLayout datiPersonaliLayout = new HorizontalLayout (nome, cognome);
+	    datiPersonaliLayout.setAlignItems(FlexComponent.Alignment.CENTER);
+	    HorizontalLayout credenzialiLayout = new HorizontalLayout (username, password);	    
+	    credenzialiLayout.setAlignItems(FlexComponent.Alignment.CENTER);
+	    HorizontalLayout pulsantiLayout = new HorizontalLayout (salva, annulla);	    
+	    pulsantiLayout.setAlignItems(FlexComponent.Alignment.CENTER);
 
-	    formLayout.add(titolo, nome, cognome, username, email, password, salva);
+	    formLayout.add(titolo, datiPersonaliLayout, email, credenzialiLayout, pulsantiLayout);
+
+	    formLayout.expand(titolo, datiPersonaliLayout, email, credenzialiLayout, pulsantiLayout);
 
 	    // Mostra il form in una nuova finestra/dialog
-	    Dialog dialog = new Dialog(formLayout);
+	    dialog.add(formLayout);
 	    dialog.setModal(true);
-	    dialog.setWidth("400px");
+	    //dialog.setWidth("600px");
 	    dialog.open();
 	    }
 	    

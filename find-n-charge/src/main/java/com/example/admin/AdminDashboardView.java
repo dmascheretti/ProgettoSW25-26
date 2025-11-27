@@ -45,7 +45,6 @@ public class AdminDashboardView extends VerticalLayout implements AfterNavigatio
 	// Utenti
 	private KpiCard utentiCard;
 	private KpiCard utentiNuoviCard;
-	private KpiCard utentiAttiviCard;
 	// Colonnine
 	private KpiCard colonnineTotaliCard;
 	private KpiCard colonnineLibereCard;
@@ -54,9 +53,8 @@ public class AdminDashboardView extends VerticalLayout implements AfterNavigatio
 	private KpiCard prenotazioniTotaliCard;
 	private KpiCard prenotazioniNuoveCard;
 	// Segnalazioni
-	private KpiCard segnalazioniTotaliCard;
-	private KpiCard segnalazioniNuoveCard;
-	private KpiCard segnalazioniVecchieCard;
+	private KpiCard recensioniTotaliCard;
+	private KpiCard recensioniNuoveCard;
 
 	public AdminDashboardView(FirebaseService fb, ColonnineService cs) {
 		this.fb = fb;
@@ -240,10 +238,9 @@ public class AdminDashboardView extends VerticalLayout implements AfterNavigatio
 			return null;
 		});
 
-		// Segnalazioni
-		// String segnalazioniTotali = FirebaseService.contaSegnalazioniTotali();
-		// String segnalazioniNuove = FirebaseService.contaSegnalazioniNuove();
-		// String segnalazioniVecchie = FirebaseService.contaSegnalazioniPassate();
+		// Recensioni
+		//String recensioniTotali = FirebaseService.contaRecensioniTotali();
+		//String recensioniNuove = FirebaseService.contaRecensioniNuove();
 
 	}
 
@@ -257,17 +254,15 @@ public class AdminDashboardView extends VerticalLayout implements AfterNavigatio
 		// Creazione delle card (inizialmente senza dati)
 		utentiCard = new KpiCard("Utenti totali", "...");
 		utentiNuoviCard = new KpiCard("Nuovi utenti", "...");
-		utentiAttiviCard = new KpiCard("Utenti attivi", "...");
 
-		utentiAttiviCard.getStyle().set("background-color", "var(--lumo-success-color-10pct)");
 		utentiAttiviCard.getStyle().set("border-color", "var(--lumo-success-color)");
 
-		HorizontalLayout kpiUtentiLayout = new HorizontalLayout(utentiCard, utentiNuoviCard, utentiAttiviCard);
+		HorizontalLayout kpiUtentiLayout = new HorizontalLayout(utentiCard, utentiNuoviCard);
 		kpiUtentiLayout.setWidthFull();
 		kpiUtentiLayout.setSpacing(true);
 
 		// Fa in modo che le card si espandano per riempire lo spazio
-		kpiUtentiLayout.expand(utentiCard, utentiNuoviCard, utentiAttiviCard);
+		kpiUtentiLayout.expand(utentiCard, utentiNuoviCard);
 
 		return kpiUtentiLayout;
 	}
@@ -329,20 +324,15 @@ public class AdminDashboardView extends VerticalLayout implements AfterNavigatio
 	private HorizontalLayout kpiSegnalazioni() {
 
 		// Creazione delle card (inizialmente senza dati)
-		segnalazioniTotaliCard = new KpiCard("Segnalazioni totali", "...");
-		segnalazioniNuoveCard = new KpiCard("Nuove segnalazioni", "...");
-		segnalazioniVecchieCard = new KpiCard("Segnalazioni vecchie", "...");
+		recensioniTotaliCard = new KpiCard("Recensionini totali", "...");
+		recensioniNuoveCard = new KpiCard("Nuove recensioni", "...");
 
-		segnalazioniNuoveCard.getStyle().set("background-color", "var(--lumo-error-color-10pct)");
-		segnalazioniNuoveCard.getStyle().set("border-color", "var(--lumo-error-color)");
-
-		HorizontalLayout kpiUtentiLayout = new HorizontalLayout(segnalazioniTotaliCard, segnalazioniNuoveCard,
-				segnalazioniVecchieCard);
+		HorizontalLayout kpiUtentiLayout = new HorizontalLayout(recensioniTotaliCard, recensioniNuoveCard);
 		kpiUtentiLayout.setWidthFull();
 		kpiUtentiLayout.setSpacing(true);
 
 		// Fa in modo che le card si espandano per riempire lo spazio
-		kpiUtentiLayout.expand(segnalazioniTotaliCard, segnalazioniNuoveCard, segnalazioniVecchieCard);
+		kpiUtentiLayout.expand(recensioniTotaliCard, recensioniNuoveCard);
 
 		return kpiUtentiLayout;
 	}

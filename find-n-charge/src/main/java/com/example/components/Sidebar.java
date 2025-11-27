@@ -13,13 +13,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.example.database.FirebasePrenotazioniService;
-import com.example.database.FirebaseService;
-import com.example.models.Auto;
 import com.example.models.Colonnina;
-import com.example.models.Utente;
-import com.example.util.DataValidator;
-import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.datepicker.DatePicker;
@@ -27,12 +21,8 @@ import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.VaadinIcon;
-import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.orderedlayout.FlexComponent.Alignment;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
-import com.vaadin.flow.server.VaadinSession;
-import com.example.util.PrenotazioneService;
 
 public class Sidebar extends VerticalLayout {
 
@@ -42,12 +32,12 @@ public class Sidebar extends VerticalLayout {
 	private ComboBox<String> bookingTimeSlot; // Menù a tendina con gli slot orari
 	private ComboBox<String> autoSelection;
 	private Button prenotaButton;
-	private FirebasePrenotazioniService fbp;
 
 	public Sidebar() {
 
 		setWidth("35%");
 		setHeightFull();
+		this.setPadding(true);
 		getStyle().set("background-color", "var(--lumo-base-color)")
 				.set("border-left", "1px solid var(--lumo-contrast-20pct)").set("padding", "var(--lumo-space-m)");
 

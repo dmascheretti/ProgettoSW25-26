@@ -78,7 +78,6 @@ public class MapView extends HorizontalLayout {
 		stationSidebar = new Sidebar();
 		stationSidebar.setHeightFull();							// Occupa tutta l'altezza disponibile
 		stationSidebar.getStyle().set("overflow-y", "auto"); 	// Abilita lo scroll solo per la sidebar
-		stationSidebar.getStyle().set("z-index", "1000");    	// Sidebar sopra alla mappa
 		
 		configuraGestioneOrari();	//Per gestire gli slot orari
 		reservationLogic();			//Per gestire le prenotazioni
@@ -171,6 +170,13 @@ public class MapView extends HorizontalLayout {
 	private void configuraAutoUtente() {
         Utente utenteCorrente = (Utente) VaadinSession.getCurrent().getAttribute("utente");
 
+        if (utenteCorrente == null) {
+            Notification.show("Errore: Utente non loggato.", 3000, Notification.Position.TOP_CENTER)
+                    .getElement().getThemeList().add("error");
+            UI.getCurrent().navigate(""); 
+            return;
+        }
+        
 		fba.getTargheUtente(utenteCorrente)
 		.thenAccept(autoUtente -> {
 			
