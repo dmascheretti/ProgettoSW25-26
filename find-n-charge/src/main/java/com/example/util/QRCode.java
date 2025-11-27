@@ -2,7 +2,7 @@
  * Classe per generare QR code data la stringa che identifica la prenotazione univocamente presente nel database
  * @author Davide Mascheretti
  */
-package com.example;
+package com.example.util;
 
 import java.awt.image.BufferedImage;
 

@@ -12,8 +12,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-import com.example.AdminLayout;
 import com.example.database.FirebaseService;
+import com.example.layout.AdminLayout;
 import com.example.models.Prenotazione;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;

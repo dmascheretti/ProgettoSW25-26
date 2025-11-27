@@ -6,7 +6,6 @@
 
 package com.example.views;
 
-import com.example.MainLayout;
 import com.example.components.Sidebar;
 import com.example.models.Colonnina;
 import com.example.models.Utente;
@@ -24,6 +23,7 @@ import java.util.stream.Collectors;
 import com.example.database.FirebaseAutoService;
 import com.example.database.FirebasePrenotazioniService;
 import com.example.database.FirebaseService;
+import com.example.layout.MainLayout;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vaadin.flow.component.AttachEvent;
@@ -72,13 +72,17 @@ public class MapView extends HorizontalLayout {
 		setSizeFull();
 		setPadding(false);
 		setSpacing(false);
-		getStyle().set("height", "100vh"); // Altrimenti la mappa collassa a 0px
+		getStyle().set("overflow", "hidden"); 	// Blocca lo scroll della pagina intera (scrolla solo la sidebar)
 
 		// Crea la sidebar
 		stationSidebar = new Sidebar();
+		stationSidebar.setHeightFull();							// Occupa tutta l'altezza disponibile
+		stationSidebar.getStyle().set("overflow-y", "auto"); 	// Abilita lo scroll solo per la sidebar
+		stationSidebar.getStyle().set("z-index", "1000");    	// Sidebar sopra alla mappa
+		
 		configuraGestioneOrari();	//Per gestire gli slot orari
-		reservationLogic();	//Per gestire le prenotazioni
-		configuraAutoUtente();
+		reservationLogic();			//Per gestire le prenotazioni
+		configuraAutoUtente();		//Per gestire le auto dell'utente
 		
 
 		// Crea il contenitore per la mappa

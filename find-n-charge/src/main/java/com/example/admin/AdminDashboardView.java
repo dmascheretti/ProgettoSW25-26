@@ -4,7 +4,6 @@
  */
 package com.example.admin;
 
-import com.example.AdminLayout;
 import com.example.admin.components.KpiCard;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -17,6 +16,7 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
 import com.example.database.FirebaseService;
+import com.example.layout.AdminLayout;
 import com.example.util.ColonnineService;
 
 import jakarta.annotation.security.RolesAllowed;

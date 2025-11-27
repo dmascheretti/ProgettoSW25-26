@@ -30,6 +30,7 @@ import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.orderedlayout.FlexComponent.Alignment;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.server.VaadinSession;
 import com.example.util.PrenotazioneService;
 
@@ -58,6 +59,13 @@ public class Sidebar extends VerticalLayout {
 		closeButton.getElement().getThemeList().add("success");
 
 		title = new H3("Dettagli");
+		title.getStyle().set("margin", "0");
+		
+		HorizontalLayout headerLayout = new HorizontalLayout(title, closeButton);
+		headerLayout.setWidthFull(); 
+		headerLayout.setAlignItems(Alignment.CENTER); 
+		headerLayout.expand(title);
+		
 		details = new VerticalLayout();
 		details.setSpacing(false); // Rimuove spazio extra tra le righe
 		details.setPadding(false); // Rimuove padding
@@ -81,7 +89,7 @@ public class Sidebar extends VerticalLayout {
 		prenotaButton.getElement().getThemeList().add("success");
 		prenotaButton.getStyle().set("margin-top", "var(--lumo-space-l)");
 
-		add(closeButton, title, details, bookingDatePicker, bookingTimeSlot, autoSelection, prenotaButton);
+		add(headerLayout, details, bookingDatePicker, bookingTimeSlot, autoSelection, prenotaButton);
 
 	}	
 
@@ -120,6 +128,7 @@ public class Sidebar extends VerticalLayout {
 	
 	public void aggiornaOrari(LocalDate date, List<String> orariOccupati) {
 
+		if (!isVisible() || getParent() == null) return;
 		bookingTimeSlot.clear();
 		
 		//Generazione di tutti i time slots

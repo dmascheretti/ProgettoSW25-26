@@ -5,7 +5,7 @@
  * @author Tommaso Maistrello
  */
 
-package com.example;
+package com.example.layout;
 
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.applayout.AppLayout;

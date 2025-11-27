@@ -1,11 +1,11 @@
 package com.example.views;
 
-import com.example.MainLayout;
 import com.example.models.Auto;
 import com.example.models.Utente;
 import com.example.database.FirebaseAutoService;
 import com.example.database.FirebasePrenotazioniService;
 import com.example.database.FirebaseService;
+import com.example.layout.MainLayout;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;

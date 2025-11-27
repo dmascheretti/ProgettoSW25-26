@@ -21,10 +21,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
-import com.example.MainLayout;
-import com.example.QRCode;
+
 import com.example.models.Prenotazione;
 import com.example.models.Utente;
+import com.example.util.QRCode;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
@@ -32,6 +32,7 @@ import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.example.database.FirebasePrenotazioniService;
 import com.example.database.FirebaseService;
+import com.example.layout.MainLayout;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import java.awt.image.BufferedImage;
 import java.time.LocalDate;

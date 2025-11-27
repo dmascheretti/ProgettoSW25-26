@@ -9,11 +9,11 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 
-import com.example.MainLayout;
 import com.example.components.Sidebar;
 import com.example.database.FirebaseAutoService;
 import com.example.database.FirebasePrenotazioniService;
 import com.example.database.FirebaseService;
+import com.example.layout.MainLayout;
 import com.example.models.Colonnina;
 import com.example.models.Utente;
 import com.example.util.DataValidator;
@@ -49,6 +49,7 @@ public class StationsView extends HorizontalLayout {
 		setSpacing(true);
 		setPadding(true);
 		setSizeFull();
+		getStyle().set("overflow", "hidden"); 	// Blocca lo scroll della pagina intera (scrolla solo la sidebar)
 
 		// Titolo
 		H3 titolo = new H3("Queste sono le colonnine più vicine a te");
@@ -105,7 +106,12 @@ public class StationsView extends HorizontalLayout {
 		// Caricamento iniziale senza filtri
 		aggiornaGridConFiltro("");
 
+		// Crea la sidebar
 		stationSidebar = new Sidebar();
+		stationSidebar.setHeightFull();							// Occupa tutta l'altezza disponibile
+		stationSidebar.getStyle().set("overflow-y", "auto"); 	// Abilita lo scroll solo per la sidebar
+		stationSidebar.getStyle().set("z-index", "1000");    	// Sidebar sopra alla mappa
+		
 		configuraGestioneOrari();	//Per gestire gli slot orari
 		reservationLogic();	//Per gestire le prenotazioni
 				
