@@ -7,6 +7,7 @@ package com.example.views;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Collections;
 
 import com.example.MainLayout;
 import com.example.components.Sidebar;
@@ -208,10 +209,11 @@ public class StationsView extends HorizontalLayout {
 	
 	private void configuraGestioneOrari() {
         stationSidebar.getBookingDatePicker().addValueChangeListener(e -> {
-            if (!e.isFromClient()) return;
             
             LocalDate dataScelta = e.getValue();
             if (dataScelta == null) return;
+            
+            stationSidebar.aggiornaOrari(dataScelta, Collections.emptyList());	//Forza l'aggiornamento anche se la data non cambia
 
             if (colonninaSelezionata != null) {
                 

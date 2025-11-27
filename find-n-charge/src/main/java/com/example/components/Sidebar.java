@@ -8,6 +8,7 @@ package com.example.components;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -119,6 +120,8 @@ public class Sidebar extends VerticalLayout {
 	
 	public void aggiornaOrari(LocalDate date, List<String> orariOccupati) {
 
+		bookingTimeSlot.clear();
+		
 		//Generazione di tutti i time slots
         List<String> slots = generateTimeSlots(date);
         
@@ -146,10 +149,12 @@ public class Sidebar extends VerticalLayout {
 		// Orario di partenza
 		LocalTime time;
 
+		LocalDate oggi = LocalDate.now(ZoneId.of("Europe/Rome"));
+		
 		// Se la data selezionata è oggi, calcola la prossima mezz'ora, altrimenti parte
 		// da mezzanotte
-		if (date.equals(LocalDate.now())) {
-			LocalTime now = LocalTime.now();
+		if (date.equals(oggi)) {
+		    LocalTime now = LocalTime.now(ZoneId.of("Europe/Rome"));
 			if (now.getMinute() < 30) {
 				time = now.withMinute(30).withSecond(0).withNano(0);
 			} else {
