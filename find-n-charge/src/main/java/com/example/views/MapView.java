@@ -16,6 +16,7 @@ import com.example.util.PrenotazioneService;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -178,10 +179,11 @@ public class MapView extends HorizontalLayout {
 	
 	private void configuraGestioneOrari() {
         stationSidebar.getBookingDatePicker().addValueChangeListener(e -> {
-            if (!e.isFromClient()) return;
             
             LocalDate dataScelta = e.getValue();
             if (dataScelta == null) return;
+
+            stationSidebar.aggiornaOrari(dataScelta, Collections.emptyList());	//Forza l'aggiornamento anche se la data non cambia
 
             if (colonninaSelezionata != null) {
                 
