@@ -93,10 +93,10 @@ public class ProfileView extends VerticalLayout {
                 	   ui.access(()->{
                 	   Paragraph inCarica;
                 	   if(trovata) {
-                	   inCarica = new Paragraph("Prenotazione attiva");
+                	   inCarica = new Paragraph("Auto in carica");
                 	   }
                 	   else {
-                		 inCarica = new Paragraph("Prenotazione non attiva");
+                		 inCarica = new Paragraph("Auto non in carica");
                 	   }
                        card.add(inCarica);
                 	   

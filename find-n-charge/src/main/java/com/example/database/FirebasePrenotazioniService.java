@@ -401,7 +401,8 @@ public class FirebasePrenotazioniService {
 				for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
 					Prenotazione p = snapshot.getValue(Prenotazione.class);
 					if(p.getTarga()!=null) {
-					if(p.getTarga().equals(a.getTarga()) && p.getData().equals(todayStr) && p.getInizio().equals(DataValidator.getSlotCorrenteTimestamp()))
+					if(p.getTarga().equals(a.getTarga()) && p.getData().equals(todayStr) && p.getInizio().equals(DataValidator.getSlotCorrenteTimestamp())
+							&& p.getStato().equals("In carica"))
 							{
 						trovata=true;
 						break;
@@ -425,5 +426,25 @@ public class FirebasePrenotazioniService {
 		// ritorno la lista delle prenotazioni
 		return inCarica;
 	}
-		
+	
+	public CompletableFuture<Void> aggiornaStato(Prenotazione p) {
+
+	    CompletableFuture<Void> future = new CompletableFuture<>();
+
+	    String chiave = p.getIDColonnina() + " " + p.getData() + " " + p.getInizio();
+
+
+	    prenotazioni.child(chiave).child("stato").setValue("In carica", (databaseError, ref) -> {
+
+	        if (databaseError != null) {
+	            System.err.println("ERRORE: " + databaseError.getMessage());
+	            future.completeExceptionally(new RuntimeException(databaseError.getMessage()));
+	        } else {
+	            future.complete(null);
+	        }
+	    });
+
+	    return future;
+	}
+
 }

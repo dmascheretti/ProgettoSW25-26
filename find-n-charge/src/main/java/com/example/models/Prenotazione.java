@@ -16,6 +16,7 @@ public class Prenotazione {
 	private String inizio;
 	private String timestamp;
 	private String targa;
+	private String stato;
 
 	public Prenotazione() {
 		
@@ -29,6 +30,7 @@ public class Prenotazione {
 		this.setInizio(inizio);
 		this.timestamp=ts;
 		this.setTarga(targa);
+		this.setStato("Futura");
 		
 	}
 
@@ -73,6 +75,14 @@ public class Prenotazione {
 
 	public void setTarga(String targa) {
 		this.targa = targa;
+	}
+
+	public String getStato() {
+		return stato;
+	}
+
+	public void setStato(String stato) {
+		this.stato = stato;
 	}
 	
 }

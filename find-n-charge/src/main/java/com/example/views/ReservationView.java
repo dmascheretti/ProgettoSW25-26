@@ -30,6 +30,7 @@ import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dialog.Dialog;
+import com.example.database.FirebasePrenotazioniService;
 import com.example.database.FirebaseService;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import java.awt.image.BufferedImage;
@@ -49,6 +50,7 @@ public class ReservationView extends VerticalLayout {
 	private Grid<Prenotazione> OldPrenoGrid = new Grid<>(Prenotazione.class, false);
 	private CompletableFuture<List<Prenotazione>> listaPreno;
 	private final FirebaseService prenotazioniRef;
+	private final FirebasePrenotazioniService fbPrenotazioni;
 	private final UI ui;
 	private QRCode qr;
 	
@@ -60,6 +62,7 @@ public class ReservationView extends VerticalLayout {
 	 */
 	
 	public ReservationView(FirebaseService fb) {
+		this.fbPrenotazioni = new FirebasePrenotazioniService();
 		this.ui = UI.getCurrent();
 		this.prenotazioniRef = fb;
 		setSpacing(true);
@@ -96,6 +99,14 @@ public class ReservationView extends VerticalLayout {
 
 			btn.addClickListener(event -> {
 				String id = p.getId();
+				
+					fbPrenotazioni.aggiornaStato(p)
+			    .exceptionally(ex -> {
+			        ex.printStackTrace();
+			        return null;
+			    });
+			    
+				
 
 				BufferedImage tempQr = null; // Crea variabile dell'immagine QR Code
 				try {
