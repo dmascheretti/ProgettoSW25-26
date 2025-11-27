@@ -736,6 +736,32 @@ public class FirebaseService {
 	 * @return future.complete(count) --> numero di prenotazioni che sono state effettuate nella data odierna
 	 * , future.complete(eccezione) --> errore
 	 */
+	
+	public CompletableFuture<String> nomeColonByID(String id){
+		CompletableFuture<String> future = new CompletableFuture();
+		colonnine.addListenerForSingleValueEvent(new ValueEventListener() {
+			@Override
+			public void onDataChange(DataSnapshot snapshot) {
+				String nomeColon=null;
+				if (snapshot.exists()) {
+	                for (DataSnapshot colonninaSnap : snapshot.getChildren()) {
+	                    nomeColon = colonninaSnap.child(id).child("nome").getValue(String.class);
+	                }
+	            }
+				future.complete(nomeColon);
+			}
+			
+			@Override
+			public void onCancelled(DatabaseError databaseError) {
+				// Gestione errore standard, come negli altri metodi
+				System.err.println("Errore nel contare le colonnine: " + databaseError.getMessage());
+				future.completeExceptionally(databaseError.toException());
+			}
+		});
+		
+		return future;
+		
+	}
 
 	public CompletableFuture<Integer> contaPrenotazioniNuove() {
 			CompletableFuture<Integer> future = new CompletableFuture<>();
