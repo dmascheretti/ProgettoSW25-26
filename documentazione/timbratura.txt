@@ -41,7 +41,7 @@ Tutte le fasi precedenti sono contenute all'interno del file meeting
 			Realizzazione Classe StationsView operativa, implementazione backend in FirebaseService, difficoltà nella gestione dei stashed changes
 
 11/11/2025		Maistrello Tommaso
-			09.00-10.15 Implementata la scelta della data e ora per prenotare la colonnina nella sidebar. Implementata anche la logica della prenotazione con i vari controlli 			di esistenza. 
+			09.00-10.15 Implementata la scelta della data e ora per prenotare la colonnina nella sidebar. Implementata anche la logica della prenotazione con i vari controlli di esistenza. 
 			11.00-11.45 Implementato il layout che gestisce le pagine admin seguendo le caratteristiche del MainLayout.java.
 
 11/11/2025		Valenari Francesco
@@ -51,8 +51,15 @@ Tutte le fasi precedenti sono contenute all'interno del file meeting
 			14.30-17.10 Implementato il salvataggio nel db delle prenotazioni e del controllo su colonnina, data e ora. Aggiunta funzione per svolgere questo in FirebaseService
 			(salvataggio e verifica). La parte di documentazione verrà poi aggiunta.
 
+12/11/2025		Maistrello Tommaso
+			14.00-14.15 Modifiche a StationView: Modifiche minori alla struttura e risolti errori di reindirizzamento. Il file risulta scritto quasi da zero perché ho indentato 			con ctrl+shift+F
+			14.15-15.15 Specifica dei requisiti
+
 			Mascheretti Davide
 12/11/2025 		22.00-23.00 Modiche al project plan (punti da 1 a 6)
+
+13/11/2025		Maistrello Tommaso
+			14.00-15.00 Specifica dei requisiti
 
 13/11/2025		Mascheretti Davide
 			22.00-23.30 Modifiche al project plan (punti da 7 a 13)
@@ -62,8 +69,14 @@ Tutte le fasi precedenti sono contenute all'interno del file meeting
 			Mascheretti Davide
 14/11/2025		10.15-12.15 Diviso logica di controllo e salvataggio da MapView a PrenotazioneService
 
+14/11/2025		Maistrello Tommaso
+			09.00-11.00 Creata componente Kpi per mostrare le informazioni utili all'amministratore. Aggiunta delle KpiCard alla vista della dashboard.
+
 14/11/2025              Morgera Claudio
                         14.00-15.00 Creazione del class diagramma e prime classi
+
+14/11/2025		Maistrello Tommaso
+			20.00-21.00 Aggiunta l'implementazione con controllo errori per il richiamo del firebase (adesso presentati come commenti solo per poterlo testare). Aggiunto anche 			pulsante di refresh dei dati (non implementato) e sistemati gli allineamenti. Ho inoltre sistemato il codice di KpiCard.java.
 
 			Mascheretti Davide
 15/11/2025		11.00-12.30 + 16.30-17.45 Stesura diagramma di sequenza prima a mano e poi inizio dell'implementazione su papyrus con non poche difficoltà
@@ -75,8 +88,16 @@ Tutte le fasi precedenti sono contenute all'interno del file meeting
 16/11/2025		Mascheretti Davide
 			9.00-9.30 + 16.00-17.00 Finito il sequence diagram (prima versione). Da controllare con gruppo.
 
+16/11/2025		Maistrello Tommaso
+			09.00-10.00 Refactoring e documentation della classe: modifiche alla logica delle KpiCard, ora attributi della classe. Inoltre ho unito le logiche di caricamento 			dati e creazione delle card Aggiunta documentazione dei metodi.
+
 17/11/2025              Morgera Claudio
                         10.00-11.30 Modifiche apportate al class diagramma e creazione classe auto
+
+17/11/2025		Maistrello Tommaso
+			10.30-12.00 Implementazione bozza del grafico per l'andamento degli utenti e delle prenotazioni nella settimana intera precedente alla data attuale. Ho utilizzato 			Apexcharts, una componente open-source.
+			14.30-15.15 Implementata bozza per l'amministrazione degli utenti con pulsante di ban. Per scrivere questa classe ho usato come riferimento il codice di 				ReservationView.java, dato che la composizione era simile.
+
 			Mascheretti Davide
 			15.00-17.00 Implementazione su branch principale metodi per cambiare mail e password, implementazione su branch secondario admin_branch dei metodi per interrogare 			il database e ottenere dati da inserire poi nella dashboard admin
 			
@@ -85,11 +106,24 @@ Tutte le fasi precedenti sono contenute all'interno del file meeting
 			Mascheretti Davide
 			15.00-16.00 + 17.00-17.20 Aggiunta funziona ban utenti e risoluzione issue dopo il branch
 
+19/11/2025		Maistrello Tommaso
+			10.30-12.00 Implementata lettura dello stato con conseguente modifica del colore dell'icona del marker delle colonnine.
+			16.00-18.00 Prima di oggi gli slot nella sidebar per prenotare la colonnina partivano sempre da mezzanotte. Adesso partono dall'orario attuale (o meglio, 				approssimati alla mezz'ora successiva). Non è completo però, serve un listener per controllare sempre la data inserita nel bookingDatePicker.
+			Risolta visualizzazione tagliata di bookingDatePicker.
+
 19/11/2025		Mascheretti Davide
 			16.00-17.00 Implementato logica che se un utente viene eliminato, anche le sue prenotazioni vengono eliminate	
 
+20/11/2025		Maistrello Tommaso
+			12.00-13.30 Ora si generano gli slot considerando il girono, quindi se si considera la giornata odierna, gli slot si generano a partire dalla mezz'ora successiva. 			Risolti anche problemi di visualizzazione dell'overlay del bookingDatePicker.
+			14.00-14.30 Evitate duplicazioni di codice e sistemata visualizzazione della selezione del time slot.
+
 20/11/2025		Mascheretti Davide
 			20.45-21.45 Aggiunta classe e dipendenze qr code + pulsante per la visualizzazione e aggiunta immagini alle colonnine quando si clicca sul marker
+
+21/11/2025		Maistrello Tommaso
+			11.00-13.00 Quando si schiaccia sul tasto del QR Code, questo viene generato automaticamente in maniera automatica. Manca il controllo sulle prenotazioni 				future/passate. Personalizzato banner che appare all'avvio del programma. 
+			Piccole modifiche di interfaccia: Aggiunto username alla navbar in alto così l'utente sa se è loggato o meno.
 
 21/11/2025		Mascheretti Davide
 			16.00-18.00 Implementazione cambio stato colonnina se esiste una prenotazione nello slot di tempo corrispondente al tempo reale e cambio colore marker + inserimento 			immagini colonnine
@@ -106,14 +140,38 @@ Tutte le fasi precedenti sono contenute all'interno del file meeting
 23/11/2025		Mascheretti Davide
 			11.00-12.00 Conclusa divisione metodi firebaseService
 
+24/11/2025		Maistrello Tommaso
+			13.30-15.30 Adesso i QR Code appaiono solo per le prenotazioni future.
+			Colonnina prenotata = colore rosso.
+			Colonnina occupata è la stessa cosa di prenotata quindi rimossa.
+
 24/11/2025		Mascheretti Davide
 			14.30-15.30 + 17.00-18.00 Risoluzione issue sul colore marker in base allo stato delle colonnine + implementazione funzione per grafico dashboard admin
 
 24/11/2025              Morgera Claudio
                         13.30-16.00 Logica di calcolo per la ricarica dell‘auto e controllo per non salvare auto con stessa targa
 
+25/11/2025		Maistrello Tommaso
+			10.00-12.30 Implementata prima funzione visualizzata nel grafico da Firebase (contaPrenotazioniGiorni).
+			Eliminata da MapView la creazione della mappa, in quanto ora è componente a sè stante. Manca da collegarla anche a StationView
+			14.00-14.45 Adesso anche all'interno di StationsView la sidebar è trattata come componente esterna. Il metodo reservationLogic() lo dà come riscritto ma in realtà è 			pressochè identico a quello che c'era già. Piccola correzione a MapView. La sidebar ora appare alta tutta la pagina.
+			Piccola modifica a MainLayout che permette di navigare all'interno delle pagine senza l'errore NullPointerException in caso di utente non loggato.
+			Piccola modifica anche a ReservationView perchè alla generazione del QR Code, la scritta era sbagliata.
+
 25/11/2025		Mascheretti Davide
 			15.30-16.30 Rifinitura PP e file meeting. Aggiunta visualizzazione auto nella sezione profilo con funzione in FirebaseAutoService per restituire lista
+
+25/11/2025		Maistrello Tommaso
+			17.00-18.00 Adesso appaiono solo gli slot liberi, quelli occupati non possono essere selezionati.
+
+26/11/2025		Maistrello Tommaso
+			15.30-16.00 Implementata gestione slot orari anche per StationView e aggiunta selezione auto per prenotazione.
+			17.00-18.00 La selezione dell'auto adesso dipende dalla targa.
+
+27/11/2025 		Maistrello Tommaso
+			13.00-13.30 Riparazione errore di visualizzazione time slots: c'erano problemi con la data corrente per la generazione degli slot. Ora tutto funziona correttamente.
+			13.30-13.45 Creazione package per avere le classi più ordinate. Modifiche estetiche alla sidebar.
+			14.00-15.00 Separata sidebar da AdminColonnineView. Migliorata grafica di inserimento nuovo utente e nuova colonnina. Rimosse KpiCard inutilizzate in 					AdminDashboardView. Risolto problema di utente non loggato in MapView.
 
 			
 			
