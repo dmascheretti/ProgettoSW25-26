@@ -342,6 +342,68 @@ Utente non ancora iscritto</body>
     </eAnnotations>
     <ownedEnd xmi:type="uml:Property" xmi:id="_bpEm4MSwEfCa89mz9Yi_sQ" name="utente" type="_tvvjQMSuEfCa89mz9Yi_sQ" association="_bpDYwMSwEfCa89mz9Yi_sQ"/>
   </packagedElement>
+  <packagedElement xmi:type="uml:Activity" xmi:id="_7ko-QMxIEfC9ZqIAxAn4hg" name="App_Find&amp;Charge" visibility="protected" node="_n9rZMMxdEfCz-uEpwkEe1A _T7Ww0MxREfC9ZqIAxAn4hg _IP0MMMxQEfC9ZqIAxAn4hg _dwejMMxOEfC9ZqIAxAn4hg _Bf1_IMxOEfC9ZqIAxAn4hg _A8CHcMxOEfC9ZqIAxAn4hg _AafgoMxOEfC9ZqIAxAn4hg _-qGhEMxNEfC9ZqIAxAn4hg _J_bz4MxJEfC9ZqIAxAn4hg _4LaMEMxdEfCz-uEpwkEe1A _MQRokMxeEfCz-uEpwkEe1A">
+    <edge xmi:type="uml:ControlFlow" xmi:id="_N_uAMMxOEfC9ZqIAxAn4hg" target="_Bf1_IMxOEfC9ZqIAxAn4hg" source="_T7Ww0MxREfC9ZqIAxAn4hg"/>
+    <edge xmi:type="uml:ControlFlow" xmi:id="_PVncIMxOEfC9ZqIAxAn4hg" target="_-qGhEMxNEfC9ZqIAxAn4hg" source="_J_bz4MxJEfC9ZqIAxAn4hg"/>
+    <edge xmi:type="uml:ControlFlow" xmi:id="_QY_ksMxOEfC9ZqIAxAn4hg" target="_AafgoMxOEfC9ZqIAxAn4hg" source="_T7Ww0MxREfC9ZqIAxAn4hg"/>
+    <edge xmi:type="uml:ControlFlow" xmi:id="_SWZskMxOEfC9ZqIAxAn4hg" target="_-qGhEMxNEfC9ZqIAxAn4hg" source="_Bf1_IMxOEfC9ZqIAxAn4hg"/>
+    <edge xmi:type="uml:ObjectFlow" xmi:id="_w-hFYMxOEfC9ZqIAxAn4hg" name="[Credenziali Valide]" target="_dwejMMxOEfC9ZqIAxAn4hg" source="_w-iTgMxOEfC9ZqIAxAn4hg">
+      <guard xmi:type="uml:LiteralBoolean" xmi:id="_w-nzEMxOEfC9ZqIAxAn4hg" value="true"/>
+      <weight xmi:type="uml:LiteralInteger" xmi:id="_w-nzEcxOEfC9ZqIAxAn4hg" value="1"/>
+    </edge>
+    <edge xmi:type="uml:ObjectFlow" xmi:id="_AJrLgMxQEfC9ZqIAxAn4hg" target="_AJrykMxQEfC9ZqIAxAn4hg" source="_dwejMMxOEfC9ZqIAxAn4hg">
+      <guard xmi:type="uml:LiteralBoolean" xmi:id="_AJzHUMxQEfC9ZqIAxAn4hg" value="true"/>
+      <weight xmi:type="uml:LiteralInteger" xmi:id="_AJzHUcxQEfC9ZqIAxAn4hg" value="1"/>
+    </edge>
+    <edge xmi:type="uml:ControlFlow" xmi:id="_IQC1sMxQEfC9ZqIAxAn4hg" name="[Credenziali Admin]" target="_IP0MMMxQEfC9ZqIAxAn4hg" source="_dwejMMxOEfC9ZqIAxAn4hg"/>
+    <edge xmi:type="uml:ControlFlow" xmi:id="_e0uHEMxREfC9ZqIAxAn4hg" target="_T7Ww0MxREfC9ZqIAxAn4hg" source="_-qGhEMxNEfC9ZqIAxAn4hg"/>
+    <edge xmi:type="uml:ObjectFlow" xmi:id="_yZAIkMxdEfCz-uEpwkEe1A" target="_n9rZMMxdEfCz-uEpwkEe1A" source="_yZFoIMxdEfCz-uEpwkEe1A">
+      <guard xmi:type="uml:LiteralBoolean" xmi:id="_yZVfwMxdEfCz-uEpwkEe1A" value="true"/>
+      <weight xmi:type="uml:LiteralInteger" xmi:id="_yZWt4MxdEfCz-uEpwkEe1A" value="1"/>
+    </edge>
+    <edge xmi:type="uml:ObjectFlow" xmi:id="_4L_a4MxdEfCz-uEpwkEe1A" target="_4MApAMxdEfCz-uEpwkEe1A" source="_n9rZMMxdEfCz-uEpwkEe1A">
+      <guard xmi:type="uml:LiteralBoolean" xmi:id="_4MMPMMxdEfCz-uEpwkEe1A" value="true"/>
+      <weight xmi:type="uml:LiteralInteger" xmi:id="_4MMPMcxdEfCz-uEpwkEe1A" value="1"/>
+    </edge>
+    <edge xmi:type="uml:ObjectFlow" xmi:id="_MQu7kMxeEfCz-uEpwkEe1A" target="_MQu7k8xeEfCz-uEpwkEe1A" source="_MQu7kcxeEfCz-uEpwkEe1A">
+      <guard xmi:type="uml:LiteralBoolean" xmi:id="_MQ4skMxeEfCz-uEpwkEe1A" value="true"/>
+      <weight xmi:type="uml:LiteralInteger" xmi:id="_MQ4skcxeEfCz-uEpwkEe1A" value="1"/>
+    </edge>
+    <edge xmi:type="uml:ControlFlow" xmi:id="_Uow9gMxeEfCz-uEpwkEe1A" target="_4LaMEMxdEfCz-uEpwkEe1A" source="_MQRokMxeEfCz-uEpwkEe1A"/>
+    <node xmi:type="uml:InitialNode" xmi:id="_J_bz4MxJEfC9ZqIAxAn4hg" outgoing="_PVncIMxOEfC9ZqIAxAn4hg"/>
+    <node xmi:type="uml:OpaqueAction" xmi:id="_-qGhEMxNEfC9ZqIAxAn4hg" name="Accesso al Sito" incoming="_PVncIMxOEfC9ZqIAxAn4hg _SWZskMxOEfC9ZqIAxAn4hg" outgoing="_e0uHEMxREfC9ZqIAxAn4hg"/>
+    <node xmi:type="uml:OpaqueAction" xmi:id="_AafgoMxOEfC9ZqIAxAn4hg" name="Login" incoming="_QY_ksMxOEfC9ZqIAxAn4hg">
+      <outputValue xmi:type="uml:OutputPin" xmi:id="_w-iTgMxOEfC9ZqIAxAn4hg" name="Credenziali" outgoing="_w-hFYMxOEfC9ZqIAxAn4hg">
+        <upperBound xmi:type="uml:LiteralInteger" xmi:id="_w-jhoMxOEfC9ZqIAxAn4hg" value="1"/>
+      </outputValue>
+    </node>
+    <node xmi:type="uml:OpaqueAction" xmi:id="_A8CHcMxOEfC9ZqIAxAn4hg" name="Consulta Mappa e Menu">
+      <inputValue xmi:type="uml:InputPin" xmi:id="_AJrykMxQEfC9ZqIAxAn4hg" name="Credenziali" incoming="_AJrLgMxQEfC9ZqIAxAn4hg">
+        <upperBound xmi:type="uml:LiteralInteger" xmi:id="_AJtAsMxQEfC9ZqIAxAn4hg" value="1"/>
+      </inputValue>
+      <outputValue xmi:type="uml:OutputPin" xmi:id="_yZFoIMxdEfCz-uEpwkEe1A" name="Credenziali" outgoing="_yZAIkMxdEfCz-uEpwkEe1A">
+        <upperBound xmi:type="uml:LiteralInteger" xmi:id="_yZJSgMxdEfCz-uEpwkEe1A" value="1"/>
+      </outputValue>
+    </node>
+    <node xmi:type="uml:OpaqueAction" xmi:id="_Bf1_IMxOEfC9ZqIAxAn4hg" name="Registrazione" incoming="_N_uAMMxOEfC9ZqIAxAn4hg" outgoing="_SWZskMxOEfC9ZqIAxAn4hg"/>
+    <node xmi:type="uml:DecisionNode" xmi:id="_dwejMMxOEfC9ZqIAxAn4hg" incoming="_w-hFYMxOEfC9ZqIAxAn4hg" outgoing="_AJrLgMxQEfC9ZqIAxAn4hg _IQC1sMxQEfC9ZqIAxAn4hg"/>
+    <node xmi:type="uml:OpaqueAction" xmi:id="_IP0MMMxQEfC9ZqIAxAn4hg" name="Consulta Analisi Sito" incoming="_IQC1sMxQEfC9ZqIAxAn4hg"/>
+    <node xmi:type="uml:DecisionNode" xmi:id="_T7Ww0MxREfC9ZqIAxAn4hg" name="" incoming="_e0uHEMxREfC9ZqIAxAn4hg" outgoing="_QY_ksMxOEfC9ZqIAxAn4hg _N_uAMMxOEfC9ZqIAxAn4hg"/>
+    <node xmi:type="uml:DecisionNode" xmi:id="_n9rZMMxdEfCz-uEpwkEe1A" name="" incoming="_yZAIkMxdEfCz-uEpwkEe1A" outgoing="_4L_a4MxdEfCz-uEpwkEe1A"/>
+    <node xmi:type="uml:OpaqueAction" xmi:id="_4LaMEMxdEfCz-uEpwkEe1A" name="Consulta Dati Profilo" incoming="_Uow9gMxeEfCz-uEpwkEe1A">
+      <inputValue xmi:type="uml:InputPin" xmi:id="_4MApAMxdEfCz-uEpwkEe1A" name="Credenziali" incoming="_4L_a4MxdEfCz-uEpwkEe1A">
+        <upperBound xmi:type="uml:LiteralInteger" xmi:id="_4MApAcxdEfCz-uEpwkEe1A" value="1"/>
+      </inputValue>
+      <outputValue xmi:type="uml:OutputPin" xmi:id="_MQu7kcxeEfCz-uEpwkEe1A" name="Credenziali" outgoing="_MQu7kMxeEfCz-uEpwkEe1A">
+        <upperBound xmi:type="uml:LiteralInteger" xmi:id="_MQu7ksxeEfCz-uEpwkEe1A" value="1"/>
+      </outputValue>
+    </node>
+    <node xmi:type="uml:OpaqueAction" xmi:id="_MQRokMxeEfCz-uEpwkEe1A" name="Modifica Dati" outgoing="_Uow9gMxeEfCz-uEpwkEe1A">
+      <inputValue xmi:type="uml:InputPin" xmi:id="_MQu7k8xeEfCz-uEpwkEe1A" name="Credenziali" incoming="_MQu7kMxeEfCz-uEpwkEe1A">
+        <upperBound xmi:type="uml:LiteralInteger" xmi:id="_MQu7lMxeEfCz-uEpwkEe1A" value="1"/>
+      </inputValue>
+    </node>
+  </packagedElement>
   <profileApplication xmi:type="uml:ProfileApplication" xmi:id="_szdM8K2_EfCDm6AtkyEGow">
     <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_szfCIK2_EfCDm6AtkyEGow" source="http://www.eclipse.org/uml2/2.0.0/UML">
       <references xmi:type="ecore:EPackage" href="pathmap://PAPYRUS_ACTIONLANGUAGE_PROFILE/ActionLanguage-Profile.profile.uml#_Kv8EIKFXEeS_KNX0nfvIVQ"/>
