@@ -11,12 +11,13 @@ import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
-import org.threeten.bp.LocalTime;
+import java.time.LocalTime;
 
 import com.example.models.Colonnina;
 import com.example.models.Prenotazione;
 import com.example.models.Recensione;
 import com.example.models.Utente;
+import com.example.util.DataValidator;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -544,6 +545,67 @@ public class FirebaseService {
                     if (p != null && !lista.contains(p.getIDColonnina()) && p.getData().equals(LocalDate.now().toString())) {
                         lista.add(p.getIDColonnina());
                     }
+                }
+            }
+				
+            future.complete(lista);
+        }
+			
+
+			// Se trova errori
+			@Override
+			public void onCancelled(DatabaseError databaseError) {
+				System.err.println("Errore nel caricamento prenotazioni: " + databaseError.getMessage());
+				future.completeExceptionally(databaseError.toException());
+			}
+		});
+		return future;
+	}
+	
+	
+	public CompletableFuture<List<String>> getColonnineInCarica() {
+
+		// Oggetto che permette al programma di non fermarsi perchè sa che conterrà la
+		// lista che sta cercando
+		CompletableFuture<List<String>> future = new CompletableFuture<>();
+		
+		
+		prenotazioni.addListenerForSingleValueEvent(new ValueEventListener() {
+
+			// Se li legge senza problemi
+			@Override
+			public void onDataChange(DataSnapshot dataSnapshot) { // Istantanea dei dati
+				List<String> lista=new ArrayList<>();
+				
+				LocalTime adesso = LocalTime.now().minusMinutes(30);
+		        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+		        String orarioStringa = adesso.format(formatter);
+		        
+		        LocalDate today = LocalDate.now();
+                DateTimeFormatter formatterOra = DateTimeFormatter.ofPattern("yyyy-MM-dd"); 
+                String todayStr = today.format(formatterOra);
+				
+				if(dataSnapshot.exists()) {
+					for (DataSnapshot snap : dataSnapshot.getChildren()) {
+                    Prenotazione p = snap.getValue(Prenotazione.class);
+                    
+      
+                 if (p != null && 
+                    ((p.getData().compareTo(todayStr) < 0 || (todayStr.equals(p.getData()) && orarioStringa.compareTo(p.getInizio()) > 0)))) {
+                     
+  
+                     prenotazioni.child(p.getIDColonnina() + " " + p.getData() + " " + p.getInizio())
+                                 .child("stato").setValue("Passata", null);
+
+                 }
+                 else if (p != null && !lista.contains(p.getIDColonnina()) && 
+                          p.getStato().equals("In carica") && todayStr.equals(p.getData())) {
+                     
+                     lista.add(p.getIDColonnina());
+                 }
+                    
+              
+                    
                 }
             }
 				

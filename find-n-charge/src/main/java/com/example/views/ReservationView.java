@@ -101,7 +101,7 @@ public class ReservationView extends VerticalLayout {
 			btn.addClickListener(event -> {
 				String id = p.getId();
 				
-					fbPrenotazioni.aggiornaStato(p)
+					fbPrenotazioni.aggiornaStato(p, "In carica")
 			    .exceptionally(ex -> {
 			        ex.printStackTrace();
 			        return null;

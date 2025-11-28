@@ -280,8 +280,8 @@ public class MapView extends HorizontalLayout {
 
 						// Controlla lo stato e in base a questo assegna il colore del marker
 						"      if (st === 'libera') {" + "          selectedIcon = greenIcon;"
-						+ "      } else if (st === 'prenotata') {" + "          selectedIcon = redIcon;"
-						+ "      } else {" + "          selectedIcon = greyIcon;" + // Default
+						+ "      } else if (st === 'prenotata') {" + "          selectedIcon = yellowIcon;"
+						+ "      } else {" + "          selectedIcon = redIcon;" + // Default
 						"      }" +
 
 						// Crea i marker
@@ -298,8 +298,15 @@ public class MapView extends HorizontalLayout {
 						"      component.$server.onMarkerClick(station.id);" + "      });});}}, 100);"; // Ciclo ogni//
 																										// 100ms
 
-		colonnineService.inizializza("Libera").thenRun(() -> {
-			colonnineService.aggiornaStato("Prenotata").thenRun(() -> {
+		colonnineService.inizializza("Libera")
+	    .thenCompose(v -> colonnineService.aggiornaStato("Prenotata")) 
+	    .thenCompose(v -> colonnineService.aggiornaStatoCarica("In carica")) 
+	    .thenRun(() -> {
+			
+		
+			
+				
+					
 				// Se getAllColonnine() ha successo
 				firebaseService.getAllColonnine().thenAccept(stations -> {
 
@@ -344,9 +351,7 @@ public class MapView extends HorizontalLayout {
 					});
 					return null;
 				});
-			});
-
-		});
+	    });
 
 	}
 

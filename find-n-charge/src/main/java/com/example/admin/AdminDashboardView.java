@@ -255,8 +255,6 @@ public class AdminDashboardView extends VerticalLayout implements AfterNavigatio
 		utentiCard = new KpiCard("Utenti totali", "...");
 		utentiNuoviCard = new KpiCard("Nuovi utenti", "...");
 
-		utentiAttiviCard.getStyle().set("border-color", "var(--lumo-success-color)");
-
 		HorizontalLayout kpiUtentiLayout = new HorizontalLayout(utentiCard, utentiNuoviCard);
 		kpiUtentiLayout.setWidthFull();
 		kpiUtentiLayout.setSpacing(true);

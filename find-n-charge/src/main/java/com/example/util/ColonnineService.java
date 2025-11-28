@@ -46,6 +46,25 @@ public class ColonnineService {
 	        List<CompletableFuture<Void>> listaCF = new ArrayList<>();
 	        
 	        for (String c : lista) {
+	        	
+	        	listaCF.add(fb.cambiaStatoColonnina(c, msg));
+	        }
+
+	        // attendo che tutti terminino
+	        return CompletableFuture.allOf(listaCF.toArray(new CompletableFuture[0]));
+	    });
+		
+		return future;
+	}
+	
+	public CompletableFuture<Void> aggiornaStatoCarica(String msg) {
+
+		CompletableFuture<Void> future =fb.getColonnineInCarica().thenCompose(lista -> {
+	        // lista dei CompletableFuture per aggiornare lo stato
+	        List<CompletableFuture<Void>> listaCF = new ArrayList<>();
+	        
+	        for (String c : lista) {
+	        	
 	        	listaCF.add(fb.cambiaStatoColonnina(c, msg));
 	        }
 
