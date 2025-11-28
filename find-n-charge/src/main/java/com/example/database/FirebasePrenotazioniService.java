@@ -427,14 +427,14 @@ public class FirebasePrenotazioniService {
 		return inCarica;
 	}
 	
-	public CompletableFuture<Void> aggiornaStato(Prenotazione p) {
+	public CompletableFuture<Void> aggiornaStato(Prenotazione p, String msg) {
 
 	    CompletableFuture<Void> future = new CompletableFuture<>();
 
 	    String chiave = p.getIDColonnina() + " " + p.getData() + " " + p.getInizio();
 
 
-	    prenotazioni.child(chiave).child("stato").setValue("In carica", (databaseError, ref) -> {
+	    prenotazioni.child(chiave).child("stato").setValue(msg, (databaseError, ref) -> {
 
 	        if (databaseError != null) {
 	            System.err.println("ERRORE: " + databaseError.getMessage());
