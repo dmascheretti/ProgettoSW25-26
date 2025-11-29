@@ -184,5 +184,8 @@ Tutte le fasi precedenti sono contenute all'interno del file meeting
 29/11/2025 		Mascheretti Davide
 			10.00-13.00 Conclusa divisione delle classi di firebaseService in base ai nodi letti o scritti. 
 
+29/11/2025		Maistrello Tommaso
+			17.45-18.45 Adesso quando l'utente cerca di accedere alla pagina del profilo o a quella di prenotazioni ma non ha ancora eseguito l'accesso, viene 			reindirizzato direttamente al login con notifica di errore.
+
 			
 			

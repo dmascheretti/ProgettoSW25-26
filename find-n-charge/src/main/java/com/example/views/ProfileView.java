@@ -7,6 +7,7 @@ import com.example.database.FirebasePrenotazioniService;
 import com.example.database.FirebaseUtentiService;
 import com.example.layout.MainLayout;
 import com.vaadin.flow.component.Text;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.html.H3;
@@ -18,13 +19,16 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.router.BeforeEnterEvent;
+import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.VaadinSession;
+import com.vaadin.flow.shared.Registration;
 
 @Route(value = "profilo", layout = MainLayout.class)
 @PageTitle("Find&Charge - Profilo")
-public class ProfileView extends VerticalLayout {
+public class ProfileView extends VerticalLayout implements BeforeEnterObserver {
 
     private FirebaseUtentiService firebaseUtentiService;
     private FirebaseAutoService firebaseAutoService;
@@ -275,5 +279,30 @@ public class ProfileView extends VerticalLayout {
         );
 
         setDefaultHorizontalComponentAlignment(Alignment.START);
+    }
+    
+    /**
+     * Se l'utente prova ad accedere direttamente a questa pagina senza aver effettuato l'accesso,
+     * lo si reindirizza alla pagina di login mostrando una notifica di errore.
+     * beforeEnter viene eseguito un attimo prima che la pagina venga mostrata all'utente.
+     */
+    @Override
+    public void beforeEnter(BeforeEnterEvent event) {
+        Utente utente = (Utente) VaadinSession.getCurrent().getAttribute("utente");
+        
+        if (utente == null) {
+            event.forwardTo("");	//Reindirizza alla pagina di login
+            Registration[] registrationWrapper = new Registration[1];		//Array per registrare l'aggiunta del listener
+            //Dopo che ha cambiato pagina, mostra la notifica
+            registrationWrapper[0] = UI.getCurrent().addAfterNavigationListener(navEvent -> {
+            	Notification.show("Utente non trovato. Effettua il login.", 3000, Notification.Position.TOP_CENTER)
+                .getElement().getThemeList().add("error");
+
+                //Rimuove il listener, altrimenti scatterebbe ogni volta
+                if (registrationWrapper[0] != null) {
+                    registrationWrapper[0].remove();
+                }
+            });
+        }
     }
 }

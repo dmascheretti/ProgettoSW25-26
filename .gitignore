@@ -31,3 +31,7 @@
 hs_err_pid*
 replay_pid*
 /.metadata/
+.sonarlint/default/known-findings-store11006100665445440200/00000000000.xd
+.sonarlint/default/known-findings-store11006100665445440200/xd.lck
+.sonarlint/storage/h2/sq-ide.lock.db
+.sonarlint/storage/h2/sq-ide.mv.db

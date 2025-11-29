@@ -11,11 +11,15 @@ import com.vaadin.flow.component.html.H4;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.router.BeforeEnterEvent;
+import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.server.StreamResource;
 import com.vaadin.flow.server.VaadinSession;
+import com.vaadin.flow.shared.Registration;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -44,7 +48,7 @@ import java.util.concurrent.CompletableFuture;
 @Route(value = "prenotazioni", layout = MainLayout.class)
 @PageTitle("Find&Charge - Prenotazioni")
 
-public class ReservationView extends VerticalLayout {
+public class ReservationView extends VerticalLayout implements BeforeEnterObserver {
 
 	private Grid<Prenotazione> NewPrenoGrid = new Grid<>(Prenotazione.class, false);
 	private Grid<Prenotazione> OldPrenoGrid = new Grid<>(Prenotazione.class, false);
@@ -63,10 +67,15 @@ public class ReservationView extends VerticalLayout {
 	public ReservationView(FirebasePrenotazioniService firebasePrenotazioniService) {
 		this.firebasePrenotazioniService=firebasePrenotazioniService;
 		this.ui = UI.getCurrent();
-		setSpacing(true);
-		setPadding(true);
+		
 		// salvo utente che è nell'applicazione
 		Utente utente = (Utente) VaadinSession.getCurrent().getAttribute("utente");
+		if (utente == null) {
+			return;
+		}
+		
+		setSpacing(true);
+		setPadding(true);
 		H3 titolo = new H3("Ciao " + utente.getUsername() + "! Ecco le tue prenotazioni...");
 		titolo.getStyle().set("color", "#008000");
 
@@ -249,5 +258,30 @@ public class ReservationView extends VerticalLayout {
 					return null;
 				});
 	}
+
+	/**
+     * Se l'utente prova ad accedere direttamente a questa pagina senza aver effettuato l'accesso,
+     * lo si reindirizza alla pagina di login mostrando una notifica di errore.
+     * beforeEnter viene eseguito un attimo prima che la pagina venga mostrata all'utente.
+     */
+    @Override
+    public void beforeEnter(BeforeEnterEvent event) {
+        Utente utente = (Utente) VaadinSession.getCurrent().getAttribute("utente");
+        
+        if (utente == null) {
+            event.forwardTo("");	//Reindirizza alla pagina di login
+            Registration[] registrationWrapper = new Registration[1];		//Array per registrare l'aggiunta del listener
+            //Dopo che ha cambiato pagina, mostra la notifica
+            registrationWrapper[0] = UI.getCurrent().addAfterNavigationListener(navEvent -> {
+            	Notification.show("Utente non trovato. Effettua il login.", 3000, Notification.Position.TOP_CENTER)
+                .getElement().getThemeList().add("error");
+
+                //Rimuove il listener, altrimenti scatterebbe ogni volta
+                if (registrationWrapper[0] != null) {
+                    registrationWrapper[0].remove();
+                }
+            });
+        }
+    }
 
 }

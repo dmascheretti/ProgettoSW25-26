@@ -172,9 +172,6 @@ public class MapView extends HorizontalLayout {
         Utente utenteCorrente = (Utente) VaadinSession.getCurrent().getAttribute("utente");
 
         if (utenteCorrente == null) {
-            Notification.show("Errore: Utente non loggato.", 3000, Notification.Position.TOP_CENTER)
-                    .getElement().getThemeList().add("error");
-            UI.getCurrent().navigate(""); 
             return;
         }
         
