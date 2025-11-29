@@ -21,7 +21,7 @@ import com.example.util.DataValidator;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
-import com.example.database.FirebaseService;
+import com.example.database.FirebaseUtentiService;
 import com.example.layout.AdminLayout;
 import org.threeten.bp.LocalDate;
 
@@ -31,16 +31,16 @@ import org.threeten.bp.LocalDate;
 public class AdminUtentiView extends VerticalLayout {
 
 	private Grid<Utente> utentiGrid = new Grid<>(Utente.class);
-	private final FirebaseService utentiRef;
+	private final FirebaseUtentiService firebaseUtentiService;
 
 	/**
 	 * Costruttore che genera la griglia contenente tutti gli utenti
 	 * 
 	 * @param fb Firebase per accedere ai dati utente
 	 */
-	public AdminUtentiView(FirebaseService fb) {
+	public AdminUtentiView(FirebaseUtentiService firebaseUtentiService) {
 
-		this.utentiRef = fb;
+		this.firebaseUtentiService = firebaseUtentiService;
 		setSpacing(true);
 		setPadding(true);
 
@@ -70,7 +70,7 @@ public class AdminUtentiView extends VerticalLayout {
 		add(titolo, nuovoUtenteBtn, utentiGrid);
 
 		// Ottiene la lista di utenti da Firebase
-		utentiRef.getAllUtenti().thenAccept(lista -> {
+		firebaseUtentiService.getAllUtenti().thenAccept(lista -> {
 			getUI().ifPresent(ui -> ui.access(() -> {
 
 				// Aggiunge la lista alla griglia
@@ -89,7 +89,7 @@ public class AdminUtentiView extends VerticalLayout {
 
 	private void banUtente(Utente u) {
 
-		utentiRef.cancellaUtente(u).thenRun(() -> getUI().ifPresent(ui -> ui.access(() -> {
+		firebaseUtentiService.cancellaUtente(u).thenRun(() -> getUI().ifPresent(ui -> ui.access(() -> {
 
 			Notification
 					.show("Utente " + u.getUsername() + " bandito dal sistema.", 3000, Notification.Position.TOP_CENTER)
@@ -165,7 +165,7 @@ public class AdminUtentiView extends VerticalLayout {
 			 * se utente==null salvo nuovo utente con quello username
 			 */
 
-			utentiRef.verificaUtente(u).thenAccept(utente -> {
+			firebaseUtentiService.verificaUtente(u).thenAccept(utente -> {
 				getUI().ifPresent(ui -> ui.access(() -> {
 
 					if (utente == null) {
@@ -182,7 +182,7 @@ public class AdminUtentiView extends VerticalLayout {
 						 * non viene eseguito, ed esegue .exceptionally (errore del database)
 						 */
 
-						utentiRef.salvaUtente(nuovoUtente).thenRun(() -> ui.access(() -> {
+						firebaseUtentiService.salvaUtente(nuovoUtente).thenRun(() -> ui.access(() -> {
 							Notification.show("Registrazione completata! Benvenuto, " + u + ".", 3000,
 									Notification.Position.TOP_CENTER);
 							getUI().ifPresent(ui1 -> ui1.getPage().reload());

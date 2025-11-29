@@ -3,6 +3,9 @@ package com.example.database;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+
+import org.springframework.stereotype.Service;
+
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -15,15 +18,14 @@ import com.example.models.Utente;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
-
+@Service
 public class FirebaseAutoService {
 
 	private final DatabaseReference automobile;
 
-	public FirebaseAutoService() {
-		this.automobile = FirebaseDatabase.getInstance().getReference("auto");
-		
-	}
+    public FirebaseAutoService(FirebaseDatabase db) {
+        this.automobile = db.getReference("auto");
+    }
 	
 	public CompletableFuture<Auto> verificaTarga(String targa) {
 		CompletableFuture<Auto> future = new CompletableFuture<>();

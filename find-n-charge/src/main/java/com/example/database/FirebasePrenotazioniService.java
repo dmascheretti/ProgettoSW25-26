@@ -1,8 +1,10 @@
 package com.example.database;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
@@ -382,6 +384,19 @@ public class FirebasePrenotazioniService {
 		return future;
 	}
 	
+	public static String getSlotCorrenteTimestamp() {
+	    LocalDateTime now = LocalDateTime.now();
+	    int minuteSlot = (now.getMinute() / 30) * 30;
+
+	    LocalDateTime slot = LocalDateTime.of(
+	            now.getYear(), now.getMonth(), now.getDayOfMonth(),
+	            now.getHour(), minuteSlot
+	    );
+
+	    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+	    return slot.format(formatter);
+	}
+	
 	public CompletableFuture <Boolean> inCarica(Auto a){
 		CompletableFuture <Boolean> inCarica=new CompletableFuture<>();
 		
@@ -401,7 +416,7 @@ public class FirebasePrenotazioniService {
 				for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
 					Prenotazione p = snapshot.getValue(Prenotazione.class);
 					if(p.getTarga()!=null) {
-					if(p.getTarga().equals(a.getTarga()) && p.getData().equals(todayStr) && p.getInizio().equals(DataValidator.getSlotCorrenteTimestamp())
+					if(p.getTarga().equals(a.getTarga()) && p.getData().equals(todayStr) && p.getInizio().equals(getSlotCorrenteTimestamp())
 							&& p.getStato().equals("In carica"))
 							{
 						trovata=true;
@@ -445,6 +460,43 @@ public class FirebasePrenotazioniService {
 	    });
 
 	    return future;
+	}
+	
+	public CompletableFuture<Integer[]> contaPrenotazioniGiorni(){
+		CompletableFuture<Integer[]> future= new CompletableFuture();
+		prenotazioni.addListenerForSingleValueEvent(new ValueEventListener() {
+
+			// Se li legge senza problemi
+			@Override
+			public void onDataChange(DataSnapshot dataSnapshot) {
+				Integer[] array= new Integer[7];
+				Arrays.fill(array, 0);
+					
+					for (DataSnapshot snap : dataSnapshot.getChildren()) {
+						Prenotazione p= snap.getValue(Prenotazione.class);
+						if (p != null && p.getData() != null ) {
+		                    try {
+		                        LocalDate data = LocalDate.parse(p.getData());
+		                        int giorno = data.getDayOfWeek().getValue();
+		                        array[giorno - 1]++;
+		                    } catch (Exception e) {
+		                        System.err.println("Errore: ");
+		                    }
+		                }
+		            }
+
+		            future.complete(array);
+					
+			}
+
+			// Se trova errori
+			@Override
+			public void onCancelled(DatabaseError databaseError) {
+				System.err.println("Errore nel caricamento colonnine: " + databaseError.getMessage());
+				future.completeExceptionally(databaseError.toException());
+			}
+		});
+		return future;
 	}
 
 }

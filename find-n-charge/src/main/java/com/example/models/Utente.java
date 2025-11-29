@@ -5,8 +5,6 @@ package com.example.models;
 
 import java.util.List;
 
-import com.example.database.FirebaseService;
-
 public class Utente {
 	
 	private String nome, cognome, username, email, password, timestamp;

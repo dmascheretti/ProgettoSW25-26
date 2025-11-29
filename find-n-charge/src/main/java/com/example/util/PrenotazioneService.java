@@ -8,17 +8,20 @@ package com.example.util;
 import java.time.LocalDate;
 import java.util.concurrent.CompletableFuture;
 
-import com.example.database.FirebaseService;
+import org.springframework.stereotype.Service;
+
+import com.example.database.FirebasePrenotazioniService;
 import com.example.models.Auto;
 import com.example.models.Colonnina;
 import com.example.models.Prenotazione;
 import com.example.models.Utente;
 
+@Service
 public class PrenotazioneService {
-	private final FirebaseService firebaseService;
+	private final FirebasePrenotazioniService firebasePrenotazioniService;
 
-	public PrenotazioneService(FirebaseService fb) {
-		this.firebaseService = fb;
+	public PrenotazioneService(FirebasePrenotazioniService firebasePrenotazioniService) {
+		this.firebasePrenotazioniService = firebasePrenotazioniService;
 	}
 
 	/**
@@ -42,7 +45,7 @@ public class PrenotazioneService {
 		
 		CompletableFuture<Boolean> future = new CompletableFuture<>();
 
-		firebaseService.cercaPrenotazione(c, data, orario).thenAccept(ris -> {
+		firebasePrenotazioniService.cercaPrenotazione(c, data, orario).thenAccept(ris -> {
 
 			/*
 			 * Slot occupato
@@ -102,7 +105,7 @@ public class PrenotazioneService {
 
 			// Chiamo funzione del database, se salvataggio completato future.complete(true)
 
-			firebaseService.salvaPrenotazione(p).thenRun(() -> future.complete(true)).exceptionally(ex -> {
+			firebasePrenotazioniService.salvaPrenotazione(p).thenRun(() -> future.complete(true)).exceptionally(ex -> {
 				future.complete(false);
 				return null;
 			});

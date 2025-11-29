@@ -31,7 +31,6 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.example.database.FirebasePrenotazioniService;
-import com.example.database.FirebaseService;
 import com.example.layout.MainLayout;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import java.awt.image.BufferedImage;
@@ -50,8 +49,7 @@ public class ReservationView extends VerticalLayout {
 	private Grid<Prenotazione> NewPrenoGrid = new Grid<>(Prenotazione.class, false);
 	private Grid<Prenotazione> OldPrenoGrid = new Grid<>(Prenotazione.class, false);
 	private CompletableFuture<List<Prenotazione>> listaPreno;
-	private final FirebaseService prenotazioniRef;
-	private final FirebasePrenotazioniService fbPrenotazioni;
+	private FirebasePrenotazioniService firebasePrenotazioniService;
 	private final UI ui;
 	private QRCode qr;
 	
@@ -62,10 +60,9 @@ public class ReservationView extends VerticalLayout {
 	 * @param fb Database per accedere ai dati prenotazione
 	 */
 	
-	public ReservationView(FirebaseService fb) {
-		this.fbPrenotazioni = new FirebasePrenotazioniService();
+	public ReservationView(FirebasePrenotazioniService firebasePrenotazioniService) {
+		this.firebasePrenotazioniService=firebasePrenotazioniService;
 		this.ui = UI.getCurrent();
-		this.prenotazioniRef = fb;
 		setSpacing(true);
 		setPadding(true);
 		// salvo utente che è nell'applicazione
@@ -101,7 +98,7 @@ public class ReservationView extends VerticalLayout {
 			btn.addClickListener(event -> {
 				String id = p.getId();
 				
-					fbPrenotazioni.aggiornaStato(p, "In carica")
+					firebasePrenotazioniService.aggiornaStato(p, "In carica")
 			    .exceptionally(ex -> {
 			        ex.printStackTrace();
 			        return null;
@@ -186,7 +183,7 @@ public class ReservationView extends VerticalLayout {
 		 * di thenAccept permette di lavorare in maniera asincrona ed è necessaria per
 		 * utilizzare il CompletableFuture in getAllReservation
 		 */
-		prenotazioniRef.getUtenteReservation(utente.getUsername()).thenAccept(lista -> {
+		firebasePrenotazioniService.getUtenteReservation(utente.getUsername()).thenAccept(lista -> {
 			getUI().ifPresent(ui -> ui.access(() -> {
 
 				// aggiungo la lista alla griglia
@@ -236,7 +233,7 @@ public class ReservationView extends VerticalLayout {
 	// funzione di cancellazione, DA METTERE IN UNA CLASSE A PARTE!
 	private void cancellaPrenot(Prenotazione p) {
 
-		prenotazioniRef.cancellaPrenotazione(p).thenRun(() -> getUI().ifPresent(ui -> ui.access(() -> {
+		firebasePrenotazioniService.cancellaPrenotazione(p).thenRun(() -> getUI().ifPresent(ui -> ui.access(() -> {
 			Notification.show("Prenotazione eliminata con successo", 3000, Notification.Position.TOP_CENTER);
 
 			getUI().ifPresent(ui1 -> ui1.getPage().reload());

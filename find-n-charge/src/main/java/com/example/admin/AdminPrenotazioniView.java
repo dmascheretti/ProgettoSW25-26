@@ -9,7 +9,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import com.example.database.FirebaseService;
+
+import com.example.database.FirebasePrenotazioniService;
 import com.example.layout.AdminLayout;
 import com.example.models.Prenotazione;
 import com.vaadin.flow.component.button.Button;
@@ -26,10 +27,10 @@ import com.vaadin.flow.router.Route;
 public class AdminPrenotazioniView extends VerticalLayout{
 	
 	private Grid<Prenotazione> prenoGrid = new Grid<>(Prenotazione.class);
-    private final FirebaseService prenotazioniRef;
+    private final FirebasePrenotazioniService firebasePrenotazioniService;
     
-    public AdminPrenotazioniView (FirebaseService fb) {
-    	this.prenotazioniRef=fb;
+    public AdminPrenotazioniView (FirebasePrenotazioniService firebasePrenotazioniService) {
+    	this.firebasePrenotazioniService=firebasePrenotazioniService;
         setSpacing(true);
         setPadding(true);
         H3 titolo = new H3("Lista universale delle prenotazioni...");  
@@ -61,7 +62,7 @@ public class AdminPrenotazioniView extends VerticalLayout{
          * L'utilizzo di thenAccept permette di lavorare in maniera asincrona ed è necessaria per 
          * utilizzare il CompletableFuture in getAllReservation
          */
-       prenotazioniRef.getAllReservation().thenAccept(lista -> {
+       firebasePrenotazioniService.getAllReservation().thenAccept(lista -> {
 			getUI().ifPresent(ui -> ui.access(() -> {
 				
 				//aggiungo la lista alla griglia 
@@ -102,7 +103,7 @@ public class AdminPrenotazioniView extends VerticalLayout{
     
 	private void cancellaPrenot(Prenotazione p) {
 		
-		prenotazioniRef.cancellaPrenotazione(p).thenRun(() -> getUI().ifPresent(ui -> ui.access(() -> {
+		firebasePrenotazioniService.cancellaPrenotazione(p).thenRun(() -> getUI().ifPresent(ui -> ui.access(() -> {
 			Notification.show("Prenotazione eliminata con successo", 3000,
 					Notification.Position.TOP_CENTER);
 			

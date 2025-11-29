@@ -17,7 +17,7 @@ import java.util.List;
 import javax.imageio.ImageIO;
 
 import com.example.components.Sidebar;
-import com.example.database.FirebaseService;
+import com.example.database.FirebaseColonnineService;
 import com.example.layout.AdminLayout;
 import com.example.models.Colonnina;
 import com.vaadin.flow.component.button.Button;
@@ -44,7 +44,7 @@ import com.vaadin.flow.server.StreamResource;
 public class AdminColonnineView extends HorizontalLayout {
 	private String tema = "#008000";
 	private Grid<Colonnina> colonGrid = new Grid<>(Colonnina.class);
-	private FirebaseService firebaseService = new FirebaseService(); // è un'istanza di FirebaseSystem
+	private FirebaseColonnineService firebaseColonnineService;
 	private Sidebar stationSidebar;
 	private Colonnina colonninaSelezionata;
 	private Dialog nuovaColonninaLayout;
@@ -65,7 +65,8 @@ public class AdminColonnineView extends HorizontalLayout {
 	
 
 	// Classe per l'elenco delle colonnine (indipendente dalla mappa)
-	public AdminColonnineView() {
+	public AdminColonnineView(FirebaseColonnineService firebaseColonnineService) {
+		this.firebaseColonnineService=firebaseColonnineService;
 		setSpacing(true);
 		setPadding(true);
 
@@ -207,7 +208,7 @@ public class AdminColonnineView extends HorizontalLayout {
 	            comuneField.getValue(), 0
 	        );
 
-	        firebaseService.salvaColonnina(nuova).thenAccept(v -> {
+	        firebaseColonnineService.salvaColonnina(nuova).thenAccept(v -> {
 	            getUI().ifPresent(ui -> ui.access(() -> {
 	                nuovaColonninaLayout.setVisible(false);
 	                aggiornaGridConFiltro(""); // aggiorna tabella
@@ -230,7 +231,7 @@ public class AdminColonnineView extends HorizontalLayout {
 	}
 
 	private void aggiornaGridConFiltro(String query) {
-		firebaseService.cercaColonnine(query).thenAccept(lista -> {
+		firebaseColonnineService.cercaColonnine(query).thenAccept(lista -> {
 			getUI().ifPresent(ui -> ui.access(() -> {
 				colonGrid.setItems(lista);
 			}));

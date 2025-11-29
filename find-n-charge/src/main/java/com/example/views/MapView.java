@@ -21,8 +21,8 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import com.example.database.FirebaseAutoService;
+import com.example.database.FirebaseColonnineService;
 import com.example.database.FirebasePrenotazioniService;
-import com.example.database.FirebaseService;
 import com.example.layout.MainLayout;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -53,21 +53,22 @@ public class MapView extends HorizontalLayout {
 	private ColonnineService colonnineService;
 
 	// Serve Firebase con la lista della colonnine del database
-	private FirebaseService firebaseService;
+	private FirebaseColonnineService firebaseColonnineService;
 	private PrenotazioneService prenotazioneService;
-	private FirebasePrenotazioniService fbp;
-	private FirebaseAutoService fba;
+	private FirebasePrenotazioniService firebasePrenotazioniService;
+	private FirebaseAutoService firebaseAutoService;
 	private List<Colonnina> colonnine;
 	private Colonnina colonninaSelezionata;
 	private ObjectMapper objectMapper = new ObjectMapper(); // Per tradurre gli oggetti da Java a JSON
 
-	public MapView(@Autowired FirebaseService firebaseService, ColonnineService colonnineService) {
+	public MapView(@Autowired FirebaseColonnineService firebaseColonnineService,FirebaseAutoService firebaseAutoService,
+			FirebasePrenotazioniService firebasePrenotazioniService, ColonnineService colonnineService, PrenotazioneService prenotazioneService) {
 
-		this.firebaseService = firebaseService;
-        this.prenotazioneService = new PrenotazioneService(firebaseService);
-        this.fbp = new FirebasePrenotazioniService();
-        this.fba = new FirebaseAutoService();
+        this.firebaseColonnineService=firebaseColonnineService;
+        this.firebaseAutoService=firebaseAutoService;
+        this.firebasePrenotazioniService=firebasePrenotazioniService;
         this.colonnineService = colonnineService;
+        this.prenotazioneService=prenotazioneService;
 
 		setSizeFull();
 		setPadding(false);
@@ -177,7 +178,7 @@ public class MapView extends HorizontalLayout {
             return;
         }
         
-		fba.getTargheUtente(utenteCorrente)
+		firebaseAutoService.getTargheUtente(utenteCorrente)
 		.thenAccept(autoUtente -> {
 			
 			getUI().ifPresent(ui -> ui.access(() -> {
@@ -199,7 +200,7 @@ public class MapView extends HorizontalLayout {
                 
                 String dataString = dataScelta.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 
-                fbp.getSlotOccupati(colonninaSelezionata.getId(), dataString)
+                firebasePrenotazioniService.getSlotOccupati(colonninaSelezionata.getId(), dataString)
                     .thenAccept(listaOccupati -> {
                         getUI().ifPresent(ui -> ui.access(() -> {
                             stationSidebar.aggiornaOrari(dataScelta, listaOccupati);
@@ -308,7 +309,7 @@ public class MapView extends HorizontalLayout {
 				
 					
 				// Se getAllColonnine() ha successo
-				firebaseService.getAllColonnine().thenAccept(stations -> {
+				firebaseColonnineService.getAllColonnine().thenAccept(stations -> {
 
 					// Memorizza la lista delle colonnine
 					this.colonnine = stations;

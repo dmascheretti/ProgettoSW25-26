@@ -11,8 +11,8 @@ import java.util.Collections;
 
 import com.example.components.Sidebar;
 import com.example.database.FirebaseAutoService;
+import com.example.database.FirebaseColonnineService;
 import com.example.database.FirebasePrenotazioniService;
-import com.example.database.FirebaseService;
 import com.example.layout.MainLayout;
 import com.example.models.Colonnina;
 import com.example.models.Utente;
@@ -37,15 +37,20 @@ import com.vaadin.flow.server.VaadinSession;
 public class StationsView extends HorizontalLayout {
 	private String tema = "#008000";
 	private Grid<Colonnina> colonGrid = new Grid<>(Colonnina.class);
-	private FirebaseService firebaseService = new FirebaseService(); // è un'istanza di FirebaseSystem
-	private FirebasePrenotazioniService fbp = new FirebasePrenotazioniService();
-	private FirebaseAutoService fba= new FirebaseAutoService();
-	private PrenotazioneService prenotazioneService = new PrenotazioneService(firebaseService);
+	private FirebasePrenotazioniService firebasePrenotazioniService;
+	private FirebaseAutoService firebaseAutoService;
+	private FirebaseColonnineService firebaseColonnineService;
 	private Sidebar stationSidebar;
+	private PrenotazioneService prenotazioneService;
 	private Colonnina colonninaSelezionata;
 
 	// Classe per l'elenco delle colonnine (indipendente dalla mappa)
-	public StationsView() {
+	public StationsView(FirebaseAutoService firebaseAutoService, FirebasePrenotazioniService firebasePrenotazioniService,
+				FirebaseColonnineService firebaseColonnineService, PrenotazioneService prenotazioneService) {
+		this.firebaseAutoService=firebaseAutoService;
+		this.firebaseColonnineService=firebaseColonnineService;
+		this.firebasePrenotazioniService=firebasePrenotazioniService;
+		this.prenotazioneService=prenotazioneService;
 		setSpacing(true);
 		setPadding(true);
 		setSizeFull();
@@ -127,7 +132,7 @@ public class StationsView extends HorizontalLayout {
 	}
 
 	private void aggiornaGridConFiltro(String query) {
-		firebaseService.cercaColonnine(query).thenAccept(lista -> {
+		firebaseColonnineService.cercaColonnine(query).thenAccept(lista -> {
 			getUI().ifPresent(ui -> ui.access(() -> {
 				colonGrid.setItems(lista);
 			}));
@@ -202,7 +207,7 @@ public class StationsView extends HorizontalLayout {
 	private void configuraAutoUtente() {
         Utente utenteCorrente = (Utente) VaadinSession.getCurrent().getAttribute("utente");
 
-		fba.getTargheUtente(utenteCorrente)
+		firebaseAutoService.getTargheUtente(utenteCorrente)
 		.thenAccept(autoUtente -> {
 			
 			getUI().ifPresent(ui -> ui.access(() -> {
@@ -224,7 +229,7 @@ public class StationsView extends HorizontalLayout {
                 
                 String dataString = dataScelta.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 
-                fbp.getSlotOccupati(colonninaSelezionata.getId(), dataString)
+                firebasePrenotazioniService.getSlotOccupati(colonninaSelezionata.getId(), dataString)
                     .thenAccept(listaOccupati -> {
                         getUI().ifPresent(ui -> ui.access(() -> {
                             stationSidebar.aggiornaOrari(dataScelta, listaOccupati);

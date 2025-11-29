@@ -8,6 +8,7 @@ import java.util.concurrent.CompletableFuture;
 
 import org.springframework.stereotype.Service;
 
+import com.example.models.Prenotazione;
 import com.example.models.Utente;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -18,6 +19,7 @@ import com.google.firebase.database.ValueEventListener;
 @Service
 public class FirebaseUtentiService {
 	private final DatabaseReference utenti;
+	private final DatabaseReference prenotazioni;
 
 	/**
 	 * Inizializzazione del riferimento al nodo "utenti", "colonnine" e
@@ -26,6 +28,7 @@ public class FirebaseUtentiService {
 
 	public FirebaseUtentiService() {
 		this.utenti = FirebaseDatabase.getInstance().getReference("utenti");
+		this.prenotazioni = FirebaseDatabase.getInstance().getReference("prenotazioni");
 
 	}
 
@@ -224,6 +227,126 @@ public class FirebaseUtentiService {
 
 		return future;
 	}
+	
+	/**
+	 * Cancella un utente dal database e insieme anche tutte le sue prenotazioni.
+	 * @param u Utente da eliminare dal sistema
+	 * @return
+	 */
+	public CompletableFuture<Void> cancellaUtente(Utente u) {
+
+	    CompletableFuture<Void> futureUtente = new CompletableFuture<>();
+
+	    // Cancella l'utente
+	    utenti.child(u.getUsername()).setValue(null, (databaseError, ref) -> {
+
+	        if (databaseError != null) {
+	            futureUtente.completeExceptionally(
+	                    new RuntimeException(databaseError.getMessage()));
+	            return;
+	        }
+
+	        //ottengo tutte le prenotaazioni dell'utente eliminato
+	        getUtenteReservation(u.getUsername()).thenAccept(lista -> {
+
+	            List<CompletableFuture<Void>> prenotazioniUtente = new ArrayList<>();
+	            //per ogni prenotazione presente in lista
+	            for (Prenotazione p : lista) {
+	                
+	            	//cancella la prenotazione e aggiungi la funzione alla lista
+	                CompletableFuture<Void> pren = cancellaPrenotazione(p)
+	                        .thenRun(()->{});
+	                prenotazioniUtente.add(pren);
+	            }
+
+	            // futureUtente termina solo quando sono tutte le funzioni di cancellazione sono state completate
+	            CompletableFuture.allOf(prenotazioniUtente.toArray(new CompletableFuture[0]))
+	                    .thenRun(() -> futureUtente.complete(null))
+	                    .exceptionally(ex -> {
+	                        futureUtente.completeExceptionally(ex);
+	                        return null;
+	                    });
+
+	        }).exceptionally(ex -> {
+	            futureUtente.completeExceptionally(ex);
+	            return null;
+	        });
+	    });
+
+	    return futureUtente;
+	}
+	
+	public CompletableFuture<Void> cancellaPrenotazione(Prenotazione p) {
+
+		CompletableFuture<Void> futurePrenotazione = new CompletableFuture<>();
+		/*
+		 * Salva nel db prenotazioni/"nome colonnina + data + orario"
+		 */
+		prenotazioni.child(p.getIDColonnina() + " " + p.getData() + " " + p.getInizio()).setValue(null,
+				(databaseError, ref) -> {
+					if (databaseError != null) {
+						// errore --> chiama eccezione anche in RegisterView
+						futurePrenotazione.completeExceptionally(new RuntimeException(databaseError.getMessage()));
+					} else {
+						futurePrenotazione.complete(null);
+					}
+				});
+		return futurePrenotazione; // qui il thenRun() in registrazione capisce che ha finito e prosegue con
+		// esecuzione
+	}
+	
+	/**
+	 * Restituisce una lista filtrata di prenotazioni in base all'utente che viene
+	 * passato. La funzione cerca nel database sotto al nodo prenotazione tutte le
+	 * prenotazione che tra le informiazioni hanno come username il nome passato.
+	 * Quindi prenotazioni/numprenotazione/utenteUSername deve essere uguale a
+	 * username.
+	 * 
+	 * L'utilizzo di completableFuture permette di lavorare in maniera asincorna e
+	 * ottenere un risultato solo dopo aver analizzato tutto il database.
+	 * 
+	 * @param username da cercare nelle prenotazioni per ottenere la sua lista
+	 *                 filtrata
+	 * @return lista di prenotazioni tramite un future
+	 */
+	public CompletableFuture<List<Prenotazione>> getUtenteReservation(String username) {
+		CompletableFuture<List<Prenotazione>> future = new CompletableFuture<>();
+		// cerco nel nodo prenotazioni i figli che hanno utenteUsername uguale a
+		// username
+		prenotazioni.orderByChild("utente").equalTo(username).addListenerForSingleValueEvent(new ValueEventListener() {
+			@Override
+			public void onDataChange(DataSnapshot dataSnapshot) {
+				// creo lista di prenotazioni
+				List<Prenotazione> prenotazioni = new ArrayList<>();
+				/*
+				 * Aggiunge alla lista tutte le prenotazioni il cui utenteUsername corrisponde a
+				 * username
+				 */
+				for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+					Prenotazione p = snapshot.getValue(Prenotazione.class);
+					prenotazioni.add(p);
+				}
+
+				// finito il for salvo nel future la lista
+				future.complete(prenotazioni);
+
+			}
+
+			@Override
+			public void onCancelled(DatabaseError databaseError) {
+				// TODO Auto-generated method stub
+				System.err.println("Errore nel caricamento colonnine: " + databaseError.getMessage());
+				future.completeExceptionally(databaseError.toException());
+
+			}
+
+		});
+
+		// ritorno la lista filtrata delle prenotazioni dell'utente
+		return future;
+	}
+	
+ 
 
 	/**
 	 * Conta il numero degli utenti presenti nel database. Conta i figli del nodo

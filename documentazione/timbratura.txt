@@ -167,11 +167,22 @@ Tutte le fasi precedenti sono contenute all'interno del file meeting
 26/11/2025		Maistrello Tommaso
 			15.30-16.00 Implementata gestione slot orari anche per StationView e aggiunta selezione auto per prenotazione.
 			17.00-18.00 La selezione dell'auto adesso dipende dalla targa.
+			Mascheretti Davide
+			10.00-12.00 + 16.30-17.30 Implementazione e miglioramento gestione recensioni e aggiunta stato della prenotazione (future, in carica o attiva) e della targa.
+			Aggiunto in profileView la lista auto + il loro stato (in carica o non in carica)
 
 27/11/2025 		Maistrello Tommaso
 			13.00-13.30 Riparazione errore di visualizzazione time slots: c'erano problemi con la data corrente per la generazione degli slot. Ora tutto funziona correttamente.
 			13.30-13.45 Creazione package per avere le classi più ordinate. Modifiche estetiche alla sidebar.
 			14.00-15.00 Separata sidebar da AdminColonnineView. Migliorata grafica di inserimento nuovo utente e nuova colonnina. Rimosse KpiCard inutilizzate in 					AdminDashboardView. Risolto problema di utente non loggato in MapView.
+			Mascheretti Davide
+			11.30-12-30 Iniziato logica colori marker anche con "in carica", conclusa poi in data 28/11
+
+28/11/2025		Mascheretti Davide
+			9.00-10-30 Concluso aggiornamento colori marker in base allo stato della colonnina. Aggiunto stato in prenotazione "in carica" che si attiva quando si apre il qr 			code per la prima volta. Ora se si apre la mappa il flusso è questo libere (verdi)->prenotate (gialle)->verifica prenotazioni in carica->se scadute prenotazione 			"passata" se attiva colonnine diventa rossa
+
+29/11/2025 		Mascheretti Davide
+			10.00-13.00 Conclusa divisione delle classi di firebaseService in base ai nodi letti o scritti. 
 
 			
 			

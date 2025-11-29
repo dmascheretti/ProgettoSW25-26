@@ -4,7 +4,7 @@ import com.example.models.Auto;
 import com.example.models.Utente;
 import com.example.database.FirebaseAutoService;
 import com.example.database.FirebasePrenotazioniService;
-import com.example.database.FirebaseService;
+import com.example.database.FirebaseUtentiService;
 import com.example.layout.MainLayout;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.button.Button;
@@ -16,25 +16,26 @@ import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.page.Push;
 import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.VaadinSession;
-import com.vaadin.flow.component.orderedlayout.FlexComponent.Alignment;
 
 @Route(value = "profilo", layout = MainLayout.class)
 @PageTitle("Find&Charge - Profilo")
 public class ProfileView extends VerticalLayout {
 
-    private final FirebaseService firebaseService;
-    private final FirebasePrenotazioniService fbPrenotazioni;
-    private final FirebaseAutoService firebaseAutoService = new FirebaseAutoService();
+    private FirebaseUtentiService firebaseUtentiService;
+    private FirebaseAutoService firebaseAutoService;
+    private FirebasePrenotazioniService firebasePrenotazioniService;
+   // private FirebaseUtentiService firebaseUtentiService;
 
-    public ProfileView(FirebaseService firebaseService, FirebasePrenotazioniService fbPrenotazioni) {
-        this.firebaseService = firebaseService;
-        this.fbPrenotazioni=fbPrenotazioni;
+    public ProfileView(FirebaseAutoService firebaseAutoService, FirebaseUtentiService firebaseUtentiService,
+    		FirebasePrenotazioniService firebasePrenotazioniService) {
+        this.firebaseAutoService=firebaseAutoService;
+        this.firebaseUtentiService=firebaseUtentiService;
+        this.firebasePrenotazioniService=firebasePrenotazioniService;
 
         setSpacing(true);
         setPadding(true);
@@ -89,7 +90,7 @@ public class ProfileView extends VerticalLayout {
                     
                     card.add(titolo2, targa, carica);
                     
-                   fbPrenotazioni.inCarica(a).thenAccept(trovata->{
+                   firebasePrenotazioniService.inCarica(a).thenAccept(trovata->{
                 	   ui.access(()->{
                 	   Paragraph inCarica;
                 	   if(trovata) {
@@ -126,7 +127,7 @@ public class ProfileView extends VerticalLayout {
             }
 
             getUI().ifPresent(ui -> {
-                firebaseService.cambiaMail(utente, nuovaEmail)
+                firebaseUtentiService.cambiaMail(utente, nuovaEmail)
                         .thenRun(() -> ui.access(() -> {
                             // aggiorna utente in sessione
                             utente.setEmail(nuovaEmail);

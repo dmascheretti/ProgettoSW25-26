@@ -6,7 +6,7 @@
 
 package com.example.views;
 
-import com.example.database.FirebaseService;
+import com.example.database.FirebaseUtentiService;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H1;
@@ -28,13 +28,13 @@ import com.vaadin.flow.server.VaadinSession;
 public class LoginView extends VerticalLayout {
 	
 	private final UI ui;
-	private final FirebaseService firebaseService;
+	private final FirebaseUtentiService firebaseUtentiService;
 
 
-	public LoginView(FirebaseService firebaseService) {
+	public LoginView(FirebaseUtentiService firebaseUtentiService) {
 		
 		this.ui=UI.getCurrent();
-		this.firebaseService=firebaseService;
+		this.firebaseUtentiService=firebaseUtentiService;
 
 		// Dimensione massima per occupare tutta la finestra
 		setSizeFull();
@@ -87,7 +87,7 @@ public class LoginView extends VerticalLayout {
 			 * errore
 			 */
 	       
-	        	    firebaseService.cercaUtente(user,password)
+	        	    firebaseUtentiService.cercaUtente(user,password)
 	                .thenAccept(utente -> {
 	                	 getUI().ifPresent(ui -> ui.access(() -> {
 	                
