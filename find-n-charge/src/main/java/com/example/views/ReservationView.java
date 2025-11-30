@@ -9,6 +9,7 @@ import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.html.H4;
 import com.vaadin.flow.component.html.Image;
+import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.BeforeEnterEvent;
@@ -26,6 +27,7 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import com.example.models.Colonnina;
 import com.example.models.Prenotazione;
 import com.example.models.Utente;
 import com.example.util.QRCode;
@@ -34,6 +36,7 @@ import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dialog.Dialog;
+import com.example.database.FirebaseColonnineService;
 import com.example.database.FirebasePrenotazioniService;
 import com.example.layout.MainLayout;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
@@ -42,6 +45,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
@@ -50,10 +54,12 @@ import java.util.concurrent.CompletableFuture;
 
 public class ReservationView extends VerticalLayout implements BeforeEnterObserver {
 
-	private Grid<Prenotazione> NewPrenoGrid = new Grid<>(Prenotazione.class, false);
-	private Grid<Prenotazione> OldPrenoGrid = new Grid<>(Prenotazione.class, false);
+	private Grid<Prenotazione> newPrenoGrid = new Grid<>(Prenotazione.class, false);
+	private Grid<Prenotazione> oldPrenoGrid = new Grid<>(Prenotazione.class, false);
+    private List<String> idColonnineOccupate = new ArrayList<>();
 	private CompletableFuture<List<Prenotazione>> listaPreno;
 	private FirebasePrenotazioniService firebasePrenotazioniService;
+	private FirebaseColonnineService firebaseColonnineService;
 	private final UI ui;
 	private QRCode qr;
 	
@@ -64,8 +70,9 @@ public class ReservationView extends VerticalLayout implements BeforeEnterObserv
 	 * @param fb Database per accedere ai dati prenotazione
 	 */
 	
-	public ReservationView(FirebasePrenotazioniService firebasePrenotazioniService) {
+	public ReservationView(FirebasePrenotazioniService firebasePrenotazioniService, FirebaseColonnineService firebaseColonnineService) {
 		this.firebasePrenotazioniService=firebasePrenotazioniService;
+		this.firebaseColonnineService=firebaseColonnineService;
 		this.ui = UI.getCurrent();
 		
 		// salvo utente che è nell'applicazione
@@ -82,24 +89,71 @@ public class ReservationView extends VerticalLayout implements BeforeEnterObserv
 		// Configurazione griglia (visualizzazione dei campi di ogni prenotazione)
 		
 		// Prenotazioni attive o future
-		NewPrenoGrid.removeAllColumns();
-		NewPrenoGrid.addColumn(Prenotazione::getIDColonnina).setHeader("Colonnina").setSortable(true);
-		NewPrenoGrid.addColumn(Prenotazione::getData).setHeader("Data").setSortable(true);
-		NewPrenoGrid.addColumn(Prenotazione::getInizio).setHeader("Inizio").setSortable(true);
-		NewPrenoGrid.addColumn(prenotazione -> {
+		newPrenoGrid.removeAllColumns();
+		newPrenoGrid.addColumn(Prenotazione::getIDColonnina).setHeader("Colonnina").setSortable(true);
+		newPrenoGrid.addColumn(Prenotazione::getData).setHeader("Data").setSortable(true);
+		newPrenoGrid.addColumn(Prenotazione::getInizio).setHeader("Inizio").setSortable(true);
+		newPrenoGrid.addColumn(prenotazione -> {
 			String stato = calcolaStato(prenotazione);
 			return stato;
 		}).setHeader("Stato").setSortable(true);
 		
 		//Prenotazioni passate
-		OldPrenoGrid.removeAllColumns();
-		OldPrenoGrid.addColumn(Prenotazione::getIDColonnina).setHeader("Colonnina").setSortable(true);
-		OldPrenoGrid.addColumn(Prenotazione::getData).setHeader("Data").setSortable(true);
-		OldPrenoGrid.addColumn(Prenotazione::getInizio).setHeader("Inizio").setSortable(true);
+		oldPrenoGrid.removeAllColumns();
+		oldPrenoGrid.addColumn(Prenotazione::getIDColonnina).setHeader("Colonnina").setSortable(true);
+		oldPrenoGrid.addColumn(Prenotazione::getData).setHeader("Data").setSortable(true);
+		oldPrenoGrid.addColumn(Prenotazione::getInizio).setHeader("Inizio").setSortable(true);
 
+		firebaseColonnineService.getColonnineInCarica().thenAccept(listaInCarica -> {
+		    
+			getUI().ifPresent(ui -> ui.access(() -> {
+		        
+		        if (listaInCarica != null) {
+		            idColonnineOccupate.addAll(listaInCarica);
+		        }
+		        
+		        ui.push(); 
+		    }));
 
-		// Aggiunge la colonna per la visualizzazione del QR Code
-		NewPrenoGrid.addComponentColumn(p -> {
+		}).exceptionally(ex -> {
+		    // Gestione errori
+		    ex.printStackTrace();
+		    return null;
+		});
+		
+		// Aggiunge la colonna per la visualizzazione del QR Code attivabile 5 minuti prima dello slot orario prenotato
+		newPrenoGrid.addComponentColumn(p -> {
+			
+			try {
+		        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+		        
+		        // Trasforma le stringhe in LocalDate e LocalTime formattati
+		        LocalDate dataPrenotazione = LocalDate.parse(p.getData(), dateFormatter);
+		        LocalTime oraInizio = LocalTime.parse(p.getInizio(), timeFormatter);
+		        
+		        LocalDateTime inizioPrenotazione = LocalDateTime.of(dataPrenotazione, oraInizio);	//Inizio slot prenotazione
+		        LocalDateTime adesso = LocalDateTime.now();
+		        LocalDateTime orarioMinimo = inizioPrenotazione.minusMinutes(5);
+		        
+		        // Se è troppo presto il bottone non compare
+		        if (adesso.isBefore(orarioMinimo)) {
+		            Span text = new Span("Disponibile 5 min prima.");
+		            text.getStyle().set("font-size", "12px").set("color", "gray");
+		            return text; 
+		        }
+		        //se la colonnina è occupata da un altro utente, il bottone non compare
+		        if (this.idColonnineOccupate.contains(p.getIDColonnina()) && !p.getStato().equals("In carica")) {
+		            Span text = new Span("Colonnina occupata.");
+		            text.getStyle().set("font-size", "12px").set("color", "red");
+		            return text;
+		        }     
+		        
+		    } catch (Exception e) {
+		        e.printStackTrace();
+		        return null;
+		    }
+			
 			Button btn = new Button("Visualizza QR");
 			btn.getStyle().set("color", "green").set("text-decoration", "underline").set("background", "none")
 					.set("border", "none");
@@ -166,7 +220,7 @@ public class ReservationView extends VerticalLayout implements BeforeEnterObserv
 		}).setHeader("");
 
 		// bottone per la cancellazione
-		NewPrenoGrid.addComponentColumn(p -> {
+		newPrenoGrid.addComponentColumn(p -> {
 			String stato = calcolaStato(p);
 			if (stato.equals("Passata")) {
 				return null;
@@ -184,35 +238,48 @@ public class ReservationView extends VerticalLayout implements BeforeEnterObserv
 		H4 oldP = new H4("Prenotazioni Passate");
 		oldP.getStyle().set("color", "#00E000");
 		
-		add(titolo, newP, NewPrenoGrid, oldP, OldPrenoGrid);
+		add(titolo, newP, newPrenoGrid, oldP, oldPrenoGrid);
 
-		/*
-		 * Chiamo funzione da firebaseService che restituisce la lista delle
-		 * prenotazioni filtrate per l'utente, la lista ottenuta va in lista L'utilizzo
-		 * di thenAccept permette di lavorare in maniera asincrona ed è necessaria per
-		 * utilizzare il CompletableFuture in getAllReservation
-		 */
-		firebasePrenotazioniService.getUtenteReservation(utente.getUsername()).thenAccept(lista -> {
-			getUI().ifPresent(ui -> ui.access(() -> {
+		firebaseColonnineService.getColonnineInCarica().thenAccept(occupate -> {
 
-				// aggiungo la lista alla griglia
-				
-				List<Prenotazione> filtrata = lista.stream()
-			            .filter(p -> !calcolaStato(p).equals("Passata"))
-			            .toList();
-				NewPrenoGrid.setItems(filtrata);
-				
-				List<Prenotazione> rimanenti = lista.stream()
-			            .filter(p -> calcolaStato(p).equals("Passata"))
-			            .toList();
-				OldPrenoGrid.setItems(rimanenti);
-
-			}));
-
-			// gestione errori
+		    // Salvo la lista nella variabile della classe
+		    if (occupate != null) {
+		        this.idColonnineOccupate = occupate;
+		    } else {
+		        this.idColonnineOccupate = new ArrayList<>();
+		    }
+			/*
+			 * Chiamo funzione da firebaseService che restituisce la lista delle
+			 * prenotazioni filtrate per l'utente, la lista ottenuta va in lista L'utilizzo
+			 * di thenAccept permette di lavorare in maniera asincrona ed è necessaria per
+			 * utilizzare il CompletableFuture in getAllReservation
+			 */
+			firebasePrenotazioniService.getUtenteReservation(utente.getUsername()).thenAccept(lista -> {
+				getUI().ifPresent(ui -> ui.access(() -> {
+	
+					// aggiungo la lista alla griglia
+					
+					List<Prenotazione> filtrata = lista.stream()
+				            .filter(p -> !calcolaStato(p).equals("Passata"))
+				            .toList();
+					newPrenoGrid.setItems(filtrata);
+					
+					List<Prenotazione> rimanenti = lista.stream()
+				            .filter(p -> calcolaStato(p).equals("Passata"))
+				            .toList();
+					oldPrenoGrid.setItems(rimanenti);
+	
+				}));
+	
+				// gestione errori
+			}).exceptionally(ex -> {
+				ex.printStackTrace();
+				return null;
+			});
+		
 		}).exceptionally(ex -> {
-			ex.printStackTrace();
-			return null;
+		    ex.printStackTrace(); // Errore nel caricamento colonnine occupate
+		    return null;
 		});
 
 	}
