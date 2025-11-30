@@ -442,6 +442,9 @@ public class FirebasePrenotazioniService {
 		return inCarica;
 	}
 	
+	
+	
+	
 	public CompletableFuture<Void> aggiornaStato(Prenotazione p, String msg) {
 
 	    CompletableFuture<Void> future = new CompletableFuture<>();

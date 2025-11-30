@@ -20,15 +20,17 @@ import com.google.firebase.database.ValueEventListener;
 public class FirebaseUtentiService {
 	private final DatabaseReference utenti;
 	private final DatabaseReference prenotazioni;
+	private FirebasePrenotazioniService firebasePrenotazioniService;
 
 	/**
 	 * Inizializzazione del riferimento al nodo "utenti", "colonnine" e
 	 * "prenotazioni" del database
 	 */
 
-	public FirebaseUtentiService() {
+	public FirebaseUtentiService(FirebasePrenotazioniService firebasePrenotazioniService) {
 		this.utenti = FirebaseDatabase.getInstance().getReference("utenti");
 		this.prenotazioni = FirebaseDatabase.getInstance().getReference("prenotazioni");
+		this.firebasePrenotazioniService=firebasePrenotazioniService;
 
 	}
 
@@ -254,7 +256,7 @@ public class FirebaseUtentiService {
 	            for (Prenotazione p : lista) {
 	                
 	            	//cancella la prenotazione e aggiungi la funzione alla lista
-	                CompletableFuture<Void> pren = cancellaPrenotazione(p)
+	                CompletableFuture<Void> pren = firebasePrenotazioniService.cancellaPrenotazione(p)
 	                        .thenRun(()->{});
 	                prenotazioniUtente.add(pren);
 	            }
@@ -276,24 +278,6 @@ public class FirebaseUtentiService {
 	    return futureUtente;
 	}
 	
-	public CompletableFuture<Void> cancellaPrenotazione(Prenotazione p) {
-
-		CompletableFuture<Void> futurePrenotazione = new CompletableFuture<>();
-		/*
-		 * Salva nel db prenotazioni/"nome colonnina + data + orario"
-		 */
-		prenotazioni.child(p.getIDColonnina() + " " + p.getData() + " " + p.getInizio()).setValue(null,
-				(databaseError, ref) -> {
-					if (databaseError != null) {
-						// errore --> chiama eccezione anche in RegisterView
-						futurePrenotazione.completeExceptionally(new RuntimeException(databaseError.getMessage()));
-					} else {
-						futurePrenotazione.complete(null);
-					}
-				});
-		return futurePrenotazione; // qui il thenRun() in registrazione capisce che ha finito e prosegue con
-		// esecuzione
-	}
 	
 	/**
 	 * Restituisce una lista filtrata di prenotazioni in base all'utente che viene
@@ -458,7 +442,7 @@ public class FirebaseUtentiService {
 					for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
 						Utente u = snapshot.getValue(Utente.class); // Acquisisce tutti i dati degli
 																	// utenti
-						if (u != null) {
+						if (u != null && u.getRuolo()!=null && u.getRuolo().equals("Utente")) {
 							listaUtenti.add(u);
 						}
 					}

@@ -7,8 +7,7 @@ import java.util.List;
 
 public class Utente {
 	
-	private String nome, cognome, username, email, password, timestamp;
-	private List<Auto> autoList;
+	private String nome, cognome, username, email, password, timestamp, ruolo;
 
 	/*
 	 * costruttore necessario per firebase
@@ -17,7 +16,7 @@ public class Utente {
 		
 	}
 	
-	public Utente(String nome, String cognome, String username, String email, String password, String timestamp) {
+	public Utente(String nome, String cognome, String username, String email, String password, String timestamp, String ruolo) {
 		// TODO Auto-generated constructor stub
 		this.setNome(nome);
 		this.setCognome(cognome);
@@ -25,6 +24,7 @@ public class Utente {
 		this.setPassword(password);
 		this.setUsername(username);
 		this.setTimestamp(timestamp);
+		this.setRuolo(ruolo);
 		
 	}
 
@@ -76,12 +76,11 @@ public class Utente {
 		this.timestamp = timestamp;
 	}
 
+	public String getRuolo() {
+		return ruolo;
+	}
 
-	public List<Auto> getAutoList() { 
-		return autoList; 
-		}
-	
-	public void setAutoList(List<Auto> list) { 
-		this.autoList = list; 
-		}
+	public void setRuolo(String ruolo) {
+		this.ruolo = ruolo;
+	}
 	}

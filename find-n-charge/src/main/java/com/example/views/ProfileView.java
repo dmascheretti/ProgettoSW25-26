@@ -222,10 +222,7 @@ public class ProfileView extends VerticalLayout implements BeforeEnterObserver {
                                 );
                                 n.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
 
-                                // aggiorna modello locale utente
-                                if (utente.getAutoList() != null) {
-                                    utente.getAutoList().add(auto);
-                                }
+
 
                                 // pulisci campi
                                 targaField.clear();

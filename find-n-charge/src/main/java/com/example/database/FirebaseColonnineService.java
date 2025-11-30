@@ -25,9 +25,9 @@ public class FirebaseColonnineService {
 	private final DatabaseReference colonnine;
 	private final DatabaseReference prenotazioni;
 
-	public FirebaseColonnineService() {
-		this.colonnine = FirebaseDatabase.getInstance().getReference("colonnine");
-		this.prenotazioni = FirebaseDatabase.getInstance().getReference("prenotazioni");
+	public FirebaseColonnineService(FirebaseDatabase db) {
+		this.colonnine = db.getReference("colonnine");
+		this.prenotazioni = db.getReference("prenotazioni");
 
 	}
 
@@ -190,104 +190,96 @@ public class FirebaseColonnineService {
 		return future;
 
 	}
-	
+
 	public CompletableFuture<List<String>> getColonnineSlot(String ora) {
 
 		// Oggetto che permette al programma di non fermarsi perchè sa che conterrà la
 		// lista che sta cercando
 		CompletableFuture<List<String>> future = new CompletableFuture<>();
 
+		Query query = prenotazioni.orderByChild("inizio").equalTo(ora);
 
-		Query query= prenotazioni.orderByChild("inizio").equalTo(ora);
-		
 		query.addListenerForSingleValueEvent(new ValueEventListener() {
 
 			// Se li legge senza problemi
 			@Override
 			public void onDataChange(DataSnapshot dataSnapshot) { // Istantanea dei dati
-				List<String> lista=new ArrayList<>();
-				
-				if(dataSnapshot.exists()) {
+				List<String> lista = new ArrayList<>();
+
+				if (dataSnapshot.exists()) {
 					for (DataSnapshot snap : dataSnapshot.getChildren()) {
-                    Prenotazione p = snap.getValue(Prenotazione.class);
-                    if (p != null && !lista.contains(p.getIDColonnina()) && p.getData().equals(LocalDate.now().toString())) {
-                        lista.add(p.getIDColonnina());
-                    }
-                }
-            }
-				
-            future.complete(lista);
-        }
+						Prenotazione p = snap.getValue(Prenotazione.class);
+						if (p != null && !lista.contains(p.getIDColonnina())
+								&& p.getData().equals(LocalDate.now().toString())) {
+							lista.add(p.getIDColonnina());
+						}
+					}
+				}
+
+				future.complete(lista);
+			}
 
 			@Override
 			public void onCancelled(DatabaseError error) {
 				// TODO Auto-generated method stub
-				
+
 			}
-			
+
 		});
 		return future;
 	}
-			
+
 	public CompletableFuture<List<String>> getColonnineInCarica() {
 
-				// Oggetto che permette al programma di non fermarsi perchè sa che conterrà la
-				// lista che sta cercando
-				CompletableFuture<List<String>> future = new CompletableFuture<>();
-				
-				
-				prenotazioni.addListenerForSingleValueEvent(new ValueEventListener() {
+		// Oggetto che permette al programma di non fermarsi perchè sa che conterrà la
+		// lista che sta cercando
+		CompletableFuture<List<String>> future = new CompletableFuture<>();
 
-					// Se li legge senza problemi
-					@Override
-					public void onDataChange(DataSnapshot dataSnapshot) { // Istantanea dei dati
-						List<String> lista=new ArrayList<>();
-						
-						LocalTime adesso = LocalTime.now().minusMinutes(30);
-				        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
-				        String orarioStringa = adesso.format(formatter);
-				        
-				        LocalDate today = LocalDate.now();
-		                DateTimeFormatter formatterOra = DateTimeFormatter.ofPattern("yyyy-MM-dd"); 
-		                String todayStr = today.format(formatterOra);
-						
-						if(dataSnapshot.exists()) {
-							for (DataSnapshot snap : dataSnapshot.getChildren()) {
-		                    Prenotazione p = snap.getValue(Prenotazione.class);
-		                    
-		      
-		                 if (p != null && 
-		                    ((p.getData().compareTo(todayStr) < 0 || (todayStr.equals(p.getData()) && orarioStringa.compareTo(p.getInizio()) > 0)))) {
-		                     
-		  
-		                     prenotazioni.child(p.getIDColonnina() + " " + p.getData() + " " + p.getInizio())
-		                                 .child("stato").setValue("Passata", null);
+		prenotazioni.addListenerForSingleValueEvent(new ValueEventListener() {
 
-		                 }
-		                 else if (p != null && !lista.contains(p.getIDColonnina()) && 
-		                          p.getStato().equals("In carica") && todayStr.equals(p.getData())) {
-		                     
-		                     lista.add(p.getIDColonnina());
-		                 }
-		                    
-		              
-		                    
-		                }
-		            }
-						
-		            future.complete(lista);
-		        }
-					
+			// Se li legge senza problemi
+			@Override
+			public void onDataChange(DataSnapshot dataSnapshot) { // Istantanea dei dati
+				List<String> lista = new ArrayList<>();
 
-					// Se trova errori
-					@Override
-					public void onCancelled(DatabaseError databaseError) {
-						System.err.println("Errore nel caricamento prenotazioni: " + databaseError.getMessage());
-						future.completeExceptionally(databaseError.toException());
+				LocalTime adesso = LocalTime.now().minusMinutes(30);
+				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+				String orarioStringa = adesso.format(formatter);
+
+				LocalDate today = LocalDate.now();
+				DateTimeFormatter formatterOra = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+				String todayStr = today.format(formatterOra);
+
+				if (dataSnapshot.exists()) {
+					for (DataSnapshot snap : dataSnapshot.getChildren()) {
+						Prenotazione p = snap.getValue(Prenotazione.class);
+
+						if (p != null && ((p.getData().compareTo(todayStr) < 0
+								|| (todayStr.equals(p.getData()) && orarioStringa.compareTo(p.getInizio()) > 0)))) {
+
+							prenotazioni.child(p.getIDColonnina() + " " + p.getData() + " " + p.getInizio())
+									.child("stato").setValue("Passata", null);
+
+						} else if (p != null && !lista.contains(p.getIDColonnina()) && p.getStato().equals("In carica")
+								&& todayStr.equals(p.getData())) {
+
+							lista.add(p.getIDColonnina());
+						}
+
 					}
-				});
-				return future;
-	}
+				}
 
+				future.complete(lista);
+			}
+
+			// Se trova errori
+			@Override
+			public void onCancelled(DatabaseError databaseError) {
+				System.err.println("Errore nel caricamento prenotazioni: " + databaseError.getMessage());
+				future.completeExceptionally(databaseError.toException());
+			}
+		});
+		return future;
+	}
 
 }

@@ -23,19 +23,29 @@ public class FirebaseAutoService {
 
 	private final DatabaseReference automobile;
 
-    public FirebaseAutoService(FirebaseDatabase db) {
-        this.automobile = db.getReference("auto");
-    }
-	
+	/**
+	 * Assegno ad automobile il link al nodo "auto" nel database
+	 * 
+	 * @param db
+	 */
+	public FirebaseAutoService(FirebaseDatabase db) {
+		this.automobile = db.getReference("auto");
+	}
+
+	/**
+	 * Verifica se la targa inserita è già esistente nel sistema
+	 * 
+	 * @param targa Targa da verificare
+	 * @return Future che contiene auto se trovata, null se non trovata
+	 */
 	public CompletableFuture<Auto> verificaTarga(String targa) {
 		CompletableFuture<Auto> future = new CompletableFuture<>();
 
-		
 		DatabaseReference targaRef = automobile.child(targa);
 		targaRef.addListenerForSingleValueEvent(new ValueEventListener() {
 			@Override
 			public void onDataChange(DataSnapshot dataSnapshot) {
-				
+
 				if (dataSnapshot.exists()) {
 					Auto macchina = dataSnapshot.getValue(Auto.class);
 					future.complete(macchina);
@@ -44,132 +54,143 @@ public class FirebaseAutoService {
 					future.complete(null);
 				}
 			}
-			
 
 			@Override
 			public void onCancelled(DatabaseError error) {
 				// TODO Auto-generated method stub
-				
-			
-		}
-	});
-	return future;
+
+			}
+		});
+		return future;
 	}
-		public CompletableFuture<Void> salvaAuto(Auto auto) {
-			CompletableFuture<Void> futureAuto = new CompletableFuture<>();
-			automobile.child(auto.getTarga()).setValue(auto, (databaseError, ref) -> {
-				if (databaseError != null) {
-					// errore --> chiama eccezione anche in RegisterView
-					futureAuto.completeExceptionally(new RuntimeException(databaseError.getMessage()));
-				} else {
-					futureAuto.complete(null);
-				}
-			});
-			return futureAuto; // qui il thenRun() in registrazione capisce che ha finito e prosegue con
-			// esecuzione
-		}
-	 
-	 
-	 public double calcolaNuovoStato(
-	            Auto auto,
-	            LocalDateTime oraAttuale,
-	            double potenzaColonninaKw) {
 
-	        if (auto.getInizioRicarica() == null)
-	            return auto.getStatoCarica();
+	/**
+	 * Salva auto nel database
+	 * 
+	 * @param auto Da salvare
+	 * @return Future di tipo void
+	 */
+	public CompletableFuture<Void> salvaAuto(Auto auto) {
+		CompletableFuture<Void> futureAuto = new CompletableFuture<>();
+		automobile.child(auto.getTarga()).setValue(auto, (databaseError, ref) -> {
+			if (databaseError != null) {
+				// errore --> chiama eccezione anche in RegisterView
+				futureAuto.completeExceptionally(new RuntimeException(databaseError.getMessage()));
+			} else {
+				futureAuto.complete(null);
+			}
+		});
+		return futureAuto; // qui il thenRun() in registrazione capisce che ha finito e prosegue con
+		// esecuzione
+	}
 
-	        Duration durata = Duration.between(auto.getInizioRicarica(), oraAttuale);
-	        double oreTrascorse = durata.toMinutes() / 60.0;
+	public double calcolaNuovoStato(Auto auto, LocalDateTime oraAttuale, double potenzaColonninaKw) {
 
-	        // energia caricata in kWh
-	        double energiaCaricata = potenzaColonninaKw * oreTrascorse;
+		if (auto.getInizioRicarica() == null)
+			return auto.getStatoCarica();
 
-	        // energia iniziale
-	        double energiaIniziale = auto.getCapacitaBatteria() * (auto.getStatoCarica() / 100.0);
+		Duration durata = Duration.between(auto.getInizioRicarica(), oraAttuale);
+		double oreTrascorse = durata.toMinutes() / 60.0;
 
-	        // nuova energia
-	        double energiaTotale = energiaIniziale + energiaCaricata;
+		// energia caricata in kWh
+		double energiaCaricata = potenzaColonninaKw * oreTrascorse;
 
-	        if (energiaTotale > auto.getCapacitaBatteria())
-	            energiaTotale = auto.getCapacitaBatteria();
+		// energia iniziale
+		double energiaIniziale = auto.getCapacitaBatteria() * (auto.getStatoCarica() / 100.0);
 
-	        // convertitore in %
-	        double nuovoSoC = (energiaTotale / auto.getCapacitaBatteria()) * 100.0;
+		// nuova energia
+		double energiaTotale = energiaIniziale + energiaCaricata;
 
-	        auto.setStatoCarica(nuovoSoC);
-	        return nuovoSoC;
-	    }
-	 
-	 public CompletableFuture <List<Auto>> listaAutoUtente(Utente u){
-			CompletableFuture <List<Auto>> future= new CompletableFuture<>();
-			ArrayList<Auto> lista= new ArrayList<>();
-			
-			Query q = automobile.orderByChild("proprietario").equalTo(u.getUsername());
-			q.addListenerForSingleValueEvent(new ValueEventListener() {
+		if (energiaTotale > auto.getCapacitaBatteria())
+			energiaTotale = auto.getCapacitaBatteria();
 
-				@Override
-				public void onDataChange(DataSnapshot snapshot) {
-					
-					lista.clear();
-					
-					if(snapshot.exists()) {
-						for(DataSnapshot d : snapshot.getChildren()) {
-							lista.add(d.getValue(Auto.class));
-							
-					}	
-				}
+		// convertitore in %
+		double nuovoSoC = (energiaTotale / auto.getCapacitaBatteria()) * 100.0;
 
-					future.complete(lista);
-					
-				}
-				@Override
-				public void onCancelled(DatabaseError databaseError) {
-					// Gestione errore standard, come negli altri metodi
-					System.err.println("Errore nel contare le colonnine: " + databaseError.getMessage());
-					future.completeExceptionally(databaseError.toException());
-				}
-				
-				
-				
-			});
-			return future;
-			
-		}
-	 public CompletableFuture <List<String>> getTargheUtente(Utente u){
-			CompletableFuture <List<String>> future= new CompletableFuture<>();
-			ArrayList<String> lista= new ArrayList<>();
-			
-			Query q = automobile.orderByChild("proprietario").equalTo(u.getUsername());
-			q.addListenerForSingleValueEvent(new ValueEventListener() {
+		auto.setStatoCarica(nuovoSoC);
+		return nuovoSoC;
+	}
 
-				@Override
-				public void onDataChange(DataSnapshot snapshot) {
-					
-					lista.clear();
-					
-					if(snapshot.exists()) {
-						for(DataSnapshot d : snapshot.getChildren()) {
-							lista.add(d.getValue(Auto.class).getTarga());
-							
-					}	
+	/**
+	 * Restituisce la lista delle auto dato utente
+	 * 
+	 * @param u Utente
+	 * @return Lista di auto dell'utente passato come parametro
+	 */
+	public CompletableFuture<List<Auto>> listaAutoUtente(Utente u) {
+		CompletableFuture<List<Auto>> future = new CompletableFuture<>();
+		ArrayList<Auto> lista = new ArrayList<>();
+
+		Query q = automobile.orderByChild("proprietario").equalTo(u.getUsername());
+		q.addListenerForSingleValueEvent(new ValueEventListener() {
+
+			@Override
+			public void onDataChange(DataSnapshot snapshot) {
+
+				lista.clear();
+
+				if (snapshot.exists()) {
+					for (DataSnapshot d : snapshot.getChildren()) {
+						lista.add(d.getValue(Auto.class));
+
+					}
 				}
 
-					future.complete(lista);
-					
-				}
-				@Override
-				public void onCancelled(DatabaseError databaseError) {
-					// Gestione errore standard, come negli altri metodi
-					System.err.println("Errore: " + databaseError.getMessage());
-					future.completeExceptionally(databaseError.toException());
-				}
-				
-				
-				
-			});
-			return future;
-			
-		}
+				future.complete(lista);
 
-			
+			}
+
+			@Override
+			public void onCancelled(DatabaseError databaseError) {
+				// Gestione errore standard, come negli altri metodi
+				System.err.println("Errore nel contare le colonnine: " + databaseError.getMessage());
+				future.completeExceptionally(databaseError.toException());
+			}
+
+		});
+		return future;
+
+	}
+
+	/**
+	 * Restituisce lista targhe utente
+	 * 
+	 * @param u Utente selezionato
+	 * @return Lista di stringhe che contiene tutte le targhe dell'utente
+	 */
+	public CompletableFuture<List<String>> getTargheUtente(Utente u) {
+		CompletableFuture<List<String>> future = new CompletableFuture<>();
+		ArrayList<String> lista = new ArrayList<>();
+
+		Query q = automobile.orderByChild("proprietario").equalTo(u.getUsername());
+		q.addListenerForSingleValueEvent(new ValueEventListener() {
+
+			@Override
+			public void onDataChange(DataSnapshot snapshot) {
+
+				lista.clear();
+
+				if (snapshot.exists()) {
+					for (DataSnapshot d : snapshot.getChildren()) {
+						lista.add(d.getValue(Auto.class).getTarga());
+
+					}
+				}
+
+				future.complete(lista);
+
+			}
+
+			@Override
+			public void onCancelled(DatabaseError databaseError) {
+				// Gestione errore standard, come negli altri metodi
+				System.err.println("Errore: " + databaseError.getMessage());
+				future.completeExceptionally(databaseError.toException());
+			}
+
+		});
+		return future;
+
+	}
+
 }

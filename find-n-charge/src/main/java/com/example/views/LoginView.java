@@ -67,15 +67,6 @@ public class LoginView extends VerticalLayout {
 			String user=usernameField.getValue();
 			String password=passwordField.getValue();
 			
-			/*
-			 * Accesso alla pagina admin da cui può vedere tutte le info 
-			 * ps decidere password e user
-			 */
-			if(password.equals("1234") && user.equals("admin")) {
-        		
-	       		 ui.navigate("admin"); 
-	       		 return;
-	        	}
 	       	
 			/*
 			 * Chiama funzione cerca utente da firebase service (asincrona, con thenAccept perche serve
@@ -93,12 +84,21 @@ public class LoginView extends VerticalLayout {
 	                
 	        	    if (utente != null) {
 	        	    	
+	        	    	if(utente.getRuolo()!=null && utente.getRuolo().equals("Admin")) {
+	        	    		
+	        	    		 ui.navigate("admin"); 
+	        	       		 return;
+	        	    		
+	        	    	}
+	        	    	
 	        	    	//tengo in memoria la sessione utente
+	        	    	else {
 	        	    	VaadinSession.getCurrent().setAttribute("utente", utente);
 	        	    
 	        	    	Notification.show("Accesso in corso", 2000, Notification.Position.TOP_CENTER);
 	        	    	//accesso alla pagina della mappa
 						ui.navigate("main"); 
+	        	    	}
 						
 	        	    } else {
 	        	        // Login Fallito (utente non trovato o password errata)

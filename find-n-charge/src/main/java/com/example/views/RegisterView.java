@@ -127,7 +127,7 @@ public class RegisterView extends VerticalLayout {
 
 					if (utente == null) {
 
-						Utente nuovoUtente = new Utente(nome, cognome, username, email, password, LocalDate.now().toString());
+						Utente nuovoUtente = new Utente(nome, cognome, username, email, password, LocalDate.now().toString(), "Utente");
 
 						/*
 						 * in modo asicrono salvo utente nel database il thenRun() permette di lavorare

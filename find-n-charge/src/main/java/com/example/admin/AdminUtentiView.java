@@ -170,7 +170,7 @@ public class AdminUtentiView extends VerticalLayout {
 
 					if (utente == null) {
 
-						Utente nuovoUtente = new Utente(n,c,u,em,p, LocalDate.now().toString());
+						Utente nuovoUtente = new Utente(n,c,u,em,p, LocalDate.now().toString(), "Utente");
 
 						/*
 						 * in modo asicrono salvo utente nel database il thenRun() permette di lavorare
