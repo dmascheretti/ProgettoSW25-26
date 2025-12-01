@@ -40,8 +40,9 @@ import com.vaadin.flow.server.VaadinSession;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @PageTitle("Find&Charge - Mappa")
-@Route(value = "map", layout = MainLayout.class) // Carica la pagina nel layout della home page
+@Route(value = "", layout = MainLayout.class) // Carica la pagina nel layout della home page
 @RouteAlias(value = "main", layout = MainLayout.class) // URL alternativo
+@RouteAlias(value = "map", layout = MainLayout.class) // URL alternativo
 
 public class MapView extends HorizontalLayout {
 

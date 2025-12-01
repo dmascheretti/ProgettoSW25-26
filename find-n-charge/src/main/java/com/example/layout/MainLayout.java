@@ -53,21 +53,30 @@ public class MainLayout extends AppLayout {
 		drawerMenu.setHeightFull();
 		setDrawerOpened(false); // Inizialmente non visibile
 
-		// Pulsante di logout
-		Button logoutButton = new Button("Esci", event -> {
-			VaadinSession.getCurrent().close(); // Chiude la sessione
-			UI.getCurrent().getPage().setLocation("/"); // Torna al login
-		});
-		logoutButton.getElement().getThemeList().add("success"); // Tema verde
+		Button pulsante;
+		
+		if(utente!=null) {	// Pulsante di logout se l'utente ha effettuato l'accesso
+			pulsante = new Button("Esci", event -> {
+				VaadinSession.getCurrent().close(); // Chiude la sessione
+				UI.getCurrent().getPage().setLocation("login"); // Torna al login
+			});
+		} else {			// Pulsante di login se l'utente no ha ancora effettuato l'accesso
+			pulsante = new Button("Accedi", event -> {
+				UI.getCurrent().getPage().setLocation("login"); // Torna al login
+			});
+		}
+		pulsante.getElement().getThemeList().add("success"); // Tema verde
 
 		// Spaziatore per posizionare in basso il tasto di logout
 		Div spacer = new Div();
 
 		// Voci del menu
-		drawerMenu.add(createMenuLink(MapView.class, "Mappa", VaadinIcon.GLOBE),
-				createMenuLink(ProfileView.class, "Profilo", VaadinIcon.USER),
-				createMenuLink(ReservationView.class, "Prenotazioni", VaadinIcon.LIST),
-				createMenuLink(StationsView.class, "Colonnine", VaadinIcon.MAP_MARKER), spacer, logoutButton);
+		drawerMenu.add(createMenuLink(MapView.class, "Mappa", VaadinIcon.GLOBE));
+		if(utente!=null) {
+				drawerMenu.add(createMenuLink(ProfileView.class, "Profilo", VaadinIcon.USER),
+				createMenuLink(ReservationView.class, "Prenotazioni", VaadinIcon.LIST));
+		}
+		drawerMenu.add(createMenuLink(StationsView.class, "Colonnine", VaadinIcon.MAP_MARKER), spacer, pulsante);
 
 		// Espande lo spacer in modo da occupare tutto lo spazio extra disponibile
 		// all'interno di draweMenu (non utilizzato)

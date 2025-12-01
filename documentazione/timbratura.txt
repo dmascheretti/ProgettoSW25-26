@@ -188,7 +188,10 @@ Tutte le fasi precedenti sono contenute all'interno del file meeting
 			17.45-18.45 Adesso quando l'utente cerca di accedere alla pagina del profilo o a quella di prenotazioni ma non ha ancora eseguito l'accesso, viene 					reindirizzato direttamente al login con notifica di errore.
 
 30/11/2025		Maistrello Tommaso
-			Adesso il pulsante del QR Code compare solamente 5 minuti prima dell'inizio dello slot prenotato, in modo tale che l'utente non occupi la colonnina troppo presto, 			e solo se la colonnina non è già occupata da qualcun altro.
+			17.00-18.30 Adesso il pulsante del QR Code compare solamente 5 minuti prima dell'inizio dello slot prenotato, in modo tale che l'utente non occupi la colonnina troppo 			presto, e solo se la colonnina non è già occupata da qualcun altro.
+
+01/12/2025		Maistrello Tommaso
+			Adesso l'utente accede direttamente alla mappa, non più al login. la pagina di login appare solo quando preme sul pulsante accedi (stesso pulsante per fare logout ma 			con diversa destinazione). Piccole modifiche di miglioramento.
 
 			
 			
