@@ -117,7 +117,8 @@ public class StationsView extends HorizontalLayout {
 		stationSidebar.getStyle().set("overflow-y", "auto"); 	// Abilita lo scroll solo per la sidebar
 		
 		configuraGestioneOrari();	//Per gestire gli slot orari
-		reservationLogic();	//Per gestire le prenotazioni
+		reservationLogic();			//Per gestire le prenotazioni
+		configuraAutoUtente();		//Per gestire le auto dell'utente
 				
 		VerticalLayout layout = new VerticalLayout(titolo, searchField, istruz, colonGrid);
 		layout.setSizeFull();
@@ -207,6 +208,10 @@ public class StationsView extends HorizontalLayout {
 	private void configuraAutoUtente() {
         Utente utenteCorrente = (Utente) VaadinSession.getCurrent().getAttribute("utente");
 
+        if (utenteCorrente == null) {
+            return;
+        }
+        
 		firebaseAutoService.getTargheUtente(utenteCorrente)
 		.thenAccept(autoUtente -> {
 			

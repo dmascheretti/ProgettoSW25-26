@@ -336,7 +336,7 @@ public class ReservationView extends VerticalLayout implements BeforeEnterObserv
         Utente utente = (Utente) VaadinSession.getCurrent().getAttribute("utente");
         
         if (utente == null) {
-            event.forwardTo("");	//Reindirizza alla pagina di login
+            event.forwardTo("login");	//Reindirizza alla pagina di login
             Registration[] registrationWrapper = new Registration[1];		//Array per registrare l'aggiunta del listener
             //Dopo che ha cambiato pagina, mostra la notifica
             registrationWrapper[0] = UI.getCurrent().addAfterNavigationListener(navEvent -> {

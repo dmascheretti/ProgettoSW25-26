@@ -22,7 +22,7 @@ import com.vaadin.flow.router.RouterLink;
 import com.vaadin.flow.server.VaadinSession;
 
 // Questa deve essere la prima pagina aperta dal sito web
-@Route("")
+@Route("login")
 @PageTitle("Accedi")
 
 public class LoginView extends VerticalLayout {
