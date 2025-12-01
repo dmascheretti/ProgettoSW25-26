@@ -37,7 +37,7 @@ public class AdminPrenotazioniView extends VerticalLayout{
 		titolo.getStyle().set("color", "#008000");
 		
 		
-		prenoGrid.setColumns("nomeColonnina","utente", "data", "inizio");
+		prenoGrid.setColumns("IDColonnina","utente", "data", "inizio");
         
         prenoGrid.addColumn(prenotazione -> {
         	String stato = calcolaStato(prenotazione);

@@ -233,7 +233,7 @@ public class FirebaseUtentiService {
 	/**
 	 * Cancella un utente dal database e insieme anche tutte le sue prenotazioni.
 	 * @param u Utente da eliminare dal sistema
-	 * @return
+	 * @return future di tipo void
 	 */
 	public CompletableFuture<Void> cancellaUtente(Utente u) {
 

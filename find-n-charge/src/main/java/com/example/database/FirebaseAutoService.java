@@ -57,9 +57,10 @@ public class FirebaseAutoService {
 
 			@Override
 			public void onCancelled(DatabaseError error) {
-				// TODO Auto-generated method stub
-
+				// Gestione errore standard, come negli altri metodi
+				future.completeExceptionally(error.toException());
 			}
+
 		});
 		return future;
 	}

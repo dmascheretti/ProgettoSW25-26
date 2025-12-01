@@ -129,7 +129,6 @@ public class FirebaseColonnineService {
 
 			@Override
 			public void onDataChange(DataSnapshot snapshot) {
-				// TODO Auto-generated method stub
 				int count = 0;
 
 				if (snapshot.exists()) {
@@ -169,7 +168,6 @@ public class FirebaseColonnineService {
 
 			@Override
 			public void onDataChange(DataSnapshot snapshot) {
-				// TODO Auto-generated method stub
 				int count = 0;
 
 				if (snapshot.exists()) {
@@ -221,8 +219,8 @@ public class FirebaseColonnineService {
 
 			@Override
 			public void onCancelled(DatabaseError error) {
-				// TODO Auto-generated method stub
-
+				System.err.println("Errore nel caricamento prenotazioni: " + error.getMessage());
+				future.completeExceptionally(error.toException());
 			}
 
 		});

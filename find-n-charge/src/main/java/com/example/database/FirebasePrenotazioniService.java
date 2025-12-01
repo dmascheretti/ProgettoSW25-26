@@ -13,8 +13,6 @@ import org.springframework.stereotype.Service;
 import com.example.models.Auto;
 import com.example.models.Colonnina;
 import com.example.models.Prenotazione;
-import com.example.util.ColonnineService;
-import com.example.util.DataValidator;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -226,6 +224,11 @@ public class FirebasePrenotazioniService {
 		return future;
 	}
 
+	/**
+	 * Ottiene lista delle prenotazioni che hanno ora (intesa come slot) uguale a quella passata come parametro
+	 * @param ora Slot considerato
+	 * @return Lista di prenotazioni
+	 */
 	public CompletableFuture<List<String>> getColonnineSlot(String ora) {
 
 		// Oggetto che permette al programma di non fermarsi perchè sa che conterrà la
@@ -349,7 +352,10 @@ public class FirebasePrenotazioniService {
 	}
 	
 	/**
-	 * Metodo per estrarre la lista di orari in cui non è possibile fare una prenotazione perchè già occupati.
+	 * Restituisce lista di slot occupati per una determinata colonnina e una determinata data
+	 * @param colonnina 
+	 * @param data
+	 * @return Lista di stringhe (orari) che rappresenta gli slot occupati
 	 */
 	public CompletableFuture<List<String>> getSlotOccupati(String colonnina, String data) {
 		CompletableFuture<List<String>> future = new CompletableFuture<>();
@@ -372,7 +378,6 @@ public class FirebasePrenotazioniService {
 
 			@Override 
 			public void onCancelled(DatabaseError databaseError) {
-				// TODO Auto-generated method stub
 				System.err.println("Errore nel caricamento prenotazioni: " + databaseError.getMessage());
 				future.completeExceptionally(databaseError.toException());
 
@@ -443,8 +448,12 @@ public class FirebasePrenotazioniService {
 	}
 	
 	
-	
-	
+	/**
+	 * Aggiorna stato della prenotazione in base alla stringa passata come parametro
+	 * @param p Prenotazione considerata
+	 * @param msg Stato prenotazione da aggiornare ("Passata", "In  carica")
+	 * @return
+	 */
 	public CompletableFuture<Void> aggiornaStato(Prenotazione p, String msg) {
 
 	    CompletableFuture<Void> future = new CompletableFuture<>();
@@ -465,8 +474,13 @@ public class FirebasePrenotazioniService {
 	    return future;
 	}
 	
+	/**
+	 * Metodo per contare numero di prenotazioni in base al giorno della settimana
+	 * @return Array di interi che rappresenta il numero di prenotazioni per giorno (0-Lunedi, 1-Martedi ecc ecc)
+	 */
+	
 	public CompletableFuture<Integer[]> contaPrenotazioniGiorni(){
-		CompletableFuture<Integer[]> future= new CompletableFuture();
+		CompletableFuture<Integer[]> future= new CompletableFuture<>();
 		prenotazioni.addListenerForSingleValueEvent(new ValueEventListener() {
 
 			// Se li legge senza problemi
@@ -495,7 +509,7 @@ public class FirebasePrenotazioniService {
 			// Se trova errori
 			@Override
 			public void onCancelled(DatabaseError databaseError) {
-				System.err.println("Errore nel caricamento colonnine: " + databaseError.getMessage());
+				System.err.println("Errore nel caricamento prenotazioni: " + databaseError.getMessage());
 				future.completeExceptionally(databaseError.toException());
 			}
 		});
