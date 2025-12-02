@@ -71,12 +71,6 @@ public class FirebaseUtentiService {
 	public CompletableFuture<Void> cambiaPassword(Utente u, String nuovaPassword) {
 		CompletableFuture<Void> cambio = new CompletableFuture<>();
 
-		if (nuovaPassword == null || nuovaPassword.length() < 6) {
-			cambio.completeExceptionally(
-					new IllegalArgumentException("La password deve essere lunga almeno 6 caratteri"));
-			return cambio;
-		}
-
 		utenti.child(u.getUsername()).child("password").setValue(nuovaPassword, (databaseError, ref) -> {
 
 			if (databaseError != null) {
@@ -118,66 +112,6 @@ public class FirebaseUtentiService {
 			}
 		});
 		return cambio;
-	}
-
-	/**
-	 * 
-	 * Cerca sottonodo di "utenti" con nome uguale a username passato nella funzione
-	 * 
-	 * Richiama utente con quello username e verifica che la passowrd inserita sia
-	 * corretta
-	 * 
-	 * Restituisce un CompletableFuture che puo essere nullo o non nullo (con
-	 * utente)
-	 * 
-	 * @param username username da cercare
-	 * @param password password da verificare
-	 * @return future contiene utente se trovato, altrimenti null
-	 */
-
-	public CompletableFuture<Utente> cercaUtente(String username, String password) {
-		CompletableFuture<Utente> future = new CompletableFuture<>();
-
-		/*
-		 * Cerco in "utenti" se esiste un figlio con chiave username
-		 */
-		DatabaseReference userRef = utenti.child(username);
-		userRef.addListenerForSingleValueEvent(new ValueEventListener() {
-			@Override
-
-			public void onDataChange(DataSnapshot dataSnapshot) {
-				/*
-				 * Se esiste quel nodo entra nell'if, altrimenti restituisce
-				 * future.complete(null) restituisce future.complete(null) anche se la password
-				 * non corrisponde all'utente inserito
-				 */
-				if (dataSnapshot.exists()) {
-					Utente utente = dataSnapshot.getValue(Utente.class);
-					if (utente != null && utente.getPassword() != null && utente.getPassword().equals(password)) {
-						// tutto corretto
-						future.complete(utente);
-					} else {
-						// password errata
-						future.complete(null);
-					}
-				} else {
-					// utente non trovato
-					future.complete(null);
-				}
-			}
-
-			/*
-			 * gestione errori di sistema e database, vado nella gestione eccezioni in
-			 * LoginView
-			 */
-			@Override
-			public void onCancelled(DatabaseError databaseError) {
-				System.err.println("Errore nel database " + databaseError.getMessage());
-				future.completeExceptionally(databaseError.toException());
-			}
-		});
-
-		return future;
 	}
 
 	/**

@@ -7,6 +7,7 @@
 package com.example.views;
 
 import com.example.database.FirebaseUtentiService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H1;
@@ -29,12 +30,14 @@ public class LoginView extends VerticalLayout {
 	
 	private final UI ui;
 	private final FirebaseUtentiService firebaseUtentiService;
+	private final PasswordEncoder passwordEncoder;
 
 
-	public LoginView(FirebaseUtentiService firebaseUtentiService) {
+	public LoginView(FirebaseUtentiService firebaseUtentiService, PasswordEncoder passwordEncoder) {
 		
 		this.ui=UI.getCurrent();
 		this.firebaseUtentiService=firebaseUtentiService;
+		this.passwordEncoder=passwordEncoder;
 
 		// Dimensione massima per occupare tutta la finestra
 		setSizeFull();
@@ -78,11 +81,13 @@ public class LoginView extends VerticalLayout {
 			 * errore
 			 */
 	       
-	        	    firebaseUtentiService.cercaUtente(user,password)
+	        	    firebaseUtentiService.verificaUtente(user)
 	                .thenAccept(utente -> {
 	                	 getUI().ifPresent(ui -> ui.access(() -> {
 	                
 	        	    if (utente != null) {
+	        	    	
+	        	    	if (passwordEncoder.matches(password, utente.getPassword())) {
 	        	    	
 	        	    	if(utente.getRuolo()!=null && utente.getRuolo().equals("Admin")) {
 	        	    		
@@ -99,7 +104,14 @@ public class LoginView extends VerticalLayout {
 	        	    	//accesso alla pagina della mappa
 						ui.navigate("main"); 
 	        	    	}
-						
+	        	    	
+	        	    	} else {
+		        	    
+		        	    	Notification.show("Password errata", 2000, Notification.Position.TOP_CENTER).getElement().getThemeList().add("error");
+		        	    	passwordField.clear();
+			
+		        	    	}
+	        	    	
 	        	    } else {
 	        	        // Login Fallito (utente non trovato o password errata)
 	        	        Notification.show("Credenziali non valide. Riprova.", 3000, Notification.Position.TOP_CENTER).getElement().getThemeList().add("error");

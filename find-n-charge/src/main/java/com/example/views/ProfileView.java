@@ -2,6 +2,7 @@ package com.example.views;
 
 import com.example.models.Auto;
 import com.example.models.Utente;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import com.example.database.FirebaseAutoService;
 import com.example.database.FirebasePrenotazioniService;
 import com.example.database.FirebaseUtentiService;
@@ -37,13 +38,16 @@ public class ProfileView extends VerticalLayout implements BeforeEnterObserver {
     private FirebaseUtentiService firebaseUtentiService;
     private FirebaseAutoService firebaseAutoService;
     private FirebasePrenotazioniService firebasePrenotazioniService;
+	private final PasswordEncoder passwordEncoder;
+    
    // private FirebaseUtentiService firebaseUtentiService;
 
     public ProfileView(FirebaseAutoService firebaseAutoService, FirebaseUtentiService firebaseUtentiService,
-    		FirebasePrenotazioniService firebasePrenotazioniService) {
+    		FirebasePrenotazioniService firebasePrenotazioniService,  PasswordEncoder passwordEncoder) {
         this.firebaseAutoService=firebaseAutoService;
         this.firebaseUtentiService=firebaseUtentiService;
         this.firebasePrenotazioniService=firebasePrenotazioniService;
+        this.passwordEncoder=passwordEncoder;
         setSizeFull();
         setDefaultHorizontalComponentAlignment(Alignment.CENTER);
         setSpacing(true);
@@ -258,12 +262,37 @@ public class ProfileView extends VerticalLayout implements BeforeEnterObserver {
         pwdCard.add(passwordField, cambiaPwdBtn);
         cambiaPwdBtn.addClickListener(e -> {
             String nuovaPwd = passwordField.getValue();
-            if (nuovaPwd != null && !nuovaPwd.isEmpty()) {
-                utente.setPassword(nuovaPwd);
-                Notification.show("Password aggiornata correttamente!");
-                passwordField.clear();
+   
+            if (nuovaPwd != null && nuovaPwd.length() >= 6) {
+                
+            	String passwordCriptata=passwordEncoder.encode(nuovaPwd);
+
+                getUI().ifPresent(ui -> {
+                    
+                    firebaseUtentiService.cambiaPassword(utente, passwordCriptata)
+                        .thenRun(() -> ui.access(() -> {
+                            
+                            utente.setPassword(passwordCriptata);
+                            VaadinSession.getCurrent().setAttribute("utente", utente);
+
+                            Notification n = Notification.show("Password aggiornata correttamente!");
+                            n.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+                            n.setPosition(Notification.Position.TOP_CENTER);
+                            passwordField.clear();
+                        }))
+                        .exceptionally(ex -> {
+                            ui.access(() -> {
+                                Notification n = Notification.show("Errore: " + ex.getMessage());
+                                n.addThemeVariants(NotificationVariant.LUMO_ERROR);
+                                n.setPosition(Notification.Position.TOP_CENTER);
+                            });
+                            return null;
+                        });
+                });
+
             } else {
-                Notification.show("Inserisci una password valida");
+                Notification.show("La password deve essere di almeno 6 caratteri", 3000, Notification.Position.TOP_CENTER)
+                            .getElement().getThemeList().add("error");
             }
         });
 

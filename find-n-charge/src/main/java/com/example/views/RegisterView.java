@@ -6,7 +6,8 @@
 
 package com.example.views;
 
-import org.springframework.stereotype.Service;
+
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.threeten.bp.LocalDate;
 import com.example.database.FirebaseUtentiService;
 import com.example.models.Utente;
@@ -33,11 +34,13 @@ public class RegisterView extends VerticalLayout {
 
 	private FirebaseUtentiService firebaseUtentiService;
 	private final UI ui;
+	private final PasswordEncoder passwordEncoder;
 
-	public RegisterView(FirebaseUtentiService firebaseUtentiService) {
+	public RegisterView(FirebaseUtentiService firebaseUtentiService, PasswordEncoder passwordEncoder) {
 
 		this.firebaseUtentiService=firebaseUtentiService;
 		this.ui = UI.getCurrent();
+		this.passwordEncoder=passwordEncoder;
 
 		setSizeFull();
 		setAlignItems(Alignment.CENTER);
@@ -126,8 +129,10 @@ public class RegisterView extends VerticalLayout {
 				getUI().ifPresent(ui -> ui.access(() -> {
 
 					if (utente == null) {
+						
+						String passwordCriptata = passwordEncoder.encode(password);
 
-						Utente nuovoUtente = new Utente(nome, cognome, username, email, password, LocalDate.now().toString(), "Utente");
+						Utente nuovoUtente = new Utente(nome, cognome, username, email, passwordCriptata, LocalDate.now().toString(), "Utente");
 
 						/*
 						 * in modo asicrono salvo utente nel database il thenRun() permette di lavorare
