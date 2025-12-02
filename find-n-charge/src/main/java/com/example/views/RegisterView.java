@@ -147,7 +147,7 @@ public class RegisterView extends VerticalLayout {
 						firebaseUtentiService.salvaUtente(nuovoUtente).thenRun(() -> ui.access(() -> {
 							Notification.show("Registrazione completata! Benvenuto, " + username + ".", 3000,
 									Notification.Position.TOP_CENTER);
-							ui.navigate("");
+							ui.navigate("login");
 						}))
 
 								// gestione e messaggio di errore

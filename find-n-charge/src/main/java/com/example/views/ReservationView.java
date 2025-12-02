@@ -103,6 +103,7 @@ public class ReservationView extends VerticalLayout implements BeforeEnterObserv
 		oldPrenoGrid.addColumn(Prenotazione::getIDColonnina).setHeader("Colonnina").setSortable(true);
 		oldPrenoGrid.addColumn(Prenotazione::getData).setHeader("Data").setSortable(true);
 		oldPrenoGrid.addColumn(Prenotazione::getInizio).setHeader("Inizio").setSortable(true);
+		oldPrenoGrid.addComponentColumn(null).setHeader("Valutazione");
 
 		firebaseColonnineService.getColonnineInCarica().thenAccept(listaInCarica -> {
 		    
@@ -217,7 +218,7 @@ public class ReservationView extends VerticalLayout implements BeforeEnterObserv
 
 			return btn;
 		
-		}).setHeader("");
+		}).setHeader("QR");
 
 		// bottone per la cancellazione
 		newPrenoGrid.addComponentColumn(p -> {
