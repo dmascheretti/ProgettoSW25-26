@@ -19,7 +19,7 @@ import com.example.database.FirebaseColonnineService;
 import com.example.database.FirebasePrenotazioniService;
 import com.example.database.FirebaseUtentiService;
 import com.example.layout.AdminLayout;
-import com.example.util.ColonnineService;
+import com.example.service.ColonnineService;
 
 import jakarta.annotation.security.RolesAllowed;
 import com.vaadin.flow.router.AfterNavigationEvent;

@@ -3,7 +3,7 @@
  * 
  * @author Davide Mascheretti
  */
-package com.example.util;
+package com.example.service;
 
 import java.time.LocalDate;
 import java.util.concurrent.CompletableFuture;

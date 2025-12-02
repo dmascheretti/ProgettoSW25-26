@@ -6,13 +6,8 @@
 
 package com.example.views;
 
-
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.threeten.bp.LocalDate;
-import com.example.database.FirebaseUtentiService;
-import com.example.models.Utente;
+import com.example.service.UtentiService;
 import com.example.util.DataValidator;
-import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.Span;
@@ -32,15 +27,11 @@ import com.vaadin.flow.spring.annotation.UIScope;
 @UIScope
 public class RegisterView extends VerticalLayout {
 
-	private FirebaseUtentiService firebaseUtentiService;
-	private final UI ui;
-	private final PasswordEncoder passwordEncoder;
+	private final UtentiService utentiService;
 
-	public RegisterView(FirebaseUtentiService firebaseUtentiService, PasswordEncoder passwordEncoder) {
+	public RegisterView(UtentiService utentiService) {
 
-		this.firebaseUtentiService=firebaseUtentiService;
-		this.ui = UI.getCurrent();
-		this.passwordEncoder=passwordEncoder;
+		this.utentiService = utentiService;
 
 		setSizeFull();
 		setAlignItems(Alignment.CENTER);
@@ -116,66 +107,27 @@ public class RegisterView extends VerticalLayout {
 			}
 
 			/*
-			 * verifico se lo username esiste già in modo asincrono, prima verifico utente, al termine prosegue
-			 * con il thenAccept
-			 * 
-			 * se la funzione resistuisce un utente nullo allora non è stato trovato se la
-			 * funzione restituisce un utente non nullo allora esiste già
-			 * 
-			 * se utente==null salvo nuovo utente con quello username
+			 * Chiamo funzione da UtentiService che si interfaccerà con il database
 			 */
 
-			firebaseUtentiService.verificaUtente(username).thenAccept(utente -> {
+			utentiService.registrati(nome, cognome, username, email, password).thenRun(() -> {
 				getUI().ifPresent(ui -> ui.access(() -> {
-
-					if (utente == null) {
-						
-						String passwordCriptata = passwordEncoder.encode(password);
-
-						Utente nuovoUtente = new Utente(nome, cognome, username, email, passwordCriptata, LocalDate.now().toString(), "Utente");
-
-						/*
-						 * in modo asicrono salvo utente nel database il thenRun() permette di lavorare
-						 * in background e non bloccare la UI principale della registerView
-						 * 
-						 * quando salvaUtente termina procede con la registrazione (o eventualmente
-						 * eccezione) se salvaUtente() notifica null, tutto ok --> eseguo thenRun() se
-						 * salvaUtente() notifica != null allora thenRun() riceve notifica di eccezione,
-						 * non viene eseguito, ed esegue .exceptionally (errore del database)
-						 */
-
-						firebaseUtentiService.salvaUtente(nuovoUtente).thenRun(() -> ui.access(() -> {
-							Notification.show("Registrazione completata! Benvenuto, " + username + ".", 3000,
-									Notification.Position.TOP_CENTER);
-							ui.navigate("login");
-						}))
-
-								// gestione e messaggio di errore
-
-								.exceptionally(ex -> {
-									ui.access(() -> {
-										Notification
-												.show("Errore durante il salvataggio: " + ex.getMessage(), 4000,
-														Notification.Position.TOP_CENTER)
-												.getElement().getThemeList().add("error");
-									});
-									return null;
-								});
-
-					}
-
-					else {
-
-						Notification.show("Lo username : " + username + " e' già in uso, prova con un altro!", 3000,
-								Notification.Position.TOP_CENTER).getElement().getThemeList().add("error");
-			        	   ;
-
-					}
-
+					//Tutto ok, thenRun senza eccezioni
+					Notification.show("Registrazione completata! Benvenuto, " + username + ".", 3000,
+							Notification.Position.TOP_CENTER);
+					ui.navigate("login");
 				}));
+				//Eccezione rilevata nel thenRun
+			}).exceptionally(ex -> {
+				getUI().ifPresent(ui -> ui.access(() -> {
+					//Messaggio che identifica l'eccezione
+					String msg = ex.getCause() != null ? ex.getCause().getMessage() : ex.getMessage();
 
+					Notification.show("Errore: " + msg, 4000, Notification.Position.TOP_CENTER).getElement()
+							.getThemeList().add("error");
+				}));
+				return null;
 			});
-
 		});
 
 		// Box di testo
