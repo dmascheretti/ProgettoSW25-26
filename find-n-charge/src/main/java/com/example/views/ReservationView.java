@@ -103,6 +103,11 @@ public class ReservationView extends VerticalLayout implements BeforeEnterObserv
 		oldPrenoGrid.addColumn(Prenotazione::getNomeColonnina).setHeader("Colonnina").setSortable(true);
 		oldPrenoGrid.addColumn(Prenotazione::getData).setHeader("Data").setSortable(true);
 		oldPrenoGrid.addColumn(Prenotazione::getInizio).setHeader("Inizio").setSortable(true);
+		// --- AGGIUNTA NUOVA COLONNA VOTO ---
+		oldPrenoGrid.addComponentColumn(prenotazione -> {
+		    return creaComponenteStelle(prenotazione);
+		}).setHeader("Dai un Voto al Servizio");
+		// ------------------------------------
 
 		firebaseColonnineService.getColonnineInCarica().thenAccept(listaInCarica -> {
 		    
@@ -349,6 +354,73 @@ public class ReservationView extends VerticalLayout implements BeforeEnterObserv
                 }
             });
         }
+    }
+    
+    /**
+     * Crea un layout orizzontale con 5 stelline cliccabili.
+     * Gestisce la logica visiva e il salvataggio del voto. (TODO il backend)
+     */
+    private com.vaadin.flow.component.Component creaComponenteStelle(Prenotazione p) {
+        com.vaadin.flow.component.orderedlayout.HorizontalLayout starLayout = 
+            new com.vaadin.flow.component.orderedlayout.HorizontalLayout();
+        starLayout.setSpacing(false); // Tiene le stelle vicine
+        
+        // Lista per tenere traccia delle icone e poterle aggiornare visivamente
+        List<com.vaadin.flow.component.icon.Icon> starIcons = new ArrayList<>();
+        
+        int votoAttuale = 0; //Voto parte da 0, Npn è salvato finche l'utente non clicca sulle stelline
+
+        for (int i = 1; i <= 5; i++) {
+            final int starValue = i;
+            
+            // Decide se la stella è piena o vuota in base al voto attuale
+            VaadinIcon iconType = (votoAttuale >= i) ? VaadinIcon.STAR : VaadinIcon.STAR_O;
+            com.vaadin.flow.component.icon.Icon star = iconType.create();
+            
+            // Stile: Colore oro e cursore "mano" al passaggio del mouse
+            star.setColor(votoAttuale >= i ? "#FFD700" : "gray"); 
+            star.getStyle().set("cursor", "pointer");
+            
+            // Gestore del click
+            star.addClickListener(event -> {
+                
+            	// 1. Aggiorna il modello locale
+            	//p.setVoto(starValue);
+                
+                // 2. Aggiorna visivamente tutte le stelle nel layout corrente
+                for (int j = 0; j < starIcons.size(); j++) {
+                    com.vaadin.flow.component.icon.Icon s = starIcons.get(j);
+                    int val = j + 1;
+                    if (val <= starValue) {
+                        // Stella piena e colorata                        
+                        s.getElement().setAttribute("icon", "vaadin:star");
+                        s.setColor("#FFD700");
+                    } else {
+                        s.getElement().setAttribute("icon", "vaadin:star-o");
+                        s.setColor("gray");
+                    }
+                }
+                
+                // 3. Salvataggio del voto nel database TODO
+
+                /*firebasePrenotazioniService.aggiornaVoto(p, starValue)
+                    .exceptionally(ex -> {
+                        ex.printStackTrace();
+                        getUI().ifPresent(ui -> ui.access(() -> 
+                            Notification.show("Errore nel salvare il voto", 3000, Notification.Position.TOP_CENTER)
+                                .addThemeVariants(com.vaadin.flow.component.notification.NotificationVariant.LUMO_ERROR)
+                        ));
+                        return null;
+                    });*/
+                    
+                Notification.show("Voto salvato: " + starValue + "/5", 1500, Notification.Position.BOTTOM_END);
+            });
+            
+            starIcons.add(star);
+            starLayout.add(star);
+        }
+        
+        return starLayout;
     }
 
 }
