@@ -25,8 +25,12 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.VaadinSession;
 import com.vaadin.flow.shared.Registration;
+import java.time.LocalTime;
+
+
 
 @Route(value = "profilo", layout = MainLayout.class)
+
 @PageTitle("Find&Charge - Profilo")
 public class ProfileView extends VerticalLayout implements BeforeEnterObserver {
 
@@ -40,35 +44,106 @@ public class ProfileView extends VerticalLayout implements BeforeEnterObserver {
         this.firebaseAutoService=firebaseAutoService;
         this.firebaseUtentiService=firebaseUtentiService;
         this.firebasePrenotazioniService=firebasePrenotazioniService;
-
+        setSizeFull();
+        setDefaultHorizontalComponentAlignment(Alignment.CENTER);
         setSpacing(true);
         setPadding(true);
 
+        
         // Prendi utente dalla sessione (controllo null per sicurezza)
         Utente utente = (Utente) VaadinSession.getCurrent().getAttribute("utente");
         if (utente == null) {
-            // Comportamento di fallback (puoi cambiare: redirect, notifica, ecc.)
+            
             add(new Paragraph("Utente non trovato. Effettua il login."));
             return;
         }
 
         // Header
+        String saluto;
+        int ora = LocalTime.now().getHour();
+
+        if (ora >= 6 && ora < 12) {
+            saluto = "Buongiorno";
+        } else if (ora >= 12 && ora < 18) {
+            saluto = "Buon pomeriggio";
+        } else {
+            saluto = "Buonasera";
+        }
+
         H3 titolo = new H3();
-        titolo.getStyle().set("color", "#008000");
+        titolo.getStyle().set("color", "#2ECC71");
         Span userSpan = new Span(utente.getUsername());
         userSpan.getStyle()
-                .set("color", "#FF5722")
+                .set("color", "blue")
                 .set("font-weight", "bold");
-        titolo.add(new Text("Ciao "), userSpan, new Text("! Ecco la tua pagina di profilo"));
+        
+        titolo.add(new Text(saluto+" "), userSpan, new Text("! \nEcco la tua pagina di profilo"));
 
-        Paragraph nome = new Paragraph("Nome: " + utente.getNome());
-        Paragraph cognome = new Paragraph("Cognome: " + utente.getCognome());
-        Paragraph mail = new Paragraph("Mail: " + utente.getEmail());
+        Paragraph nome = new Paragraph(utente.getNome());
+        Paragraph cognome = new Paragraph( utente.getCognome());
+        Paragraph mail = new Paragraph( utente.getEmail());
+    
+        
+        VerticalLayout profileCard = new VerticalLayout();
+        profileCard.setPadding(true);
+        profileCard.setSpacing(true);
+        profileCard.setWidth("100%");
+        profileCard.setMaxWidth("500px");
+        profileCard.setAlignItems(Alignment.CENTER);
+        profileCard.getStyle().set("background-color", "white");
+        profileCard.getStyle().set("border-radius", "16px");
+        profileCard.getStyle().set("box-shadow", "0 4px 12px rgba(0,0,0,0.10)");
+        profileCard.getStyle().set("padding", "30px");
+        profileCard.getStyle().set("margin-top", "20px");
+
+        
+        Span avatar = new Span("👤");
+        avatar.getStyle().set("font-size", "70px");
+
+        
+        Span title = new Span("Profilo Utente");
+        title.getStyle().set("font-size", "26px");
+        title.getStyle().set("font-weight", "bold");
+        title.getStyle().set("margin-bottom", "10px");
+
+        VerticalLayout infoBlock = new VerticalLayout();
+        infoBlock.setAlignItems(Alignment.START);
+        infoBlock.setPadding(false);
+        infoBlock.setSpacing(true);
+        infoBlock.setWidth("100%");
+        infoBlock.setMaxWidth("350px");
+
+       
+        Span labelNome = new Span("Nome:");
+        labelNome.getStyle().set("font-weight", "bold");
+        Span valueNome = new Span(nome.getText());
+        valueNome.getStyle().set("color", "#333");
+
+        Span labelCognome = new Span("Cognome:");
+        labelCognome.getStyle().set("font-weight", "bold");
+        Span valueCognome = new Span(cognome.getText());
+        valueCognome.getStyle().set("color", "#333");
+        
+        Span labelMail = new Span("Email:");
+        labelMail.getStyle().set("font-weight", "bold");
+        Span valueMail = new Span(mail.getText());
+        valueMail.getStyle().set("color", "#333");
+        
+        infoBlock.add(
+                labelNome, valueNome,
+                labelCognome, valueCognome,
+                labelMail, valueMail
+        );
+        
+        profileCard.add(avatar, title, infoBlock);
+
         
         HorizontalLayout hl = new HorizontalLayout();
         hl.setWidthFull();
         hl.setPadding(true);
         hl.setSpacing(true);
+        this.getStyle().set("background-color", "white"); 
+
 
         firebaseAutoService.listaAutoUtente(utente).thenAccept(lista -> {
             getUI().ifPresent(ui -> ui.access(() -> {
@@ -91,6 +166,18 @@ public class ProfileView extends VerticalLayout implements BeforeEnterObserver {
 
                     Paragraph targa = new Paragraph("Targa: " + a.getTarga());
                     Paragraph carica = new Paragraph("Carica residua: " + a.getStatoCarica() + "%");
+                    
+                    if (a.getStatoCarica() <= 30) {
+                        carica.getStyle().set("color", "#FF3B30").set("font-weight", "bold");
+                        carica.setText("Carica residua: " + a.getStatoCarica() + "%  ⚠ Mettere in carica");
+                    } 
+                    else if (a.getStatoCarica() <= 55) {
+                        carica.getStyle().set("color", "#F7DC6F").set("font-weight", "bold");
+                    } 
+                    else {
+                        carica.getStyle().set("color", "#27AE60").set("font-weight", "bold");
+                    }
+
                     
                     card.add(titolo2, targa, carica);
                     
@@ -117,10 +204,16 @@ public class ProfileView extends VerticalLayout implements BeforeEnterObserver {
             }));
         });
 
+        
+        
 
         // Email change controls
         TextField emailField = new TextField("Nuova Email");
-        Button cambiaMailBtn = new Button("Aggiorna Email");
+        
+        VerticalLayout emailCard = createCard("Modifica Email");
+        emailField.setWidthFull();
+        Button cambiaMailBtn = createMainButton("Aggiorna Email");
+        emailCard.add(emailField, cambiaMailBtn);
 
         cambiaMailBtn.addClickListener(e -> {
             String nuovaEmail = emailField.getValue();
@@ -148,7 +241,7 @@ public class ProfileView extends VerticalLayout implements BeforeEnterObserver {
                         }))
                         .exceptionally(ex -> {
                             ui.access(() -> {
-                                Notification notif = Notification.show("Errore aggiornamento email: " + ex.getMessage());
+                                Notification notif = Notification.show("Errore aggiornamento email: ");
                                 notif.setPosition(Notification.Position.TOP_CENTER);
                                 notif.addThemeVariants(NotificationVariant.LUMO_ERROR);
                             });
@@ -157,9 +250,12 @@ public class ProfileView extends VerticalLayout implements BeforeEnterObserver {
             });
         });
 
-        // Password change (locale - se vuoi integrazione con Firebase, sostituire)
+        
         PasswordField passwordField = new PasswordField("Nuova Password");
-        Button cambiaPwdBtn = new Button("Aggiorna Password");
+        VerticalLayout pwdCard = createCard("Modifica Password");
+        passwordField.setWidthFull();
+        Button cambiaPwdBtn = createMainButton("Aggiorna Password");
+        pwdCard.add(passwordField, cambiaPwdBtn);
         cambiaPwdBtn.addClickListener(e -> {
             String nuovaPwd = passwordField.getValue();
             if (nuovaPwd != null && !nuovaPwd.isEmpty()) {
@@ -180,7 +276,12 @@ public class ProfileView extends VerticalLayout implements BeforeEnterObserver {
         tipoField.setPlaceholder("Seleziona il tipo");
         tipoField.setAllowCustomValue(false);
 
-        Button aggiungiAutoBtn = new Button("Aggiungi Auto");
+        VerticalLayout autoCard = createCard("Aggiungi Auto");
+        targaField.setWidthFull();
+        modelloField.setWidthFull();
+        tipoField.setWidthFull();
+        Button aggiungiAutoBtn = createMainButton("Aggiungi Auto");
+        autoCard.add(targaField, modelloField, tipoField, aggiungiAutoBtn);
 
         aggiungiAutoBtn.addClickListener(e -> {
 
@@ -193,7 +294,7 @@ public class ProfileView extends VerticalLayout implements BeforeEnterObserver {
                 return;
             }
 
-            // Crea l'oggetto auto con l'utente (passa l'oggetto utente se il costruttore lo richiede)
+            
             Auto auto = new Auto(targa, modello, tipo, utente.getUsername());
 
             // verificaTarga deve restituire CompletableFuture<Auto> (auto esistente) o null se non esiste
@@ -224,7 +325,7 @@ public class ProfileView extends VerticalLayout implements BeforeEnterObserver {
 
 
 
-                                // pulisci campi
+                               
                                 targaField.clear();
                                 modelloField.clear();
                                 tipoField.clear();
@@ -232,7 +333,7 @@ public class ProfileView extends VerticalLayout implements BeforeEnterObserver {
                             .exceptionally(ex -> {
                                 ui.access(() -> {
                                     Notification n = Notification.show(
-                                            "Errore: " + ex.getMessage(),
+                                            "Errore: ",
                                             4000,
                                             Notification.Position.TOP_CENTER
                                     );
@@ -241,13 +342,13 @@ public class ProfileView extends VerticalLayout implements BeforeEnterObserver {
                                 return null;
                             });
 
-                })); // fine ui.access
+                })); 
 
             }).exceptionally(ex -> {
                 // gestione eventuale errore nella verifica targa
                 getUI().ifPresent(ui -> ui.access(() -> {
                     Notification n = Notification.show(
-                            "Errore durante la verifica targa: " + ex.getMessage(),
+                            "Errore durante la verifica targa: ",
                             4000,
                             Notification.Position.TOP_CENTER
                     );
@@ -257,15 +358,13 @@ public class ProfileView extends VerticalLayout implements BeforeEnterObserver {
             });
         });
 
-        // Layout e aggiunta componenti (solo qui, una volta)
+        // Layout e aggiunta componenti
         HorizontalLayout confAuto = new HorizontalLayout(targaField, modelloField, tipoField);
         confAuto.setSpacing(true);
 
         add(
                 titolo,
-                nome,
-                cognome,
-                mail,
+                profileCard,
                 hl,
                 emailField,
                 cambiaMailBtn,
@@ -288,7 +387,7 @@ public class ProfileView extends VerticalLayout implements BeforeEnterObserver {
         Utente utente = (Utente) VaadinSession.getCurrent().getAttribute("utente");
         
         if (utente == null) {
-            event.forwardTo("");	//Reindirizza alla pagina di login
+            event.forwardTo("login");	//Reindirizza alla pagina di login
             Registration[] registrationWrapper = new Registration[1];		//Array per registrare l'aggiunta del listener
             //Dopo che ha cambiato pagina, mostra la notifica
             registrationWrapper[0] = UI.getCurrent().addAfterNavigationListener(navEvent -> {
@@ -302,4 +401,36 @@ public class ProfileView extends VerticalLayout implements BeforeEnterObserver {
             });
         }
     }
+    private VerticalLayout createCard(String titleText) {
+        VerticalLayout card = new VerticalLayout();
+        card.setPadding(true);
+        card.setSpacing(true);
+        card.setWidth("100%");
+        card.setMaxWidth("500px");
+        card.getStyle().set("background-color", "white");
+        card.getStyle().set("border-radius", "12px");
+        card.getStyle().set("box-shadow", "0 4px 12px rgba(0,0,0,0.08)");
+        card.getStyle().set("margin-top", "20px");
+
+        Span title = new Span(titleText);
+        title.getStyle().set("font-size", "18px");
+        title.getStyle().set("font-weight", "bold");
+        title.getStyle().set("color", "#2ECC71");
+
+        card.add(title);
+        return card;
+    }
+
+    private Button createMainButton(String label) {
+        Button btn = new Button(label);
+        btn.setWidthFull();
+        btn.getStyle().set("background-color", "#2ECC71");
+        btn.getStyle().set("color", "white");
+        btn.getStyle().set("font-weight", "bold");
+        btn.getStyle().set("border-radius", "8px");
+        btn.getStyle().set("padding", "10px");
+        return btn;
+    }
+    
+
 }

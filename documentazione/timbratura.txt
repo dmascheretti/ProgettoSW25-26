@@ -193,5 +193,8 @@ Tutte le fasi precedenti sono contenute all'interno del file meeting
 01/12/2025		Maistrello Tommaso
 			Adesso l'utente accede direttamente alla mappa, non più al login. la pagina di login appare solo quando preme sul pulsante accedi (stesso pulsante per fare logout ma 			con diversa destinazione). Piccole modifiche di miglioramento.
 
+01/12/2025              Morgera Claudio
+                        13.00-14.00 + 23.00-00.00 
+                        Resa la schermata profilo più professionale e pulita con saluto dinamico
 			
 			

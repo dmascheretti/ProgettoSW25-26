@@ -3,6 +3,7 @@
  * Classe per modellazione dell‘oggetto automobile: targa, proprietario, grandezza batteria in kWh e stato di carica della batteria in percentuale
  */
 package com.example.models;
+import java.util.Random;
 
 import java.time.LocalDateTime;
 
@@ -18,6 +19,7 @@ public class Auto {
 	private double statoCaricaIniziale;
 	private LocalDateTime inizioRicarica;
 	private Colonnina colonna;
+	private static final Random rand = new Random();
 	
 	public Auto(String targa, String modello, String tipo, String proprietario) {
 		this.targa = targa;
@@ -25,7 +27,7 @@ public class Auto {
 		this.proprietario = proprietario;
 		this.setTipo(tipo);
 		this.capacitaBatteria = setCapacitaBatteria(tipo);
-		this.setStatoCarica(100);
+		this.setStatoCarica(rand.nextInt(81)+20);
 	}
 
 	public Auto(){
