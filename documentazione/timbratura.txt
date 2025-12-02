@@ -17,7 +17,7 @@ Tutte le fasi precedenti sono contenute all'interno del file meeting
   			15.30-16.15 + 17.15-18.45 Creazione branch per issue, implemetazione del controllo di esistenza dell'utente durante la fase di login e implementazione della funziona 			nella classe FirebaseService, aggiunta documentazione varia 
 
 07/11/2025		Mascheretti Davide 
-			Creazione branch per risolvere issue del problema del doppio click, analisi delle possibili motivazioni, risoluzione della issue, creazione classe per controllo dati 			in fase di registrazione. Creato classe per controlli che vengono effettuati in register view in modo da rendere la classe più leggibile e devidere al meglio i ruoli 			tra classi
+			Creazione branch per risolvere issue del problema del doppio click, analisi delle possibili motivazioni, risoluzione della issue, creazione classe per controllo 			dati in fase di registrazione. Creato classe per controlli che vengono effettuati in register view in modo da rendere la classe più leggibile e 					dividere al meglio i ruoli tra classi
 
 07/11/2025		Maistrello Tommaso
 			17.30-19.00 Creata MainLayout.java, strutturata come home page del progetto. In alto presenta una barra con titolo e tasto del menù. Quest'ultimo si apre sulla 			sinistra e permette di navigare attraverso le altre pagine dell'app web.
@@ -184,17 +184,27 @@ Tutte le fasi precedenti sono contenute all'interno del file meeting
 29/11/2025 		Mascheretti Davide
 			10.00-13.00 Conclusa divisione delle classi di firebaseService in base ai nodi letti o scritti. 
 
-29/11/2025		Maistrello Tommaso
+			Maistrello Tommaso
 			17.45-18.45 Adesso quando l'utente cerca di accedere alla pagina del profilo o a quella di prenotazioni ma non ha ancora eseguito l'accesso, viene 					reindirizzato direttamente al login con notifica di errore.
 
 30/11/2025		Maistrello Tommaso
-			17.00-18.30 Adesso il pulsante del QR Code compare solamente 5 minuti prima dell'inizio dello slot prenotato, in modo tale che l'utente non occupi la colonnina troppo 			presto, e solo se la colonnina non è già occupata da qualcun altro.
+			17.00-18.30 
+			Adesso il pulsante del QR Code compare solamente 5 minuti prima dell'inizio dello slot prenotato, in modo tale che l'utente non occupi la colonnina 					troppo presto, e solo se la colonnina non è già occupata da qualcun altro.
+
+			Mascheretti Davide
+			Aggiunto ruolo all'utente e documentazione varia.
 
 01/12/2025		Maistrello Tommaso
-			Adesso l'utente accede direttamente alla mappa, non più al login. la pagina di login appare solo quando preme sul pulsante accedi (stesso pulsante per fare logout ma 			con diversa destinazione). Piccole modifiche di miglioramento.
+			Adesso l'utente accede direttamente alla mappa, non più al login. la pagina di login appare solo quando preme sul pulsante accedi (stesso pulsante per fare logout 			ma con diversa destinazione). Piccole modifiche di miglioramento.
 
-01/12/2025              Morgera Claudio
+            		Morgera Claudio
                         13.00-14.00 + 23.00-00.00 
                         Resa la schermata profilo più professionale e pulita con saluto dinamico
+
+			Mascheretti Davide
+			Piccole modifiche, risoluzione errore in vista admin.
+
+02/12/2025		Mascheretti Davide
+			12.00-13.00 + 21.45-22.45 Gestione password criptate e inizio pulizia codice con divisione dei ruoli in maniera più precisa all'interno della vista di login e di 			registrazione. Aggiunto pacchetto service che fa da intermezzo da le viste e il database.
 			
 			

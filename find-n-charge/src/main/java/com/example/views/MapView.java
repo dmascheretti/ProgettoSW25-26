@@ -9,9 +9,9 @@ package com.example.views;
 import com.example.components.Sidebar;
 import com.example.models.Colonnina;
 import com.example.models.Utente;
-import com.example.util.ColonnineService;
+import com.example.service.ColonnineService;
+import com.example.service.PrenotazioneService;
 import com.example.util.DataValidator;
-import com.example.util.PrenotazioneService;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;

@@ -6,9 +6,7 @@
 
 package com.example.views;
 
-import com.example.database.FirebaseUtentiService;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import com.vaadin.flow.component.UI;
+import com.example.service.UtentiService;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.Span;
@@ -27,17 +25,12 @@ import com.vaadin.flow.server.VaadinSession;
 @PageTitle("Accedi")
 
 public class LoginView extends VerticalLayout {
-	
-	private final UI ui;
-	private final FirebaseUtentiService firebaseUtentiService;
-	private final PasswordEncoder passwordEncoder;
 
+	private final UtentiService utentiService;
 
-	public LoginView(FirebaseUtentiService firebaseUtentiService, PasswordEncoder passwordEncoder) {
-		
-		this.ui=UI.getCurrent();
-		this.firebaseUtentiService=firebaseUtentiService;
-		this.passwordEncoder=passwordEncoder;
+	public LoginView(UtentiService utentiService) {
+
+		this.utentiService = utentiService;
 
 		// Dimensione massima per occupare tutta la finestra
 		setSizeFull();
@@ -67,73 +60,42 @@ public class LoginView extends VerticalLayout {
 		Button loginButton = new Button("Accedi");
 		loginButton.getElement().getThemeList().add("success"); // Tema verde
 		loginButton.addClickListener(event -> {
-			String user=usernameField.getValue();
-			String password=passwordField.getValue();
-			
-	       	
+			String user = usernameField.getValue();
+			String password = passwordField.getValue();
+
 			/*
-			 * Chiama funzione cerca utente da firebase service (asincrona, con thenAccept perche serve
-			 * restituire utente)
-			 * Mette il risultato della funzione in utente
-			 * Accede alla ui senza bloccare il resto del programma
-			 * se cercaUtente restituisce diverso da null--> OK, prendo sessione (tengo in memoria utente)
-			 * e accedo alla pagina principale, in caso contrario (utente uguale a null, non trovato) segnala
-			 * errore
+			 * Richiama classe di servizio che si interfaccia con il database
 			 */
-	       
-	        	    firebaseUtentiService.verificaUtente(user)
-	                .thenAccept(utente -> {
-	                	 getUI().ifPresent(ui -> ui.access(() -> {
-	                
-	        	    if (utente != null) {
-	        	    	
-	        	    	if (passwordEncoder.matches(password, utente.getPassword())) {
-	        	    	
-	        	    	if(utente.getRuolo()!=null && utente.getRuolo().equals("Admin")) {
-	        	    		
-	        	    		 ui.navigate("admin"); 
-	        	       		 return;
-	        	    		
-	        	    	}
-	        	    	
-	        	    	//tengo in memoria la sessione utente
-	        	    	else {
-	        	    	VaadinSession.getCurrent().setAttribute("utente", utente);
-	        	    
-	        	    	Notification.show("Accesso in corso", 2000, Notification.Position.TOP_CENTER);
-	        	    	//accesso alla pagina della mappa
-						ui.navigate("main"); 
-	        	    	}
-	        	    	
-	        	    	} else {
-		        	    
-		        	    	Notification.show("Password errata", 2000, Notification.Position.TOP_CENTER).getElement().getThemeList().add("error");
-		        	    	passwordField.clear();
-			
-		        	    	}
-	        	    	
-	        	    } else {
-	        	        // Login Fallito (utente non trovato o password errata)
-	        	        Notification.show("Credenziali non valide. Riprova.", 3000, Notification.Position.TOP_CENTER).getElement().getThemeList().add("error");
-	        	   
-	        	    }
-	                	 }));
-	        	    })
-	                //eccezioni database (con OnCancelled nella funzione cercaUtente())
-	        	    .exceptionally(ex -> {
-	                    //gestione vari errori possibili
-	                    getUI().ifPresent(ui -> ui.access(() -> {
-	                        Notification error = Notification.show(
-	                            "Errore di connessione",
-	                            3000,
-	                            Notification.Position.TOP_CENTER
-	                        );
-	                        error.getElement().getThemeList().add("error");
-	                    }));
-	                    ex.printStackTrace();
-	                    return null;
-	                }); 
-	        });
+			utentiService.login(user, password).thenAccept(utente -> {
+				getUI().ifPresent(ui -> ui.access(() -> {
+					VaadinSession.getCurrent().setAttribute("utente", utente);
+					Notification.show("Accesso effettuato!", 2000, Notification.Position.TOP_CENTER);
+
+					// Se utente trovato e ha ruolo admin accedi alla pagina admin
+					if (utente.getRuolo().equals("Admin")) {
+
+						ui.navigate("admin");
+
+						// Se utente trovato ma non è admin allora accedi alla pagina main
+					} else {
+						ui.navigate("main");
+					}
+				}));
+				// Chiamata se in utentiService si completa con un eccezione
+			}).exceptionally(e -> {
+				getUI().ifPresent(ui -> ui.access(() -> {
+					// Messaggio varia in base all'eccezione rilevata
+					String messaggio = e.getCause() != null ? e.getCause().getMessage() : e.getMessage();
+
+					Notification error = Notification.show("Errore: " + messaggio, 3000,
+							Notification.Position.TOP_CENTER);
+					error.getElement().getThemeList().add("error");
+					passwordField.clear();
+				}));
+				return null;
+			});
+
+		});
 
 		// Box di testo
 		Span text = new Span("Non hai un account? ");
