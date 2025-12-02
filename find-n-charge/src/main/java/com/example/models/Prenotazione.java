@@ -11,6 +11,7 @@ public class Prenotazione {
 	
 	private String id;
 	private String idColonnina;
+	private String nomeColonnina;
 	private String utente;
 	private String data; 
 	private String inizio;
@@ -22,9 +23,10 @@ public class Prenotazione {
 		
 	}
 	
-	public Prenotazione(String id, String nome ,String utente, String localDate, String inizio, String ts, String targa) {
+	public Prenotazione(String id, String idCol, String nomeCol, String utente, String localDate, String inizio, String ts, String targa) {
 		this.id=id;
-		this.setIDColonnina(nome);
+		this.setIDColonnina(idCol);
+		this.setNomeColonnina(nomeCol);
 		this.utente=utente;
 		this.setData(localDate);
 		this.setInizio(inizio);
@@ -83,6 +85,14 @@ public class Prenotazione {
 
 	public void setStato(String stato) {
 		this.stato = stato;
+	}
+
+	public String getNomeColonnina() {
+		return nomeColonnina;
+	}
+
+	public void setNomeColonnina(String nomeColonnina) {
+		this.nomeColonnina = nomeColonnina;
 	}
 	
 }

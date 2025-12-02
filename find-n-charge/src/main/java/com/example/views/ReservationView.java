@@ -90,7 +90,7 @@ public class ReservationView extends VerticalLayout implements BeforeEnterObserv
 		
 		// Prenotazioni attive o future
 		newPrenoGrid.removeAllColumns();
-		newPrenoGrid.addColumn(Prenotazione::getIDColonnina).setHeader("Colonnina").setSortable(true);
+		newPrenoGrid.addColumn(Prenotazione::getNomeColonnina).setHeader("Colonnina").setSortable(true);
 		newPrenoGrid.addColumn(Prenotazione::getData).setHeader("Data").setSortable(true);
 		newPrenoGrid.addColumn(Prenotazione::getInizio).setHeader("Inizio").setSortable(true);
 		newPrenoGrid.addColumn(prenotazione -> {
@@ -100,10 +100,9 @@ public class ReservationView extends VerticalLayout implements BeforeEnterObserv
 		
 		//Prenotazioni passate
 		oldPrenoGrid.removeAllColumns();
-		oldPrenoGrid.addColumn(Prenotazione::getIDColonnina).setHeader("Colonnina").setSortable(true);
+		oldPrenoGrid.addColumn(Prenotazione::getNomeColonnina).setHeader("Colonnina").setSortable(true);
 		oldPrenoGrid.addColumn(Prenotazione::getData).setHeader("Data").setSortable(true);
 		oldPrenoGrid.addColumn(Prenotazione::getInizio).setHeader("Inizio").setSortable(true);
-		oldPrenoGrid.addComponentColumn(null).setHeader("Valutazione");
 
 		firebaseColonnineService.getColonnineInCarica().thenAccept(listaInCarica -> {
 		    

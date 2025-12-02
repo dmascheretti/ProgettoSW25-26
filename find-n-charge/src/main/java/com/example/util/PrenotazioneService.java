@@ -101,7 +101,7 @@ public class PrenotazioneService {
 			 * Se verifica restituisce future.complete (true) --> salvo la prenotazione
 			 */
 
-			Prenotazione p = new Prenotazione(generaId(),c.getId(), u.getUsername(), data, orario, LocalDate.now().toString(), auto);
+			Prenotazione p = new Prenotazione(generaId(),c.getId(), c.getNome(), u.getUsername(), data, orario, LocalDate.now().toString(), auto);
 
 			// Chiamo funzione del database, se salvataggio completato future.complete(true)
 
