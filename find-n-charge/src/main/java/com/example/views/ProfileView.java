@@ -1,3 +1,8 @@
+/**
+ * Classe ProfileView gestisce consultazione e modifica delle proprie credenziali e delle proprie auto
+ * 
+ * @author Claudio Morgera, Francesco Valenari
+ */
 package com.example.views;
 
 import com.example.models.Auto;
@@ -31,7 +36,7 @@ import java.time.LocalTime;
 @Route(value = "profilo", layout = MainLayout.class)
 
 @PageTitle("Find&Charge - Profilo")
-public class ProfileView extends VerticalLayout implements BeforeEnterObserver {
+public class ProfileView extends HorizontalLayout implements BeforeEnterObserver {
 
 	private final AutoService autoService;
 	private final UtentiService utentiService;
@@ -42,15 +47,19 @@ public class ProfileView extends VerticalLayout implements BeforeEnterObserver {
 		this.utentiService = utentiService;
 		this.prenotazioniService = prenotazioniService;
 		setSizeFull();
-		setDefaultHorizontalComponentAlignment(Alignment.CENTER);
 		setSpacing(true);
 		setPadding(true);
+		VerticalLayout profilo= new VerticalLayout();
+		VerticalLayout modifica = new VerticalLayout();
+		modifica.setVisible(false);
+        modifica.getStyle().set("padding-left", "20px"); 
+        modifica.getStyle().set("border-left", "1px solid #ddd");
 
 		// Prendi utente dalla sessione (controllo null per sicurezza)
 		Utente utente = (Utente) VaadinSession.getCurrent().getAttribute("utente");
 		if (utente == null) {
 
-			add(new Paragraph("Utente non trovato. Effettua il login."));
+			profilo.add(new Paragraph("Utente non trovato. Effettua il login."));
 			return;
 		}
 
@@ -86,11 +95,11 @@ public class ProfileView extends VerticalLayout implements BeforeEnterObserver {
 		profileCard.getStyle().set("background-color", "white");
 		profileCard.getStyle().set("border-radius", "16px");
 		profileCard.getStyle().set("box-shadow", "0 4px 12px rgba(0,0,0,0.10)");
-		profileCard.getStyle().set("padding", "30px");
+		profileCard.getStyle().set("padding", "20px");
 		profileCard.getStyle().set("margin-top", "20px");
 
 		Span avatar = new Span("👤");
-		avatar.getStyle().set("font-size", "70px");
+		avatar.getStyle().set("font-size", "50px");
 
 		Span title = new Span("Profilo Utente");
 		title.getStyle().set("font-size", "26px");
@@ -98,30 +107,42 @@ public class ProfileView extends VerticalLayout implements BeforeEnterObserver {
 		title.getStyle().set("margin-bottom", "10px");
 
 		VerticalLayout infoBlock = new VerticalLayout();
-		infoBlock.setAlignItems(Alignment.START);
-		infoBlock.setPadding(false);
-		infoBlock.setSpacing(true);
-		infoBlock.setWidth("100%");
-		infoBlock.setMaxWidth("350px");
-
-		Span labelNome = new Span("Nome:");
-		labelNome.getStyle().set("font-weight", "bold");
-		Span valueNome = new Span(nome.getText());
-		valueNome.getStyle().set("color", "#333");
-
-		Span labelCognome = new Span("Cognome:");
-		labelCognome.getStyle().set("font-weight", "bold");
-		Span valueCognome = new Span(cognome.getText());
-		valueCognome.getStyle().set("color", "#333");
-
-		Span labelMail = new Span("Email:");
-		labelMail.getStyle().set("font-weight", "bold");
-		Span valueMail = new Span(mail.getText());
-		valueMail.getStyle().set("color", "#333");
-
-		infoBlock.add(labelNome, valueNome, labelCognome, valueCognome, labelMail, valueMail);
-
-		profileCard.add(avatar, title, infoBlock);
+        infoBlock.setPadding(false);
+        infoBlock.setSpacing(false); // Riduciamo lo spazio tra le righe
+        infoBlock.setWidth("100%");
+        
+        // Creiamo righe orizzontali per ogni dato
+        infoBlock.add(createRow("Nome:", nome.getText()));
+        infoBlock.add(createRow("Cognome:", cognome.getText()));
+        
+        // Per la mail, salviamo il riferimento al valore per poterlo aggiornare dopo
+        Span labelMail = new Span("Email:");
+        labelMail.getStyle().set("font-weight", "bold").set("width", "80px");
+        Span valueMail = new Span(mail.getText());
+        valueMail.getStyle().set("color", "#333");
+		HorizontalLayout rowMail = new HorizontalLayout(labelMail, valueMail);
+        rowMail.setAlignItems(Alignment.BASELINE);
+        infoBlock.add(rowMail);
+		
+		Button toggleModificaBtn = new Button("Modifica Dati");
+        toggleModificaBtn.getStyle().set("background-color", "#3498DB"); // Blu
+        toggleModificaBtn.getStyle().set("color", "white");
+        toggleModificaBtn.getStyle().set("margin-top", "15px");
+        
+        toggleModificaBtn.addClickListener(e -> {
+            boolean isVisible = modifica.isVisible();
+            modifica.setVisible(!isVisible); // Inverte la visibilità
+            
+            // Cambia il testo del bottone per feedback visivo
+            if (!isVisible) {
+                toggleModificaBtn.setText("Chiudi Modifica");
+                toggleModificaBtn.getStyle().set("background-color", "#95A5A6"); // Grigio
+            } else {
+                toggleModificaBtn.setText("Modifica Dati");
+                toggleModificaBtn.getStyle().set("background-color", "#3498DB"); // Blu
+            }
+        });
+		profileCard.add(avatar, title, infoBlock, toggleModificaBtn);
 
 		HorizontalLayout hl = new HorizontalLayout();
 		hl.setWidthFull();
@@ -298,10 +319,25 @@ public class ProfileView extends VerticalLayout implements BeforeEnterObserver {
 		HorizontalLayout confAuto = new HorizontalLayout(targaField, modelloField, tipoField);
 		confAuto.setSpacing(true);
 
-		add(titolo, profileCard, hl, emailField, cambiaMailBtn, passwordField, cambiaPwdBtn, confAuto, aggiungiAutoBtn);
+		profilo.add(titolo, profileCard, hl);
+		modifica.add(emailField, cambiaMailBtn, passwordField, cambiaPwdBtn, confAuto, aggiungiAutoBtn);
+		add(profilo, modifica);
 
-		setDefaultHorizontalComponentAlignment(Alignment.START);
 	}
+	
+	private HorizontalLayout createRow(String labelText, String valueText) {
+        Span label = new Span(labelText);
+        label.getStyle().set("font-weight", "bold");
+        label.getStyle().set("width", "80px"); // Larghezza fissa per allineare i valori verticalmente
+
+        Span value = new Span(valueText);
+        value.getStyle().set("color", "#333");
+
+        HorizontalLayout row = new HorizontalLayout(label, value);
+        row.setAlignItems(Alignment.BASELINE); // Allinea il testo sulla stessa linea di base
+        row.setSpacing(true);
+        return row;
+    }
 
 	/**
 	 * Se l'utente prova ad accedere direttamente a questa pagina senza aver
