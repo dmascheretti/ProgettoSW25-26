@@ -2,9 +2,6 @@
  * Classe oggetto utente
  */
 package com.example.models;
-
-import java.util.List;
-
 public class Utente {
 	
 	private String nome, cognome, username, email, password, timestamp, ruolo;
@@ -17,7 +14,6 @@ public class Utente {
 	}
 	
 	public Utente(String nome, String cognome, String username, String email, String password, String timestamp, String ruolo) {
-		// TODO Auto-generated constructor stub
 		this.setNome(nome);
 		this.setCognome(cognome);
 		this.setEmail(email);

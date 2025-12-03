@@ -4,8 +4,8 @@
  */
 package com.example.service;
 
-import com.example.database.FirebaseUtentiService;
 import com.example.models.Utente;
+import com.example.modelsInterface.UtentiInterface;
 import com.example.util.DataValidator;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,11 +17,11 @@ import java.util.concurrent.CompletableFuture;
 @Service
 public class UtentiService {
 
-	private final FirebaseUtentiService firebaseUtentiService;
+	private final UtentiInterface utentiInterface;
 	private final PasswordEncoder passwordEncoder;
 
-	public UtentiService(FirebaseUtentiService firebaseUtentiService, PasswordEncoder passwordEncoder) {
-		this.firebaseUtentiService = firebaseUtentiService;
+	public UtentiService(UtentiInterface utentiInterface, PasswordEncoder passwordEncoder) {
+		this.utentiInterface = utentiInterface;
 		this.passwordEncoder = passwordEncoder;
 	}
 
@@ -36,7 +36,7 @@ public class UtentiService {
 
 		CompletableFuture<Utente> future = new CompletableFuture<>();
 		// Chiamo funzione di firebase
-		firebaseUtentiService.verificaUtente(username).thenAccept(utenteTrovato -> {
+		utentiInterface.verificaUtente(username).thenAccept(utenteTrovato -> {
 
 			// Se utente non trovato invio eccezione
 			if (utenteTrovato == null) {
@@ -80,7 +80,7 @@ public class UtentiService {
 			String password) {
 
 		CompletableFuture<Void> future = new CompletableFuture<>();
-		firebaseUtentiService.verificaUtente(username).thenAccept(utenteTrovato -> {
+		utentiInterface.verificaUtente(username).thenAccept(utenteTrovato -> {
 
 			// Utente già trovato con questo username, invio eccezione
 			if (utenteTrovato != null) {
@@ -96,7 +96,7 @@ public class UtentiService {
 					"Utente");
 
 			// Chiamo firebase per salvare utente nel database
-			firebaseUtentiService.salvaUtente(u).thenRun(() -> {
+			utentiInterface.salvaUtente(u).thenRun(() -> {
 				future.complete(null);
 				// eccezione di salvaUtente
 			}).exceptionally(ex -> {
@@ -125,7 +125,7 @@ public class UtentiService {
 		}
 		String passwordCriptata = passwordEncoder.encode(nuovaPassword);
 
-		firebaseUtentiService.cambiaPassword(u, passwordCriptata).thenRun(() -> {
+		utentiInterface.cambiaPassword(u, passwordCriptata).thenRun(() -> {
 			future.complete(null);
 		}).exceptionally(e -> {
 			future.completeExceptionally(e);
@@ -144,7 +144,7 @@ public class UtentiService {
 		    return future;
 		}
 
-		firebaseUtentiService.cambiaMail(u, nuovaMail).thenRun(() -> {
+		utentiInterface.cambiaMail(u, nuovaMail).thenRun(() -> {
 			future.complete(null);
 		}).exceptionally(e -> {
 			future.completeExceptionally(e);

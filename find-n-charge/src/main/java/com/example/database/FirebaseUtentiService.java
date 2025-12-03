@@ -6,18 +6,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Repository;
 
 import com.example.models.Prenotazione;
 import com.example.models.Utente;
+import com.example.modelsInterface.UtentiInterface;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-@Service
-public class FirebaseUtentiService {
+@Repository
+public class FirebaseUtentiService implements UtentiInterface {
 	private final DatabaseReference utenti;
 	private final DatabaseReference prenotazioni;
 	private FirebasePrenotazioniService firebasePrenotazioniService;
@@ -102,7 +103,7 @@ public class FirebaseUtentiService {
 			return cambio;
 		}
 
-		utenti.child(u.getUsername()).child("mail").setValue(nuovaMail, (databaseError, ref) -> {
+		utenti.child(u.getUsername()).child("email").setValue(nuovaMail, (databaseError, ref) -> {
 
 			if (databaseError != null) {
 				// errore --> chiama eccezione anche in RegisterView

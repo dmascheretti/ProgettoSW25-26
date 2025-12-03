@@ -6,6 +6,7 @@
 package com.example.service;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 import org.springframework.stereotype.Service;
@@ -122,6 +123,12 @@ public class PrenotazioniService {
 	public CompletableFuture<Boolean> inCarica(Auto a) {
         return firebasePrenotazioniService.inCarica(a);
     }
+
+
+	public CompletableFuture<List<String>> getSlotOccupati(String idColonnina, String data) {
+		
+	    return firebasePrenotazioniService.getSlotOccupati(idColonnina, data);
+	}
 	
 	
 

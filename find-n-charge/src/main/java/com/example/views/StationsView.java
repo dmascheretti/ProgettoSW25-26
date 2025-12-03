@@ -10,9 +10,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 
 import com.example.components.Sidebar;
-import com.example.database.FirebaseAutoService;
-import com.example.database.FirebaseColonnineService;
-import com.example.database.FirebasePrenotazioniService;
+import com.example.service.AutoService;
+import com.example.service.ColonnineService;
 import com.example.layout.MainLayout;
 import com.example.models.Colonnina;
 import com.example.models.Utente;
@@ -37,24 +36,24 @@ import com.vaadin.flow.server.VaadinSession;
 public class StationsView extends HorizontalLayout {
 	private String tema = "#008000";
 	private Grid<Colonnina> colonGrid = new Grid<>(Colonnina.class);
-	private FirebasePrenotazioniService firebasePrenotazioniService;
-	private FirebaseAutoService firebaseAutoService;
-	private FirebaseColonnineService firebaseColonnineService;
+
+	private PrenotazioniService prenotazioniService;
+	private AutoService autoService;
+	private ColonnineService colonnineService;
+
 	private Sidebar stationSidebar;
-	private PrenotazioniService prenotazioneService;
 	private Colonnina colonninaSelezionata;
 
 	// Classe per l'elenco delle colonnine (indipendente dalla mappa)
-	public StationsView(FirebaseAutoService firebaseAutoService, FirebasePrenotazioniService firebasePrenotazioniService,
-				FirebaseColonnineService firebaseColonnineService, PrenotazioniService prenotazioneService) {
-		this.firebaseAutoService=firebaseAutoService;
-		this.firebaseColonnineService=firebaseColonnineService;
-		this.firebasePrenotazioniService=firebasePrenotazioniService;
-		this.prenotazioneService=prenotazioneService;
+	public StationsView(AutoService autoService, PrenotazioniService prenotazioniService,
+			ColonnineService ColonnineService) {
+		this.autoService = autoService;
+		this.colonnineService = ColonnineService;
+		this.prenotazioniService = prenotazioniService;
 		setSpacing(true);
 		setPadding(true);
 		setSizeFull();
-		getStyle().set("overflow", "hidden"); 	// Blocca lo scroll della pagina intera (scrolla solo la sidebar)
+		getStyle().set("overflow", "hidden"); // Blocca lo scroll della pagina intera (scrolla solo la sidebar)
 
 		// Titolo
 		H3 titolo = new H3("Queste sono le colonnine più vicine a te");
@@ -76,50 +75,38 @@ public class StationsView extends HorizontalLayout {
 		Text istruz = new Text(
 				"Puoi effettuare una prenotazione direttamente su questa pagina...Ti basterà premere sul nome della colonnina interessata");
 
-		// Aggiunta Colonna di bottoni, targati col nome delle colonnine,che permettono la prenotazione
+		// Aggiunta Colonna di bottoni, targati col nome delle colonnine,che permettono
+		// la prenotazione
 		colonGrid.removeAllColumns();
 		colonGrid.addComponentColumn(col -> {
-		    Button btn = new Button(col.getNome());
-		    btn.addClickListener(e -> showSidebar(col));
-		    btn.getStyle().set("color", tema)
-		                  .set("text-decoration", "underline")
-		                  .set("background", "none")
-		                  .set("border", "none");
-		    return btn;
-		}).setHeader("Nome")
-		  .setComparator(Colonnina::getNome)
-		  .setSortable(true);
-		
-		//Colonne con altre informazioni delle colonnine
-		colonGrid.addColumn(Colonnina::getTipo)
-		         .setHeader("Tipo")
-		         .setSortable(true);
+			Button btn = new Button(col.getNome());
+			btn.addClickListener(e -> showSidebar(col));
+			btn.getStyle().set("color", tema).set("text-decoration", "underline").set("background", "none")
+					.set("border", "none");
+			return btn;
+		}).setHeader("Nome").setComparator(Colonnina::getNome).setSortable(true);
 
-		colonGrid.addColumn(Colonnina::getStato)
-		         .setHeader("Stato")
-		         .setSortable(true);
+		// Colonne con altre informazioni delle colonnine
+		colonGrid.addColumn(Colonnina::getTipo).setHeader("Tipo").setSortable(true);
 
-		colonGrid.addColumn(Colonnina::getIndirizzo)
-		         .setHeader("Indirizzo")
-		         .setSortable(true);
+		colonGrid.addColumn(Colonnina::getStato).setHeader("Stato").setSortable(true);
 
-		colonGrid.addColumn(Colonnina::getComune)
-		         .setHeader("Comune")
-		         .setSortable(true);
+		colonGrid.addColumn(Colonnina::getIndirizzo).setHeader("Indirizzo").setSortable(true);
 
+		colonGrid.addColumn(Colonnina::getComune).setHeader("Comune").setSortable(true);
 
 		// Caricamento iniziale senza filtri
 		aggiornaGridConFiltro("");
 
 		// Crea la sidebar
 		stationSidebar = new Sidebar();
-		stationSidebar.setHeightFull();							// Occupa tutta l'altezza disponibile
-		stationSidebar.getStyle().set("overflow-y", "auto"); 	// Abilita lo scroll solo per la sidebar
-		
-		configuraGestioneOrari();	//Per gestire gli slot orari
-		reservationLogic();			//Per gestire le prenotazioni
-		configuraAutoUtente();		//Per gestire le auto dell'utente
-				
+		stationSidebar.setHeightFull(); // Occupa tutta l'altezza disponibile
+		stationSidebar.getStyle().set("overflow-y", "auto"); // Abilita lo scroll solo per la sidebar
+
+		configuraGestioneOrari(); // Per gestire gli slot orari
+		reservationLogic(); // Per gestire le prenotazioni
+		configuraAutoUtente(); // Per gestire le auto dell'utente
+
 		VerticalLayout layout = new VerticalLayout(titolo, searchField, istruz, colonGrid);
 		layout.setSizeFull();
 		layout.expand(colonGrid);
@@ -133,7 +120,7 @@ public class StationsView extends HorizontalLayout {
 	}
 
 	private void aggiornaGridConFiltro(String query) {
-		firebaseColonnineService.cercaColonnine(query).thenAccept(lista -> {
+		colonnineService.cercaColonnine(query).thenAccept(lista -> {
 			getUI().ifPresent(ui -> ui.access(() -> {
 				colonGrid.setItems(lista);
 			}));
@@ -147,101 +134,103 @@ public class StationsView extends HorizontalLayout {
 			LocalDate data = stationSidebar.getDataSelezionata();
 			String orario = stationSidebar.getOrarioSelezionato();
 			String autoSelezionata = stationSidebar.getAutoSelected();
-	
+
 			if (utenteCorrente == null) {
-				Notification.show("Effettua il login per prenotare.", 3000, Notification.Position.TOP_CENTER).getElement()
-				.getThemeList().add("error");
+				Notification.show("Effettua il login per prenotare.", 3000, Notification.Position.TOP_CENTER)
+						.getElement().getThemeList().add("error");
 				getUI().ifPresent(ui -> ui.navigate(""));
 				return;
 			}
-			
+
 			if (colonninaSelezionata == null) {
-				Notification.show("Nessuna colonnina selezionata.", 3000, Notification.Position.TOP_CENTER)
-				.getElement().getThemeList().add("error");
+				Notification.show("Nessuna colonnina selezionata.", 3000, Notification.Position.TOP_CENTER).getElement()
+						.getThemeList().add("error");
 				return;
 			}
-			
+
 			if (autoSelezionata == null) {
-				Notification.show("Nessuna auto selezionata.", 3000, Notification.Position.TOP_CENTER)
-				.getElement().getThemeList().add("error");
+				Notification.show("Nessuna auto selezionata.", 3000, Notification.Position.TOP_CENTER).getElement()
+						.getThemeList().add("error");
 				return;
 			}
-			
+
 			if (data == null || orario == null) {
 				Notification.show("Seleziona data e orario.", 3000, Notification.Position.TOP_CENTER).getElement()
 						.getThemeList().add("error");
 				return;
 			}
-			
+
 			String errore = DataValidator.verificaPrenotazione(colonninaSelezionata.getId(), data, orario);
 			if (errore != null) {
-				Notification.show(errore, 3000, Notification.Position.TOP_CENTER).getElement().getThemeList().add("error");
+				Notification.show(errore, 3000, Notification.Position.TOP_CENTER).getElement().getThemeList()
+						.add("error");
 				return;
 			}
-	
-			String dataString = data.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));			
-			
-			prenotazioneService.prenota(colonninaSelezionata, utenteCorrente, dataString, orario, autoSelezionata)
-	        .thenAccept(success -> {
-	
-	            getUI().ifPresent(ui -> ui.access(() -> {
-	
-	                if (!success) {
-	                    Notification.show("Slot occupato o errore durante la prenotazione!", 
-	                            3000, Notification.Position.TOP_CENTER)
-	                            .getElement().getThemeList().add("error");
-	                    return;
-	                }
-	
-	                Notification.show("Prenotazione confermata!", 
-	                        3000, Notification.Position.TOP_CENTER)
-	                        .getElement().getThemeList().add("success");
-	
-	                stationSidebar.setVisible(false);
-	
-	            }));
-	
-	        });
+
+			String dataString = data.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+
+			prenotazioniService.prenota(colonninaSelezionata, utenteCorrente, dataString, orario, autoSelezionata)
+					.thenAccept(success -> {
+
+						getUI().ifPresent(ui -> ui.access(() -> {
+
+							if (!success) {
+								Notification
+										.show("Slot occupato o errore durante la prenotazione!", 3000,
+												Notification.Position.TOP_CENTER)
+										.getElement().getThemeList().add("error");
+								return;
+							}
+
+							Notification.show("Prenotazione confermata!", 3000, Notification.Position.TOP_CENTER)
+									.getElement().getThemeList().add("success");
+
+							stationSidebar.setVisible(false);
+
+						}));
+
+					});
 		});
 	}
-	
-	private void configuraAutoUtente() {
-        Utente utenteCorrente = (Utente) VaadinSession.getCurrent().getAttribute("utente");
 
-        if (utenteCorrente == null) {
-            return;
-        }
-        
-		firebaseAutoService.getTargheUtente(utenteCorrente)
-		.thenAccept(autoUtente -> {
-			
+	private void configuraAutoUtente() {
+		Utente utenteCorrente = (Utente) VaadinSession.getCurrent().getAttribute("utente");
+
+		if (utenteCorrente == null) {
+			return;
+		}
+
+		autoService.getTargheUtente(utenteCorrente).thenAccept(autoUtente -> {
+
 			getUI().ifPresent(ui -> ui.access(() -> {
 				stationSidebar.setAuto(autoUtente);
 			}));
 		});
-		
+
 	}
-	
+
 	private void configuraGestioneOrari() {
-        stationSidebar.getBookingDatePicker().addValueChangeListener(e -> {
-            
-            LocalDate dataScelta = e.getValue();
-            if (dataScelta == null) return;
-            
-            stationSidebar.aggiornaOrari(dataScelta, Collections.emptyList());	//Forza l'aggiornamento anche se la data non cambia
+		stationSidebar.getBookingDatePicker().addValueChangeListener(e -> {
 
-            if (colonninaSelezionata != null) {
-                
-                String dataString = dataScelta.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+			LocalDate dataScelta = e.getValue();
+			if (dataScelta == null)
+				return;
 
-                firebasePrenotazioniService.getSlotOccupati(colonninaSelezionata.getId(), dataString)
-                    .thenAccept(listaOccupati -> {
-                        getUI().ifPresent(ui -> ui.access(() -> {
-                            stationSidebar.aggiornaOrari(dataScelta, listaOccupati);
-                        }));
-                    });
-            }
-        });
-    }
+			stationSidebar.aggiornaOrari(dataScelta, Collections.emptyList()); // Forza l'aggiornamento anche se la data
+																				// non cambia
+
+			if (colonninaSelezionata != null) {
+
+				String dataString = dataScelta.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+
+				prenotazioniService.getSlotOccupati(colonninaSelezionata.getId(), dataString)
+						.thenAccept(listaOccupati -> {
+							getUI().ifPresent(ui -> ui.access(() -> {
+								stationSidebar.aggiornaOrari(dataScelta, listaOccupati);
+							}));
+						});
+			}
+		});
+	}
 
 }
