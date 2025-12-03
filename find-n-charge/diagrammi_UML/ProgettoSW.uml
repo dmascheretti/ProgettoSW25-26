@@ -346,779 +346,7 @@ Utente non ancora iscritto</body>
             </ownedOperation>
           </packagedElement>
           <packagedElement xmi:type="uml:Package" xmi:id="_fNdfgM94EfCvI50SpPRHVQ" name="admin">
-            <packagedElement xmi:type="uml:Class" xmi:id="_fNf7wM94EfCvI50SpPRHVQ" name="AdminDashboardView" visibility="public">
-              <generalization xmi:type="uml:Generalization" xmi:id="_fNy2sM94EfCvI50SpPRHVQ" general="_fNk0Qc94EfCvI50SpPRHVQ"/>
-              <ownedAttribute xmi:type="uml:Property" xmi:id="_fOYFgM94EfCvI50SpPRHVQ" name="bookingsChart" visibility="private" type="_fOKDEM94EfCvI50SpPRHVQ" isUnique="false"/>
-              <ownedAttribute xmi:type="uml:Property" xmi:id="_fOfaQM94EfCvI50SpPRHVQ" name="colonnineService" visibility="private" isUnique="false"/>
-              <ownedAttribute xmi:type="uml:Property" xmi:id="_fOjEoM94EfCvI50SpPRHVQ" name="firebaseUtentiService" visibility="private" type="_fOidkM94EfCvI50SpPRHVQ" isUnique="false"/>
-              <ownedAttribute xmi:type="uml:Property" xmi:id="_fOk50M94EfCvI50SpPRHVQ" name="firebaseColonnineService" visibility="private" type="_fOkSwM94EfCvI50SpPRHVQ" isUnique="false"/>
-              <ownedAttribute xmi:type="uml:Property" xmi:id="_fOokMM94EfCvI50SpPRHVQ" name="firebasePrenotazioniService" visibility="private" type="_fOnWEM94EfCvI50SpPRHVQ" isUnique="false"/>
-              <ownedAttribute xmi:type="uml:Property" xmi:id="_fOpyUM94EfCvI50SpPRHVQ" name="utentiCard" visibility="private" type="_fOpLQc94EfCvI50SpPRHVQ" isUnique="false">
-                <ownedComment xmi:type="uml:Comment" xmi:id="_fOqZYM94EfCvI50SpPRHVQ">
-                  <body>Utenti</body>
-                </ownedComment>
-              </ownedAttribute>
-              <ownedAttribute xmi:type="uml:Property" xmi:id="_fOrngM94EfCvI50SpPRHVQ" name="utentiNuoviCard" visibility="private" type="_fOpLQc94EfCvI50SpPRHVQ" isUnique="false"/>
-              <ownedAttribute xmi:type="uml:Property" xmi:id="_fOuDwM94EfCvI50SpPRHVQ" name="colonnineTotaliCard" visibility="private" type="_fOpLQc94EfCvI50SpPRHVQ" isUnique="false">
-                <ownedComment xmi:type="uml:Comment" xmi:id="_fOv48M94EfCvI50SpPRHVQ">
-                  <body>Colonnine</body>
-                </ownedComment>
-              </ownedAttribute>
-              <ownedAttribute xmi:type="uml:Property" xmi:id="_fOwgAM94EfCvI50SpPRHVQ" name="colonnineLibereCard" visibility="private" type="_fOpLQc94EfCvI50SpPRHVQ" isUnique="false"/>
-              <ownedAttribute xmi:type="uml:Property" xmi:id="_fOzjUM94EfCvI50SpPRHVQ" name="colonnineGuasteCard" visibility="private" type="_fOpLQc94EfCvI50SpPRHVQ" isUnique="false"/>
-              <ownedAttribute xmi:type="uml:Property" xmi:id="_fO3NsM94EfCvI50SpPRHVQ" name="prenotazioniTotaliCard" visibility="private" type="_fOpLQc94EfCvI50SpPRHVQ" isUnique="false">
-                <ownedComment xmi:type="uml:Comment" xmi:id="_fO4b0M94EfCvI50SpPRHVQ">
-                  <body>Prenotazioni</body>
-                </ownedComment>
-              </ownedAttribute>
-              <ownedAttribute xmi:type="uml:Property" xmi:id="_fO5C4M94EfCvI50SpPRHVQ" name="prenotazioniNuoveCard" visibility="private" type="_fOpLQc94EfCvI50SpPRHVQ" isUnique="false"/>
-              <ownedAttribute xmi:type="uml:Property" xmi:id="_fO5C4c94EfCvI50SpPRHVQ" name="recensioniTotaliCard" visibility="private" type="_fOpLQc94EfCvI50SpPRHVQ" isUnique="false">
-                <ownedComment xmi:type="uml:Comment" xmi:id="_fO64EM94EfCvI50SpPRHVQ">
-                  <body>Segnalazioni</body>
-                </ownedComment>
-              </ownedAttribute>
-              <ownedAttribute xmi:type="uml:Property" xmi:id="_fO8GMM94EfCvI50SpPRHVQ" name="recensioniNuoveCard" visibility="private" type="_fOpLQc94EfCvI50SpPRHVQ" isUnique="false"/>
-              <interfaceRealization xmi:type="uml:InterfaceRealization" xmi:id="_fOFxoM94EfCvI50SpPRHVQ" name="AdminDashboardView implements AfterNavigationObserver" client="_fNf7wM94EfCvI50SpPRHVQ" supplier="_fN1S8M94EfCvI50SpPRHVQ" contract="_fN1S8M94EfCvI50SpPRHVQ"/>
-              <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_fPRdYM94EfCvI50SpPRHVQ" name="AdminDashboardView" specification="_fO_JgM94EfCvI50SpPRHVQ">
-                <language>JAVA</language>
-                <body>this.firebaseUtentiService = firebaseUtentiService;
-this.firebaseColonnineService = firebaseColonnineService;
-this.firebasePrenotazioniService = firebasePrenotazioniService;
-this.colonnineService = colonnineService;
-// Occupa tutto lo spazio
-setSizeFull();
-setSpacing(true);
-setPadding(true);
-H1 titolo = new H1(&quot;Dashboard&quot;);
-Button refresh = new Button(VaadinIcon.REFRESH.create());
-refresh.addThemeVariants(ButtonVariant.LUMO_LARGE);
-refresh.getElement().getThemeList().add(&quot;success&quot;);
-HorizontalLayout upperBar = new HorizontalLayout(titolo, refresh);
-upperBar.setWidthFull();
-upperBar.setPadding(true);
-// Titolo a sx, bottone a dx
-upperBar.setJustifyContentMode(JustifyContentMode.BETWEEN);
-// Allinea al centro verticalmente
-upperBar.setDefaultVerticalComponentAlignment(Alignment.CENTER);
-H2 chartTitle = new H2(&quot;Andamento Settimanale&quot;);
-// Creazione kpiCards
-VerticalLayout kpiLayout = createKpiLayout();
-// Creazione grafico
-this.bookingsChart = createBookingsChart();
-add(upperBar, kpiLayout, chartTitle, this.bookingsChart);
-// Quando si schiaccia il tasto di refresh, i dati devono essere aggiornati
-refresh.addClickListener( e -> {
-    loadKpiData();
-    loadChartData();
-});</body>
-              </ownedBehavior>
-              <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_fPe4wM94EfCvI50SpPRHVQ" name="afterNavigation" specification="_fPbOYM94EfCvI50SpPRHVQ">
-                <language>JAVA</language>
-                <body>loadKpiData();
-loadChartData();</body>
-              </ownedBehavior>
-              <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_fPjKMM94EfCvI50SpPRHVQ" name="createKpiLayout" specification="_fPgt8M94EfCvI50SpPRHVQ">
-                <language>JAVA</language>
-                <body>H2 utenti = new H2(&quot;Gestione utenti&quot;);
-H2 colonnine = new H2(&quot;Gestione colonnine&quot;);
-H2 prenotazioni = new H2(&quot;Gestione prenotazioni&quot;);
-H2 segnalazioni = new H2(&quot;Gestione segnalazioni&quot;);
-// Layout di gestione utenti e colonnine
-VerticalLayout utentiLayout = new VerticalLayout(utenti, kpiUtenti());
-VerticalLayout colonnineLayout = new VerticalLayout(colonnine, kpiColonnine());
-HorizontalLayout utentiAndColonnineLayout = new HorizontalLayout(utentiLayout, colonnineLayout);
-utentiAndColonnineLayout.setWidthFull();
-utentiAndColonnineLayout.expand(utentiLayout, colonnineLayout);
-// Layout di gestione prenotazioni e segnalazioni
-VerticalLayout prenotazioniLayout = new VerticalLayout(prenotazioni, kpiPrenotazioni());
-VerticalLayout segnalazioniLayout = new VerticalLayout(segnalazioni, kpiSegnalazioni());
-HorizontalLayout prenotazioniAndSegnalazioniLayout = new HorizontalLayout(prenotazioniLayout, segnalazioniLayout);
-prenotazioniAndSegnalazioniLayout.setWidthFull();
-prenotazioniAndSegnalazioniLayout.expand(prenotazioniLayout, segnalazioniLayout);
-// Unisce i due layout
-VerticalLayout kpiLayout = new VerticalLayout(utentiAndColonnineLayout, prenotazioniAndSegnalazioniLayout);
-kpiLayout.setWidthFull();
-kpiLayout.setPadding(false);
-kpiLayout.setSpacing(true);
-return kpiLayout;</body>
-              </ownedBehavior>
-              <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_fPk_YM94EfCvI50SpPRHVQ" name="loadKpiData" specification="_fPjxQM94EfCvI50SpPRHVQ">
-                <language>JAVA</language>
-                <body>// Utenti
-firebaseUtentiService.contaUtenti().thenAccept( num -> {
-    getUI().ifPresent( ui -> ui.access(() -> utentiCard.setNumber(num.toString())));
-}).exceptionally( ex -> {
-    getUI().ifPresent( ui -> ui.access(() -> utentiCard.setNumber(&quot;Errore&quot;)));
-    return null;
-});
-firebaseUtentiService.contaUtentiNuovi().thenAccept( num -> {
-    String utentiNuovi = num.toString();
-    getUI().ifPresent( ui -> {
-        ui.access(() -> {
-            utentiNuoviCard.setNumber(utentiNuovi);
-        });
-    });
-}).exceptionally( ex -> {
-    getUI().ifPresent( ui -> {
-        ui.access(() -> {
-            utentiNuoviCard.setNumber(&quot;Errore&quot;);
-        });
-    });
-    return null;
-});
-/*
-		 * fb.contaUtentiAttivi().thenAccept(num -> {
-		 * 
-		 * String utentiAttivi = num.toString();
-		 * 
-		 * getUI().ifPresent(ui -> { ui.access(() -> {
-		 * utentiAttiviCard.setNumber(utentiAttivi); }); }); }).exceptionally(ex -> {
-		 * 
-		 * getUI().ifPresent(ui -> { ui.access(() -> {
-		 * utentiAttiviCard.setNumber(&quot;Errore&quot;); }); }); return null; });
-		 */
-// Colonnine
-firebaseColonnineService.contaColonnine().thenAccept( num -> {
-    getUI().ifPresent( ui -> ui.access(() -> colonnineTotaliCard.setNumber(num.toString())));
-}).exceptionally( ex -> {
-    getUI().ifPresent( ui -> ui.access(() -> colonnineTotaliCard.setNumber(&quot;Errore&quot;)));
-    return null;
-});
-colonnineService.inizializza(&quot;Libera&quot;).thenCompose( v -> colonnineService.aggiornaStato(&quot;Prenotata&quot;)).thenCompose( v -> colonnineService.aggiornaStatoCarica(&quot;In carica&quot;)).thenRun(() -> {
-    firebaseColonnineService.contaColonnineLG(&quot;Libera&quot;).thenAccept( num -> {
-        getUI().ifPresent( ui -> ui.access(() -> colonnineLibereCard.setNumber(num.toString())));
-    }).exceptionally( ex -> {
-        getUI().ifPresent( ui -> ui.access(() -> colonnineLibereCard.setNumber(&quot;Errore&quot;)));
-        return null;
-    });
-});
-firebaseColonnineService.contaColonnineLG(&quot;Manutenzione&quot;).thenAccept( num -> {
-    String colonnineGuaste = num.toString();
-    getUI().ifPresent( ui -> {
-        ui.access(() -> {
-            colonnineGuasteCard.setNumber(colonnineGuaste);
-        });
-    });
-}).exceptionally( ex -> {
-    getUI().ifPresent( ui -> {
-        ui.access(() -> {
-            colonnineGuasteCard.setNumber(&quot;Errore&quot;);
-        });
-    });
-    return null;
-});
-// Prenotazioni
-firebasePrenotazioniService.contaPrenotazioni().thenAccept( num -> {
-    getUI().ifPresent( ui -> ui.access(() -> prenotazioniTotaliCard.setNumber(num.toString())));
-}).exceptionally( ex -> {
-    getUI().ifPresent( ui -> ui.access(() -> prenotazioniTotaliCard.setNumber(&quot;Errore&quot;)));
-    return null;
-});
-firebasePrenotazioniService.contaPrenotazioniNuove().thenAccept( num -> {
-    getUI().ifPresent( ui -> ui.access(() -> prenotazioniNuoveCard.setNumber(num.toString())));
-}).exceptionally( ex -> {
-    getUI().ifPresent( ui -> ui.access(() -> prenotazioniNuoveCard.setNumber(&quot;Errore&quot;)));
-    return null;
-});
-// Recensioni
-//String recensioniTotali = FirebaseService.contaRecensioniTotali();
-//String recensioniNuove = FirebaseService.contaRecensioniNuove();</body>
-              </ownedBehavior>
-              <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_fPv-gM94EfCvI50SpPRHVQ" name="kpiUtenti" specification="_fPlmcM94EfCvI50SpPRHVQ">
-                <language>JAVA</language>
-                <body>// Creazione delle card (inizialmente senza dati)
-utentiCard = new KpiCard(&quot;Utenti totali&quot;, &quot;...&quot;);
-utentiNuoviCard = new KpiCard(&quot;Nuovi utenti&quot;, &quot;...&quot;);
-HorizontalLayout kpiUtentiLayout = new HorizontalLayout(utentiCard, utentiNuoviCard);
-kpiUtentiLayout.setWidthFull();
-kpiUtentiLayout.setSpacing(true);
-// Fa in modo che le card si espandano per riempire lo spazio
-kpiUtentiLayout.expand(utentiCard, utentiNuoviCard);
-return kpiUtentiLayout;</body>
-              </ownedBehavior>
-              <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_fP03AM94EfCvI50SpPRHVQ" name="kpiColonnine" specification="_fPxMoM94EfCvI50SpPRHVQ">
-                <language>JAVA</language>
-                <body>// Creazione delle card (inizialmente senza dati)
-colonnineTotaliCard = new KpiCard(&quot;Colonnine totali&quot;, &quot;...&quot;);
-colonnineLibereCard = new KpiCard(&quot;Colonnine libere&quot;, &quot;...&quot;);
-colonnineGuasteCard = new KpiCard(&quot;Colonnine guaste&quot;, &quot;...&quot;);
-colonnineLibereCard.getStyle().set(&quot;background-color&quot;, &quot;var(--lumo-success-color-10pct)&quot;);
-colonnineLibereCard.getStyle().set(&quot;border-color&quot;, &quot;var(--lumo-success-color)&quot;);
-colonnineGuasteCard.getStyle().set(&quot;background-color&quot;, &quot;var(--lumo-error-color-10pct)&quot;);
-colonnineGuasteCard.getStyle().set(&quot;border-color&quot;, &quot;var(--lumo-error-color)&quot;);
-HorizontalLayout kpiColonnineLayout = new HorizontalLayout(colonnineTotaliCard, colonnineLibereCard, colonnineGuasteCard);
-kpiColonnineLayout.setWidthFull();
-kpiColonnineLayout.setSpacing(true);
-// Fa in modo che le card si espandano per riempire lo spazio
-kpiColonnineLayout.expand(colonnineTotaliCard, colonnineLibereCard, colonnineGuasteCard);
-return kpiColonnineLayout;</body>
-              </ownedBehavior>
-              <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_fP1eEs94EfCvI50SpPRHVQ" name="kpiPrenotazioni" specification="_fP03Ac94EfCvI50SpPRHVQ">
-                <language>JAVA</language>
-                <body>// Creazione delle card (inizialmente senza dati)
-prenotazioniTotaliCard = new KpiCard(&quot;Prenotazioni totali&quot;, &quot;...&quot;);
-prenotazioniNuoveCard = new KpiCard(&quot;Nuove prenotazioni&quot;, &quot;...&quot;);
-HorizontalLayout kpiColonnineLayout = new HorizontalLayout(prenotazioniTotaliCard, prenotazioniNuoveCard);
-kpiColonnineLayout.setWidthFull();
-kpiColonnineLayout.setSpacing(true);
-// Fa in modo che le card si espandano per riempire lo spazio
-kpiColonnineLayout.expand(prenotazioniTotaliCard, prenotazioniNuoveCard);
-return kpiColonnineLayout;</body>
-              </ownedBehavior>
-              <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_fP36UM94EfCvI50SpPRHVQ" name="kpiSegnalazioni" specification="_fP1eE894EfCvI50SpPRHVQ">
-                <language>JAVA</language>
-                <body>// Creazione delle card (inizialmente senza dati)
-recensioniTotaliCard = new KpiCard(&quot;Recensionini totali&quot;, &quot;...&quot;);
-recensioniNuoveCard = new KpiCard(&quot;Nuove recensioni&quot;, &quot;...&quot;);
-HorizontalLayout kpiUtentiLayout = new HorizontalLayout(recensioniTotaliCard, recensioniNuoveCard);
-kpiUtentiLayout.setWidthFull();
-kpiUtentiLayout.setSpacing(true);
-// Fa in modo che le card si espandano per riempire lo spazio
-kpiUtentiLayout.expand(recensioniTotaliCard, recensioniNuoveCard);
-return kpiUtentiLayout;</body>
-              </ownedBehavior>
-              <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_fP8LwM94EfCvI50SpPRHVQ" name="createBookingsChart" specification="_fP4hYM94EfCvI50SpPRHVQ">
-                <language>JAVA</language>
-                <body>// Dati di default
-Integer[] emptyData = { 0, 0, 0, 0, 0, 0, 0 };
-// Settimana completa precedente
-String[] days = { &quot;Lun&quot;, &quot;Mar&quot;, &quot;Mer&quot;, &quot;Gio&quot;, &quot;Ven&quot;, &quot;Sab&quot;, &quot;Dom&quot; };
-ApexCharts chart = ApexChartsBuilder.get().withChart(// Tipo di grafico
-ChartBuilder.get().withType(Type.LINE).withZoom(// (a linee)
-// Disabilita lo zoom
-ZoomBuilder.get().withEnabled(false).build()).withHeight(// Altezza
-&quot;500px&quot;).build()).withSeries(new Series&lt;>(&quot;Prenotazioni&quot;, emptyData), new // Dati
-Series&lt;>(// Dati
-&quot;Nuovi Utenti&quot;, // Dati
-emptyData)).withXaxis(// Etichette asse X
-XAxisBuilder.get().withCategories(days).build()).withYaxis(YAxisBuilder.get().build()).withLegend(// Mostra
-LegendBuilder.get().withShow(true).build()).build();
-return chart;</body>
-              </ownedBehavior>
-              <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_fQEHkM94EfCvI50SpPRHVQ" name="loadChartData" specification="_fQAdMM94EfCvI50SpPRHVQ">
-                <language>JAVA</language>
-                <body>// Avvia entrambe le chiamate in parallelo
-CompletableFuture&lt;Integer[]> futureBookings = firebasePrenotazioniService.contaPrenotazioniGiorni();
-//CompletableFuture&lt;Integer[]> futureUsers = fb.getDatiGraficoUtenti();
-// Quando sono finite entrambe le chiamate:
-//CompletableFuture.allOf(futureBookings, futureUsers).thenAccept(voidResult -> {
-CompletableFuture.allOf(futureBookings).thenAccept( voidResult -> {
-    Integer[] bookingsData = futureBookings.join();
-    getUI().ifPresent( ui -> {
-        ui.access(() -> {
-            bookingsChart.updateSeries(new Series&lt;>(&quot;Prenotazioni&quot;, bookingsData));
-        });
-    });
-}).exceptionally( ex -> {
-    ex.printStackTrace();
-    return null;
-});</body>
-              </ownedBehavior>
-              <ownedOperation xmi:type="uml:Operation" xmi:id="_fO_JgM94EfCvI50SpPRHVQ" name="AdminDashboardView" visibility="public" method="_fPRdYM94EfCvI50SpPRHVQ">
-                <ownedParameter xmi:type="uml:Parameter" xmi:id="_fPNL8M94EfCvI50SpPRHVQ" name="firebaseUtentiService" type="_fOidkM94EfCvI50SpPRHVQ"/>
-                <ownedParameter xmi:type="uml:Parameter" xmi:id="_fPPBIM94EfCvI50SpPRHVQ" name="firebaseColonnineService" type="_fOkSwM94EfCvI50SpPRHVQ"/>
-                <ownedParameter xmi:type="uml:Parameter" xmi:id="_fPQ2UM94EfCvI50SpPRHVQ" name="colonnineService"/>
-                <ownedParameter xmi:type="uml:Parameter" xmi:id="_fPQ2Uc94EfCvI50SpPRHVQ" name="firebasePrenotazioniService" type="_fOnWEM94EfCvI50SpPRHVQ"/>
-              </ownedOperation>
-              <ownedOperation xmi:type="uml:Operation" xmi:id="_fPbOYM94EfCvI50SpPRHVQ" name="afterNavigation" visibility="public" method="_fPe4wM94EfCvI50SpPRHVQ">
-                <ownedComment xmi:type="uml:Comment" xmi:id="_fPbOYc94EfCvI50SpPRHVQ">
-                  <body>Metodo richiamato da Vaadin in automatico al caricamento della pagina. In questo modo i dati sono subito aggiornati.</body>
-                </ownedComment>
-                <ownedParameter xmi:type="uml:Parameter" xmi:id="_fPccgM94EfCvI50SpPRHVQ" name="event" type="_fPSrgM94EfCvI50SpPRHVQ"/>
-              </ownedOperation>
-              <ownedOperation xmi:type="uml:Operation" xmi:id="_fPgt8M94EfCvI50SpPRHVQ" name="createKpiLayout" visibility="private" method="_fPjKMM94EfCvI50SpPRHVQ">
-                <ownedComment xmi:type="uml:Comment" xmi:id="_fPgt8c94EfCvI50SpPRHVQ">
-                  <body>Metodo per creare un layout con le KpiCard. Dividiamo la sezione in quattro parti, ognuna per ogni gestione.  @return il layout descritto.</body>
-                </ownedComment>
-                <ownedParameter xmi:type="uml:Parameter" xmi:id="_fPh8EM94EfCvI50SpPRHVQ" type="_fNk0Qc94EfCvI50SpPRHVQ" direction="return"/>
-              </ownedOperation>
-              <ownedOperation xmi:type="uml:Operation" xmi:id="_fPjxQM94EfCvI50SpPRHVQ" name="loadKpiData" visibility="private" method="_fPk_YM94EfCvI50SpPRHVQ">
-                <ownedComment xmi:type="uml:Comment" xmi:id="_fPjxQc94EfCvI50SpPRHVQ">
-                  <body>Metodo per il caricamento di tutte le KPI.</body>
-                </ownedComment>
-              </ownedOperation>
-              <ownedOperation xmi:type="uml:Operation" xmi:id="_fPlmcM94EfCvI50SpPRHVQ" name="kpiUtenti" visibility="private" method="_fPv-gM94EfCvI50SpPRHVQ">
-                <ownedComment xmi:type="uml:Comment" xmi:id="_fPlmcc94EfCvI50SpPRHVQ">
-                  <body>Metodo per creare le card e inserirle nel layout.  @return il layout delle kpi degli utenti.</body>
-                </ownedComment>
-                <ownedParameter xmi:type="uml:Parameter" xmi:id="_fPuwYM94EfCvI50SpPRHVQ" type="_fPlmcs94EfCvI50SpPRHVQ" direction="return"/>
-              </ownedOperation>
-              <ownedOperation xmi:type="uml:Operation" xmi:id="_fPxMoM94EfCvI50SpPRHVQ" name="kpiColonnine" visibility="private" method="_fP03AM94EfCvI50SpPRHVQ">
-                <ownedComment xmi:type="uml:Comment" xmi:id="_fPzB0M94EfCvI50SpPRHVQ">
-                  <body>Metodo per creare le card e inserirle nel layout.  @return il layout delle kpi delle colonnine.</body>
-                </ownedComment>
-                <ownedParameter xmi:type="uml:Parameter" xmi:id="_fP0P8M94EfCvI50SpPRHVQ" type="_fPlmcs94EfCvI50SpPRHVQ" direction="return"/>
-              </ownedOperation>
-              <ownedOperation xmi:type="uml:Operation" xmi:id="_fP03Ac94EfCvI50SpPRHVQ" name="kpiPrenotazioni" visibility="private" method="_fP1eEs94EfCvI50SpPRHVQ">
-                <ownedComment xmi:type="uml:Comment" xmi:id="_fP1eEM94EfCvI50SpPRHVQ">
-                  <body>Metodo per creare le card e inserirle nel layout.  @return il layout delle kpi delle prenotazioni.</body>
-                </ownedComment>
-                <ownedParameter xmi:type="uml:Parameter" xmi:id="_fP1eEc94EfCvI50SpPRHVQ" type="_fPlmcs94EfCvI50SpPRHVQ" direction="return"/>
-              </ownedOperation>
-              <ownedOperation xmi:type="uml:Operation" xmi:id="_fP1eE894EfCvI50SpPRHVQ" name="kpiSegnalazioni" visibility="private" method="_fP36UM94EfCvI50SpPRHVQ">
-                <ownedComment xmi:type="uml:Comment" xmi:id="_fP1eFM94EfCvI50SpPRHVQ">
-                  <body>Metodo per creare le card e inserirle nel layout.  @return il layout delle kpi delle segnalazioni.</body>
-                </ownedComment>
-                <ownedParameter xmi:type="uml:Parameter" xmi:id="_fP2FIM94EfCvI50SpPRHVQ" type="_fPlmcs94EfCvI50SpPRHVQ" direction="return"/>
-              </ownedOperation>
-              <ownedOperation xmi:type="uml:Operation" xmi:id="_fP4hYM94EfCvI50SpPRHVQ" name="createBookingsChart" visibility="private" method="_fP8LwM94EfCvI50SpPRHVQ">
-                <ownedComment xmi:type="uml:Comment" xmi:id="_fP5IcM94EfCvI50SpPRHVQ">
-                  <body>Crea un grafico a linee inizialmente vuoto che riceverà i dati.  @return il grafico.</body>
-                </ownedComment>
-                <ownedParameter xmi:type="uml:Parameter" xmi:id="_fP5vgM94EfCvI50SpPRHVQ" type="_fOKDEM94EfCvI50SpPRHVQ" direction="return"/>
-              </ownedOperation>
-              <ownedOperation xmi:type="uml:Operation" xmi:id="_fQAdMM94EfCvI50SpPRHVQ" name="loadChartData" visibility="private" method="_fQEHkM94EfCvI50SpPRHVQ">
-                <ownedComment xmi:type="uml:Comment" xmi:id="_fQBrUM94EfCvI50SpPRHVQ">
-                  <body>Carica i dati per il grafico da Firebase in modo asincrono e aggiorna il grafico quando sono pronti.</body>
-                </ownedComment>
-              </ownedOperation>
-            </packagedElement>
-            <packagedElement xmi:type="uml:Package" xmi:id="_fOpLQM94EfCvI50SpPRHVQ" name="components">
-              <packagedElement xmi:type="uml:Class" xmi:id="_fOpLQc94EfCvI50SpPRHVQ" name="KpiCard" visibility="public">
-                <generalization xmi:type="uml:Generalization" xmi:id="_fSUKUM94EfCvI50SpPRHVQ" general="_fNk0Qc94EfCvI50SpPRHVQ"/>
-                <ownedAttribute xmi:type="uml:Property" xmi:id="_fSX0sM94EfCvI50SpPRHVQ" name="numberDisplay" visibility="private" type="_fSVYcM94EfCvI50SpPRHVQ" isUnique="false">
-                  <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_fSX0sc94EfCvI50SpPRHVQ" name="defaultValue">
-                    <language>JAVA</language>
-                    <body>new H2()</body>
-                  </defaultValue>
-                </ownedAttribute>
-                <ownedAttribute xmi:type="uml:Property" xmi:id="_fSja4M94EfCvI50SpPRHVQ" name="titleDisplay" visibility="private" type="_fSaQ8M94EfCvI50SpPRHVQ" isUnique="false">
-                  <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_fSkpAM94EfCvI50SpPRHVQ" name="defaultValue">
-                    <language>JAVA</language>
-                    <body>new Span()</body>
-                  </defaultValue>
-                </ownedAttribute>
-                <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_fSr9wM94EfCvI50SpPRHVQ" name="KpiCard" specification="_fSnFQM94EfCvI50SpPRHVQ">
-                  <language>JAVA</language>
-                  <body>// Imposta i valori
-titleDisplay.setText(title);
-numberDisplay.setText(number);
-numberDisplay.getStyle().set(&quot;margin-top&quot;, &quot;0&quot;);
-numberDisplay.getStyle().set(&quot;margin-bottom&quot;, &quot;0&quot;);
-titleDisplay.getStyle().set(&quot;font-size&quot;, &quot;var(--lumo-font-size-s)&quot;);
-titleDisplay.getStyle().set(&quot;color&quot;, &quot;var(--lumo-secondary-text-color)&quot;);
-// Centra il contenuto
-setAlignItems(Alignment.CENTER);
-getStyle().set(&quot;border&quot;, &quot;1px solid var(--lumo-contrast-20pct)&quot;);
-getStyle().set(&quot;border-radius&quot;, &quot;var(--lumo-border-radius-m)&quot;);
-getStyle().set(&quot;padding&quot;, &quot;var(--lumo-space-m)&quot;);
-// Imposta una larghezza minima per un layout omogeneo
-setMinWidth(&quot;180px&quot;);
-add(numberDisplay, titleDisplay);</body>
-                </ownedBehavior>
-                <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_fSsk0s94EfCvI50SpPRHVQ" name="setNumber" specification="_fSr9wc94EfCvI50SpPRHVQ">
-                  <language>JAVA</language>
-                  <body>numberDisplay.setText(number);</body>
-                </ownedBehavior>
-                <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_fSsk1s94EfCvI50SpPRHVQ" name="setTitle" specification="_fSsk0894EfCvI50SpPRHVQ">
-                  <language>JAVA</language>
-                  <body>titleDisplay.setText(title);</body>
-                </ownedBehavior>
-                <ownedOperation xmi:type="uml:Operation" xmi:id="_fSnFQM94EfCvI50SpPRHVQ" name="KpiCard" visibility="public" method="_fSr9wM94EfCvI50SpPRHVQ">
-                  <ownedComment xmi:type="uml:Comment" xmi:id="_fSqvoM94EfCvI50SpPRHVQ">
-                    <body>Costruttore per la KpiCard. @param title  Etichetta @param number Valore</body>
-                  </ownedComment>
-                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_fSrWsM94EfCvI50SpPRHVQ" name="title" type="_fMCjMc94EfCvI50SpPRHVQ"/>
-                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_fSrWsc94EfCvI50SpPRHVQ" name="number" type="_fMCjMc94EfCvI50SpPRHVQ"/>
-                </ownedOperation>
-                <ownedOperation xmi:type="uml:Operation" xmi:id="_fSr9wc94EfCvI50SpPRHVQ" name="setNumber" visibility="public" method="_fSsk0s94EfCvI50SpPRHVQ">
-                  <ownedComment xmi:type="uml:Comment" xmi:id="_fSsk0M94EfCvI50SpPRHVQ">
-                    <body>Metodo pubblico per aggiornare il numero dinamicamente dopo che la card è stata creata. @param number Il nuovo valore da mostrare</body>
-                  </ownedComment>
-                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_fSsk0c94EfCvI50SpPRHVQ" name="number" type="_fMCjMc94EfCvI50SpPRHVQ"/>
-                </ownedOperation>
-                <ownedOperation xmi:type="uml:Operation" xmi:id="_fSsk0894EfCvI50SpPRHVQ" name="setTitle" visibility="public" method="_fSsk1s94EfCvI50SpPRHVQ">
-                  <ownedComment xmi:type="uml:Comment" xmi:id="_fSsk1M94EfCvI50SpPRHVQ">
-                    <body>Metodo pubblico per aggiornare il titolo dinamicamente. @param title Il nuovo titolo da mostrare</body>
-                  </ownedComment>
-                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_fSsk1c94EfCvI50SpPRHVQ" name="title" type="_fMCjMc94EfCvI50SpPRHVQ"/>
-                </ownedOperation>
-              </packagedElement>
-            </packagedElement>
-            <packagedElement xmi:type="uml:Class" xmi:id="_fQbT8M94EfCvI50SpPRHVQ" name="AdminColonnineView" visibility="public">
-              <generalization xmi:type="uml:Generalization" xmi:id="_fQeXQM94EfCvI50SpPRHVQ" general="_fPlmcs94EfCvI50SpPRHVQ"/>
-              <ownedAttribute xmi:type="uml:Property" xmi:id="_fQgzgM94EfCvI50SpPRHVQ" name="tema" visibility="private" type="_fMCjMc94EfCvI50SpPRHVQ" isUnique="false">
-                <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_fQiBoM94EfCvI50SpPRHVQ" name="defaultValue">
-                  <language>JAVA</language>
-                  <body>&quot;#008000&quot;</body>
-                </defaultValue>
-              </ownedAttribute>
-              <ownedAttribute xmi:type="uml:Property" xmi:id="_fQqkgM94EfCvI50SpPRHVQ" name="colonGrid" visibility="private" type="_fQj20M94EfCvI50SpPRHVQ" isUnique="false">
-                <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_fQsZsM94EfCvI50SpPRHVQ" name="defaultValue">
-                  <language>JAVA</language>
-                  <body>new Grid&lt;>(Colonnina.class)</body>
-                </defaultValue>
-              </ownedAttribute>
-              <ownedAttribute xmi:type="uml:Property" xmi:id="_fQuO4M94EfCvI50SpPRHVQ" name="firebaseColonnineService" visibility="private" type="_fOkSwM94EfCvI50SpPRHVQ" isUnique="false"/>
-              <ownedAttribute xmi:type="uml:Property" xmi:id="_fQu18c94EfCvI50SpPRHVQ" name="stationSidebar" visibility="private" type="_fQu18M94EfCvI50SpPRHVQ" isUnique="false"/>
-              <ownedAttribute xmi:type="uml:Property" xmi:id="_fQvdAc94EfCvI50SpPRHVQ" name="colonninaSelezionata" visibility="private" type="_fQvdAM94EfCvI50SpPRHVQ" isUnique="false"/>
-              <ownedAttribute xmi:type="uml:Property" xmi:id="_fQ1joM94EfCvI50SpPRHVQ" name="nuovaColonninaLayout" visibility="private" type="_fQwEEM94EfCvI50SpPRHVQ" isUnique="false"/>
-              <ownedAttribute xmi:type="uml:Property" xmi:id="_fQ51EM94EfCvI50SpPRHVQ" name="idField" visibility="private" type="_fQ2xwM94EfCvI50SpPRHVQ" isUnique="false"/>
-              <ownedAttribute xmi:type="uml:Property" xmi:id="_fQ7qQM94EfCvI50SpPRHVQ" name="nomeField" visibility="private" type="_fQ2xwM94EfCvI50SpPRHVQ" isUnique="false"/>
-              <ownedAttribute xmi:type="uml:Property" xmi:id="_fQ7qQc94EfCvI50SpPRHVQ" name="tipoField" visibility="private" type="_fQ2xwM94EfCvI50SpPRHVQ" isUnique="false"/>
-              <ownedAttribute xmi:type="uml:Property" xmi:id="_fQ8RUM94EfCvI50SpPRHVQ" name="latField" visibility="private" type="_fQ2xwM94EfCvI50SpPRHVQ" isUnique="false"/>
-              <ownedAttribute xmi:type="uml:Property" xmi:id="_fQ84YM94EfCvI50SpPRHVQ" name="lonField" visibility="private" type="_fQ2xwM94EfCvI50SpPRHVQ" isUnique="false"/>
-              <ownedAttribute xmi:type="uml:Property" xmi:id="_fQ84Yc94EfCvI50SpPRHVQ" name="indirizzoField" visibility="private" type="_fQ2xwM94EfCvI50SpPRHVQ" isUnique="false"/>
-              <ownedAttribute xmi:type="uml:Property" xmi:id="_fQ-GgM94EfCvI50SpPRHVQ" name="comuneField" visibility="private" type="_fQ2xwM94EfCvI50SpPRHVQ" isUnique="false"/>
-              <ownedAttribute xmi:type="uml:Property" xmi:id="_fRBJ0M94EfCvI50SpPRHVQ" name="salvaNuovaButton" visibility="private" type="_fQ_Uoc94EfCvI50SpPRHVQ" isUnique="false"/>
-              <ownedAttribute xmi:type="uml:Property" xmi:id="_fRBw4M94EfCvI50SpPRHVQ" name="annullaNuovaButton" visibility="private" type="_fQ_Uoc94EfCvI50SpPRHVQ" isUnique="false"/>
-              <ownedAttribute xmi:type="uml:Property" xmi:id="_fRFbQM94EfCvI50SpPRHVQ" name="prenotaButtonListener" visibility="private" type="_fRCX8c94EfCvI50SpPRHVQ" isUnique="false"/>
-              <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_fRJssM94EfCvI50SpPRHVQ" name="AdminColonnineView" specification="_fRGCUM94EfCvI50SpPRHVQ">
-                <language>JAVA</language>
-                <body>this.firebaseColonnineService = firebaseColonnineService;
-setSpacing(true);
-setPadding(true);
-// Titolo
-H3 titolo = new H3(&quot;Lista universale delle colonnine di ricarica&quot;);
-titolo.getStyle().set(&quot;color&quot;, tema);
-// Bottone per l'inizializzazione inserimento dati di una nuova colonnina
-Button nuovaColonninaButton = new Button(&quot;Nuova colonnina&quot;);
-nuovaColonninaButton.getElement().getThemeList().add(&quot;success&quot;);
-nuovaColonninaButton.addClickListener( e -> mostraDialog());
-// Barra di ricerca per nome o indirizzo delle colonnine
-TextField searchField = new TextField(&quot;Cerca&quot;);
-searchField.getElement().getThemeList().add(&quot;success&quot;);
-searchField.setPlaceholder(&quot;Nome o indirizzo...&quot;);
-searchField.setWidth(&quot;300px&quot;);
-searchField.getStyle().set(&quot;color&quot;, tema);
-// Tema verde
-searchField.getStyle().set(&quot;--lumo-primary-text-color&quot;, &quot;var(--lumo-success-text-color)&quot;);
-// EVENTO DI RICERCA → chiama cercaColonnine()
-searchField.setValueChangeMode(ValueChangeMode.EAGER);
-searchField.addValueChangeListener( e -> {
-    aggiornaGridConFiltro(e.getValue());
-});
-// Aggiunta Colonna di bottoni, targati col nome delle colonnine,che permettono la consultazione delle colonnine
-colonGrid.removeAllColumns();
-colonGrid.addColumn(Colonnina::getId).setHeader(&quot;ID&quot;).setSortable(true);
-colonGrid.addComponentColumn( col -> {
-    Button btn = new Button(col.getNome());
-    btn.addClickListener( e -> showSidebar(col));
-    btn.getStyle().set(&quot;color&quot;, tema).set(&quot;text-decoration&quot;, &quot;underline&quot;).set(&quot;background&quot;, &quot;none&quot;).set(&quot;border&quot;, &quot;none&quot;);
-    return btn;
-}).setHeader(&quot;Nome&quot;).setComparator(Colonnina::getNome).setSortable(true);
-//Colonne con altre informazioni delle colonnine
-colonGrid.addColumn(Colonnina::getTipo).setHeader(&quot;Tipo&quot;).setSortable(true);
-colonGrid.addColumn(Colonnina::getStato).setHeader(&quot;Stato&quot;).setSortable(true);
-colonGrid.addColumn(Colonnina::getIndirizzo).setHeader(&quot;Indirizzo&quot;).setSortable(true);
-colonGrid.addColumn(Colonnina::getComune).setHeader(&quot;Comune&quot;).setSortable(true);
-// Caricamento iniziale senza filtri
-aggiornaGridConFiltro(&quot;&quot;);
-stationSidebar = new Sidebar();
-stationSidebar.setHeightFull();
-stationSidebar.setWidth(&quot;400px&quot;);
-stationSidebar.getStyle().set(&quot;background-color&quot;, &quot;white&quot;);
-stationSidebar.getStyle().set(&quot;box-shadow&quot;, &quot;5px 0 15px rgba(0,0,0,0.1)&quot;);
-stationSidebar.setVisible(false);
-nuovaColonninaLayout = createNuovaColonninaLayout();
-VerticalLayout layout = new VerticalLayout(titolo, nuovaColonninaButton, nuovaColonninaLayout, searchField, colonGrid);
-layout.setSizeFull();
-layout.expand(colonGrid);
-add(layout, stationSidebar);</body>
-              </ownedBehavior>
-              <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_fRN-IM94EfCvI50SpPRHVQ" name="createNuovaColonninaLayout" specification="_fRKTwM94EfCvI50SpPRHVQ">
-                <language>JAVA</language>
-                <body>Dialog dialog = new Dialog();
-VerticalLayout dialogLayout = new VerticalLayout();
-dialogLayout.setAlignItems(FlexComponent.Alignment.CENTER);
-idField = new TextField(&quot;ID&quot;);
-nomeField = new TextField(&quot;Nome&quot;);
-tipoField = new TextField(&quot;Tipo&quot;);
-latField = new TextField(&quot;Latitudine&quot;);
-lonField = new TextField(&quot;Longitudine&quot;);
-indirizzoField = new TextField(&quot;Indirizzo&quot;);
-comuneField = new TextField(&quot;Comune&quot;);
-salvaNuovaButton = new Button(&quot;Salva&quot;);
-salvaNuovaButton.getElement().getThemeList().add(&quot;success&quot;);
-salvaNuovaButton.addClickListener( e -> salvaNuovaColonnina());
-salvaNuovaButton.addClickListener( e -> salvaNuovaColonnina());
-annullaNuovaButton = new Button(&quot;Annulla&quot;,  e -> dialog.close());
-HorizontalLayout infoLayout = new HorizontalLayout(nomeField, tipoField);
-infoLayout.setAlignItems(FlexComponent.Alignment.CENTER);
-HorizontalLayout indirizzoLayout = new HorizontalLayout(indirizzoField, comuneField);
-indirizzoLayout.setAlignItems(FlexComponent.Alignment.CENTER);
-HorizontalLayout coordinateLayout = new HorizontalLayout(latField, lonField);
-coordinateLayout.setAlignItems(FlexComponent.Alignment.CENTER);
-dialogLayout.add(new H3(&quot;Nuova colonnina&quot;), idField, infoLayout, coordinateLayout, indirizzoLayout, new HorizontalLayout(salvaNuovaButton, annullaNuovaButton));
-dialog.add(dialogLayout);
-return dialog;</body>
-              </ownedBehavior>
-              <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_fRPzUM94EfCvI50SpPRHVQ" name="mostraDialog" specification="_fROlMM94EfCvI50SpPRHVQ">
-                <language>JAVA</language>
-                <body>nuovaColonninaLayout.open();</body>
-              </ownedBehavior>
-              <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_fRQaYc94EfCvI50SpPRHVQ" name="nascondiDialog" specification="_fRQaYM94EfCvI50SpPRHVQ">
-                <language>JAVA</language>
-                <body>nuovaColonninaLayout.close();</body>
-              </ownedBehavior>
-              <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_fRSPkM94EfCvI50SpPRHVQ" name="salvaNuovaColonnina" specification="_fRRogM94EfCvI50SpPRHVQ">
-                <language>JAVA</language>
-                <body>try {
-    Colonnina nuova = new Colonnina(idField.getValue(), nomeField.getValue(), tipoField.getValue(), Double.parseDouble(latField.getValue()), Double.parseDouble(lonField.getValue()), indirizzoField.getValue(), comuneField.getValue(), 0);
-    firebaseColonnineService.salvaColonnina(nuova).thenAccept( v -> {
-        getUI().ifPresent( ui -> ui.access(() -> {
-            nuovaColonninaLayout.setVisible(false);
-            aggiornaGridConFiltro(&quot;&quot;);
-        }));
-    });
-} catch (Exception e) {
-    System.out.println(&quot;Errore inserimento nuova colonnina: &quot; + e.getMessage());
-}
-nascondiDialog();</body>
-              </ownedBehavior>
-              <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_fRVS4M94EfCvI50SpPRHVQ" name="showSidebar" specification="_fRS2oM94EfCvI50SpPRHVQ">
-                <language>JAVA</language>
-                <body>this.colonninaSelezionata = col;
-stationSidebar.setDati(col);
-stationSidebar.getPrenotaButton().setVisible(false);
-stationSidebar.setVisible(true);</body>
-              </ownedBehavior>
-              <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_fRYWMM94EfCvI50SpPRHVQ" name="aggiornaGridConFiltro" specification="_fRXvIM94EfCvI50SpPRHVQ">
-                <language>JAVA</language>
-                <body>firebaseColonnineService.cercaColonnine(query).thenAccept( lista -> {
-    getUI().ifPresent( ui -> ui.access(() -> {
-        colonGrid.setItems(lista);
-    }));
-});</body>
-              </ownedBehavior>
-              <ownedOperation xmi:type="uml:Operation" xmi:id="_fRGCUM94EfCvI50SpPRHVQ" name="AdminColonnineView" visibility="public" method="_fRJssM94EfCvI50SpPRHVQ">
-                <ownedComment xmi:type="uml:Comment" xmi:id="_fRH3gM94EfCvI50SpPRHVQ">
-                  <body>Classe per l'elenco delle colonnine (indipendente dalla mappa)</body>
-                </ownedComment>
-                <ownedParameter xmi:type="uml:Parameter" xmi:id="_fRH3gc94EfCvI50SpPRHVQ" name="firebaseColonnineService" type="_fOkSwM94EfCvI50SpPRHVQ"/>
-              </ownedOperation>
-              <ownedOperation xmi:type="uml:Operation" xmi:id="_fRKTwM94EfCvI50SpPRHVQ" name="createNuovaColonninaLayout" visibility="private" method="_fRN-IM94EfCvI50SpPRHVQ">
-                <ownedParameter xmi:type="uml:Parameter" xmi:id="_fRK60M94EfCvI50SpPRHVQ" type="_fQwEEM94EfCvI50SpPRHVQ" direction="return"/>
-              </ownedOperation>
-              <ownedOperation xmi:type="uml:Operation" xmi:id="_fROlMM94EfCvI50SpPRHVQ" name="mostraDialog" visibility="private" method="_fRPzUM94EfCvI50SpPRHVQ"/>
-              <ownedOperation xmi:type="uml:Operation" xmi:id="_fRQaYM94EfCvI50SpPRHVQ" name="nascondiDialog" visibility="private" method="_fRQaYc94EfCvI50SpPRHVQ"/>
-              <ownedOperation xmi:type="uml:Operation" xmi:id="_fRRogM94EfCvI50SpPRHVQ" name="salvaNuovaColonnina" visibility="private" method="_fRSPkM94EfCvI50SpPRHVQ"/>
-              <ownedOperation xmi:type="uml:Operation" xmi:id="_fRS2oM94EfCvI50SpPRHVQ" name="showSidebar" visibility="private" method="_fRVS4M94EfCvI50SpPRHVQ">
-                <ownedParameter xmi:type="uml:Parameter" xmi:id="_fRTdsM94EfCvI50SpPRHVQ" name="col" type="_fQvdAM94EfCvI50SpPRHVQ"/>
-              </ownedOperation>
-              <ownedOperation xmi:type="uml:Operation" xmi:id="_fRXvIM94EfCvI50SpPRHVQ" name="aggiornaGridConFiltro" visibility="private" method="_fRYWMM94EfCvI50SpPRHVQ">
-                <ownedParameter xmi:type="uml:Parameter" xmi:id="_fRXvIc94EfCvI50SpPRHVQ" name="query" type="_fMCjMc94EfCvI50SpPRHVQ"/>
-              </ownedOperation>
-            </packagedElement>
-            <packagedElement xmi:type="uml:Class" xmi:id="_fRiHMM94EfCvI50SpPRHVQ" name="AdminPrenotazioniView" visibility="public">
-              <generalization xmi:type="uml:Generalization" xmi:id="_fRjVUM94EfCvI50SpPRHVQ" general="_fNk0Qc94EfCvI50SpPRHVQ"/>
-              <ownedAttribute xmi:type="uml:Property" xmi:id="_fRjVUc94EfCvI50SpPRHVQ" name="prenoGrid" visibility="private" type="_fQj20M94EfCvI50SpPRHVQ" isUnique="false">
-                <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_fRj8YM94EfCvI50SpPRHVQ" name="defaultValue">
-                  <language>JAVA</language>
-                  <body>new Grid&lt;>(Prenotazione.class)</body>
-                </defaultValue>
-              </ownedAttribute>
-              <ownedAttribute xmi:type="uml:Property" xmi:id="_fRj8Yc94EfCvI50SpPRHVQ" name="firebasePrenotazioniService" visibility="private" isLeaf="true" type="_fOnWEM94EfCvI50SpPRHVQ" isUnique="false"/>
-              <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_fRoN0M94EfCvI50SpPRHVQ" name="AdminPrenotazioniView" specification="_fRkjcM94EfCvI50SpPRHVQ">
-                <language>JAVA</language>
-                <body>this.firebasePrenotazioniService = firebasePrenotazioniService;
-setSpacing(true);
-setPadding(true);
-H3 titolo = new H3(&quot;Lista universale delle prenotazioni...&quot;);
-titolo.getStyle().set(&quot;color&quot;, &quot;#008000&quot;);
-prenoGrid.setColumns(&quot;IDColonnina&quot;, &quot;utente&quot;, &quot;data&quot;, &quot;inizio&quot;);
-prenoGrid.addColumn( prenotazione -> {
-    String stato = calcolaStato(prenotazione);
-    return stato;
-}).setHeader(&quot;Stato&quot;).setSortable(true);
-// bottone per la cancellazione 
-prenoGrid.addComponentColumn( p -> {
-    Button btn = new Button(&quot;Cancella&quot;);
-    btn.addClickListener( e -> cancellaPrenot(p));
-    btn.getStyle().set(&quot;color&quot;, &quot;red&quot;).set(&quot;text-decoration&quot;, &quot;underline&quot;).set(&quot;background&quot;, &quot;none&quot;).set(&quot;border&quot;, &quot;none&quot;);
-    return btn;
-});
-add(titolo, prenoGrid);
-/*
-     * Chiamo funzione da firebaseService che restituisce la lista delle prenotazioni
-     * la lista ottenuta va in lista
-     * L'utilizzo di thenAccept permette di lavorare in maniera asincrona ed è necessaria per 
-     * utilizzare il CompletableFuture in getAllReservation
-     */
-firebasePrenotazioniService.getAllReservation().thenAccept( lista -> {
-    getUI().ifPresent( ui -> ui.access(() -> {
-        prenoGrid.setItems(lista);
-    }));
-}).exceptionally( ex -> {
-    ex.printStackTrace();
-    return null;
-});</body>
-              </ownedBehavior>
-              <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_fRqDAc94EfCvI50SpPRHVQ" name="calcolaStato" specification="_fRpb8c94EfCvI50SpPRHVQ">
-                <language>JAVA</language>
-                <body>try {
-    DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(&quot;yyyy-MM-dd&quot;);
-    DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern(&quot;HH:mm&quot;);
-    LocalDate dataPren = LocalDate.parse(prenotazione.getData(), dateFormatter);
-    LocalTime oraPren = LocalTime.parse(prenotazione.getInizio(), timeFormatter);
-    LocalDateTime prenDateTime = LocalDateTime.of(dataPren, oraPren);
-    LocalDateTime now = LocalDateTime.now();
-    if (prenDateTime.isBefore(now.minusMinutes(30))) {
-        return &quot;Passata&quot;;
-    } else if (prenDateTime.isBefore(now)) {
-        return &quot;Attiva&quot;;
-    } else {
-        return &quot;Futura&quot;;
-    }
-} catch (Exception e) {
-    return &quot;&quot;;
-}</body>
-              </ownedBehavior>
-              <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_fRrRIM94EfCvI50SpPRHVQ" name="cancellaPrenot" specification="_fRqqEM94EfCvI50SpPRHVQ">
-                <language>JAVA</language>
-                <body>firebasePrenotazioniService.cancellaPrenotazione(p).thenRun(() -> getUI().ifPresent( ui -> ui.access(() -> {
-    Notification.show(&quot;Prenotazione eliminata con successo&quot;, 3000, Notification.Position.TOP_CENTER);
-    getUI().ifPresent( ui1 -> ui1.getPage().reload());
-}))).exceptionally( ex -> {
-    getUI().ifPresent( ui -> ui.access(() -> {
-        Notification.show(&quot;Errore durante il salvataggio: &quot; + ex.getMessage(), 4000, Notification.Position.TOP_CENTER).getElement().getThemeList().add(&quot;error&quot;);
-    }));
-    return null;
-});</body>
-              </ownedBehavior>
-              <ownedOperation xmi:type="uml:Operation" xmi:id="_fRkjcM94EfCvI50SpPRHVQ" name="AdminPrenotazioniView" visibility="public" method="_fRoN0M94EfCvI50SpPRHVQ">
-                <ownedParameter xmi:type="uml:Parameter" xmi:id="_fRnmwM94EfCvI50SpPRHVQ" name="firebasePrenotazioniService" type="_fOnWEM94EfCvI50SpPRHVQ"/>
-              </ownedOperation>
-              <ownedOperation xmi:type="uml:Operation" xmi:id="_fRpb8c94EfCvI50SpPRHVQ" name="calcolaStato" visibility="private" method="_fRqDAc94EfCvI50SpPRHVQ">
-                <ownedParameter xmi:type="uml:Parameter" xmi:id="_fRpb8s94EfCvI50SpPRHVQ" type="_fMCjMc94EfCvI50SpPRHVQ" direction="return"/>
-                <ownedParameter xmi:type="uml:Parameter" xmi:id="_fRqDAM94EfCvI50SpPRHVQ" name="prenotazione" type="_fRpb8M94EfCvI50SpPRHVQ"/>
-              </ownedOperation>
-              <ownedOperation xmi:type="uml:Operation" xmi:id="_fRqqEM94EfCvI50SpPRHVQ" name="cancellaPrenot" visibility="private" method="_fRrRIM94EfCvI50SpPRHVQ">
-                <ownedParameter xmi:type="uml:Parameter" xmi:id="_fRqqEc94EfCvI50SpPRHVQ" name="p" type="_fRpb8M94EfCvI50SpPRHVQ"/>
-              </ownedOperation>
-            </packagedElement>
-            <packagedElement xmi:type="uml:Class" xmi:id="_fSB2cM94EfCvI50SpPRHVQ" name="AdminUtentiView" visibility="public">
-              <generalization xmi:type="uml:Generalization" xmi:id="_fSCdgM94EfCvI50SpPRHVQ" general="_fNk0Qc94EfCvI50SpPRHVQ"/>
-              <ownedAttribute xmi:type="uml:Property" xmi:id="_fSDEkM94EfCvI50SpPRHVQ" name="utentiGrid" visibility="private" type="_fQj20M94EfCvI50SpPRHVQ" isUnique="false">
-                <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_fSDroM94EfCvI50SpPRHVQ" name="defaultValue">
-                  <language>JAVA</language>
-                  <body>new Grid&lt;>(Utente.class)</body>
-                </defaultValue>
-              </ownedAttribute>
-              <ownedAttribute xmi:type="uml:Property" xmi:id="_fSDroc94EfCvI50SpPRHVQ" name="firebaseUtentiService" visibility="private" isLeaf="true" type="_fOidkM94EfCvI50SpPRHVQ" isUnique="false"/>
-              <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_fSGu8M94EfCvI50SpPRHVQ" name="AdminUtentiView" specification="_fSESsM94EfCvI50SpPRHVQ">
-                <language>JAVA</language>
-                <body>this.firebaseUtentiService = firebaseUtentiService;
-setSpacing(true);
-setPadding(true);
-H3 titolo = new H3(&quot;Ecco la lista di tutti gli utenti &quot;);
-titolo.getStyle().set(&quot;color&quot;, &quot;#008000&quot;);
-//Imposta le colonne
-utentiGrid.removeAllColumns();
-utentiGrid.addColumn(Utente::getUsername).setHeader(&quot;Username&quot;).setSortable(true);
-// utentiGrid.addColumn(Utente::getDataCreazione).setHeader(&quot;DataCreazione&quot;).setSortable(true);
-utentiGrid.addColumn(Utente::getEmail).setHeader(&quot;Email&quot;).setSortable(true);
-// Pulsante per la cancellazione
-utentiGrid.addComponentColumn( p -> {
-    Button btn = new Button(&quot;Ban&quot;);
-    btn.addClickListener( e -> banUtente(p));
-    btn.getStyle().set(&quot;color&quot;, &quot;red&quot;).set(&quot;text-decoration&quot;, &quot;underline&quot;).set(&quot;background&quot;, &quot;none&quot;).set(&quot;border&quot;, &quot;none&quot;);
-    return btn;
-});
-Button nuovoUtenteBtn = new Button(&quot;Nuovo Utente&quot;);
-nuovoUtenteBtn.getElement().getThemeList().add(&quot;success&quot;);
-nuovoUtenteBtn.addClickListener( e -> newUtente());
-add(titolo, nuovoUtenteBtn, utentiGrid);
-// Ottiene la lista di utenti da Firebase
-firebaseUtentiService.getAllUtenti().thenAccept( lista -> {
-    getUI().ifPresent( ui -> ui.access(() -> {
-        utentiGrid.setItems(lista);
-    }));
-}).exceptionally( ex -> {
-    ex.printStackTrace();
-    return null;
-});</body>
-              </ownedBehavior>
-              <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_fSH9Ec94EfCvI50SpPRHVQ" name="banUtente" specification="_fSHWAc94EfCvI50SpPRHVQ">
-                <language>JAVA</language>
-                <body>firebaseUtentiService.cancellaUtente(u).thenRun(() -> getUI().ifPresent( ui -> ui.access(() -> {
-    Notification.show(&quot;Utente &quot; + u.getUsername() + &quot; bandito dal sistema.&quot;, 3000, Notification.Position.TOP_CENTER).getElement().getThemeList().add(&quot;success&quot;);
-    ;
-    getUI().ifPresent( ui1 -> ui1.getPage().reload());
-}))).exceptionally(// Gestione errori
- ex -> {
-    getUI().ifPresent( ui -> ui.access(() -> {
-        Notification.show(&quot;Errore durante la cancellazione: &quot; + ex.getMessage(), 4000, Notification.Position.TOP_CENTER).getElement().getThemeList().add(&quot;error&quot;);
-    }));
-    return null;
-});</body>
-              </ownedBehavior>
-              <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_fSLAYM94EfCvI50SpPRHVQ" name="newUtente" specification="_fSJyQM94EfCvI50SpPRHVQ">
-                <language>JAVA</language>
-                <body>Dialog dialog = new Dialog();
-VerticalLayout formLayout = new VerticalLayout();
-formLayout.setPadding(true);
-formLayout.setSpacing(true);
-H3 titolo = new H3(&quot;Crea un nuovo utente&quot;);
-titolo.getStyle().set(&quot;color&quot;, &quot;#008000&quot;);
-TextField nome = new TextField(&quot;Nome&quot;);
-TextField cognome = new TextField(&quot;Cognome&quot;);
-TextField username = new TextField(&quot;Username&quot;);
-EmailField email = new EmailField(&quot;Email&quot;);
-PasswordField password = new PasswordField(&quot;Password&quot;);
-Button salva = new Button(&quot;Salva Utente&quot;);
-salva.getElement().getThemeList().add(&quot;success&quot;);
-Button annulla = new Button(&quot;Annulla&quot;,  e -> dialog.close());
-salva.addClickListener( e -> {
-    if (nome.isEmpty() || cognome.isEmpty() || username.isEmpty() || email.isEmpty() || password.isEmpty()) {
-        Notification.show(&quot;Compila tutti i campi!&quot;, 3000, Notification.Position.TOP_CENTER).getElement().getThemeList().add(&quot;error&quot;);
-        return;
-    }
-    String n = nome.getValue();
-    String c = cognome.getValue();
-    String u = username.getValue();
-    String em = email.getValue();
-    String p = password.getValue();
-    String errore = DataValidator.verificaDati(n, c, u, em, p, p);
-    if (errore != null) {
-        Notification.show(errore, 3000, Notification.Position.TOP_CENTER).getElement().getThemeList().add(&quot;error&quot;);
-        return;
-    }
-    firebaseUtentiService.verificaUtente(u).thenAccept( utente -> {
-        getUI().ifPresent( ui -> ui.access(() -> {
-            if (utente == null) {
-                Utente nuovoUtente = new Utente(n, c, u, em, p, LocalDate.now().toString(), &quot;Utente&quot;);
-                firebaseUtentiService.salvaUtente(nuovoUtente).thenRun(() -> ui.access(() -> {
-                    Notification.show(&quot;Registrazione completata! Benvenuto, &quot; + u + &quot;.&quot;, 3000, Notification.Position.TOP_CENTER);
-                    getUI().ifPresent( ui1 -> ui1.getPage().reload());
-                })).exceptionally( ex -> {
-                    ui.access(() -> {
-                        Notification.show(&quot;Errore durante il salvataggio: &quot; + ex.getMessage(), 4000, Notification.Position.TOP_CENTER).getElement().getThemeList().add(&quot;error&quot;);
-                    });
-                    return null;
-                });
-            } else {
-                Notification.show(&quot;Lo username : &quot; + u + &quot; e' già in uso, prova con un altro!&quot;, 3000, Notification.Position.TOP_CENTER).getElement().getThemeList().add(&quot;error&quot;);
-                ;
-            }
-        }));
-    });
-});
-HorizontalLayout datiPersonaliLayout = new HorizontalLayout(nome, cognome);
-datiPersonaliLayout.setAlignItems(FlexComponent.Alignment.CENTER);
-HorizontalLayout credenzialiLayout = new HorizontalLayout(username, password);
-credenzialiLayout.setAlignItems(FlexComponent.Alignment.CENTER);
-HorizontalLayout pulsantiLayout = new HorizontalLayout(salva, annulla);
-pulsantiLayout.setAlignItems(FlexComponent.Alignment.CENTER);
-formLayout.add(titolo, datiPersonaliLayout, email, credenzialiLayout, pulsantiLayout);
-formLayout.expand(titolo, datiPersonaliLayout, email, credenzialiLayout, pulsantiLayout);
-// Mostra il form in una nuova finestra/dialog
-dialog.add(formLayout);
-dialog.setModal(true);
-//dialog.setWidth(&quot;600px&quot;);
-dialog.open();</body>
-              </ownedBehavior>
-              <ownedOperation xmi:type="uml:Operation" xmi:id="_fSESsM94EfCvI50SpPRHVQ" name="AdminUtentiView" visibility="public" method="_fSGu8M94EfCvI50SpPRHVQ">
-                <ownedComment xmi:type="uml:Comment" xmi:id="_fSGH4M94EfCvI50SpPRHVQ">
-                  <body>Costruttore che genera la griglia contenente tutti gli utenti  @param fb Firebase per accedere ai dati utente</body>
-                </ownedComment>
-                <ownedParameter xmi:type="uml:Parameter" xmi:id="_fSGH4c94EfCvI50SpPRHVQ" name="firebaseUtentiService" type="_fOidkM94EfCvI50SpPRHVQ"/>
-              </ownedOperation>
-              <ownedOperation xmi:type="uml:Operation" xmi:id="_fSHWAc94EfCvI50SpPRHVQ" name="banUtente" visibility="private" method="_fSH9Ec94EfCvI50SpPRHVQ">
-                <ownedParameter xmi:type="uml:Parameter" xmi:id="_fSH9EM94EfCvI50SpPRHVQ" name="u" type="_fSHWAM94EfCvI50SpPRHVQ"/>
-              </ownedOperation>
-              <ownedOperation xmi:type="uml:Operation" xmi:id="_fSJyQM94EfCvI50SpPRHVQ" name="newUtente" visibility="private" method="_fSLAYM94EfCvI50SpPRHVQ"/>
-            </packagedElement>
+            <packagedElement xmi:type="uml:Package" xmi:id="_fOpLQM94EfCvI50SpPRHVQ" name="components"/>
           </packagedElement>
           <packagedElement xmi:type="uml:Package" xmi:id="_fOeMIM94EfCvI50SpPRHVQ" name="util">
             <packagedElement xmi:type="uml:Class" xmi:id="_fZZCsM94EfCvI50SpPRHVQ" name="PrenotazioneService" visibility="public">
@@ -1253,7 +481,7 @@ return slot.format(formatter);</body>
                 <ownedParameter xmi:type="uml:Parameter" xmi:id="_fZzSYM94EfCvI50SpPRHVQ" type="_fMCjMc94EfCvI50SpPRHVQ" direction="return"/>
               </ownedOperation>
             </packagedElement>
-            <packagedElement xmi:type="uml:Dependency" xmi:id="_70IYYNBREfC4AfTsExly3Q" client="_fZZCsM94EfCvI50SpPRHVQ" supplier="_fOnWEM94EfCvI50SpPRHVQ"/>
+            <packagedElement xmi:type="uml:Dependency" xmi:id="_70IYYNBREfC4AfTsExly3Q" name="depends on" client="_fZZCsM94EfCvI50SpPRHVQ" supplier="_fOnWEM94EfCvI50SpPRHVQ"/>
           </packagedElement>
           <packagedElement xmi:type="uml:Package" xmi:id="_fOhPcM94EfCvI50SpPRHVQ" name="database">
             <packagedElement xmi:type="uml:Class" xmi:id="_fOidkM94EfCvI50SpPRHVQ" name="FirebaseUtentiService" visibility="public">
@@ -2423,6 +1651,7 @@ return FirebaseDatabase.getInstance();</body>
                 <ownedParameter xmi:type="uml:Parameter" xmi:id="_fWWVwM94EfCvI50SpPRHVQ" type="_fWF3EM94EfCvI50SpPRHVQ" direction="return"/>
               </ownedOperation>
             </packagedElement>
+            <packagedElement xmi:type="uml:Dependency" xmi:id="_LxfBYNBcEfC4AfTsExly3Q" name="use" client="_q-1cwKuSEfCM07EDP-YkGA" supplier="_fXovMM94EfCvI50SpPRHVQ"/>
           </packagedElement>
           <packagedElement xmi:type="uml:Package" xmi:id="_fQuO4c94EfCvI50SpPRHVQ" name="components">
             <packagedElement xmi:type="uml:Class" xmi:id="_fQu18M94EfCvI50SpPRHVQ" name="Sidebar" visibility="public">
@@ -4648,7 +3877,8 @@ getUI().ifPresent( ui -> ui.access(() -> {
               </ownedOperation>
             </packagedElement>
             <packagedElement xmi:type="uml:Dependency" xmi:id="_xWBawNBREfC4AfTsExly3Q" name="depends on" client="_fjCt8M94EfCvI50SpPRHVQ" supplier="_fZZCsM94EfCvI50SpPRHVQ"/>
-            <packagedElement xmi:type="uml:Dependency" xmi:id="_zcv2sNBREfC4AfTsExly3Q" name="depends on" client="_fjCt8M94EfCvI50SpPRHVQ" supplier="_fWEo8M94EfCvI50SpPRHVQ"/>
+            <packagedElement xmi:type="uml:Dependency" xmi:id="_zcv2sNBREfC4AfTsExly3Q" name="depends on" client="_fjCt8M94EfCvI50SpPRHVQ" supplier="_q-1cwKuSEfCM07EDP-YkGA"/>
+            <packagedElement xmi:type="uml:Dependency" xmi:id="_7eOt8NBeEfC4AfTsExly3Q" name="use" client="_faDKAM94EfCvI50SpPRHVQ" supplier="_feyAgNBeEfC4AfTsExly3Q"/>
           </packagedElement>
         </packagedElement>
       </packagedElement>
@@ -4805,6 +4035,789 @@ getUI().ifPresent( ui -> ui.access(() -> {
         <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_fw264NBREfC4AfTsExly3Q" name="LiteralInteger1"/>
         <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_fw5XINBREfC4AfTsExly3Q" name="LiteralUnlimitedNatural1" value="*"/>
       </ownedEnd>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Package" xmi:id="_qlhoQNBaEfC4AfTsExly3Q" name="admin">
+      <packagedElement xmi:type="uml:Class" xmi:id="_fQbT8M94EfCvI50SpPRHVQ" name="AdminColonnineView" visibility="public">
+        <generalization xmi:type="uml:Generalization" xmi:id="_fQeXQM94EfCvI50SpPRHVQ" general="_fPlmcs94EfCvI50SpPRHVQ"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_fQgzgM94EfCvI50SpPRHVQ" name="tema" visibility="private" type="_fMCjMc94EfCvI50SpPRHVQ" isUnique="false">
+          <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_fQiBoM94EfCvI50SpPRHVQ" name="defaultValue">
+            <language>JAVA</language>
+            <body>&quot;#008000&quot;</body>
+          </defaultValue>
+        </ownedAttribute>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_fQqkgM94EfCvI50SpPRHVQ" name="colonGrid" visibility="private" type="_fQj20M94EfCvI50SpPRHVQ" isUnique="false">
+          <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_fQsZsM94EfCvI50SpPRHVQ" name="defaultValue">
+            <language>JAVA</language>
+            <body>new Grid&lt;>(Colonnina.class)</body>
+          </defaultValue>
+        </ownedAttribute>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_fQuO4M94EfCvI50SpPRHVQ" name="firebaseColonnineService" visibility="private" type="_fOkSwM94EfCvI50SpPRHVQ" isUnique="false"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_fQu18c94EfCvI50SpPRHVQ" name="stationSidebar" visibility="private" type="_fQu18M94EfCvI50SpPRHVQ" isUnique="false"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_fQvdAc94EfCvI50SpPRHVQ" name="colonninaSelezionata" visibility="private" type="_fQvdAM94EfCvI50SpPRHVQ" isUnique="false"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_fQ1joM94EfCvI50SpPRHVQ" name="nuovaColonninaLayout" visibility="private" type="_fQwEEM94EfCvI50SpPRHVQ" isUnique="false"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_fQ51EM94EfCvI50SpPRHVQ" name="idField" visibility="private" type="_fQ2xwM94EfCvI50SpPRHVQ" isUnique="false"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_fQ7qQM94EfCvI50SpPRHVQ" name="nomeField" visibility="private" type="_fQ2xwM94EfCvI50SpPRHVQ" isUnique="false"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_fQ7qQc94EfCvI50SpPRHVQ" name="tipoField" visibility="private" type="_fQ2xwM94EfCvI50SpPRHVQ" isUnique="false"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_fQ8RUM94EfCvI50SpPRHVQ" name="latField" visibility="private" type="_fQ2xwM94EfCvI50SpPRHVQ" isUnique="false"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_fQ84YM94EfCvI50SpPRHVQ" name="lonField" visibility="private" type="_fQ2xwM94EfCvI50SpPRHVQ" isUnique="false"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_fQ84Yc94EfCvI50SpPRHVQ" name="indirizzoField" visibility="private" type="_fQ2xwM94EfCvI50SpPRHVQ" isUnique="false"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_fQ-GgM94EfCvI50SpPRHVQ" name="comuneField" visibility="private" type="_fQ2xwM94EfCvI50SpPRHVQ" isUnique="false"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_fRBJ0M94EfCvI50SpPRHVQ" name="salvaNuovaButton" visibility="private" type="_fQ_Uoc94EfCvI50SpPRHVQ" isUnique="false"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_fRBw4M94EfCvI50SpPRHVQ" name="annullaNuovaButton" visibility="private" type="_fQ_Uoc94EfCvI50SpPRHVQ" isUnique="false"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_fRFbQM94EfCvI50SpPRHVQ" name="prenotaButtonListener" visibility="private" type="_fRCX8c94EfCvI50SpPRHVQ" isUnique="false"/>
+        <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_fRJssM94EfCvI50SpPRHVQ" name="AdminColonnineView" specification="_fRGCUM94EfCvI50SpPRHVQ">
+          <language>JAVA</language>
+          <body>this.firebaseColonnineService = firebaseColonnineService;
+setSpacing(true);
+setPadding(true);
+// Titolo
+H3 titolo = new H3(&quot;Lista universale delle colonnine di ricarica&quot;);
+titolo.getStyle().set(&quot;color&quot;, tema);
+// Bottone per l'inizializzazione inserimento dati di una nuova colonnina
+Button nuovaColonninaButton = new Button(&quot;Nuova colonnina&quot;);
+nuovaColonninaButton.getElement().getThemeList().add(&quot;success&quot;);
+nuovaColonninaButton.addClickListener( e -> mostraDialog());
+// Barra di ricerca per nome o indirizzo delle colonnine
+TextField searchField = new TextField(&quot;Cerca&quot;);
+searchField.getElement().getThemeList().add(&quot;success&quot;);
+searchField.setPlaceholder(&quot;Nome o indirizzo...&quot;);
+searchField.setWidth(&quot;300px&quot;);
+searchField.getStyle().set(&quot;color&quot;, tema);
+// Tema verde
+searchField.getStyle().set(&quot;--lumo-primary-text-color&quot;, &quot;var(--lumo-success-text-color)&quot;);
+// EVENTO DI RICERCA → chiama cercaColonnine()
+searchField.setValueChangeMode(ValueChangeMode.EAGER);
+searchField.addValueChangeListener( e -> {
+    aggiornaGridConFiltro(e.getValue());
+});
+// Aggiunta Colonna di bottoni, targati col nome delle colonnine,che permettono la consultazione delle colonnine
+colonGrid.removeAllColumns();
+colonGrid.addColumn(Colonnina::getId).setHeader(&quot;ID&quot;).setSortable(true);
+colonGrid.addComponentColumn( col -> {
+    Button btn = new Button(col.getNome());
+    btn.addClickListener( e -> showSidebar(col));
+    btn.getStyle().set(&quot;color&quot;, tema).set(&quot;text-decoration&quot;, &quot;underline&quot;).set(&quot;background&quot;, &quot;none&quot;).set(&quot;border&quot;, &quot;none&quot;);
+    return btn;
+}).setHeader(&quot;Nome&quot;).setComparator(Colonnina::getNome).setSortable(true);
+//Colonne con altre informazioni delle colonnine
+colonGrid.addColumn(Colonnina::getTipo).setHeader(&quot;Tipo&quot;).setSortable(true);
+colonGrid.addColumn(Colonnina::getStato).setHeader(&quot;Stato&quot;).setSortable(true);
+colonGrid.addColumn(Colonnina::getIndirizzo).setHeader(&quot;Indirizzo&quot;).setSortable(true);
+colonGrid.addColumn(Colonnina::getComune).setHeader(&quot;Comune&quot;).setSortable(true);
+// Caricamento iniziale senza filtri
+aggiornaGridConFiltro(&quot;&quot;);
+stationSidebar = new Sidebar();
+stationSidebar.setHeightFull();
+stationSidebar.setWidth(&quot;400px&quot;);
+stationSidebar.getStyle().set(&quot;background-color&quot;, &quot;white&quot;);
+stationSidebar.getStyle().set(&quot;box-shadow&quot;, &quot;5px 0 15px rgba(0,0,0,0.1)&quot;);
+stationSidebar.setVisible(false);
+nuovaColonninaLayout = createNuovaColonninaLayout();
+VerticalLayout layout = new VerticalLayout(titolo, nuovaColonninaButton, nuovaColonninaLayout, searchField, colonGrid);
+layout.setSizeFull();
+layout.expand(colonGrid);
+add(layout, stationSidebar);</body>
+        </ownedBehavior>
+        <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_fRN-IM94EfCvI50SpPRHVQ" name="createNuovaColonninaLayout" specification="_fRKTwM94EfCvI50SpPRHVQ">
+          <language>JAVA</language>
+          <body>Dialog dialog = new Dialog();
+VerticalLayout dialogLayout = new VerticalLayout();
+dialogLayout.setAlignItems(FlexComponent.Alignment.CENTER);
+idField = new TextField(&quot;ID&quot;);
+nomeField = new TextField(&quot;Nome&quot;);
+tipoField = new TextField(&quot;Tipo&quot;);
+latField = new TextField(&quot;Latitudine&quot;);
+lonField = new TextField(&quot;Longitudine&quot;);
+indirizzoField = new TextField(&quot;Indirizzo&quot;);
+comuneField = new TextField(&quot;Comune&quot;);
+salvaNuovaButton = new Button(&quot;Salva&quot;);
+salvaNuovaButton.getElement().getThemeList().add(&quot;success&quot;);
+salvaNuovaButton.addClickListener( e -> salvaNuovaColonnina());
+salvaNuovaButton.addClickListener( e -> salvaNuovaColonnina());
+annullaNuovaButton = new Button(&quot;Annulla&quot;,  e -> dialog.close());
+HorizontalLayout infoLayout = new HorizontalLayout(nomeField, tipoField);
+infoLayout.setAlignItems(FlexComponent.Alignment.CENTER);
+HorizontalLayout indirizzoLayout = new HorizontalLayout(indirizzoField, comuneField);
+indirizzoLayout.setAlignItems(FlexComponent.Alignment.CENTER);
+HorizontalLayout coordinateLayout = new HorizontalLayout(latField, lonField);
+coordinateLayout.setAlignItems(FlexComponent.Alignment.CENTER);
+dialogLayout.add(new H3(&quot;Nuova colonnina&quot;), idField, infoLayout, coordinateLayout, indirizzoLayout, new HorizontalLayout(salvaNuovaButton, annullaNuovaButton));
+dialog.add(dialogLayout);
+return dialog;</body>
+        </ownedBehavior>
+        <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_fRPzUM94EfCvI50SpPRHVQ" name="mostraDialog" specification="_fROlMM94EfCvI50SpPRHVQ">
+          <language>JAVA</language>
+          <body>nuovaColonninaLayout.open();</body>
+        </ownedBehavior>
+        <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_fRQaYc94EfCvI50SpPRHVQ" name="nascondiDialog" specification="_fRQaYM94EfCvI50SpPRHVQ">
+          <language>JAVA</language>
+          <body>nuovaColonninaLayout.close();</body>
+        </ownedBehavior>
+        <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_fRSPkM94EfCvI50SpPRHVQ" name="salvaNuovaColonnina" specification="_fRRogM94EfCvI50SpPRHVQ">
+          <language>JAVA</language>
+          <body>try {
+    Colonnina nuova = new Colonnina(idField.getValue(), nomeField.getValue(), tipoField.getValue(), Double.parseDouble(latField.getValue()), Double.parseDouble(lonField.getValue()), indirizzoField.getValue(), comuneField.getValue(), 0);
+    firebaseColonnineService.salvaColonnina(nuova).thenAccept( v -> {
+        getUI().ifPresent( ui -> ui.access(() -> {
+            nuovaColonninaLayout.setVisible(false);
+            aggiornaGridConFiltro(&quot;&quot;);
+        }));
+    });
+} catch (Exception e) {
+    System.out.println(&quot;Errore inserimento nuova colonnina: &quot; + e.getMessage());
+}
+nascondiDialog();</body>
+        </ownedBehavior>
+        <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_fRVS4M94EfCvI50SpPRHVQ" name="showSidebar" specification="_fRS2oM94EfCvI50SpPRHVQ">
+          <language>JAVA</language>
+          <body>this.colonninaSelezionata = col;
+stationSidebar.setDati(col);
+stationSidebar.getPrenotaButton().setVisible(false);
+stationSidebar.setVisible(true);</body>
+        </ownedBehavior>
+        <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_fRYWMM94EfCvI50SpPRHVQ" name="aggiornaGridConFiltro" specification="_fRXvIM94EfCvI50SpPRHVQ">
+          <language>JAVA</language>
+          <body>firebaseColonnineService.cercaColonnine(query).thenAccept( lista -> {
+    getUI().ifPresent( ui -> ui.access(() -> {
+        colonGrid.setItems(lista);
+    }));
+});</body>
+        </ownedBehavior>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="_fRGCUM94EfCvI50SpPRHVQ" name="AdminColonnineView" visibility="public" method="_fRJssM94EfCvI50SpPRHVQ">
+          <ownedComment xmi:type="uml:Comment" xmi:id="_fRH3gM94EfCvI50SpPRHVQ">
+            <body>Classe per l'elenco delle colonnine (indipendente dalla mappa)</body>
+          </ownedComment>
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_fRH3gc94EfCvI50SpPRHVQ" name="firebaseColonnineService" type="_fOkSwM94EfCvI50SpPRHVQ"/>
+        </ownedOperation>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="_fRKTwM94EfCvI50SpPRHVQ" name="createNuovaColonninaLayout" visibility="private" method="_fRN-IM94EfCvI50SpPRHVQ">
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_fRK60M94EfCvI50SpPRHVQ" type="_fQwEEM94EfCvI50SpPRHVQ" direction="return"/>
+        </ownedOperation>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="_fROlMM94EfCvI50SpPRHVQ" name="mostraDialog" visibility="private" method="_fRPzUM94EfCvI50SpPRHVQ"/>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="_fRQaYM94EfCvI50SpPRHVQ" name="nascondiDialog" visibility="private" method="_fRQaYc94EfCvI50SpPRHVQ"/>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="_fRRogM94EfCvI50SpPRHVQ" name="salvaNuovaColonnina" visibility="private" method="_fRSPkM94EfCvI50SpPRHVQ"/>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="_fRS2oM94EfCvI50SpPRHVQ" name="showSidebar" visibility="private" method="_fRVS4M94EfCvI50SpPRHVQ">
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_fRTdsM94EfCvI50SpPRHVQ" name="col" type="_fQvdAM94EfCvI50SpPRHVQ"/>
+        </ownedOperation>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="_fRXvIM94EfCvI50SpPRHVQ" name="aggiornaGridConFiltro" visibility="private" method="_fRYWMM94EfCvI50SpPRHVQ">
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_fRXvIc94EfCvI50SpPRHVQ" name="query" type="_fMCjMc94EfCvI50SpPRHVQ"/>
+        </ownedOperation>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="_fRiHMM94EfCvI50SpPRHVQ" name="AdminPrenotazioniView" visibility="public">
+        <generalization xmi:type="uml:Generalization" xmi:id="_fRjVUM94EfCvI50SpPRHVQ" general="_fNk0Qc94EfCvI50SpPRHVQ"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_fRjVUc94EfCvI50SpPRHVQ" name="prenoGrid" visibility="private" type="_fQj20M94EfCvI50SpPRHVQ" isUnique="false">
+          <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_fRj8YM94EfCvI50SpPRHVQ" name="defaultValue">
+            <language>JAVA</language>
+            <body>new Grid&lt;>(Prenotazione.class)</body>
+          </defaultValue>
+        </ownedAttribute>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_fRj8Yc94EfCvI50SpPRHVQ" name="firebasePrenotazioniService" visibility="private" isLeaf="true" type="_fOnWEM94EfCvI50SpPRHVQ" isUnique="false"/>
+        <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_fRoN0M94EfCvI50SpPRHVQ" name="AdminPrenotazioniView" specification="_fRkjcM94EfCvI50SpPRHVQ">
+          <language>JAVA</language>
+          <body>this.firebasePrenotazioniService = firebasePrenotazioniService;
+setSpacing(true);
+setPadding(true);
+H3 titolo = new H3(&quot;Lista universale delle prenotazioni...&quot;);
+titolo.getStyle().set(&quot;color&quot;, &quot;#008000&quot;);
+prenoGrid.setColumns(&quot;IDColonnina&quot;, &quot;utente&quot;, &quot;data&quot;, &quot;inizio&quot;);
+prenoGrid.addColumn( prenotazione -> {
+    String stato = calcolaStato(prenotazione);
+    return stato;
+}).setHeader(&quot;Stato&quot;).setSortable(true);
+// bottone per la cancellazione 
+prenoGrid.addComponentColumn( p -> {
+    Button btn = new Button(&quot;Cancella&quot;);
+    btn.addClickListener( e -> cancellaPrenot(p));
+    btn.getStyle().set(&quot;color&quot;, &quot;red&quot;).set(&quot;text-decoration&quot;, &quot;underline&quot;).set(&quot;background&quot;, &quot;none&quot;).set(&quot;border&quot;, &quot;none&quot;);
+    return btn;
+});
+add(titolo, prenoGrid);
+/*
+     * Chiamo funzione da firebaseService che restituisce la lista delle prenotazioni
+     * la lista ottenuta va in lista
+     * L'utilizzo di thenAccept permette di lavorare in maniera asincrona ed è necessaria per 
+     * utilizzare il CompletableFuture in getAllReservation
+     */
+firebasePrenotazioniService.getAllReservation().thenAccept( lista -> {
+    getUI().ifPresent( ui -> ui.access(() -> {
+        prenoGrid.setItems(lista);
+    }));
+}).exceptionally( ex -> {
+    ex.printStackTrace();
+    return null;
+});</body>
+        </ownedBehavior>
+        <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_fRqDAc94EfCvI50SpPRHVQ" name="calcolaStato" specification="_fRpb8c94EfCvI50SpPRHVQ">
+          <language>JAVA</language>
+          <body>try {
+    DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(&quot;yyyy-MM-dd&quot;);
+    DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern(&quot;HH:mm&quot;);
+    LocalDate dataPren = LocalDate.parse(prenotazione.getData(), dateFormatter);
+    LocalTime oraPren = LocalTime.parse(prenotazione.getInizio(), timeFormatter);
+    LocalDateTime prenDateTime = LocalDateTime.of(dataPren, oraPren);
+    LocalDateTime now = LocalDateTime.now();
+    if (prenDateTime.isBefore(now.minusMinutes(30))) {
+        return &quot;Passata&quot;;
+    } else if (prenDateTime.isBefore(now)) {
+        return &quot;Attiva&quot;;
+    } else {
+        return &quot;Futura&quot;;
+    }
+} catch (Exception e) {
+    return &quot;&quot;;
+}</body>
+        </ownedBehavior>
+        <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_fRrRIM94EfCvI50SpPRHVQ" name="cancellaPrenot" specification="_fRqqEM94EfCvI50SpPRHVQ">
+          <language>JAVA</language>
+          <body>firebasePrenotazioniService.cancellaPrenotazione(p).thenRun(() -> getUI().ifPresent( ui -> ui.access(() -> {
+    Notification.show(&quot;Prenotazione eliminata con successo&quot;, 3000, Notification.Position.TOP_CENTER);
+    getUI().ifPresent( ui1 -> ui1.getPage().reload());
+}))).exceptionally( ex -> {
+    getUI().ifPresent( ui -> ui.access(() -> {
+        Notification.show(&quot;Errore durante il salvataggio: &quot; + ex.getMessage(), 4000, Notification.Position.TOP_CENTER).getElement().getThemeList().add(&quot;error&quot;);
+    }));
+    return null;
+});</body>
+        </ownedBehavior>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="_fRkjcM94EfCvI50SpPRHVQ" name="AdminPrenotazioniView" visibility="public" method="_fRoN0M94EfCvI50SpPRHVQ">
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_fRnmwM94EfCvI50SpPRHVQ" name="firebasePrenotazioniService" type="_fOnWEM94EfCvI50SpPRHVQ"/>
+        </ownedOperation>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="_fRpb8c94EfCvI50SpPRHVQ" name="calcolaStato" visibility="private" method="_fRqDAc94EfCvI50SpPRHVQ">
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_fRpb8s94EfCvI50SpPRHVQ" type="_fMCjMc94EfCvI50SpPRHVQ" direction="return"/>
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_fRqDAM94EfCvI50SpPRHVQ" name="prenotazione" type="_fRpb8M94EfCvI50SpPRHVQ"/>
+        </ownedOperation>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="_fRqqEM94EfCvI50SpPRHVQ" name="cancellaPrenot" visibility="private" method="_fRrRIM94EfCvI50SpPRHVQ">
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_fRqqEc94EfCvI50SpPRHVQ" name="p" type="_fRpb8M94EfCvI50SpPRHVQ"/>
+        </ownedOperation>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="_fSB2cM94EfCvI50SpPRHVQ" name="AdminUtentiView" visibility="public">
+        <generalization xmi:type="uml:Generalization" xmi:id="_fSCdgM94EfCvI50SpPRHVQ" general="_fNk0Qc94EfCvI50SpPRHVQ"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_fSDEkM94EfCvI50SpPRHVQ" name="utentiGrid" visibility="private" type="_fQj20M94EfCvI50SpPRHVQ" isUnique="false">
+          <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_fSDroM94EfCvI50SpPRHVQ" name="defaultValue">
+            <language>JAVA</language>
+            <body>new Grid&lt;>(Utente.class)</body>
+          </defaultValue>
+        </ownedAttribute>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_fSDroc94EfCvI50SpPRHVQ" name="firebaseUtentiService" visibility="private" isLeaf="true" type="_fOidkM94EfCvI50SpPRHVQ" isUnique="false"/>
+        <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_fSGu8M94EfCvI50SpPRHVQ" name="AdminUtentiView" specification="_fSESsM94EfCvI50SpPRHVQ">
+          <language>JAVA</language>
+          <body>this.firebaseUtentiService = firebaseUtentiService;
+setSpacing(true);
+setPadding(true);
+H3 titolo = new H3(&quot;Ecco la lista di tutti gli utenti &quot;);
+titolo.getStyle().set(&quot;color&quot;, &quot;#008000&quot;);
+//Imposta le colonne
+utentiGrid.removeAllColumns();
+utentiGrid.addColumn(Utente::getUsername).setHeader(&quot;Username&quot;).setSortable(true);
+// utentiGrid.addColumn(Utente::getDataCreazione).setHeader(&quot;DataCreazione&quot;).setSortable(true);
+utentiGrid.addColumn(Utente::getEmail).setHeader(&quot;Email&quot;).setSortable(true);
+// Pulsante per la cancellazione
+utentiGrid.addComponentColumn( p -> {
+    Button btn = new Button(&quot;Ban&quot;);
+    btn.addClickListener( e -> banUtente(p));
+    btn.getStyle().set(&quot;color&quot;, &quot;red&quot;).set(&quot;text-decoration&quot;, &quot;underline&quot;).set(&quot;background&quot;, &quot;none&quot;).set(&quot;border&quot;, &quot;none&quot;);
+    return btn;
+});
+Button nuovoUtenteBtn = new Button(&quot;Nuovo Utente&quot;);
+nuovoUtenteBtn.getElement().getThemeList().add(&quot;success&quot;);
+nuovoUtenteBtn.addClickListener( e -> newUtente());
+add(titolo, nuovoUtenteBtn, utentiGrid);
+// Ottiene la lista di utenti da Firebase
+firebaseUtentiService.getAllUtenti().thenAccept( lista -> {
+    getUI().ifPresent( ui -> ui.access(() -> {
+        utentiGrid.setItems(lista);
+    }));
+}).exceptionally( ex -> {
+    ex.printStackTrace();
+    return null;
+});</body>
+        </ownedBehavior>
+        <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_fSH9Ec94EfCvI50SpPRHVQ" name="banUtente" specification="_fSHWAc94EfCvI50SpPRHVQ">
+          <language>JAVA</language>
+          <body>firebaseUtentiService.cancellaUtente(u).thenRun(() -> getUI().ifPresent( ui -> ui.access(() -> {
+    Notification.show(&quot;Utente &quot; + u.getUsername() + &quot; bandito dal sistema.&quot;, 3000, Notification.Position.TOP_CENTER).getElement().getThemeList().add(&quot;success&quot;);
+    ;
+    getUI().ifPresent( ui1 -> ui1.getPage().reload());
+}))).exceptionally(// Gestione errori
+ ex -> {
+    getUI().ifPresent( ui -> ui.access(() -> {
+        Notification.show(&quot;Errore durante la cancellazione: &quot; + ex.getMessage(), 4000, Notification.Position.TOP_CENTER).getElement().getThemeList().add(&quot;error&quot;);
+    }));
+    return null;
+});</body>
+        </ownedBehavior>
+        <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_fSLAYM94EfCvI50SpPRHVQ" name="newUtente" specification="_fSJyQM94EfCvI50SpPRHVQ">
+          <language>JAVA</language>
+          <body>Dialog dialog = new Dialog();
+VerticalLayout formLayout = new VerticalLayout();
+formLayout.setPadding(true);
+formLayout.setSpacing(true);
+H3 titolo = new H3(&quot;Crea un nuovo utente&quot;);
+titolo.getStyle().set(&quot;color&quot;, &quot;#008000&quot;);
+TextField nome = new TextField(&quot;Nome&quot;);
+TextField cognome = new TextField(&quot;Cognome&quot;);
+TextField username = new TextField(&quot;Username&quot;);
+EmailField email = new EmailField(&quot;Email&quot;);
+PasswordField password = new PasswordField(&quot;Password&quot;);
+Button salva = new Button(&quot;Salva Utente&quot;);
+salva.getElement().getThemeList().add(&quot;success&quot;);
+Button annulla = new Button(&quot;Annulla&quot;,  e -> dialog.close());
+salva.addClickListener( e -> {
+    if (nome.isEmpty() || cognome.isEmpty() || username.isEmpty() || email.isEmpty() || password.isEmpty()) {
+        Notification.show(&quot;Compila tutti i campi!&quot;, 3000, Notification.Position.TOP_CENTER).getElement().getThemeList().add(&quot;error&quot;);
+        return;
+    }
+    String n = nome.getValue();
+    String c = cognome.getValue();
+    String u = username.getValue();
+    String em = email.getValue();
+    String p = password.getValue();
+    String errore = DataValidator.verificaDati(n, c, u, em, p, p);
+    if (errore != null) {
+        Notification.show(errore, 3000, Notification.Position.TOP_CENTER).getElement().getThemeList().add(&quot;error&quot;);
+        return;
+    }
+    firebaseUtentiService.verificaUtente(u).thenAccept( utente -> {
+        getUI().ifPresent( ui -> ui.access(() -> {
+            if (utente == null) {
+                Utente nuovoUtente = new Utente(n, c, u, em, p, LocalDate.now().toString(), &quot;Utente&quot;);
+                firebaseUtentiService.salvaUtente(nuovoUtente).thenRun(() -> ui.access(() -> {
+                    Notification.show(&quot;Registrazione completata! Benvenuto, &quot; + u + &quot;.&quot;, 3000, Notification.Position.TOP_CENTER);
+                    getUI().ifPresent( ui1 -> ui1.getPage().reload());
+                })).exceptionally( ex -> {
+                    ui.access(() -> {
+                        Notification.show(&quot;Errore durante il salvataggio: &quot; + ex.getMessage(), 4000, Notification.Position.TOP_CENTER).getElement().getThemeList().add(&quot;error&quot;);
+                    });
+                    return null;
+                });
+            } else {
+                Notification.show(&quot;Lo username : &quot; + u + &quot; e' già in uso, prova con un altro!&quot;, 3000, Notification.Position.TOP_CENTER).getElement().getThemeList().add(&quot;error&quot;);
+                ;
+            }
+        }));
+    });
+});
+HorizontalLayout datiPersonaliLayout = new HorizontalLayout(nome, cognome);
+datiPersonaliLayout.setAlignItems(FlexComponent.Alignment.CENTER);
+HorizontalLayout credenzialiLayout = new HorizontalLayout(username, password);
+credenzialiLayout.setAlignItems(FlexComponent.Alignment.CENTER);
+HorizontalLayout pulsantiLayout = new HorizontalLayout(salva, annulla);
+pulsantiLayout.setAlignItems(FlexComponent.Alignment.CENTER);
+formLayout.add(titolo, datiPersonaliLayout, email, credenzialiLayout, pulsantiLayout);
+formLayout.expand(titolo, datiPersonaliLayout, email, credenzialiLayout, pulsantiLayout);
+// Mostra il form in una nuova finestra/dialog
+dialog.add(formLayout);
+dialog.setModal(true);
+//dialog.setWidth(&quot;600px&quot;);
+dialog.open();</body>
+        </ownedBehavior>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="_fSESsM94EfCvI50SpPRHVQ" name="AdminUtentiView" visibility="public" method="_fSGu8M94EfCvI50SpPRHVQ">
+          <ownedComment xmi:type="uml:Comment" xmi:id="_fSGH4M94EfCvI50SpPRHVQ">
+            <body>Costruttore che genera la griglia contenente tutti gli utenti  @param fb Firebase per accedere ai dati utente</body>
+          </ownedComment>
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_fSGH4c94EfCvI50SpPRHVQ" name="firebaseUtentiService" type="_fOidkM94EfCvI50SpPRHVQ"/>
+        </ownedOperation>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="_fSHWAc94EfCvI50SpPRHVQ" name="banUtente" visibility="private" method="_fSH9Ec94EfCvI50SpPRHVQ">
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_fSH9EM94EfCvI50SpPRHVQ" name="u" type="_fSHWAM94EfCvI50SpPRHVQ"/>
+        </ownedOperation>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="_fSJyQM94EfCvI50SpPRHVQ" name="newUtente" visibility="private" method="_fSLAYM94EfCvI50SpPRHVQ"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="_fOpLQc94EfCvI50SpPRHVQ" name="KpiCard" visibility="public">
+        <generalization xmi:type="uml:Generalization" xmi:id="_fSUKUM94EfCvI50SpPRHVQ" general="_fNk0Qc94EfCvI50SpPRHVQ"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_fSX0sM94EfCvI50SpPRHVQ" name="numberDisplay" visibility="private" type="_fSVYcM94EfCvI50SpPRHVQ" isUnique="false">
+          <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_fSX0sc94EfCvI50SpPRHVQ" name="defaultValue">
+            <language>JAVA</language>
+            <body>new H2()</body>
+          </defaultValue>
+        </ownedAttribute>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_fSja4M94EfCvI50SpPRHVQ" name="titleDisplay" visibility="private" type="_fSaQ8M94EfCvI50SpPRHVQ" isUnique="false">
+          <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_fSkpAM94EfCvI50SpPRHVQ" name="defaultValue">
+            <language>JAVA</language>
+            <body>new Span()</body>
+          </defaultValue>
+        </ownedAttribute>
+        <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_fSr9wM94EfCvI50SpPRHVQ" name="KpiCard" specification="_fSnFQM94EfCvI50SpPRHVQ">
+          <language>JAVA</language>
+          <body>// Imposta i valori
+titleDisplay.setText(title);
+numberDisplay.setText(number);
+numberDisplay.getStyle().set(&quot;margin-top&quot;, &quot;0&quot;);
+numberDisplay.getStyle().set(&quot;margin-bottom&quot;, &quot;0&quot;);
+titleDisplay.getStyle().set(&quot;font-size&quot;, &quot;var(--lumo-font-size-s)&quot;);
+titleDisplay.getStyle().set(&quot;color&quot;, &quot;var(--lumo-secondary-text-color)&quot;);
+// Centra il contenuto
+setAlignItems(Alignment.CENTER);
+getStyle().set(&quot;border&quot;, &quot;1px solid var(--lumo-contrast-20pct)&quot;);
+getStyle().set(&quot;border-radius&quot;, &quot;var(--lumo-border-radius-m)&quot;);
+getStyle().set(&quot;padding&quot;, &quot;var(--lumo-space-m)&quot;);
+// Imposta una larghezza minima per un layout omogeneo
+setMinWidth(&quot;180px&quot;);
+add(numberDisplay, titleDisplay);</body>
+        </ownedBehavior>
+        <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_fSsk0s94EfCvI50SpPRHVQ" name="setNumber" specification="_fSr9wc94EfCvI50SpPRHVQ">
+          <language>JAVA</language>
+          <body>numberDisplay.setText(number);</body>
+        </ownedBehavior>
+        <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_fSsk1s94EfCvI50SpPRHVQ" name="setTitle" specification="_fSsk0894EfCvI50SpPRHVQ">
+          <language>JAVA</language>
+          <body>titleDisplay.setText(title);</body>
+        </ownedBehavior>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="_fSnFQM94EfCvI50SpPRHVQ" name="KpiCard" visibility="public" method="_fSr9wM94EfCvI50SpPRHVQ">
+          <ownedComment xmi:type="uml:Comment" xmi:id="_fSqvoM94EfCvI50SpPRHVQ">
+            <body>Costruttore per la KpiCard. @param title  Etichetta @param number Valore</body>
+          </ownedComment>
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_fSrWsM94EfCvI50SpPRHVQ" name="title" type="_fMCjMc94EfCvI50SpPRHVQ"/>
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_fSrWsc94EfCvI50SpPRHVQ" name="number" type="_fMCjMc94EfCvI50SpPRHVQ"/>
+        </ownedOperation>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="_fSr9wc94EfCvI50SpPRHVQ" name="setNumber" visibility="public" method="_fSsk0s94EfCvI50SpPRHVQ">
+          <ownedComment xmi:type="uml:Comment" xmi:id="_fSsk0M94EfCvI50SpPRHVQ">
+            <body>Metodo pubblico per aggiornare il numero dinamicamente dopo che la card è stata creata. @param number Il nuovo valore da mostrare</body>
+          </ownedComment>
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_fSsk0c94EfCvI50SpPRHVQ" name="number" type="_fMCjMc94EfCvI50SpPRHVQ"/>
+        </ownedOperation>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="_fSsk0894EfCvI50SpPRHVQ" name="setTitle" visibility="public" method="_fSsk1s94EfCvI50SpPRHVQ">
+          <ownedComment xmi:type="uml:Comment" xmi:id="_fSsk1M94EfCvI50SpPRHVQ">
+            <body>Metodo pubblico per aggiornare il titolo dinamicamente. @param title Il nuovo titolo da mostrare</body>
+          </ownedComment>
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_fSsk1c94EfCvI50SpPRHVQ" name="title" type="_fMCjMc94EfCvI50SpPRHVQ"/>
+        </ownedOperation>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="_fNf7wM94EfCvI50SpPRHVQ" name="AdminDashboardView" visibility="public">
+        <generalization xmi:type="uml:Generalization" xmi:id="_fNy2sM94EfCvI50SpPRHVQ" general="_fNk0Qc94EfCvI50SpPRHVQ"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_fOYFgM94EfCvI50SpPRHVQ" name="bookingsChart" visibility="private" type="_fOKDEM94EfCvI50SpPRHVQ" isUnique="false"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_fOfaQM94EfCvI50SpPRHVQ" name="colonnineService" visibility="private" isUnique="false"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_fOjEoM94EfCvI50SpPRHVQ" name="firebaseUtentiService" visibility="private" type="_fOidkM94EfCvI50SpPRHVQ" isUnique="false"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_fOk50M94EfCvI50SpPRHVQ" name="firebaseColonnineService" visibility="private" type="_fOkSwM94EfCvI50SpPRHVQ" isUnique="false"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_fOokMM94EfCvI50SpPRHVQ" name="firebasePrenotazioniService" visibility="private" type="_fOnWEM94EfCvI50SpPRHVQ" isUnique="false"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_fOpyUM94EfCvI50SpPRHVQ" name="utentiCard" visibility="private" type="_fOpLQc94EfCvI50SpPRHVQ" isUnique="false">
+          <ownedComment xmi:type="uml:Comment" xmi:id="_fOqZYM94EfCvI50SpPRHVQ">
+            <body>Utenti</body>
+          </ownedComment>
+        </ownedAttribute>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_fOrngM94EfCvI50SpPRHVQ" name="utentiNuoviCard" visibility="private" type="_fOpLQc94EfCvI50SpPRHVQ" isUnique="false"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_fOuDwM94EfCvI50SpPRHVQ" name="colonnineTotaliCard" visibility="private" type="_fOpLQc94EfCvI50SpPRHVQ" isUnique="false">
+          <ownedComment xmi:type="uml:Comment" xmi:id="_fOv48M94EfCvI50SpPRHVQ">
+            <body>Colonnine</body>
+          </ownedComment>
+        </ownedAttribute>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_fOwgAM94EfCvI50SpPRHVQ" name="colonnineLibereCard" visibility="private" type="_fOpLQc94EfCvI50SpPRHVQ" isUnique="false"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_fOzjUM94EfCvI50SpPRHVQ" name="colonnineGuasteCard" visibility="private" type="_fOpLQc94EfCvI50SpPRHVQ" isUnique="false"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_fO3NsM94EfCvI50SpPRHVQ" name="prenotazioniTotaliCard" visibility="private" type="_fOpLQc94EfCvI50SpPRHVQ" isUnique="false">
+          <ownedComment xmi:type="uml:Comment" xmi:id="_fO4b0M94EfCvI50SpPRHVQ">
+            <body>Prenotazioni</body>
+          </ownedComment>
+        </ownedAttribute>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_fO5C4M94EfCvI50SpPRHVQ" name="prenotazioniNuoveCard" visibility="private" type="_fOpLQc94EfCvI50SpPRHVQ" isUnique="false"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_fO5C4c94EfCvI50SpPRHVQ" name="recensioniTotaliCard" visibility="private" type="_fOpLQc94EfCvI50SpPRHVQ" isUnique="false">
+          <ownedComment xmi:type="uml:Comment" xmi:id="_fO64EM94EfCvI50SpPRHVQ">
+            <body>Segnalazioni</body>
+          </ownedComment>
+        </ownedAttribute>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_fO8GMM94EfCvI50SpPRHVQ" name="recensioniNuoveCard" visibility="private" type="_fOpLQc94EfCvI50SpPRHVQ" isUnique="false"/>
+        <interfaceRealization xmi:type="uml:InterfaceRealization" xmi:id="_fOFxoM94EfCvI50SpPRHVQ" name="AdminDashboardView implements AfterNavigationObserver" client="_fNf7wM94EfCvI50SpPRHVQ" supplier="_fN1S8M94EfCvI50SpPRHVQ" contract="_fN1S8M94EfCvI50SpPRHVQ"/>
+        <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_fPRdYM94EfCvI50SpPRHVQ" name="AdminDashboardView" specification="_fO_JgM94EfCvI50SpPRHVQ">
+          <language>JAVA</language>
+          <body>this.firebaseUtentiService = firebaseUtentiService;
+this.firebaseColonnineService = firebaseColonnineService;
+this.firebasePrenotazioniService = firebasePrenotazioniService;
+this.colonnineService = colonnineService;
+// Occupa tutto lo spazio
+setSizeFull();
+setSpacing(true);
+setPadding(true);
+H1 titolo = new H1(&quot;Dashboard&quot;);
+Button refresh = new Button(VaadinIcon.REFRESH.create());
+refresh.addThemeVariants(ButtonVariant.LUMO_LARGE);
+refresh.getElement().getThemeList().add(&quot;success&quot;);
+HorizontalLayout upperBar = new HorizontalLayout(titolo, refresh);
+upperBar.setWidthFull();
+upperBar.setPadding(true);
+// Titolo a sx, bottone a dx
+upperBar.setJustifyContentMode(JustifyContentMode.BETWEEN);
+// Allinea al centro verticalmente
+upperBar.setDefaultVerticalComponentAlignment(Alignment.CENTER);
+H2 chartTitle = new H2(&quot;Andamento Settimanale&quot;);
+// Creazione kpiCards
+VerticalLayout kpiLayout = createKpiLayout();
+// Creazione grafico
+this.bookingsChart = createBookingsChart();
+add(upperBar, kpiLayout, chartTitle, this.bookingsChart);
+// Quando si schiaccia il tasto di refresh, i dati devono essere aggiornati
+refresh.addClickListener( e -> {
+    loadKpiData();
+    loadChartData();
+});</body>
+        </ownedBehavior>
+        <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_fPe4wM94EfCvI50SpPRHVQ" name="afterNavigation" specification="_fPbOYM94EfCvI50SpPRHVQ">
+          <language>JAVA</language>
+          <body>loadKpiData();
+loadChartData();</body>
+        </ownedBehavior>
+        <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_fPjKMM94EfCvI50SpPRHVQ" name="createKpiLayout" specification="_fPgt8M94EfCvI50SpPRHVQ">
+          <language>JAVA</language>
+          <body>H2 utenti = new H2(&quot;Gestione utenti&quot;);
+H2 colonnine = new H2(&quot;Gestione colonnine&quot;);
+H2 prenotazioni = new H2(&quot;Gestione prenotazioni&quot;);
+H2 segnalazioni = new H2(&quot;Gestione segnalazioni&quot;);
+// Layout di gestione utenti e colonnine
+VerticalLayout utentiLayout = new VerticalLayout(utenti, kpiUtenti());
+VerticalLayout colonnineLayout = new VerticalLayout(colonnine, kpiColonnine());
+HorizontalLayout utentiAndColonnineLayout = new HorizontalLayout(utentiLayout, colonnineLayout);
+utentiAndColonnineLayout.setWidthFull();
+utentiAndColonnineLayout.expand(utentiLayout, colonnineLayout);
+// Layout di gestione prenotazioni e segnalazioni
+VerticalLayout prenotazioniLayout = new VerticalLayout(prenotazioni, kpiPrenotazioni());
+VerticalLayout segnalazioniLayout = new VerticalLayout(segnalazioni, kpiSegnalazioni());
+HorizontalLayout prenotazioniAndSegnalazioniLayout = new HorizontalLayout(prenotazioniLayout, segnalazioniLayout);
+prenotazioniAndSegnalazioniLayout.setWidthFull();
+prenotazioniAndSegnalazioniLayout.expand(prenotazioniLayout, segnalazioniLayout);
+// Unisce i due layout
+VerticalLayout kpiLayout = new VerticalLayout(utentiAndColonnineLayout, prenotazioniAndSegnalazioniLayout);
+kpiLayout.setWidthFull();
+kpiLayout.setPadding(false);
+kpiLayout.setSpacing(true);
+return kpiLayout;</body>
+        </ownedBehavior>
+        <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_fPk_YM94EfCvI50SpPRHVQ" name="loadKpiData" specification="_fPjxQM94EfCvI50SpPRHVQ">
+          <language>JAVA</language>
+          <body>// Utenti
+firebaseUtentiService.contaUtenti().thenAccept( num -> {
+    getUI().ifPresent( ui -> ui.access(() -> utentiCard.setNumber(num.toString())));
+}).exceptionally( ex -> {
+    getUI().ifPresent( ui -> ui.access(() -> utentiCard.setNumber(&quot;Errore&quot;)));
+    return null;
+});
+firebaseUtentiService.contaUtentiNuovi().thenAccept( num -> {
+    String utentiNuovi = num.toString();
+    getUI().ifPresent( ui -> {
+        ui.access(() -> {
+            utentiNuoviCard.setNumber(utentiNuovi);
+        });
+    });
+}).exceptionally( ex -> {
+    getUI().ifPresent( ui -> {
+        ui.access(() -> {
+            utentiNuoviCard.setNumber(&quot;Errore&quot;);
+        });
+    });
+    return null;
+});
+/*
+		 * fb.contaUtentiAttivi().thenAccept(num -> {
+		 * 
+		 * String utentiAttivi = num.toString();
+		 * 
+		 * getUI().ifPresent(ui -> { ui.access(() -> {
+		 * utentiAttiviCard.setNumber(utentiAttivi); }); }); }).exceptionally(ex -> {
+		 * 
+		 * getUI().ifPresent(ui -> { ui.access(() -> {
+		 * utentiAttiviCard.setNumber(&quot;Errore&quot;); }); }); return null; });
+		 */
+// Colonnine
+firebaseColonnineService.contaColonnine().thenAccept( num -> {
+    getUI().ifPresent( ui -> ui.access(() -> colonnineTotaliCard.setNumber(num.toString())));
+}).exceptionally( ex -> {
+    getUI().ifPresent( ui -> ui.access(() -> colonnineTotaliCard.setNumber(&quot;Errore&quot;)));
+    return null;
+});
+colonnineService.inizializza(&quot;Libera&quot;).thenCompose( v -> colonnineService.aggiornaStato(&quot;Prenotata&quot;)).thenCompose( v -> colonnineService.aggiornaStatoCarica(&quot;In carica&quot;)).thenRun(() -> {
+    firebaseColonnineService.contaColonnineLG(&quot;Libera&quot;).thenAccept( num -> {
+        getUI().ifPresent( ui -> ui.access(() -> colonnineLibereCard.setNumber(num.toString())));
+    }).exceptionally( ex -> {
+        getUI().ifPresent( ui -> ui.access(() -> colonnineLibereCard.setNumber(&quot;Errore&quot;)));
+        return null;
+    });
+});
+firebaseColonnineService.contaColonnineLG(&quot;Manutenzione&quot;).thenAccept( num -> {
+    String colonnineGuaste = num.toString();
+    getUI().ifPresent( ui -> {
+        ui.access(() -> {
+            colonnineGuasteCard.setNumber(colonnineGuaste);
+        });
+    });
+}).exceptionally( ex -> {
+    getUI().ifPresent( ui -> {
+        ui.access(() -> {
+            colonnineGuasteCard.setNumber(&quot;Errore&quot;);
+        });
+    });
+    return null;
+});
+// Prenotazioni
+firebasePrenotazioniService.contaPrenotazioni().thenAccept( num -> {
+    getUI().ifPresent( ui -> ui.access(() -> prenotazioniTotaliCard.setNumber(num.toString())));
+}).exceptionally( ex -> {
+    getUI().ifPresent( ui -> ui.access(() -> prenotazioniTotaliCard.setNumber(&quot;Errore&quot;)));
+    return null;
+});
+firebasePrenotazioniService.contaPrenotazioniNuove().thenAccept( num -> {
+    getUI().ifPresent( ui -> ui.access(() -> prenotazioniNuoveCard.setNumber(num.toString())));
+}).exceptionally( ex -> {
+    getUI().ifPresent( ui -> ui.access(() -> prenotazioniNuoveCard.setNumber(&quot;Errore&quot;)));
+    return null;
+});
+// Recensioni
+//String recensioniTotali = FirebaseService.contaRecensioniTotali();
+//String recensioniNuove = FirebaseService.contaRecensioniNuove();</body>
+        </ownedBehavior>
+        <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_fPv-gM94EfCvI50SpPRHVQ" name="kpiUtenti" specification="_fPlmcM94EfCvI50SpPRHVQ">
+          <language>JAVA</language>
+          <body>// Creazione delle card (inizialmente senza dati)
+utentiCard = new KpiCard(&quot;Utenti totali&quot;, &quot;...&quot;);
+utentiNuoviCard = new KpiCard(&quot;Nuovi utenti&quot;, &quot;...&quot;);
+HorizontalLayout kpiUtentiLayout = new HorizontalLayout(utentiCard, utentiNuoviCard);
+kpiUtentiLayout.setWidthFull();
+kpiUtentiLayout.setSpacing(true);
+// Fa in modo che le card si espandano per riempire lo spazio
+kpiUtentiLayout.expand(utentiCard, utentiNuoviCard);
+return kpiUtentiLayout;</body>
+        </ownedBehavior>
+        <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_fP03AM94EfCvI50SpPRHVQ" name="kpiColonnine" specification="_fPxMoM94EfCvI50SpPRHVQ">
+          <language>JAVA</language>
+          <body>// Creazione delle card (inizialmente senza dati)
+colonnineTotaliCard = new KpiCard(&quot;Colonnine totali&quot;, &quot;...&quot;);
+colonnineLibereCard = new KpiCard(&quot;Colonnine libere&quot;, &quot;...&quot;);
+colonnineGuasteCard = new KpiCard(&quot;Colonnine guaste&quot;, &quot;...&quot;);
+colonnineLibereCard.getStyle().set(&quot;background-color&quot;, &quot;var(--lumo-success-color-10pct)&quot;);
+colonnineLibereCard.getStyle().set(&quot;border-color&quot;, &quot;var(--lumo-success-color)&quot;);
+colonnineGuasteCard.getStyle().set(&quot;background-color&quot;, &quot;var(--lumo-error-color-10pct)&quot;);
+colonnineGuasteCard.getStyle().set(&quot;border-color&quot;, &quot;var(--lumo-error-color)&quot;);
+HorizontalLayout kpiColonnineLayout = new HorizontalLayout(colonnineTotaliCard, colonnineLibereCard, colonnineGuasteCard);
+kpiColonnineLayout.setWidthFull();
+kpiColonnineLayout.setSpacing(true);
+// Fa in modo che le card si espandano per riempire lo spazio
+kpiColonnineLayout.expand(colonnineTotaliCard, colonnineLibereCard, colonnineGuasteCard);
+return kpiColonnineLayout;</body>
+        </ownedBehavior>
+        <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_fP1eEs94EfCvI50SpPRHVQ" name="kpiPrenotazioni" specification="_fP03Ac94EfCvI50SpPRHVQ">
+          <language>JAVA</language>
+          <body>// Creazione delle card (inizialmente senza dati)
+prenotazioniTotaliCard = new KpiCard(&quot;Prenotazioni totali&quot;, &quot;...&quot;);
+prenotazioniNuoveCard = new KpiCard(&quot;Nuove prenotazioni&quot;, &quot;...&quot;);
+HorizontalLayout kpiColonnineLayout = new HorizontalLayout(prenotazioniTotaliCard, prenotazioniNuoveCard);
+kpiColonnineLayout.setWidthFull();
+kpiColonnineLayout.setSpacing(true);
+// Fa in modo che le card si espandano per riempire lo spazio
+kpiColonnineLayout.expand(prenotazioniTotaliCard, prenotazioniNuoveCard);
+return kpiColonnineLayout;</body>
+        </ownedBehavior>
+        <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_fP36UM94EfCvI50SpPRHVQ" name="kpiSegnalazioni" specification="_fP1eE894EfCvI50SpPRHVQ">
+          <language>JAVA</language>
+          <body>// Creazione delle card (inizialmente senza dati)
+recensioniTotaliCard = new KpiCard(&quot;Recensionini totali&quot;, &quot;...&quot;);
+recensioniNuoveCard = new KpiCard(&quot;Nuove recensioni&quot;, &quot;...&quot;);
+HorizontalLayout kpiUtentiLayout = new HorizontalLayout(recensioniTotaliCard, recensioniNuoveCard);
+kpiUtentiLayout.setWidthFull();
+kpiUtentiLayout.setSpacing(true);
+// Fa in modo che le card si espandano per riempire lo spazio
+kpiUtentiLayout.expand(recensioniTotaliCard, recensioniNuoveCard);
+return kpiUtentiLayout;</body>
+        </ownedBehavior>
+        <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_fP8LwM94EfCvI50SpPRHVQ" name="createBookingsChart" specification="_fP4hYM94EfCvI50SpPRHVQ">
+          <language>JAVA</language>
+          <body>// Dati di default
+Integer[] emptyData = { 0, 0, 0, 0, 0, 0, 0 };
+// Settimana completa precedente
+String[] days = { &quot;Lun&quot;, &quot;Mar&quot;, &quot;Mer&quot;, &quot;Gio&quot;, &quot;Ven&quot;, &quot;Sab&quot;, &quot;Dom&quot; };
+ApexCharts chart = ApexChartsBuilder.get().withChart(// Tipo di grafico
+ChartBuilder.get().withType(Type.LINE).withZoom(// (a linee)
+// Disabilita lo zoom
+ZoomBuilder.get().withEnabled(false).build()).withHeight(// Altezza
+&quot;500px&quot;).build()).withSeries(new Series&lt;>(&quot;Prenotazioni&quot;, emptyData), new // Dati
+Series&lt;>(// Dati
+&quot;Nuovi Utenti&quot;, // Dati
+emptyData)).withXaxis(// Etichette asse X
+XAxisBuilder.get().withCategories(days).build()).withYaxis(YAxisBuilder.get().build()).withLegend(// Mostra
+LegendBuilder.get().withShow(true).build()).build();
+return chart;</body>
+        </ownedBehavior>
+        <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_fQEHkM94EfCvI50SpPRHVQ" name="loadChartData" specification="_fQAdMM94EfCvI50SpPRHVQ">
+          <language>JAVA</language>
+          <body>// Avvia entrambe le chiamate in parallelo
+CompletableFuture&lt;Integer[]> futureBookings = firebasePrenotazioniService.contaPrenotazioniGiorni();
+//CompletableFuture&lt;Integer[]> futureUsers = fb.getDatiGraficoUtenti();
+// Quando sono finite entrambe le chiamate:
+//CompletableFuture.allOf(futureBookings, futureUsers).thenAccept(voidResult -> {
+CompletableFuture.allOf(futureBookings).thenAccept( voidResult -> {
+    Integer[] bookingsData = futureBookings.join();
+    getUI().ifPresent( ui -> {
+        ui.access(() -> {
+            bookingsChart.updateSeries(new Series&lt;>(&quot;Prenotazioni&quot;, bookingsData));
+        });
+    });
+}).exceptionally( ex -> {
+    ex.printStackTrace();
+    return null;
+});</body>
+        </ownedBehavior>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="_fO_JgM94EfCvI50SpPRHVQ" name="AdminDashboardView" visibility="public" method="_fPRdYM94EfCvI50SpPRHVQ">
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_fPNL8M94EfCvI50SpPRHVQ" name="firebaseUtentiService" type="_fOidkM94EfCvI50SpPRHVQ"/>
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_fPPBIM94EfCvI50SpPRHVQ" name="firebaseColonnineService" type="_fOkSwM94EfCvI50SpPRHVQ"/>
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_fPQ2UM94EfCvI50SpPRHVQ" name="colonnineService"/>
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_fPQ2Uc94EfCvI50SpPRHVQ" name="firebasePrenotazioniService" type="_fOnWEM94EfCvI50SpPRHVQ"/>
+        </ownedOperation>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="_fPbOYM94EfCvI50SpPRHVQ" name="afterNavigation" visibility="public" method="_fPe4wM94EfCvI50SpPRHVQ">
+          <ownedComment xmi:type="uml:Comment" xmi:id="_fPbOYc94EfCvI50SpPRHVQ">
+            <body>Metodo richiamato da Vaadin in automatico al caricamento della pagina. In questo modo i dati sono subito aggiornati.</body>
+          </ownedComment>
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_fPccgM94EfCvI50SpPRHVQ" name="event" type="_fPSrgM94EfCvI50SpPRHVQ"/>
+        </ownedOperation>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="_fPgt8M94EfCvI50SpPRHVQ" name="createKpiLayout" visibility="private" method="_fPjKMM94EfCvI50SpPRHVQ">
+          <ownedComment xmi:type="uml:Comment" xmi:id="_fPgt8c94EfCvI50SpPRHVQ">
+            <body>Metodo per creare un layout con le KpiCard. Dividiamo la sezione in quattro parti, ognuna per ogni gestione.  @return il layout descritto.</body>
+          </ownedComment>
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_fPh8EM94EfCvI50SpPRHVQ" type="_fNk0Qc94EfCvI50SpPRHVQ" direction="return"/>
+        </ownedOperation>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="_fPjxQM94EfCvI50SpPRHVQ" name="loadKpiData" visibility="private" method="_fPk_YM94EfCvI50SpPRHVQ">
+          <ownedComment xmi:type="uml:Comment" xmi:id="_fPjxQc94EfCvI50SpPRHVQ">
+            <body>Metodo per il caricamento di tutte le KPI.</body>
+          </ownedComment>
+        </ownedOperation>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="_fPlmcM94EfCvI50SpPRHVQ" name="kpiUtenti" visibility="private" method="_fPv-gM94EfCvI50SpPRHVQ">
+          <ownedComment xmi:type="uml:Comment" xmi:id="_fPlmcc94EfCvI50SpPRHVQ">
+            <body>Metodo per creare le card e inserirle nel layout.  @return il layout delle kpi degli utenti.</body>
+          </ownedComment>
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_fPuwYM94EfCvI50SpPRHVQ" type="_fPlmcs94EfCvI50SpPRHVQ" direction="return"/>
+        </ownedOperation>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="_fPxMoM94EfCvI50SpPRHVQ" name="kpiColonnine" visibility="private" method="_fP03AM94EfCvI50SpPRHVQ">
+          <ownedComment xmi:type="uml:Comment" xmi:id="_fPzB0M94EfCvI50SpPRHVQ">
+            <body>Metodo per creare le card e inserirle nel layout.  @return il layout delle kpi delle colonnine.</body>
+          </ownedComment>
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_fP0P8M94EfCvI50SpPRHVQ" type="_fPlmcs94EfCvI50SpPRHVQ" direction="return"/>
+        </ownedOperation>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="_fP03Ac94EfCvI50SpPRHVQ" name="kpiPrenotazioni" visibility="private" method="_fP1eEs94EfCvI50SpPRHVQ">
+          <ownedComment xmi:type="uml:Comment" xmi:id="_fP1eEM94EfCvI50SpPRHVQ">
+            <body>Metodo per creare le card e inserirle nel layout.  @return il layout delle kpi delle prenotazioni.</body>
+          </ownedComment>
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_fP1eEc94EfCvI50SpPRHVQ" type="_fPlmcs94EfCvI50SpPRHVQ" direction="return"/>
+        </ownedOperation>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="_fP1eE894EfCvI50SpPRHVQ" name="kpiSegnalazioni" visibility="private" method="_fP36UM94EfCvI50SpPRHVQ">
+          <ownedComment xmi:type="uml:Comment" xmi:id="_fP1eFM94EfCvI50SpPRHVQ">
+            <body>Metodo per creare le card e inserirle nel layout.  @return il layout delle kpi delle segnalazioni.</body>
+          </ownedComment>
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_fP2FIM94EfCvI50SpPRHVQ" type="_fPlmcs94EfCvI50SpPRHVQ" direction="return"/>
+        </ownedOperation>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="_fP4hYM94EfCvI50SpPRHVQ" name="createBookingsChart" visibility="private" method="_fP8LwM94EfCvI50SpPRHVQ">
+          <ownedComment xmi:type="uml:Comment" xmi:id="_fP5IcM94EfCvI50SpPRHVQ">
+            <body>Crea un grafico a linee inizialmente vuoto che riceverà i dati.  @return il grafico.</body>
+          </ownedComment>
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_fP5vgM94EfCvI50SpPRHVQ" type="_fOKDEM94EfCvI50SpPRHVQ" direction="return"/>
+        </ownedOperation>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="_fQAdMM94EfCvI50SpPRHVQ" name="loadChartData" visibility="private" method="_fQEHkM94EfCvI50SpPRHVQ">
+          <ownedComment xmi:type="uml:Comment" xmi:id="_fQBrUM94EfCvI50SpPRHVQ">
+            <body>Carica i dati per il grafico da Firebase in modo asincrono e aggiorna il grafico quando sono pronti.</body>
+          </ownedComment>
+        </ownedOperation>
+      </packagedElement>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="_y10YkNBcEfC4AfTsExly3Q" memberEnd="_y2YZQNBcEfC4AfTsExly3Q _y2mbsNBcEfC4AfTsExly3Q">
+      <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_y2QdcNBcEfC4AfTsExly3Q" source="org.eclipse.papyrus">
+        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_y2VV8NBcEfC4AfTsExly3Q" key="nature" value="UML_Nature"/>
+      </eAnnotations>
+      <ownedEnd xmi:type="uml:Property" xmi:id="_y2YZQNBcEfC4AfTsExly3Q" name="kpicard" type="_fOpLQc94EfCvI50SpPRHVQ" association="_y10YkNBcEfC4AfTsExly3Q"/>
+      <ownedEnd xmi:type="uml:Property" xmi:id="_y2mbsNBcEfC4AfTsExly3Q" name="admindashboardview" type="_fNf7wM94EfCvI50SpPRHVQ" association="_y10YkNBcEfC4AfTsExly3Q"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_feyAgNBeEfC4AfTsExly3Q" name="QRCode">
+      <ownedOperation xmi:type="uml:Operation" xmi:id="_npuosNBeEfC4AfTsExly3Q" name="generaQR" isStatic="true"/>
     </packagedElement>
     <profileApplication xmi:type="uml:ProfileApplication" xmi:id="_szdM8K2_EfCDm6AtkyEGow">
       <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_szfCIK2_EfCDm6AtkyEGow" source="http://www.eclipse.org/uml2/2.0.0/UML">
