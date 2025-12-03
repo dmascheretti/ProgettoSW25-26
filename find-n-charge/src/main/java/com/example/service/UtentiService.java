@@ -6,6 +6,8 @@ package com.example.service;
 
 import com.example.database.FirebaseUtentiService;
 import com.example.models.Utente;
+import com.example.util.DataValidator;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.threeten.bp.LocalDate;
@@ -111,6 +113,44 @@ public class UtentiService {
 		});
 
 		// null se tutto è andato a buon fine
+		return future;
+	}
+
+	public CompletableFuture<Void> cambiaPassword(Utente u, String nuovaPassword) {
+
+		CompletableFuture<Void> future = new CompletableFuture<>();
+		if (!DataValidator.controllaPassword(nuovaPassword)) {
+		    future.completeExceptionally(new IllegalArgumentException("Password non valida"));
+		    return future;
+		}
+		String passwordCriptata = passwordEncoder.encode(nuovaPassword);
+
+		firebaseUtentiService.cambiaPassword(u, passwordCriptata).thenRun(() -> {
+			future.complete(null);
+		}).exceptionally(e -> {
+			future.completeExceptionally(e);
+			return null;
+		});
+
+		return future;
+	}
+
+	public CompletableFuture<Void> cambiaMail(Utente u, String nuovaMail) {
+
+		CompletableFuture<Void> future = new CompletableFuture<>();
+
+		if (!DataValidator.controllaMail(nuovaMail)) {
+		    future.completeExceptionally(new IllegalArgumentException("Email non valida"));
+		    return future;
+		}
+
+		firebaseUtentiService.cambiaMail(u, nuovaMail).thenRun(() -> {
+			future.complete(null);
+		}).exceptionally(e -> {
+			future.completeExceptionally(e);
+			return null;
+		});
+
 		return future;
 	}
 

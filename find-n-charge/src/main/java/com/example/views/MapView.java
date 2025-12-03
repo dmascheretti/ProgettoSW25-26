@@ -10,7 +10,7 @@ import com.example.components.Sidebar;
 import com.example.models.Colonnina;
 import com.example.models.Utente;
 import com.example.service.ColonnineService;
-import com.example.service.PrenotazioneService;
+import com.example.service.PrenotazioniService;
 import com.example.util.DataValidator;
 
 import java.time.LocalDate;
@@ -55,7 +55,7 @@ public class MapView extends HorizontalLayout {
 
 	// Serve Firebase con la lista della colonnine del database
 	private FirebaseColonnineService firebaseColonnineService;
-	private PrenotazioneService prenotazioneService;
+	private PrenotazioniService prenotazioneService;
 	private FirebasePrenotazioniService firebasePrenotazioniService;
 	private FirebaseAutoService firebaseAutoService;
 	private List<Colonnina> colonnine;
@@ -63,7 +63,7 @@ public class MapView extends HorizontalLayout {
 	private ObjectMapper objectMapper = new ObjectMapper(); // Per tradurre gli oggetti da Java a JSON
 
 	public MapView(@Autowired FirebaseColonnineService firebaseColonnineService,FirebaseAutoService firebaseAutoService,
-			FirebasePrenotazioniService firebasePrenotazioniService, ColonnineService colonnineService, PrenotazioneService prenotazioneService) {
+			FirebasePrenotazioniService firebasePrenotazioniService, ColonnineService colonnineService, PrenotazioniService prenotazioneService) {
 
         this.firebaseColonnineService=firebaseColonnineService;
         this.firebaseAutoService=firebaseAutoService;

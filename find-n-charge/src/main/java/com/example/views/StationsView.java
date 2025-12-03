@@ -16,7 +16,7 @@ import com.example.database.FirebasePrenotazioniService;
 import com.example.layout.MainLayout;
 import com.example.models.Colonnina;
 import com.example.models.Utente;
-import com.example.service.PrenotazioneService;
+import com.example.service.PrenotazioniService;
 import com.example.util.DataValidator;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.button.Button;
@@ -41,12 +41,12 @@ public class StationsView extends HorizontalLayout {
 	private FirebaseAutoService firebaseAutoService;
 	private FirebaseColonnineService firebaseColonnineService;
 	private Sidebar stationSidebar;
-	private PrenotazioneService prenotazioneService;
+	private PrenotazioniService prenotazioneService;
 	private Colonnina colonninaSelezionata;
 
 	// Classe per l'elenco delle colonnine (indipendente dalla mappa)
 	public StationsView(FirebaseAutoService firebaseAutoService, FirebasePrenotazioniService firebasePrenotazioniService,
-				FirebaseColonnineService firebaseColonnineService, PrenotazioneService prenotazioneService) {
+				FirebaseColonnineService firebaseColonnineService, PrenotazioniService prenotazioneService) {
 		this.firebaseAutoService=firebaseAutoService;
 		this.firebaseColonnineService=firebaseColonnineService;
 		this.firebasePrenotazioniService=firebasePrenotazioniService;

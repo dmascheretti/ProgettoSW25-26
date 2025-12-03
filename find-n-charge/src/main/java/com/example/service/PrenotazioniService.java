@@ -17,10 +17,10 @@ import com.example.models.Prenotazione;
 import com.example.models.Utente;
 
 @Service
-public class PrenotazioneService {
+public class PrenotazioniService {
 	private final FirebasePrenotazioniService firebasePrenotazioniService;
 
-	public PrenotazioneService(FirebasePrenotazioniService firebasePrenotazioniService) {
+	public PrenotazioniService(FirebasePrenotazioniService firebasePrenotazioniService) {
 		this.firebasePrenotazioniService = firebasePrenotazioniService;
 	}
 
@@ -118,6 +118,10 @@ public class PrenotazioneService {
 				});
 		return future;
 	}
+	
+	public CompletableFuture<Boolean> inCarica(Auto a) {
+        return firebasePrenotazioniService.inCarica(a);
+    }
 	
 	
 

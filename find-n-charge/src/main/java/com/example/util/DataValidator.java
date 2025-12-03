@@ -7,10 +7,7 @@ package com.example.util;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-
-import com.example.models.Utente;
-import com.vaadin.flow.component.notification.Notification;
-
+;
 public class DataValidator {
 
 	/**
@@ -92,4 +89,12 @@ public class DataValidator {
 	    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
 	    return slot.format(formatter);
 	}
+	
+	public static boolean controllaPassword(String password) {
+		return password!=null && password.length()>=6;
+	}
+	
+	public static boolean controllaMail(String email) {
+        return email != null && email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$");
+    }
 }
