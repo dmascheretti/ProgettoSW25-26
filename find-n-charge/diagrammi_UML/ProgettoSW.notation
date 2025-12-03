@@ -3432,37 +3432,7 @@
             <layoutConstraint xmi:type="notation:Location" xmi:id="_IP5EtMxQEfC9ZqIAxAn4hg" y="15"/>
           </children>
           <element xmi:type="uml:OpaqueAction" href="ProgettoSW.uml#_IP0MMMxQEfC9ZqIAxAn4hg"/>
-<<<<<<< Updated upstream
-          <layoutConstraint xmi:type="notation:Bounds" xmi:id="_IP5EtcxQEfC9ZqIAxAn4hg" x="929" y="44"/>
-        </children>
-        <children xmi:type="notation:Shape" xmi:id="_T7gh0MxREfC9ZqIAxAn4hg" type="DecisionNode_Shape">
-          <children xmi:type="notation:DecorationNode" xmi:id="_T7gh0sxREfC9ZqIAxAn4hg" type="DecisionNode_FloatingNameLabel">
-            <layoutConstraint xmi:type="notation:Location" xmi:id="_T7gh08xREfC9ZqIAxAn4hg" y="15"/>
-          </children>
-          <children xmi:type="notation:DecorationNode" xmi:id="_T7hv8MxREfC9ZqIAxAn4hg" type="DecisionNode_DecisionInputLabel">
-            <layoutConstraint xmi:type="notation:Location" xmi:id="_T7hv8cxREfC9ZqIAxAn4hg" y="15"/>
-          </children>
-          <children xmi:type="notation:DecorationNode" xmi:id="_T7hv8sxREfC9ZqIAxAn4hg" type="DecisionNode_StereotypeLabel">
-            <layoutConstraint xmi:type="notation:Location" xmi:id="_T7hv88xREfC9ZqIAxAn4hg" y="15"/>
-          </children>
-          <element xmi:type="uml:DecisionNode" href="ProgettoSW.uml#_T7Ww0MxREfC9ZqIAxAn4hg"/>
-          <layoutConstraint xmi:type="notation:Bounds" xmi:id="_T7gh0cxREfC9ZqIAxAn4hg" x="275" y="44"/>
-        </children>
-        <children xmi:type="notation:Shape" xmi:id="_n_D5QMxdEfCz-uEpwkEe1A" type="DecisionNode_Shape">
-          <children xmi:type="notation:DecorationNode" xmi:id="_n_D5QsxdEfCz-uEpwkEe1A" type="DecisionNode_FloatingNameLabel">
-            <layoutConstraint xmi:type="notation:Location" xmi:id="_n_D5Q8xdEfCz-uEpwkEe1A" y="15"/>
-          </children>
-          <children xmi:type="notation:DecorationNode" xmi:id="_n_D5RMxdEfCz-uEpwkEe1A" type="DecisionNode_DecisionInputLabel">
-            <layoutConstraint xmi:type="notation:Location" xmi:id="_n_D5RcxdEfCz-uEpwkEe1A" y="15"/>
-          </children>
-          <children xmi:type="notation:DecorationNode" xmi:id="_n_D5RsxdEfCz-uEpwkEe1A" type="DecisionNode_StereotypeLabel">
-            <layoutConstraint xmi:type="notation:Location" xmi:id="_n_D5R8xdEfCz-uEpwkEe1A" y="15"/>
-          </children>
-          <element xmi:type="uml:DecisionNode" href="ProgettoSW.uml#_n9rZMMxdEfCz-uEpwkEe1A"/>
-          <layoutConstraint xmi:type="notation:Bounds" xmi:id="_n_D5QcxdEfCz-uEpwkEe1A" x="679" y="324" width="20" height="41"/>
-=======
           <layoutConstraint xmi:type="notation:Bounds" xmi:id="_IP5EtcxQEfC9ZqIAxAn4hg" x="853" y="44"/>
->>>>>>> Stashed changes
         </children>
         <children xmi:type="notation:Shape" xmi:id="_4Lj9EMxdEfCz-uEpwkEe1A" type="OpaqueAction_Shape">
           <children xmi:type="notation:DecorationNode" xmi:id="_4Lj9EsxdEfCz-uEpwkEe1A" type="OpaqueAction_NameLabel"/>
@@ -3491,12 +3461,6 @@
               <layoutConstraint xmi:type="notation:Location" xmi:id="_MRCdlcxeEfCz-uEpwkEe1A" y="15"/>
             </children>
             <element xmi:type="uml:OutputPin" href="ProgettoSW.uml#_MQu7kcxeEfCz-uEpwkEe1A"/>
-<<<<<<< Updated upstream
-            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_MRCdkcxeEfCz-uEpwkEe1A" y="39"/>
-          </children>
-          <element xmi:type="uml:OpaqueAction" href="ProgettoSW.uml#_4LaMEMxdEfCz-uEpwkEe1A"/>
-          <layoutConstraint xmi:type="notation:Bounds" xmi:id="_4Lj9FcxdEfCz-uEpwkEe1A" x="303" y="324"/>
-=======
             <layoutConstraint xmi:type="notation:Bounds" xmi:id="_MRCdkcxeEfCz-uEpwkEe1A" x="80" y="39"/>
           </children>
           <children xmi:type="notation:Shape" xmi:id="_R7eo0NA4EfCCe6T48AMkCQ" type="InputPin_OpaqueActionInputShape">
@@ -3511,7 +3475,6 @@
           </children>
           <element xmi:type="uml:OpaqueAction" href="ProgettoSW.uml#_4LaMEMxdEfCz-uEpwkEe1A"/>
           <layoutConstraint xmi:type="notation:Bounds" xmi:id="_4Lj9FcxdEfCz-uEpwkEe1A" x="415" y="484"/>
->>>>>>> Stashed changes
         </children>
         <children xmi:type="notation:Shape" xmi:id="_MQbZkMxeEfCz-uEpwkEe1A" type="OpaqueAction_Shape">
           <children xmi:type="notation:DecorationNode" xmi:id="_MQbZksxeEfCz-uEpwkEe1A" type="OpaqueAction_NameLabel"/>
@@ -3533,9 +3496,6 @@
             <layoutConstraint xmi:type="notation:Bounds" xmi:id="_MRCdl8xeEfCz-uEpwkEe1A" x="102" y="20"/>
           </children>
           <element xmi:type="uml:OpaqueAction" href="ProgettoSW.uml#_MQRokMxeEfCz-uEpwkEe1A"/>
-<<<<<<< Updated upstream
-          <layoutConstraint xmi:type="notation:Bounds" xmi:id="_MQbZlcxeEfCz-uEpwkEe1A" x="3" y="324" width="123"/>
-=======
           <layoutConstraint xmi:type="notation:Bounds" xmi:id="_MQbZlcxeEfCz-uEpwkEe1A" x="415" y="644" width="123"/>
         </children>
         <children xmi:type="notation:Shape" xmi:id="_D2H0gNA0EfCCe6T48AMkCQ" type="OpaqueAction_Shape">
@@ -3914,7 +3874,6 @@
           </children>
           <element xmi:type="uml:SendSignalAction" href="ProgettoSW.uml#_6_0QcNBaEfCgjfPj0CL4yg"/>
           <layoutConstraint xmi:type="notation:Bounds" xmi:id="_6_4h6dBaEfCgjfPj0CL4yg" x="1029" y="526"/>
->>>>>>> Stashed changes
         </children>
         <layoutConstraint xmi:type="notation:Bounds" xmi:id="_8KO-scxIEfC9ZqIAxAn4hg"/>
       </children>
@@ -4234,11 +4193,7 @@
       </children>
       <styles xmi:type="notation:FontStyle" xmi:id="_MQ4sk8xeEfCz-uEpwkEe1A"/>
       <element xmi:type="uml:ObjectFlow" href="ProgettoSW.uml#_MQu7kMxeEfCz-uEpwkEe1A"/>
-<<<<<<< Updated upstream
-      <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_MQ4slMxeEfCz-uEpwkEe1A" points="[-28, -25, 444, 405]$[-472, -430, 0, 0]"/>
-=======
       <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_MQ4slMxeEfCz-uEpwkEe1A" points="[605, 622, -643984, -643984]$[435, 647, -643984, -643984]"/>
->>>>>>> Stashed changes
       <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_N5WfMMxeEfCz-uEpwkEe1A" id="(0.5,0.5)"/>
       <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_PQi7oMxeEfCz-uEpwkEe1A" id="(0.45,0.0)"/>
     </edges>
@@ -4261,11 +4216,6 @@
       </children>
       <styles xmi:type="notation:FontStyle" xmi:id="_Uo6ugcxeEfCz-uEpwkEe1A"/>
       <element xmi:type="uml:ControlFlow" href="ProgettoSW.uml#_Uow9gMxeEfCz-uEpwkEe1A"/>
-<<<<<<< Updated upstream
-      <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_Uo6ugsxeEfCz-uEpwkEe1A" points="[140, 361, -643984, -643984]$[320, 367, -643984, -643984]"/>
-      <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_UpNpcMxeEfCz-uEpwkEe1A" id="(0.991869918699187,0.5)"/>
-      <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_UpNpccxeEfCz-uEpwkEe1A" id="(0.0,0.5)"/>
-=======
       <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_Uo6ugsxeEfCz-uEpwkEe1A" points="[435, 601, -643984, -643984]$[615, 607, -643984, -643984]"/>
       <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_UpNpcMxeEfCz-uEpwkEe1A" id="(0.22764227642276422,0.0)"/>
       <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_UpNpccxeEfCz-uEpwkEe1A" id="(0.19463087248322147,1.0)"/>
@@ -4883,7 +4833,6 @@
       <element xmi:type="uml:ControlFlow" href="ProgettoSW.uml#_JoRHkNBbEfCgjfPj0CL4yg"/>
       <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_JolQotBbEfCgjfPj0CL4yg" points="[860, 614, -643984, -643984]$[996, 620, -643984, -643984]"/>
       <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_JpKfcNBbEfCgjfPj0CL4yg" id="(1.0,0.5)"/>
->>>>>>> Stashed changes
     </edges>
   </notation:Diagram>
 </xmi:XMI>
