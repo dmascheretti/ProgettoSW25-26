@@ -33,8 +33,6 @@ public class BrowserLauncher {
         // Costruisce l'URL
         String url = "http://localhost:" + port;
 
-        // Se hai impostato un context-path (es. /myapp), puoi aggiungerlo qui manualmente
-        // String url = "http://localhost:" + port + "/miopath";
 
         System.out.println(">>> AUTOMATION: Apertura browser su " + url);
 
