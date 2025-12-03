@@ -206,5 +206,11 @@ Tutte le fasi precedenti sono contenute all'interno del file meeting
 
 02/12/2025		Mascheretti Davide
 			12.00-13.00 + 21.45-22.45 Gestione password criptate e inizio pulizia codice con divisione dei ruoli in maniera più precisa all'interno della vista di login e di 			registrazione. Aggiunto pacchetto service che fa da intermezzo da le viste e il database.
+
+02/12/2025              Morgera Claudio
+                        13.00-14.30.  Modificato il class diagram importando le classi principali e i servizi per le varie attività
+
+03/12/2025             Morgera Claudio
+                       15.30-17.00    Aggiunta di relazioni tra classi e della sezione admin con rispettive view e funzionalità
 			
 			
