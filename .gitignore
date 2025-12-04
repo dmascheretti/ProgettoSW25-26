@@ -38,3 +38,4 @@ replay_pid*
 .sonarlint/default/known-findings-store8821586626342661866/00000000000.xd
 .sonarlint/default/known-findings-store8821586626342661866/blobs/version
 .sonarlint/default/known-findings-store8821586626342661866/xd.lck
+/.sonarlint
