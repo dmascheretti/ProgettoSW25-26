@@ -4,7 +4,6 @@
  */
 package com.example.admin;
 
-import com.example.admin.components.KpiCard;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.html.H1;
@@ -15,6 +14,7 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
+import com.example.components.KpiCard;
 import com.example.database.FirebaseColonnineService;
 import com.example.database.FirebasePrenotazioniService;
 import com.example.database.FirebaseUtentiService;

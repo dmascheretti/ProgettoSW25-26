@@ -3,7 +3,7 @@
  * 
  * @author Maistrello Tommaso
  */
-package com.example.admin.components;
+package com.example.components;
 
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Span;
@@ -33,16 +33,21 @@ public class KpiCard extends VerticalLayout {
 		titleDisplay.getStyle().set("color", "var(--lumo-secondary-text-color)");
 
 		setAlignItems(Alignment.CENTER); // Centra il contenuto
-		getStyle().set("border", "1px solid var(--lumo-contrast-20pct)");
-		getStyle().set("border-radius", "var(--lumo-border-radius-m)");
-		getStyle().set("padding", "var(--lumo-space-m)");
-
+		setPadding(true);
+		setSpacing(false);
+		getStyle().set("border", "1px solid #e0e0e0");
+		getStyle().set("border-radius", "12px");
+		getStyle().set("box-shadow", "0 2px 8px rgba(0,0,0,0.10)");
+		getStyle().set("background-color", "white");
+		
 		// Imposta una larghezza minima per un layout omogeneo
 		setMinWidth("180px");
 
+		
 		add(numberDisplay, titleDisplay);
 	}
 
+	
 	/**
 	 * Metodo pubblico per aggiornare il numero dinamicamente dopo che la card è
 	 * stata creata.

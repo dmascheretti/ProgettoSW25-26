@@ -10,7 +10,8 @@ import com.example.models.Utente;
 import com.example.service.AutoService;
 import com.example.service.PrenotazioniService;
 import com.example.service.UtentiService;
-
+import com.example.components.CardAuto;
+import com.example.components.KpiCard;
 import com.example.layout.MainLayout;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.UI;
@@ -143,44 +144,24 @@ public class ProfileView extends VerticalLayout implements BeforeEnterObserver {
         });
 		profileCard.add(avatar, title, infoBlock, toggleModificaBtn);
 
-		HorizontalLayout makine = new HorizontalLayout();
-		makine.setWidthFull();
-		makine.setPadding(true);
-		makine.setSpacing(true);
+		HorizontalLayout autoLayout = new HorizontalLayout();
+		autoLayout.setWidthFull();
+		autoLayout.setPadding(true);
+		autoLayout.setSpacing(true);
 		this.getStyle().set("background-color", "white");
 
 		autoService.getAutoUtente(utente).thenAccept(lista -> {
 			getUI().ifPresent(ui -> ui.access(() -> {
 
-				makine.removeAll();
+				autoLayout.removeAll();
 
 				for (Auto a : lista) {
 
-					VerticalLayout card = new VerticalLayout();
-					card.setPadding(true);
-					card.setSpacing(false);
-					card.setWidth("350px");
-					card.getStyle().set("border", "1px solid #e0e0e0");
-					card.getStyle().set("border-radius", "12px");
-					card.getStyle().set("box-shadow", "0 2px 8px rgba(0,0,0,0.10)");
-					card.getStyle().set("background-color", "white");
-
-					H3 titolo2 = new H3(a.getModello());
-					titolo.getStyle().set("margin-bottom", "0");
-
+					H3 modelloAuto = new H3(a.getModello());
 					Paragraph targa = new Paragraph("Targa: " + a.getTarga());
 					Paragraph carica = new Paragraph("Carica residua: " + a.getStatoCarica() + "%");
 
-					if (a.getStatoCarica() <= 30) {
-						carica.getStyle().set("color", "#FF3B30").set("font-weight", "bold");
-						carica.setText("Carica residua: " + a.getStatoCarica() + "%  ⚠ Mettere in carica");
-					} else if (a.getStatoCarica() <= 55) {
-						carica.getStyle().set("color", "#F7DC6F").set("font-weight", "bold");
-					} else {
-						carica.getStyle().set("color", "#27AE60").set("font-weight", "bold");
-					}
-
-					card.add(titolo2, targa, carica);
+					CardAuto card = new CardAuto(modelloAuto, targa, carica, a.getStatoCarica());
 
 					prenotazioniService.inCarica(a).thenAccept(trovata -> {
 						ui.access(() -> {
@@ -188,7 +169,7 @@ public class ProfileView extends VerticalLayout implements BeforeEnterObserver {
 							card.add(inCarica);
 						});
 					});
-					makine.add(card);
+					autoLayout.add(card);
 				}
 			}));
 		});
@@ -320,10 +301,10 @@ public class ProfileView extends VerticalLayout implements BeforeEnterObserver {
 
 		modifica.add(emailField, cambiaMailBtn, passwordField, cambiaPwdBtn, confAuto, aggiungiAutoBtn);
 		datiEmodifica.add(profileCard, modifica);
-		add(titolo, datiEmodifica, makine);
+		add(titolo, datiEmodifica, autoLayout);
 		profileCard.getStyle().set("flex-shrink", "0"); 
 		datiEmodifica.setFlexGrow(1, modifica); 
-		add(titolo, datiEmodifica, makine);
+		add(titolo, datiEmodifica, autoLayout);
 
 	}
 	
