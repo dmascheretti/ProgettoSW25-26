@@ -11,18 +11,18 @@ import java.util.concurrent.CompletableFuture;
 
 import org.springframework.stereotype.Service;
 
-import com.example.database.FirebasePrenotazioniService;
 import com.example.models.Auto;
 import com.example.models.Colonnina;
 import com.example.models.Prenotazione;
 import com.example.models.Utente;
+import com.example.modelsInterface.PrenotazioniInterface;
 
 @Service
-public class PrenotazioniService {
-	private final FirebasePrenotazioniService firebasePrenotazioniService;
+public class PrenotazioniService  {
+	private final PrenotazioniInterface prenotazioniInterface;
 
-	public PrenotazioniService(FirebasePrenotazioniService firebasePrenotazioniService) {
-		this.firebasePrenotazioniService = firebasePrenotazioniService;
+	public PrenotazioniService(PrenotazioniInterface prenotazioniInterface) {
+		this.prenotazioniInterface = prenotazioniInterface;
 	}
 
 	/**
@@ -35,18 +35,16 @@ public class PrenotazioniService {
 	 *         cercaPrenotazione
 	 */
 
-
 	private String generaId() {
-		 String prenotazioneId = java.util.UUID.randomUUID().toString();
-		 return prenotazioneId;
+		String prenotazioneId = java.util.UUID.randomUUID().toString();
+		return prenotazioneId;
 	}
-	
+
 	public CompletableFuture<Boolean> verifica(Colonnina c, String data, String orario) {
-		
-		
+
 		CompletableFuture<Boolean> future = new CompletableFuture<>();
 
-		firebasePrenotazioniService.cercaPrenotazione(c, data, orario).thenAccept(ris -> {
+		prenotazioniInterface.cercaPrenotazione(c, data, orario).thenAccept(ris -> {
 
 			/*
 			 * Slot occupato
@@ -83,8 +81,8 @@ public class PrenotazioniService {
 
 	public CompletableFuture<Boolean> prenota(Colonnina c, Utente u, String data, String orario, String auto) {
 		CompletableFuture<Boolean> future = new CompletableFuture<>();
-		
-		if(c.getStato().equals("Manutenzione")) {
+
+		if (c.getStato().equals("Manutenzione")) {
 			future.complete(false);
 			return future;
 		}
@@ -102,11 +100,12 @@ public class PrenotazioniService {
 			 * Se verifica restituisce future.complete (true) --> salvo la prenotazione
 			 */
 
-			Prenotazione p = new Prenotazione(generaId(),c.getId(), c.getNome(), u.getUsername(), data, orario, LocalDate.now().toString(), auto);
+			Prenotazione p = new Prenotazione(generaId(), c.getId(), c.getNome(), u.getUsername(), data, orario,
+					LocalDate.now().toString(), auto);
 
 			// Chiamo funzione del database, se salvataggio completato future.complete(true)
 
-			firebasePrenotazioniService.salvaPrenotazione(p).thenRun(() -> future.complete(true)).exceptionally(ex -> {
+			prenotazioniInterface.salvaPrenotazione(p).thenRun(() -> future.complete(true)).exceptionally(ex -> {
 				future.complete(false);
 				return null;
 			});
@@ -119,17 +118,38 @@ public class PrenotazioniService {
 				});
 		return future;
 	}
-	
-	public CompletableFuture<Boolean> inCarica(Auto a) {
-        return firebasePrenotazioniService.inCarica(a);
-    }
 
+	public CompletableFuture<Void> aggiornaStato(Prenotazione p, String msg) {
+
+		CompletableFuture<Void> future = new CompletableFuture<>();
+
+		prenotazioniInterface.aggiornaStato(p, msg).thenRun(() -> {
+			future.complete(null);
+		}).exceptionally(e -> {
+			future.completeExceptionally(e);
+			return null;
+		});
+
+		return future;
+	}
+
+	public CompletableFuture<Boolean> inCarica(Auto a) {
+		return prenotazioniInterface.inCarica(a);
+	}
 
 	public CompletableFuture<List<String>> getSlotOccupati(String idColonnina, String data) {
-		
-	    return firebasePrenotazioniService.getSlotOccupati(idColonnina, data);
+
+		return prenotazioniInterface.getSlotOccupati(idColonnina, data);
 	}
-	
-	
+
+	public CompletableFuture<List<Prenotazione>> getUtenteReservation(String u) {
+
+		return prenotazioniInterface.getUtenteReservation(u);
+	}
+
+	public CompletableFuture<Boolean> cancellaPrenotazione(Prenotazione p) {
+
+		return prenotazioniInterface.cancellaPrenotazione(p);
+	}
 
 }

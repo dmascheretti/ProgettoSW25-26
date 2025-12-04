@@ -8,17 +8,18 @@ import java.util.concurrent.CompletableFuture;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.database.FirebaseColonnineService;
 import com.example.models.Colonnina;
+
+import com.example.modelsInterface.ColonnineInterface;
 
 @Service
 public class ColonnineService {
 
-	private FirebaseColonnineService firebaseColonnineService;
+	private ColonnineInterface colonnineInterface;
 
 	@Autowired
-	public ColonnineService(FirebaseColonnineService firebaseColonnineService) {
-		this.firebaseColonnineService = firebaseColonnineService;
+	public ColonnineService(ColonnineInterface colonnineInterface) {
+		this.colonnineInterface = colonnineInterface;
 	}
 
 	public String getSlotCorrenteTimestamp() {
@@ -34,14 +35,14 @@ public class ColonnineService {
 
 	public CompletableFuture<Void> aggiornaStato(String msg) {
 
-		CompletableFuture<Void> future = firebaseColonnineService.getColonnineSlot(getSlotCorrenteTimestamp())
+		CompletableFuture<Void> future = colonnineInterface.getColonnineSlot(getSlotCorrenteTimestamp())
 				.thenCompose(lista -> {
 					// lista dei CompletableFuture per aggiornare lo stato
 					List<CompletableFuture<Void>> listaCF = new ArrayList<>();
 
 					for (String c : lista) {
 
-						listaCF.add(firebaseColonnineService.cambiaStatoColonnina(c, msg));
+						listaCF.add(colonnineInterface.cambiaStatoColonnina(c, msg));
 					}
 
 					// attendo che tutti terminino
@@ -53,13 +54,13 @@ public class ColonnineService {
 
 	public CompletableFuture<Void> aggiornaStatoCarica(String msg) {
 
-		CompletableFuture<Void> future = firebaseColonnineService.getColonnineInCarica().thenCompose(lista -> {
+		CompletableFuture<Void> future = colonnineInterface.getColonnineInCarica().thenCompose(lista -> {
 			// lista dei CompletableFuture per aggiornare lo stato
 			List<CompletableFuture<Void>> listaCF = new ArrayList<>();
 
 			for (String c : lista) {
 
-				listaCF.add(firebaseColonnineService.cambiaStatoColonnina(c, msg));
+				listaCF.add(colonnineInterface.cambiaStatoColonnina(c, msg));
 			}
 
 			// attendo che tutti terminino
@@ -71,13 +72,13 @@ public class ColonnineService {
 
 	public CompletableFuture<Void> inizializza(String msg) {
 
-		CompletableFuture<Void> future = firebaseColonnineService.getAllColonnine().thenCompose(lista -> {
+		CompletableFuture<Void> future = colonnineInterface.getAllColonnine().thenCompose(lista -> {
 			// lista dei CompletableFuture per aggiornare lo stato
 			List<CompletableFuture<Void>> listaCF = new ArrayList<>();
 
 			for (Colonnina c : lista) {
 				if (!c.getStato().equals("Manutenzione"))
-					listaCF.add(firebaseColonnineService.cambiaStatoColonnina(c.getId(), msg));
+					listaCF.add(colonnineInterface.cambiaStatoColonnina(c.getId(), msg));
 			}
 
 			// attendo che tutti terminino
@@ -89,7 +90,21 @@ public class ColonnineService {
 
 	public CompletableFuture<List<Colonnina>> cercaColonnine(String query) {
 
-		return firebaseColonnineService.cercaColonnine(query);
+		return colonnineInterface.cercaColonnine(query);
+	}
+
+	public CompletableFuture<List<String>> getColonnineInCarica() {
+
+		CompletableFuture<List<String>> future = new CompletableFuture<>();
+
+		colonnineInterface.getColonnineInCarica().thenAccept(lista -> {
+			future.complete(lista);
+		}).exceptionally(e -> {
+			future.completeExceptionally(e);
+			return null;
+		});
+
+		return future;
 	}
 
 }

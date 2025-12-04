@@ -9,22 +9,23 @@ import org.springframework.stereotype.Service;
 import com.example.database.FirebaseAutoService;
 import com.example.models.Auto;
 import com.example.models.Utente;
+import com.example.modelsInterface.AutoInterface;
 
 @Service
 public class AutoService {
 
-	private FirebaseAutoService firebaseAutoService;
+	private AutoInterface autoInterface;
 
 	@Autowired
-	public AutoService(FirebaseAutoService firebaseAutoService) {
-		this.firebaseAutoService = firebaseAutoService;
+	public AutoService(AutoInterface autoInterface) {
+		this.autoInterface = autoInterface;
 	}
 	
 	public CompletableFuture<List<String>> getTargheUtente(Utente u){
 		
 		CompletableFuture <List<String>> future= new CompletableFuture<>();
 		
-		firebaseAutoService.getTargheUtente(u).thenAccept(lista->{
+		autoInterface.getTargheUtente(u).thenAccept(lista->{
 			future.complete(lista);
 		})
 		.exceptionally(e -> {
@@ -39,7 +40,7 @@ public CompletableFuture<List<Auto>> getAutoUtente(Utente u){
 		
 		CompletableFuture <List<Auto>> future= new CompletableFuture<>();
 		
-		firebaseAutoService.listaAutoUtente(u).thenAccept(lista->{
+		autoInterface.listaAutoUtente(u).thenAccept(lista->{
 			future.complete(lista);
 		})
 		.exceptionally(e -> {
@@ -53,7 +54,7 @@ public CompletableFuture<List<Auto>> getAutoUtente(Utente u){
 public CompletableFuture<Void> aggiungiAuto(String targa, String modello, String tipo, Utente u) {
 
 	CompletableFuture<Void> future = new CompletableFuture<>();
-	firebaseAutoService.verificaTarga(targa).thenAccept(autoTrovata -> {
+	autoInterface.verificaTarga(targa).thenAccept(autoTrovata -> {
 
 		// Auto già trovata con questa targa, invio eccezione
 		if (autoTrovata != null) {
@@ -66,7 +67,7 @@ public CompletableFuture<Void> aggiungiAuto(String targa, String modello, String
 		Auto a = new Auto(targa, modello, tipo, u.getUsername());
 
 		// Chiamo firebase per salvare auto nel database
-		firebaseAutoService.salvaAuto(a).thenRun(() -> {
+		autoInterface.salvaAuto(a).thenRun(() -> {
 			future.complete(null);
 			// eccezione di salvaAuto
 		}).exceptionally(ex -> {

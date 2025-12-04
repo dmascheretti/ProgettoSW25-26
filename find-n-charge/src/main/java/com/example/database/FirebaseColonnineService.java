@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.models.Colonnina;
 import com.example.models.Prenotazione;
+import com.example.modelsInterface.ColonnineInterface;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -20,7 +21,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 @Service
-public class FirebaseColonnineService {
+public class FirebaseColonnineService implements ColonnineInterface{
 
 	private final DatabaseReference colonnine;
 	private final DatabaseReference prenotazioni;
@@ -279,5 +280,6 @@ public class FirebaseColonnineService {
 		});
 		return future;
 	}
+
 
 }

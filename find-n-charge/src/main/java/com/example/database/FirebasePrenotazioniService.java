@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import com.example.models.Auto;
 import com.example.models.Colonnina;
 import com.example.models.Prenotazione;
+import com.example.modelsInterface.PrenotazioniInterface;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -20,7 +21,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 @Service
-public class FirebasePrenotazioniService {
+public class FirebasePrenotazioniService implements PrenotazioniInterface{
 	private final DatabaseReference prenotazioni;
 
 	public FirebasePrenotazioniService() {
@@ -60,9 +61,9 @@ public class FirebasePrenotazioniService {
 		// esecuzione
 	}
 
-	public CompletableFuture<Void> cancellaPrenotazione(Prenotazione p) {
+	public CompletableFuture<Boolean> cancellaPrenotazione(Prenotazione p) {
 
-		CompletableFuture<Void> futurePrenotazione = new CompletableFuture<>();
+		CompletableFuture<Boolean> futurePrenotazione = new CompletableFuture<>();
 		/*
 		 * Salva nel db prenotazioni/"nome colonnina + data + orario"
 		 */
@@ -72,11 +73,10 @@ public class FirebasePrenotazioniService {
 						// errore --> chiama eccezione anche in RegisterView
 						futurePrenotazione.completeExceptionally(new RuntimeException(databaseError.getMessage()));
 					} else {
-						futurePrenotazione.complete(null);
+						futurePrenotazione.complete(true);
 					}
 				});
-		return futurePrenotazione; // qui il thenRun() in registrazione capisce che ha finito e prosegue con
-		// esecuzione
+		return futurePrenotazione; 
 	}
 
 	/**

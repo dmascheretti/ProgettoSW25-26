@@ -14,12 +14,13 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.example.models.Auto;
 import com.example.models.Utente;
+import com.example.modelsInterface.AutoInterface;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
 
 @Service
-public class FirebaseAutoService {
+public class FirebaseAutoService implements AutoInterface {
 
 	private final DatabaseReference automobile;
 
