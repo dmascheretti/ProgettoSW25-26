@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xmi:XMI xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:Codegen="http://www.eclipse.org/papyrus/Codegen/1" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:standard="http://www.eclipse.org/uml2/5.0.0/UML/Profile/Standard" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML">
+<xmi:XMI xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:standard="http://www.eclipse.org/uml2/5.0.0/UML/Profile/Standard" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML">
   <uml:Model xmi:id="_q-1cwKuSEfCM07EDP-YkGA" name="ProgettoSW">
     <packageImport xmi:type="uml:PackageImport" xmi:id="_rAV4oKuSEfCM07EDP-YkGA">
       <importedPackage xmi:type="uml:Model" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#_0"/>
@@ -4844,44 +4844,18 @@ CompletableFuture.allOf(futureBookings).thenAccept( voidResult -> {
       <appliedProfile xmi:type="uml:Profile" href="pathmap://UML_PROFILES/Standard.profile.uml#_0"/>
     </profileApplication>
   </uml:Model>
-  <Codegen:External xmi:id="_fMXTUM94EfCvI50SpPRHVQ" name="java.lang.String" base_Classifier="_fMCjMc94EfCvI50SpPRHVQ"/>
-  <Codegen:External xmi:id="_fNtXIM94EfCvI50SpPRHVQ" name="com.vaadin.flow.component.orderedlayout.VerticalLayout" base_Classifier="_fNk0Qc94EfCvI50SpPRHVQ"/>
-  <Codegen:External xmi:id="_fN9OwM94EfCvI50SpPRHVQ" name="com.vaadin.flow.router.AfterNavigationObserver" base_Classifier="_fN1S8M94EfCvI50SpPRHVQ"/>
-  <Codegen:External xmi:id="_fOPioM94EfCvI50SpPRHVQ" name="com.github.appreciated.apexcharts.ApexCharts" base_Classifier="_fOKDEM94EfCvI50SpPRHVQ"/>
   <standard:Create xmi:id="_fPECAM94EfCvI50SpPRHVQ" base_BehavioralFeature="_fO_JgM94EfCvI50SpPRHVQ"/>
-  <Codegen:External xmi:id="_fPYyIM94EfCvI50SpPRHVQ" name="com.vaadin.flow.router.AfterNavigationEvent" base_Classifier="_fPSrgM94EfCvI50SpPRHVQ"/>
-  <Codegen:External xmi:id="_fPsUIM94EfCvI50SpPRHVQ" name="com.vaadin.flow.component.orderedlayout.HorizontalLayout" base_Classifier="_fPlmcs94EfCvI50SpPRHVQ"/>
-  <Codegen:External xmi:id="_fQlsAM94EfCvI50SpPRHVQ" name="com.vaadin.flow.component.grid.Grid" base_Classifier="_fQj20M94EfCvI50SpPRHVQ"/>
-  <Codegen:External xmi:id="_fQzucM94EfCvI50SpPRHVQ" name="com.vaadin.flow.component.dialog.Dialog" base_Classifier="_fQwEEM94EfCvI50SpPRHVQ"/>
-  <Codegen:External xmi:id="_fQ3Y0M94EfCvI50SpPRHVQ" name="com.vaadin.flow.component.textfield.TextField" base_Classifier="_fQ2xwM94EfCvI50SpPRHVQ"/>
-  <Codegen:External xmi:id="_fRAiwM94EfCvI50SpPRHVQ" name="com.vaadin.flow.component.button.Button" base_Classifier="_fQ_Uoc94EfCvI50SpPRHVQ"/>
-  <Codegen:External xmi:id="_fRENIM94EfCvI50SpPRHVQ" name="com.vaadin.flow.shared.Registration" base_Classifier="_fRCX8c94EfCvI50SpPRHVQ"/>
   <standard:Create xmi:id="_fRHQcM94EfCvI50SpPRHVQ" base_BehavioralFeature="_fRGCUM94EfCvI50SpPRHVQ"/>
   <standard:Create xmi:id="_fRm_sM94EfCvI50SpPRHVQ" base_BehavioralFeature="_fRkjcM94EfCvI50SpPRHVQ"/>
   <standard:Create xmi:id="_fSE5wM94EfCvI50SpPRHVQ" base_BehavioralFeature="_fSESsM94EfCvI50SpPRHVQ"/>
-  <Codegen:External xmi:id="_fSV_gM94EfCvI50SpPRHVQ" name="com.vaadin.flow.component.html.H2" base_Classifier="_fSVYcM94EfCvI50SpPRHVQ"/>
-  <Codegen:External xmi:id="_fSg-oM94EfCvI50SpPRHVQ" name="com.vaadin.flow.component.html.Span" base_Classifier="_fSaQ8M94EfCvI50SpPRHVQ"/>
   <standard:Create xmi:id="_fSphgM94EfCvI50SpPRHVQ" base_BehavioralFeature="_fSnFQM94EfCvI50SpPRHVQ"/>
-  <Codegen:External xmi:id="_fTICoM94EfCvI50SpPRHVQ" name="com.vaadin.flow.component.html.H3" base_Classifier="_fTGNcM94EfCvI50SpPRHVQ"/>
-  <Codegen:External xmi:id="_fTKe4M94EfCvI50SpPRHVQ" name="com.vaadin.flow.component.datepicker.DatePicker" base_Classifier="_fTJ30c94EfCvI50SpPRHVQ"/>
-  <Codegen:External xmi:id="_fTMUEM94EfCvI50SpPRHVQ" name="com.vaadin.flow.component.combobox.ComboBox" base_Classifier="_fTLF8894EfCvI50SpPRHVQ"/>
   <standard:Create xmi:id="_fTRzoM94EfCvI50SpPRHVQ" base_BehavioralFeature="_fTOwUc94EfCvI50SpPRHVQ"/>
-  <Codegen:External xmi:id="_fTZvcM94EfCvI50SpPRHVQ" name="java.time.LocalDate" base_Classifier="_fTXTMc94EfCvI50SpPRHVQ"/>
-  <Codegen:External xmi:id="_fUD2wM94EfCvI50SpPRHVQ" name="com.google.firebase.database.DatabaseReference" base_Classifier="_fUCBks94EfCvI50SpPRHVQ"/>
   <standard:Create xmi:id="_fUHhIM94EfCvI50SpPRHVQ" base_BehavioralFeature="_fUGTAM94EfCvI50SpPRHVQ"/>
-  <Codegen:External xmi:id="_fUJ9YM94EfCvI50SpPRHVQ" name="java.util.concurrent.CompletableFuture" base_Classifier="_fUIIM894EfCvI50SpPRHVQ"/>
   <standard:Create xmi:id="_fU9OoM94EfCvI50SpPRHVQ" base_BehavioralFeature="_fU49MM94EfCvI50SpPRHVQ"/>
   <standard:Create xmi:id="_fVPigM94EfCvI50SpPRHVQ" base_BehavioralFeature="_fVO7cc94EfCvI50SpPRHVQ"/>
-  <Codegen:External xmi:id="_fWGeIM94EfCvI50SpPRHVQ" name="com.google.firebase.database.FirebaseDatabase" base_Classifier="_fWF3EM94EfCvI50SpPRHVQ"/>
   <standard:Create xmi:id="_fWITUM94EfCvI50SpPRHVQ" base_BehavioralFeature="_fWHFMM94EfCvI50SpPRHVQ"/>
-  <Codegen:External xmi:id="_fWOZ8M94EfCvI50SpPRHVQ" name="java.time.LocalDateTime" base_Classifier="_fWNy4M94EfCvI50SpPRHVQ"/>
-  <Codegen:External xmi:id="_fWW80M94EfCvI50SpPRHVQ" name="java.io.IOException" base_Classifier="_fWWVws94EfCvI50SpPRHVQ"/>
   <standard:Create xmi:id="_fWkYMM94EfCvI50SpPRHVQ" base_BehavioralFeature="_fWjKEc94EfCvI50SpPRHVQ"/>
-  <Codegen:External xmi:id="_fW5IUM94EfCvI50SpPRHVQ" name="com.vaadin.flow.component.applayout.AppLayout" base_Classifier="_fW4hQc94EfCvI50SpPRHVQ"/>
   <standard:Create xmi:id="_fW69gM94EfCvI50SpPRHVQ" base_BehavioralFeature="_fW6WcM94EfCvI50SpPRHVQ"/>
-  <Codegen:External xmi:id="_fW-A0M94EfCvI50SpPRHVQ" name="java.lang.Class" base_Classifier="_fW8ysM94EfCvI50SpPRHVQ"/>
-  <Codegen:External xmi:id="_fW_2AM94EfCvI50SpPRHVQ" name="com.vaadin.flow.component.icon.VaadinIcon" base_Classifier="_fW_O8M94EfCvI50SpPRHVQ"/>
-  <Codegen:External xmi:id="_fXCSQM94EfCvI50SpPRHVQ" name="com.vaadin.flow.router.RouterLink" base_Classifier="_fXBrMM94EfCvI50SpPRHVQ"/>
   <standard:Create xmi:id="_fXHx0M94EfCvI50SpPRHVQ" base_BehavioralFeature="_fXHKwc94EfCvI50SpPRHVQ"/>
   <standard:Create xmi:id="_fXOfgM94EfCvI50SpPRHVQ" base_BehavioralFeature="_fXN4cM94EfCvI50SpPRHVQ"/>
   <standard:Create xmi:id="_fXUmIM94EfCvI50SpPRHVQ" base_BehavioralFeature="_fXQUsM94EfCvI50SpPRHVQ"/>
@@ -4889,26 +4863,15 @@ CompletableFuture.allOf(futureBookings).thenAccept( voidResult -> {
   <standard:Create xmi:id="_fXtAoM94EfCvI50SpPRHVQ" base_BehavioralFeature="_fXsZkM94EfCvI50SpPRHVQ"/>
   <standard:Create xmi:id="_fX-GYM94EfCvI50SpPRHVQ" base_BehavioralFeature="_fX7DEc94EfCvI50SpPRHVQ"/>
   <standard:Create xmi:id="_fYAioM94EfCvI50SpPRHVQ" base_BehavioralFeature="_fX_7kM94EfCvI50SpPRHVQ"/>
-  <Codegen:External xmi:id="_fYS2gM94EfCvI50SpPRHVQ" name="java.util.Random" base_Classifier="_fYSPcM94EfCvI50SpPRHVQ"/>
   <standard:Create xmi:id="_fYV50M94EfCvI50SpPRHVQ" base_BehavioralFeature="_fYUrsM94EfCvI50SpPRHVQ"/>
   <standard:Create xmi:id="_fYY9IM94EfCvI50SpPRHVQ" base_BehavioralFeature="_fYYWEM94EfCvI50SpPRHVQ"/>
   <standard:Create xmi:id="_fY7IoM94EfCvI50SpPRHVQ" base_BehavioralFeature="_fY4sYs94EfCvI50SpPRHVQ"/>
   <standard:Create xmi:id="_fY-zAM94EfCvI50SpPRHVQ" base_BehavioralFeature="_fY-L8M94EfCvI50SpPRHVQ"/>
   <standard:Create xmi:id="_fZd7MM94EfCvI50SpPRHVQ" base_BehavioralFeature="_fZa34M94EfCvI50SpPRHVQ"/>
-  <Codegen:External xmi:id="_fZ1HkM94EfCvI50SpPRHVQ" name="com.vaadin.flow.component.page.AppShellConfigurator" base_Classifier="_fZ0ggM94EfCvI50SpPRHVQ"/>
-  <Codegen:External xmi:id="_fZ6AEM94EfCvI50SpPRHVQ" name="java.awt.image.BufferedImage" base_Classifier="_fZ4x8s94EfCvI50SpPRHVQ"/>
-  <Codegen:External xmi:id="_fZ8cUM94EfCvI50SpPRHVQ" name="java.lang.Exception" base_Classifier="_fZ71QM94EfCvI50SpPRHVQ"/>
-  <Codegen:External xmi:id="_faE_MM94EfCvI50SpPRHVQ" name="com.vaadin.flow.router.BeforeEnterObserver" base_Classifier="_faEYIM94EfCvI50SpPRHVQ"/>
-  <Codegen:External xmi:id="_faLF0M94EfCvI50SpPRHVQ" name="com.vaadin.flow.component.UI" base_Classifier="_faKewc94EfCvI50SpPRHVQ"/>
   <standard:Create xmi:id="_faM7AM94EfCvI50SpPRHVQ" base_BehavioralFeature="_faMT8M94EfCvI50SpPRHVQ"/>
-  <Codegen:External xmi:id="_faTBoM94EfCvI50SpPRHVQ" name="com.vaadin.flow.router.BeforeEnterEvent" base_Classifier="_faSakc94EfCvI50SpPRHVQ"/>
-  <Codegen:External xmi:id="_faaWYM94EfCvI50SpPRHVQ" name="org.springframework.security.crypto.password.PasswordEncoder" base_Classifier="_faZIQc94EfCvI50SpPRHVQ"/>
   <standard:Create xmi:id="_fabkgM94EfCvI50SpPRHVQ" base_BehavioralFeature="_faa9cM94EfCvI50SpPRHVQ"/>
   <standard:Create xmi:id="_fhz-4M94EfCvI50SpPRHVQ" base_BehavioralFeature="_fhf10M94EfCvI50SpPRHVQ"/>
   <standard:Create xmi:id="_fi488M94EfCvI50SpPRHVQ" base_BehavioralFeature="_fi3HwM94EfCvI50SpPRHVQ"/>
   <standard:Create xmi:id="_fjINgM94EfCvI50SpPRHVQ" base_BehavioralFeature="_fjHmcM94EfCvI50SpPRHVQ"/>
-  <Codegen:External xmi:id="_fjbIcM94EfCvI50SpPRHVQ" name="com.vaadin.flow.component.html.Div" base_Classifier="_fjZ6UM94EfCvI50SpPRHVQ"/>
-  <Codegen:External xmi:id="_fjhPEM94EfCvI50SpPRHVQ" name="com.fasterxml.jackson.databind.ObjectMapper" base_Classifier="_fjgoAc94EfCvI50SpPRHVQ"/>
   <standard:Create xmi:id="_fjjEQM94EfCvI50SpPRHVQ" base_BehavioralFeature="_fjidMc94EfCvI50SpPRHVQ"/>
-  <Codegen:External xmi:id="_fjpK4M94EfCvI50SpPRHVQ" name="com.vaadin.flow.component.AttachEvent" base_Classifier="_fjn8wc94EfCvI50SpPRHVQ"/>
 </xmi:XMI>
