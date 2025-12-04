@@ -83,7 +83,7 @@ public class ReservationView extends VerticalLayout implements BeforeEnterObserv
 		
 		setSpacing(true);
 		setPadding(true);
-		H3 titolo = new H3("Ciao " + utente.getUsername() + "! Ecco le tue prenotazioni...");
+		H3 titolo = new H3("Ciao " + utente.getUsername().toUpperCase() + "! Ecco le tue prenotazioni...");
 		titolo.getStyle().set("color", "#008000");
 
 		// Configurazione griglia (visualizzazione dei campi di ogni prenotazione)
@@ -239,9 +239,9 @@ public class ReservationView extends VerticalLayout implements BeforeEnterObserv
 		});
 		
 		H4 newP = new H4("Prenotazioni Attive o Future");
-		newP.getStyle().set("color", "#00E000");
+		newP.getStyle().set("color", "#006000");
 		H4 oldP = new H4("Prenotazioni Passate");
-		oldP.getStyle().set("color", "#00E000");
+		oldP.getStyle().set("color", "#006000");
 		
 		add(titolo, newP, newPrenoGrid, oldP, oldPrenoGrid);
 

@@ -36,7 +36,7 @@ import java.time.LocalTime;
 @Route(value = "profilo", layout = MainLayout.class)
 
 @PageTitle("Find&Charge - Profilo")
-public class ProfileView extends HorizontalLayout implements BeforeEnterObserver {
+public class ProfileView extends VerticalLayout implements BeforeEnterObserver {
 
 	private final AutoService autoService;
 	private final UtentiService utentiService;
@@ -49,7 +49,7 @@ public class ProfileView extends HorizontalLayout implements BeforeEnterObserver
 		setSizeFull();
 		setSpacing(true);
 		setPadding(true);
-		VerticalLayout profilo= new VerticalLayout();
+		HorizontalLayout datiEmodifica= new HorizontalLayout();
 		VerticalLayout modifica = new VerticalLayout();
 		modifica.setVisible(false);
         modifica.getStyle().set("padding-left", "20px"); 
@@ -59,7 +59,7 @@ public class ProfileView extends HorizontalLayout implements BeforeEnterObserver
 		Utente utente = (Utente) VaadinSession.getCurrent().getAttribute("utente");
 		if (utente == null) {
 
-			profilo.add(new Paragraph("Utente non trovato. Effettua il login."));
+			add(new Paragraph("Utente non trovato. Effettua il login."));
 			return;
 		}
 
@@ -76,9 +76,9 @@ public class ProfileView extends HorizontalLayout implements BeforeEnterObserver
 		}
 
 		H3 titolo = new H3();
-		titolo.getStyle().set("color", "#2ECC71");
-		Span userSpan = new Span(utente.getUsername());
-		userSpan.getStyle().set("color", "blue").set("font-weight", "bold");
+		titolo.getStyle().set("color", "#008000");
+		Span userSpan = new Span(utente.getUsername().toUpperCase());
+		userSpan.getStyle().set("color", "#008000");
 
 		titolo.add(new Text(saluto + " "), userSpan, new Text("! \nEcco la tua pagina di profilo"));
 
@@ -89,8 +89,7 @@ public class ProfileView extends HorizontalLayout implements BeforeEnterObserver
 		VerticalLayout profileCard = new VerticalLayout();
 		profileCard.setPadding(true);
 		profileCard.setSpacing(true);
-		profileCard.setWidth("100%");
-		profileCard.setMaxWidth("500px");
+		profileCard.setWidth("500px");
 		profileCard.setAlignItems(Alignment.CENTER);
 		profileCard.getStyle().set("background-color", "white");
 		profileCard.getStyle().set("border-radius", "16px");
@@ -144,16 +143,16 @@ public class ProfileView extends HorizontalLayout implements BeforeEnterObserver
         });
 		profileCard.add(avatar, title, infoBlock, toggleModificaBtn);
 
-		HorizontalLayout hl = new HorizontalLayout();
-		hl.setWidthFull();
-		hl.setPadding(true);
-		hl.setSpacing(true);
+		HorizontalLayout makine = new HorizontalLayout();
+		makine.setWidthFull();
+		makine.setPadding(true);
+		makine.setSpacing(true);
 		this.getStyle().set("background-color", "white");
 
 		autoService.getAutoUtente(utente).thenAccept(lista -> {
 			getUI().ifPresent(ui -> ui.access(() -> {
 
-				hl.removeAll();
+				makine.removeAll();
 
 				for (Auto a : lista) {
 
@@ -189,7 +188,7 @@ public class ProfileView extends HorizontalLayout implements BeforeEnterObserver
 							card.add(inCarica);
 						});
 					});
-					hl.add(card);
+					makine.add(card);
 				}
 			}));
 		});
@@ -319,9 +318,12 @@ public class ProfileView extends HorizontalLayout implements BeforeEnterObserver
 		HorizontalLayout confAuto = new HorizontalLayout(targaField, modelloField, tipoField);
 		confAuto.setSpacing(true);
 
-		profilo.add(titolo, profileCard, hl);
 		modifica.add(emailField, cambiaMailBtn, passwordField, cambiaPwdBtn, confAuto, aggiungiAutoBtn);
-		add(profilo, modifica);
+		datiEmodifica.add(profileCard, modifica);
+		add(titolo, datiEmodifica, makine);
+		profileCard.getStyle().set("flex-shrink", "0"); 
+		datiEmodifica.setFlexGrow(1, modifica); 
+		add(titolo, datiEmodifica, makine);
 
 	}
 	
