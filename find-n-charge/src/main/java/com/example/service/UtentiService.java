@@ -40,7 +40,7 @@ public class UtentiService {
 
 			// Se utente non trovato invio eccezione
 			if (utenteTrovato == null) {
-				future.completeExceptionally(new IllegalArgumentException("Questo username non esiste"));
+				future.completeExceptionally(new IllegalArgumentException("Utente o password errati."));
 				return;
 			}
 
@@ -50,7 +50,7 @@ public class UtentiService {
 
 			// Se password errata invia eccezione con messaggio diverso
 			if (!verificaPassword) {
-				future.completeExceptionally(new IllegalArgumentException("Password errata"));
+				future.completeExceptionally(new IllegalArgumentException("Utente o password errati."));
 				return;
 			}
 
