@@ -13,8 +13,10 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 
 public class CardAuto extends VerticalLayout {
 
-	private H2 numberDisplay = new H2();
-	private Span titleDisplay = new Span();
+	private H3 modelloAuto = new H3();
+	private Span targaAuto = new Span();
+	private Span carica = new Span();
+	private Double caricaAuto; 
 
 	/**
 	 * Costruttore per la KpiCard.
@@ -22,8 +24,13 @@ public class CardAuto extends VerticalLayout {
 	 * @param title  Etichetta
 	 * @param number Valore
 	 */
-	public CardAuto(H3 modelloAuto, Paragraph targa, Paragraph carica, double statoCarica) {
+	public CardAuto(String modello, String targa, double statoCarica) {
 
+		this.caricaAuto=statoCarica;
+		modelloAuto.setText(modello);
+		targaAuto.setText("Targa: " + targa);
+		carica.setText("Carica residua: " + caricaAuto + "%");
+		
 		if (statoCarica <= 30) {
 			carica.getStyle().set("color", "#FF3B30").set("font-weight", "bold");
 			carica.setText("Carica residua: " + statoCarica + "%  ⚠ Mettere in carica");
@@ -38,36 +45,42 @@ public class CardAuto extends VerticalLayout {
 		setAlignItems(Alignment.CENTER); // Centra il contenuto
 		setPadding(true);
 		setSpacing(false);
+		getStyle().set("text-align", "center");
 		getStyle().set("border", "1px solid #e0e0e0");
 		getStyle().set("border-radius", "12px");
 		getStyle().set("box-shadow", "0 2px 8px rgba(0,0,0,0.10)");
 		getStyle().set("background-color", "white");
 		
-		// Imposta una larghezza minima per un layout omogeneo
-		//setMinWidth("180px");
-		setWidth("350px");
+		//setMinWidth("150px");
 		
-		add(modelloAuto, targa, carica);
-		add(numberDisplay, titleDisplay);
-	}
-
-	
-	/**
-	 * Metodo pubblico per aggiornare il numero dinamicamente dopo che la card è
-	 * stata creata.
-	 *
-	 * @param number Il nuovo valore da mostrare
-	 */
-	public void setNumber(String number) {
-		numberDisplay.setText(number);
+		add(modelloAuto, targaAuto, carica);
 	}
 
 	/**
 	 * Metodo pubblico per aggiornare il titolo dinamicamente.
 	 *
-	 * @param title Il nuovo titolo da mostrare
+	 * @param modello Il nuovo titolo da mostrare
 	 */
-	public void setTitle(String title) {
-		titleDisplay.setText(title);
+	public void setModelloAuto(String modello) {
+		modelloAuto.setText(modello);
+	}
+	
+	/**
+	 * Metodo pubblico per aggiornare la targa dinamicamente dopo che la card è
+	 * stata creata.
+	 *
+	 * @param targa Il nuovo valore da mostrare
+	 */
+	public void setTarga(String targa) {
+		targaAuto.setText(targa);
+	}
+
+	/**
+	 * Metodo pubblico per aggiornare la carica
+	 *
+	 * @param carica Il nuovo valore da mostrare
+	 */
+	public void setCarica(Double caricaNuova) {
+		caricaAuto = caricaNuova;
 	}
 }

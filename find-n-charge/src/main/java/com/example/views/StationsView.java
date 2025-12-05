@@ -138,7 +138,7 @@ public class StationsView extends HorizontalLayout {
 			if (utenteCorrente == null) {
 				Notification.show("Effettua il login per prenotare.", 3000, Notification.Position.TOP_CENTER)
 						.getElement().getThemeList().add("error");
-				getUI().ifPresent(ui -> ui.navigate(""));
+				getUI().ifPresent(ui -> ui.navigate("login"));
 				return;
 			}
 

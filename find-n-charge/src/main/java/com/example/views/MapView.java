@@ -122,7 +122,7 @@ public class MapView extends HorizontalLayout {
         if (utenteCorrente == null) {
             Notification.show("Errore: Utente non loggato.", 3000, Notification.Position.TOP_CENTER)
                     .getElement().getThemeList().add("error");
-            UI.getCurrent().navigate(""); 
+            UI.getCurrent().navigate("login"); 
             return;
         }
 

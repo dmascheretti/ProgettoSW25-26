@@ -1,7 +1,7 @@
 /**
  * Classe ProfileView gestisce consultazione e modifica delle proprie credenziali e delle proprie auto
  * 
- * @author Claudio Morgera, Francesco Valenari
+ * @author Claudio Morgera, Francesco Valenari, Tommaso Maistrello
  */
 package com.example.views;
 
@@ -13,6 +13,7 @@ import com.example.service.UtentiService;
 import com.example.components.CardAuto;
 import com.example.components.KpiCard;
 import com.example.layout.MainLayout;
+import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
@@ -22,6 +23,7 @@ import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.notification.NotificationVariant;
+import com.vaadin.flow.component.orderedlayout.FlexLayout;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.PasswordField;
@@ -42,6 +44,13 @@ public class ProfileView extends VerticalLayout implements BeforeEnterObserver {
 	private final AutoService autoService;
 	private final UtentiService utentiService;
 	private final PrenotazioniService prenotazioniService;
+	
+	private FlexLayout garageLayout; 
+    private Span valueMail;
+    private Utente utenteCorrente;
+    private VerticalLayout modifica;
+    private Paragraph mail;
+    private HorizontalLayout datiEmodifica;
 
 	public ProfileView(AutoService autoService, UtentiService utentiService, PrenotazioniService prenotazioniService) {
 		this.autoService = autoService;
@@ -50,8 +59,8 @@ public class ProfileView extends VerticalLayout implements BeforeEnterObserver {
 		setSizeFull();
 		setSpacing(true);
 		setPadding(true);
-		HorizontalLayout datiEmodifica= new HorizontalLayout();
-		VerticalLayout modifica = new VerticalLayout();
+		datiEmodifica= new HorizontalLayout();
+		modifica = new VerticalLayout();
 		modifica.setVisible(false);
         modifica.getStyle().set("padding-left", "20px"); 
         modifica.getStyle().set("border-left", "1px solid #ddd");
@@ -65,90 +74,15 @@ public class ProfileView extends VerticalLayout implements BeforeEnterObserver {
 		}
 
 		// Header
-		String saluto;
-		int ora = LocalTime.now().getHour();
-
-		if (ora >= 6 && ora < 12) {
-			saluto = "Buongiorno";
-		} else if (ora >= 12 && ora < 18) {
-			saluto = "Buon pomeriggio";
-		} else {
-			saluto = "Buonasera";
-		}
-
-		H3 titolo = new H3();
-		titolo.getStyle().set("color", "#008000");
-		Span userSpan = new Span(utente.getUsername().toUpperCase());
-		userSpan.getStyle().set("color", "#008000");
-
-		titolo.add(new Text(saluto + " "), userSpan, new Text("! \nEcco la tua pagina di profilo"));
-
-		Paragraph nome = new Paragraph(utente.getNome());
-		Paragraph cognome = new Paragraph(utente.getCognome());
-		Paragraph mail = new Paragraph(utente.getEmail());
-
-		VerticalLayout profileCard = new VerticalLayout();
-		profileCard.setPadding(true);
-		profileCard.setSpacing(true);
-		profileCard.setWidth("500px");
-		profileCard.setAlignItems(Alignment.CENTER);
-		profileCard.getStyle().set("background-color", "white");
-		profileCard.getStyle().set("border-radius", "16px");
-		profileCard.getStyle().set("box-shadow", "0 4px 12px rgba(0,0,0,0.10)");
-		profileCard.getStyle().set("padding", "20px");
-		profileCard.getStyle().set("margin-top", "20px");
-
-		Span avatar = new Span("👤");
-		avatar.getStyle().set("font-size", "50px");
-
-		Span title = new Span("Profilo Utente");
-		title.getStyle().set("font-size", "26px");
-		title.getStyle().set("font-weight", "bold");
-		title.getStyle().set("margin-bottom", "10px");
-
-		VerticalLayout infoBlock = new VerticalLayout();
-        infoBlock.setPadding(false);
-        infoBlock.setSpacing(false); // Riduciamo lo spazio tra le righe
-        infoBlock.setWidth("100%");
-        
-        // Creiamo righe orizzontali per ogni dato
-        infoBlock.add(createRow("Nome:", nome.getText()));
-        infoBlock.add(createRow("Cognome:", cognome.getText()));
-        
-        // Per la mail, salviamo il riferimento al valore per poterlo aggiornare dopo
-        Span labelMail = new Span("Email:");
-        labelMail.getStyle().set("font-weight", "bold").set("width", "80px");
-        Span valueMail = new Span(mail.getText());
-        valueMail.getStyle().set("color", "#333");
-		HorizontalLayout rowMail = new HorizontalLayout(labelMail, valueMail);
-        rowMail.setAlignItems(Alignment.BASELINE);
-        infoBlock.add(rowMail);
+		add(createSaluto(utente.getUsername().toUpperCase()));
 		
-		Button toggleModificaBtn = new Button("Modifica Dati");
-        toggleModificaBtn.getStyle().set("background-color", "#3498DB"); // Blu
-        toggleModificaBtn.getStyle().set("color", "white");
-        toggleModificaBtn.getStyle().set("margin-top", "15px");
-        
-        toggleModificaBtn.addClickListener(e -> {
-            boolean isVisible = modifica.isVisible();
-            modifica.setVisible(!isVisible); // Inverte la visibilità
-            
-            // Cambia il testo del bottone per feedback visivo
-            if (!isVisible) {
-                toggleModificaBtn.setText("Chiudi Modifica");
-                toggleModificaBtn.getStyle().set("background-color", "#95A5A6"); // Grigio
-            } else {
-                toggleModificaBtn.setText("Modifica Dati");
-                toggleModificaBtn.getStyle().set("background-color", "#3498DB"); // Blu
-            }
-        });
-		profileCard.add(avatar, title, infoBlock, toggleModificaBtn);
-
+		// Profile Card
+		//add(createProfileCard(utente));
+		
 		HorizontalLayout autoLayout = new HorizontalLayout();
 		autoLayout.setWidthFull();
 		autoLayout.setPadding(true);
 		autoLayout.setSpacing(true);
-		this.getStyle().set("background-color", "white");
 
 		autoService.getAutoUtente(utente).thenAccept(lista -> {
 			getUI().ifPresent(ui -> ui.access(() -> {
@@ -161,7 +95,7 @@ public class ProfileView extends VerticalLayout implements BeforeEnterObserver {
 					Paragraph targa = new Paragraph("Targa: " + a.getTarga());
 					Paragraph carica = new Paragraph("Carica residua: " + a.getStatoCarica() + "%");
 
-					CardAuto card = new CardAuto(modelloAuto, targa, carica, a.getStatoCarica());
+					CardAuto card = new CardAuto(a.getModello(), a.getTarga(), a.getStatoCarica());
 
 					prenotazioniService.inCarica(a).thenAccept(trovata -> {
 						ui.access(() -> {
@@ -196,7 +130,7 @@ public class ProfileView extends VerticalLayout implements BeforeEnterObserver {
 				session.setAttribute("utente", utente);
 
 				// aggiorna label e mostra notifica
-				mail.setText("Mail: " + nuovaEmail);
+				aggiornaMail(nuovaEmail);
 
 				Notification n = Notification.show("Email aggiornata correttamente!", 3000,
 						Notification.Position.TOP_CENTER);
@@ -300,14 +234,111 @@ public class ProfileView extends VerticalLayout implements BeforeEnterObserver {
 		confAuto.setSpacing(true);
 
 		modifica.add(emailField, cambiaMailBtn, passwordField, cambiaPwdBtn, confAuto, aggiungiAutoBtn);
-		datiEmodifica.add(profileCard, modifica);
-		add(titolo, datiEmodifica, autoLayout);
-		profileCard.getStyle().set("flex-shrink", "0"); 
+		datiEmodifica.add(createProfileCard(utente), modifica);
+		add(datiEmodifica, autoLayout);
 		datiEmodifica.setFlexGrow(1, modifica); 
-		add(titolo, datiEmodifica, autoLayout);
+		add(datiEmodifica, autoLayout);
 
 	}
 	
+	private void aggiornaMail(String nuovaEmail) {
+
+		mail.setText("Mail: " + nuovaEmail);		
+	}
+
+	private VerticalLayout createProfileCard(Utente utente) {
+		VerticalLayout layout = new VerticalLayout();
+		
+		
+		Paragraph nome = new Paragraph(utente.getNome());
+		Paragraph cognome = new Paragraph(utente.getCognome());
+		mail = new Paragraph(utente.getEmail());
+
+		VerticalLayout profileCard = new VerticalLayout();
+		profileCard.setPadding(true);
+		profileCard.setSpacing(true);
+		profileCard.setWidth("500px");
+		profileCard.setAlignItems(Alignment.CENTER);
+		profileCard.getStyle().set("background-color", "white");
+		profileCard.getStyle().set("border-radius", "16px");
+		profileCard.getStyle().set("box-shadow", "0 4px 12px rgba(0,0,0,0.10)");
+		profileCard.getStyle().set("padding", "20px");
+		profileCard.getStyle().set("margin-top", "20px");
+
+		Span avatar = new Span("👤");
+		avatar.getStyle().set("font-size", "50px");
+
+		Span title = new Span("Profilo Utente");
+		title.getStyle().set("font-size", "26px");
+		title.getStyle().set("font-weight", "bold");
+		title.getStyle().set("margin-bottom", "10px");
+
+		VerticalLayout infoBlock = new VerticalLayout();
+        infoBlock.setPadding(false);
+        infoBlock.setSpacing(false); // Riduciamo lo spazio tra le righe
+        infoBlock.setWidth("100%");
+        
+        // Creiamo righe orizzontali per ogni dato
+        infoBlock.add(createRow("Nome:", nome.getText()));
+        infoBlock.add(createRow("Cognome:", cognome.getText()));
+        
+        // Per la mail, salviamo il riferimento al valore per poterlo aggiornare dopo
+        Span labelMail = new Span("Email:");
+        labelMail.getStyle().set("font-weight", "bold").set("width", "80px");
+        Span valueMail = new Span(mail.getText());
+        valueMail.getStyle().set("color", "#333");
+		HorizontalLayout rowMail = new HorizontalLayout(labelMail, valueMail);
+        rowMail.setAlignItems(Alignment.BASELINE);
+        infoBlock.add(rowMail);
+		
+		Button toggleModificaBtn = new Button("Modifica Dati");
+        toggleModificaBtn.getStyle().set("background-color", "#3498DB"); // Blu
+        toggleModificaBtn.getStyle().set("color", "white");
+        toggleModificaBtn.getStyle().set("margin-top", "15px");
+
+        toggleModificaBtn.addClickListener(e -> {
+            boolean isVisible = modifica.isVisible();
+            modifica.setVisible(!isVisible); // Inverte la visibilità
+            
+            // Cambia il testo del bottone per feedback visivo
+            if (!isVisible) {
+                toggleModificaBtn.setText("Chiudi Modifica");
+                toggleModificaBtn.getStyle().set("background-color", "#95A5A6"); // Grigio
+            } else {
+                toggleModificaBtn.setText("Modifica Dati");
+                toggleModificaBtn.getStyle().set("background-color", "#3498DB"); // Blu
+            }
+        });
+        
+        layout.add(avatar, title, infoBlock, toggleModificaBtn);
+		profileCard.getStyle().set("flex-shrink", "0"); 
+		return layout;
+	}
+
+	private HorizontalLayout createSaluto(String user) {
+		String saluto;
+		int ora = LocalTime.now().getHour();
+
+		if (ora >= 6 && ora < 12) {
+			saluto = "Buongiorno ";
+		} else if (ora >= 12 && ora < 18) {
+			saluto = "Buon pomeriggio ";
+		} else {
+			saluto = "Buonasera ";
+		}
+
+		HorizontalLayout titolo = new HorizontalLayout();
+		Span userSpan = new Span(user);
+        userSpan.getStyle().set("font-weight", "bold");
+        H3 title = new H3(new Text(saluto), userSpan, new Text("! Ecco la tua pagina di profilo"));
+        title.getStyle().set("color", "#008000");
+        userSpan.getStyle().set("color", "#2E7D32");
+        
+		titolo.add(title);
+
+		return titolo;
+	}
+
 	private HorizontalLayout createRow(String labelText, String valueText) {
         Span label = new Span(labelText);
         label.getStyle().set("font-weight", "bold");
