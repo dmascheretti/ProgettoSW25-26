@@ -107,4 +107,19 @@ public class ColonnineService {
 		return future;
 	}
 
+	public CompletableFuture<Void> salvaColonnina(Colonnina c) {
+		
+		CompletableFuture<Void> future = new CompletableFuture<>();
+		colonnineInterface.salvaColonnina(c).thenRun(() -> {
+			future.complete(null);
+		}).exceptionally(ex -> {
+
+			future.completeExceptionally(ex);
+			return null;
+		});
+
+		return future;
+
+	}
+
 }

@@ -14,6 +14,7 @@ import com.example.models.Auto;
 import com.example.models.Colonnina;
 import com.example.models.Prenotazione;
 import com.example.modelsInterface.PrenotazioniInterface;
+import com.example.util.DataValidator;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -389,19 +390,6 @@ public class FirebasePrenotazioniService implements PrenotazioniInterface{
 		return future;
 	}
 	
-	public static String getSlotCorrenteTimestamp() {
-	    LocalDateTime now = LocalDateTime.now();
-	    int minuteSlot = (now.getMinute() / 30) * 30;
-
-	    LocalDateTime slot = LocalDateTime.of(
-	            now.getYear(), now.getMonth(), now.getDayOfMonth(),
-	            now.getHour(), minuteSlot
-	    );
-
-	    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
-	    return slot.format(formatter);
-	}
-	
 	public CompletableFuture <Boolean> inCarica(Auto a){
 		CompletableFuture <Boolean> inCarica=new CompletableFuture<>();
 		
@@ -421,7 +409,7 @@ public class FirebasePrenotazioniService implements PrenotazioniInterface{
 				for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
 					Prenotazione p = snapshot.getValue(Prenotazione.class);
 					if(p.getTarga()!=null) {
-					if(p.getTarga().equals(a.getTarga()) && p.getData().equals(todayStr) && p.getInizio().equals(getSlotCorrenteTimestamp())
+					if(p.getTarga().equals(a.getTarga()) && p.getData().equals(todayStr) && p.getInizio().equals(DataValidator.getSlotCorrenteTimestamp())
 							&& p.getStato().equals("In carica"))
 							{
 						trovata=true;
