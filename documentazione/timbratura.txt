@@ -210,7 +210,16 @@ Tutte le fasi precedenti sono contenute all'interno del file meeting
 02/12/2025              Morgera Claudio
                         13.00-14.30.  Modificato il class diagram importando le classi principali e i servizi per le varie attività
 
-03/12/2025             Morgera Claudio
-                       15.30-17.00    Aggiunta di relazioni tra classi e della sezione admin con rispettive view e funzionalità
+03/12/2025		Morgera Claudio
+                        15.30-17.00    Aggiunta di relazioni tra classi e della sezione admin con rispettive view e funzionalità
+
+04/12/2025		Mascheretti Davide
+			Implementazione interfacce per rendere il codice più mantenibile. Ora le classi firebase implementano questa interfaccia e le classi service chiamano interfaccia e 			non più firebase. In questo modo se si dovesse cambiare db basterebbe creare delle nuove classi che implementerebbero l'interfaccia, lasciando il resto del codice 			uguale.
+
+05/12/2025		Mascheretti Davide
+			14.30-15.30 Refactoring architettura e chiamate nella vista admin. Modificato per avere flusso corretto con vista, service e database.
+
+06/12/2025		Mascheretti Davide
+			11.00-12.30 + 13.45-14.15 Implementazione logica di recensione e salvataggio nel database. Aggiunta di tutte le classi necessarie per mantenere corretta 				architettura delle altre classi. Aggiunti controlli di duplicazione recensione.
 			
 			

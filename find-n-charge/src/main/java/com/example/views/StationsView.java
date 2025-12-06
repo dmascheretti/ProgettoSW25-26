@@ -46,9 +46,9 @@ public class StationsView extends HorizontalLayout {
 
 	// Classe per l'elenco delle colonnine (indipendente dalla mappa)
 	public StationsView(AutoService autoService, PrenotazioniService prenotazioniService,
-			ColonnineService ColonnineService) {
+			ColonnineService colonnineService) {
 		this.autoService = autoService;
-		this.colonnineService = ColonnineService;
+		this.colonnineService = colonnineService;
 		this.prenotazioniService = prenotazioniService;
 		setSpacing(true);
 		setPadding(true);

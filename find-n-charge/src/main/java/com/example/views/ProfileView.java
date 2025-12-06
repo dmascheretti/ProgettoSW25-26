@@ -11,9 +11,7 @@ import com.example.service.AutoService;
 import com.example.service.PrenotazioniService;
 import com.example.service.UtentiService;
 import com.example.components.CardAuto;
-import com.example.components.KpiCard;
 import com.example.layout.MainLayout;
-import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
@@ -23,7 +21,6 @@ import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.notification.NotificationVariant;
-import com.vaadin.flow.component.orderedlayout.FlexLayout;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.PasswordField;
@@ -44,10 +41,6 @@ public class ProfileView extends VerticalLayout implements BeforeEnterObserver {
 	private final AutoService autoService;
 	private final UtentiService utentiService;
 	private final PrenotazioniService prenotazioniService;
-	
-	private FlexLayout garageLayout; 
-    private Span valueMail;
-    private Utente utenteCorrente;
     private VerticalLayout modifica;
     private Paragraph mail;
     private HorizontalLayout datiEmodifica;
@@ -90,10 +83,6 @@ public class ProfileView extends VerticalLayout implements BeforeEnterObserver {
 				autoLayout.removeAll();
 
 				for (Auto a : lista) {
-
-					H3 modelloAuto = new H3(a.getModello());
-					Paragraph targa = new Paragraph("Targa: " + a.getTarga());
-					Paragraph carica = new Paragraph("Carica residua: " + a.getStatoCarica() + "%");
 
 					CardAuto card = new CardAuto(a.getModello(), a.getTarga(), a.getStatoCarica());
 

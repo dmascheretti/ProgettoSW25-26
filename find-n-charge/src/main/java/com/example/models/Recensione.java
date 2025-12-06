@@ -1,36 +1,43 @@
 package com.example.models;
 
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 
 public class Recensione {
     private String utente;
-    private String messaggio;
-    private String ora;
     private int stelle;
+    private String colonnina;
+    private String idPrenotazione;
 
-
-    public Recensione() {}
-
-    public Recensione(String utente, String messaggio, int stelle) {
+    public Recensione(String utente, String colonnina, int stelle, String idPrenotazione) {
         this.utente = utente;
-        this.messaggio = messaggio;
-        this.ora = LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
         this.stelle=stelle;
+        this.setColonnina(colonnina);
+        this.idPrenotazione=idPrenotazione;
     }
+    
+    public Recensione() {}
 
     // Getter e Setter
     public String getUtente() { return utente; }
     public void setUtente(String utente) { this.utente = utente; }
-
-    public String getMessaggio() { return messaggio; }
-    public void setMessaggio(String messaggio) { this.messaggio = messaggio; }
-
-    public String getOra() { return ora; }
-    public void setOra(String ora) { this.ora = ora; }
+    
 
 	public int getStelle() {
 		return stelle;
+	}
+
+	public String getColonnina() {
+		return colonnina;
+	}
+
+	public void setColonnina(String colonnina) {
+		this.colonnina = colonnina;
+	}
+
+	public String getIdPrenotazione() {
+		return idPrenotazione;
+	}
+
+	public void setIdPrenotazione(String idPrenotazione) {
+		this.idPrenotazione = idPrenotazione;
 	}
 }
