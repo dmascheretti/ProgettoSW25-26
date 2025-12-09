@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.models.Colonnina;
-
+import com.example.models.StatoColonnina;
 import com.example.modelsInterface.ColonnineInterface;
 
 @Service
@@ -33,7 +33,8 @@ public class ColonnineService {
 		return slot.format(formatter);
 	}
 
-	public CompletableFuture<Void> aggiornaStato(String msg) {
+	public CompletableFuture<Void> aggiornaStato(StatoColonnina stato) {
+		
 
 		CompletableFuture<Void> future = colonnineInterface.getColonnineSlot(getSlotCorrenteTimestamp())
 				.thenCompose(lista -> {
@@ -42,7 +43,7 @@ public class ColonnineService {
 
 					for (String c : lista) {
 
-						listaCF.add(colonnineInterface.cambiaStatoColonnina(c, msg));
+						listaCF.add(colonnineInterface.cambiaStatoColonnina(c, stato));
 					}
 
 					// attendo che tutti terminino
@@ -52,7 +53,8 @@ public class ColonnineService {
 		return future;
 	}
 
-	public CompletableFuture<Void> aggiornaStatoCarica(String msg) {
+	public CompletableFuture<Void> aggiornaStatoCarica(StatoColonnina stato) {
+		
 
 		CompletableFuture<Void> future = colonnineInterface.getColonnineInCarica().thenCompose(lista -> {
 			// lista dei CompletableFuture per aggiornare lo stato
@@ -60,7 +62,7 @@ public class ColonnineService {
 
 			for (String c : lista) {
 
-				listaCF.add(colonnineInterface.cambiaStatoColonnina(c, msg));
+				listaCF.add(colonnineInterface.cambiaStatoColonnina(c, stato));
 			}
 
 			// attendo che tutti terminino
@@ -70,15 +72,16 @@ public class ColonnineService {
 		return future;
 	}
 
-	public CompletableFuture<Void> inizializza(String msg) {
+	public CompletableFuture<Void> inizializza(StatoColonnina stato) {
+		
 
 		CompletableFuture<Void> future = colonnineInterface.getAllColonnine().thenCompose(lista -> {
 			// lista dei CompletableFuture per aggiornare lo stato
 			List<CompletableFuture<Void>> listaCF = new ArrayList<>();
 
 			for (Colonnina c : lista) {
-				if (!c.getStato().equals("Manutenzione"))
-					listaCF.add(colonnineInterface.cambiaStatoColonnina(c.getId(), msg));
+				if (!c.getStato().equals(StatoColonnina.GUASTA.toString()))
+					listaCF.add(colonnineInterface.cambiaStatoColonnina(c.getId(), stato));
 			}
 
 			// attendo che tutti terminino
@@ -122,4 +125,12 @@ public class ColonnineService {
 
 	}
 
+	
+	public CompletableFuture<Integer> contaColonnine() {
+		return colonnineInterface.contaColonnine() ;
+	}
+	
+	public CompletableFuture<Integer> contaColonnineLG(StatoColonnina stato) {
+		return colonnineInterface.contaColonnineLG(stato);
+	}
 }

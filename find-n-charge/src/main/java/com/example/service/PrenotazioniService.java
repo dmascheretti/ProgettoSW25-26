@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 import com.example.models.Auto;
 import com.example.models.Colonnina;
 import com.example.models.Prenotazione;
+import com.example.models.StatoColonnina;
+import com.example.models.StatoPrenotazione;
 import com.example.models.Utente;
 import com.example.modelsInterface.PrenotazioniInterface;
 
@@ -82,7 +84,7 @@ public class PrenotazioniService  {
 	public CompletableFuture<Boolean> prenota(Colonnina c, Utente u, String data, String orario, String auto) {
 		CompletableFuture<Boolean> future = new CompletableFuture<>();
 
-		if (c.getStato().equals("Manutenzione")) {
+		if (c.getStato().equals(StatoColonnina.GUASTA.toString())) {
 			future.complete(false);
 			return future;
 		}
@@ -119,11 +121,10 @@ public class PrenotazioniService  {
 		return future;
 	}
 
-	public CompletableFuture<Void> aggiornaStato(Prenotazione p, String msg) {
+	public CompletableFuture<Void> aggiornaStato(Prenotazione p, StatoPrenotazione stato) {
 
 		CompletableFuture<Void> future = new CompletableFuture<>();
-
-		prenotazioniInterface.aggiornaStato(p, msg).thenRun(() -> {
+		prenotazioniInterface.aggiornaStato(p, stato).thenRun(() -> {
 			future.complete(null);
 		}).exceptionally(e -> {
 			future.completeExceptionally(e);
@@ -150,6 +151,17 @@ public class PrenotazioniService  {
 	public CompletableFuture<Boolean> cancellaPrenotazione(Prenotazione p) {
 
 		return prenotazioniInterface.cancellaPrenotazione(p);
+	}
+	
+	public CompletableFuture<Integer> contaPrenotazioni() {
+		return prenotazioniInterface.contaPrenotazioni() ;
+	}
+	public CompletableFuture<Integer> contaPrenotazioniNuove() {
+		return prenotazioniInterface.contaPrenotazioniNuove() ;
+	}
+	
+	public CompletableFuture<Integer[]> contaPrenotazioniGiorni() {
+		return prenotazioniInterface.contaPrenotazioniGiorni();
 	}
 
 }

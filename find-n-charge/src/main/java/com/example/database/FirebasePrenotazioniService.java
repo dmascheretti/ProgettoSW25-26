@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import com.example.models.Auto;
 import com.example.models.Colonnina;
 import com.example.models.Prenotazione;
+import com.example.models.StatoPrenotazione;
 import com.example.modelsInterface.PrenotazioniInterface;
 import com.example.util.DataValidator;
 import com.google.firebase.database.DataSnapshot;
@@ -410,7 +411,7 @@ public class FirebasePrenotazioniService implements PrenotazioniInterface{
 					Prenotazione p = snapshot.getValue(Prenotazione.class);
 					if(p.getTarga()!=null) {
 					if(p.getTarga().equals(a.getTarga()) && p.getData().equals(todayStr) && p.getInizio().equals(DataValidator.getSlotCorrenteTimestamp())
-							&& p.getStato().equals("In carica"))
+							&& p.getStato().equals(StatoPrenotazione.IN_CARICA.toString()))
 							{
 						trovata=true;
 						break;
@@ -442,14 +443,14 @@ public class FirebasePrenotazioniService implements PrenotazioniInterface{
 	 * @param msg Stato prenotazione da aggiornare ("Passata", "In  carica")
 	 * @return
 	 */
-	public CompletableFuture<Void> aggiornaStato(Prenotazione p, String msg) {
+	public CompletableFuture<Void> aggiornaStato(Prenotazione p, StatoPrenotazione stato) {
 
 	    CompletableFuture<Void> future = new CompletableFuture<>();
 
 	    String chiave = p.getIDColonnina() + " " + p.getData() + " " + p.getInizio();
 
 
-	    prenotazioni.child(chiave).child("stato").setValue(msg, (databaseError, ref) -> {
+	    prenotazioni.child(chiave).child("stato").setValue(stato.toString(), (databaseError, ref) -> {
 
 	        if (databaseError != null) {
 	            System.err.println("ERRORE: " + databaseError.getMessage());

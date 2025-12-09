@@ -4,12 +4,13 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 import com.example.models.Colonnina;
+import com.example.models.StatoColonnina;
 
 public interface ColonnineInterface {
 
 	public CompletableFuture<Void> salvaColonnina(Colonnina colonnina);
 	
-	public CompletableFuture<Void> cambiaStatoColonnina(String c, String stato) ;
+	public CompletableFuture<Void> cambiaStatoColonnina(String c, StatoColonnina stato) ;
 	
 	public CompletableFuture<List<Colonnina>> getAllColonnine();
 	
@@ -17,7 +18,7 @@ public interface ColonnineInterface {
 	
 	public CompletableFuture<Integer> contaColonnine() ;
 	
-	public CompletableFuture<Integer> contaColonnineLG(String msg);
+	public CompletableFuture<Integer> contaColonnineLG(StatoColonnina stato);
 	
 	public CompletableFuture<List<String>> getColonnineInCarica();
 	

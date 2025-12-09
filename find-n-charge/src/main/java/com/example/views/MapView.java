@@ -8,6 +8,7 @@ package com.example.views;
 
 import com.example.components.Sidebar;
 import com.example.models.Colonnina;
+import com.example.models.StatoColonnina;
 import com.example.models.Utente;
 import com.example.service.ColonnineService;
 import com.example.service.PrenotazioniService;
@@ -297,9 +298,9 @@ public class MapView extends HorizontalLayout {
 						"      component.$server.onMarkerClick(station.id);" + "      });});}}, 100);"; // Ciclo ogni//
 																										// 100ms
 
-		colonnineService.inizializza("Libera")
-	    .thenCompose(v -> colonnineService.aggiornaStato("Prenotata")) 
-	    .thenCompose(v -> colonnineService.aggiornaStatoCarica("In carica")) 
+		colonnineService.inizializza(StatoColonnina.LIBERA)
+	    .thenCompose(v -> colonnineService.aggiornaStato(StatoColonnina.PRENOTATA)) 
+	    .thenCompose(v -> colonnineService.aggiornaStatoCarica(StatoColonnina.IN_CARICA)) 
 	    .thenRun(() -> {
 			
 		

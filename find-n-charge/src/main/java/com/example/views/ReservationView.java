@@ -29,6 +29,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import com.example.models.Prenotazione;
+import com.example.models.StatoPrenotazione;
 import com.example.models.Utente;
 import com.example.service.ColonnineService;
 import com.example.service.PrenotazioniService;
@@ -90,8 +91,8 @@ public class ReservationView extends VerticalLayout implements BeforeEnterObserv
 		newPrenoGrid.addColumn(Prenotazione::getData).setHeader("Data").setSortable(true);
 		newPrenoGrid.addColumn(Prenotazione::getInizio).setHeader("Inizio").setSortable(true);
 		newPrenoGrid.addColumn(prenotazione -> {
-			String stato = calcolaStato(prenotazione);
-			return stato;
+			StatoPrenotazione stato = calcolaStato(prenotazione);
+			return stato.toString();
 		}).setHeader("Stato").setSortable(true);
 
 		// Prenotazioni passate
@@ -146,7 +147,7 @@ public class ReservationView extends VerticalLayout implements BeforeEnterObserv
 					return text;
 				}
 				// se la colonnina è occupata da un altro utente, il bottone non compare
-				if (this.idColonnineOccupate.contains(p.getIDColonnina()) && !p.getStato().equals("In carica")) {
+				if (this.idColonnineOccupate.contains(p.getIDColonnina()) && !p.getStato().equals(StatoPrenotazione.IN_CARICA.toString())) {
 					Span text = new Span("Colonnina occupata.");
 					text.getStyle().set("font-size", "12px").set("color", "red");
 					return text;
@@ -164,7 +165,7 @@ public class ReservationView extends VerticalLayout implements BeforeEnterObserv
 			btn.addClickListener(event -> {
 				String id = p.getId();
 
-				prenotazioniService.aggiornaStato(p, "In carica").exceptionally(ex -> {
+				prenotazioniService.aggiornaStato(p, StatoPrenotazione.IN_CARICA).exceptionally(ex -> {
 					ex.printStackTrace();
 					return null;
 				});
@@ -221,8 +222,8 @@ public class ReservationView extends VerticalLayout implements BeforeEnterObserv
 
 		// bottone per la cancellazione
 		newPrenoGrid.addComponentColumn(p -> {
-			String stato = calcolaStato(p);
-			if (stato.equals("Passata")) {
+			StatoPrenotazione stato = calcolaStato(p);
+			if (stato.equals(StatoPrenotazione.PASSATA.toString())) {
 				return null;
 			} else {
 				Button btn = new Button("Cancella");
@@ -259,11 +260,11 @@ public class ReservationView extends VerticalLayout implements BeforeEnterObserv
 
 					// aggiungo la lista alla griglia
 
-					List<Prenotazione> filtrata = lista.stream().filter(p -> !calcolaStato(p).equals("Passata"))
+					List<Prenotazione> filtrata = lista.stream().filter(p -> !(calcolaStato(p) == StatoPrenotazione.PASSATA))
 							.toList();
 					newPrenoGrid.setItems(filtrata);
 
-					List<Prenotazione> rimanenti = lista.stream().filter(p -> calcolaStato(p).equals("Passata"))
+					List<Prenotazione> rimanenti = lista.stream().filter(p -> calcolaStato(p) == StatoPrenotazione.PASSATA )
 							.toList();
 					oldPrenoGrid.setItems(rimanenti);
 
@@ -282,7 +283,7 @@ public class ReservationView extends VerticalLayout implements BeforeEnterObserv
 
 	}
 
-	private String calcolaStato(Prenotazione prenotazione) {
+	private StatoPrenotazione calcolaStato(Prenotazione prenotazione) {
 		try {
 			DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 			DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
@@ -293,14 +294,14 @@ public class ReservationView extends VerticalLayout implements BeforeEnterObserv
 			LocalDateTime now = LocalDateTime.now();
 
 			if (prenDateTime.isBefore(now.minusMinutes(30))) {
-				return "Passata";
+				return StatoPrenotazione.PASSATA;
 			} else if (prenDateTime.isBefore(now)) {
-				return "Attiva";
+				return StatoPrenotazione.ATTIVA;
 			} else {
-				return "Futura";
+				return StatoPrenotazione.FUTURA;
 			}
 		} catch (Exception e) {
-			return "";
+			return null;
 		}
 	}
 

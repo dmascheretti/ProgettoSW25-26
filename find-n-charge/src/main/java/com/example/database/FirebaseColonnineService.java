@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 
 import com.example.models.Colonnina;
 import com.example.models.Prenotazione;
+import com.example.models.StatoColonnina;
+import com.example.models.StatoPrenotazione;
 import com.example.modelsInterface.ColonnineInterface;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -46,9 +48,9 @@ public class FirebaseColonnineService implements ColonnineInterface{
 		// esecuzione
 	}
 
-	public CompletableFuture<Void> cambiaStatoColonnina(String c, String stato) {
+	public CompletableFuture<Void> cambiaStatoColonnina(String c, StatoColonnina stato) {
 		CompletableFuture<Void> futureColonnina = new CompletableFuture<>();
-		colonnine.child(c).child("stato").setValue(stato, (databaseError, ref) -> {
+		colonnine.child(c).child("stato").setValue(stato.toString(), (databaseError, ref) -> {
 			if (databaseError != null) {
 				// errore --> chiama eccezione anche in RegisterView
 				futureColonnina.completeExceptionally(new RuntimeException(databaseError.getMessage()));
@@ -161,10 +163,11 @@ public class FirebaseColonnineService implements ColonnineInterface{
 	 *         future.complete(eccezione) --> errore
 	 */
 
-	public CompletableFuture<Integer> contaColonnineLG(String msg) {
+	public CompletableFuture<Integer> contaColonnineLG(StatoColonnina stato) {
+		
 		CompletableFuture<Integer> future = new CompletableFuture<>();
 
-		Query colonnineCount = colonnine.orderByChild("stato").equalTo(msg);
+		Query colonnineCount = colonnine.orderByChild("stato").equalTo(stato.toString());
 		colonnineCount.addListenerForSingleValueEvent(new ValueEventListener() {
 
 			@Override
@@ -257,9 +260,9 @@ public class FirebaseColonnineService implements ColonnineInterface{
 								|| (todayStr.equals(p.getData()) && orarioStringa.compareTo(p.getInizio()) > 0)))) {
 
 							prenotazioni.child(p.getIDColonnina() + " " + p.getData() + " " + p.getInizio())
-									.child("stato").setValue("Passata", null);
+									.child("stato").setValue(StatoPrenotazione.PASSATA, null);
 
-						} else if (p != null && !lista.contains(p.getIDColonnina()) && p.getStato().equals("In carica")
+						} else if (p != null && !lista.contains(p.getIDColonnina()) && p.getStato().equals(StatoPrenotazione.IN_CARICA.toString())
 								&& todayStr.equals(p.getData())) {
 
 							lista.add(p.getIDColonnina());

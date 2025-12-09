@@ -6,6 +6,7 @@ import java.util.concurrent.CompletableFuture;
 import com.example.models.Auto;
 import com.example.models.Colonnina;
 import com.example.models.Prenotazione;
+import com.example.models.StatoPrenotazione;
 
 public interface PrenotazioniInterface {
 
@@ -29,7 +30,7 @@ public interface PrenotazioniInterface {
 	
 	public CompletableFuture <Boolean> inCarica(Auto a);
 	
-	public CompletableFuture<Void> aggiornaStato(Prenotazione p, String msg);
+	public CompletableFuture<Void> aggiornaStato(Prenotazione p, StatoPrenotazione stato);
 	
 	public CompletableFuture<Integer[]> contaPrenotazioniGiorni();
 	

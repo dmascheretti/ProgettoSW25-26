@@ -15,11 +15,11 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
 import com.example.components.KpiCard;
-import com.example.database.FirebaseColonnineService;
-import com.example.database.FirebasePrenotazioniService;
-import com.example.database.FirebaseUtentiService;
 import com.example.layout.AdminLayout;
+import com.example.models.StatoColonnina;
 import com.example.service.ColonnineService;
+import com.example.service.PrenotazioniService;
+import com.example.service.UtentiService;
 
 import jakarta.annotation.security.RolesAllowed;
 import com.vaadin.flow.router.AfterNavigationEvent;
@@ -41,10 +41,9 @@ import java.util.concurrent.CompletableFuture;
 public class AdminDashboardView extends VerticalLayout implements AfterNavigationObserver {
 
 	private ApexCharts bookingsChart;
-	private ColonnineService colonnineService;
-	private FirebaseUtentiService firebaseUtentiService;
-	private FirebaseColonnineService firebaseColonnineService;
-	private FirebasePrenotazioniService firebasePrenotazioniService;
+	private final UtentiService utentiService;
+	private final ColonnineService colonnineService;
+	private final PrenotazioniService prenotazioniService;
 
 	// Utenti
 	private KpiCard utentiCard;
@@ -60,12 +59,11 @@ public class AdminDashboardView extends VerticalLayout implements AfterNavigatio
 	private KpiCard recensioniTotaliCard;
 	private KpiCard recensioniNuoveCard;
 
-	public AdminDashboardView(FirebaseUtentiService firebaseUtentiService,FirebaseColonnineService firebaseColonnineService, ColonnineService colonnineService,
-								FirebasePrenotazioniService firebasePrenotazioniService) {
-		this.firebaseUtentiService = firebaseUtentiService;
-		this.firebaseColonnineService=firebaseColonnineService;
-		this.firebasePrenotazioniService=firebasePrenotazioniService;
+	public AdminDashboardView(UtentiService utentiService, ColonnineService colonnineService, PrenotazioniService prenotazioniService) {
+	
 		this.colonnineService = colonnineService;
+		this.utentiService=utentiService;
+		this.prenotazioniService=prenotazioniService;
 
 		setSizeFull(); // Occupa tutto lo spazio
 		setSpacing(true);
@@ -153,14 +151,14 @@ public class AdminDashboardView extends VerticalLayout implements AfterNavigatio
 	private void loadKpiData() {
 
 		// Utenti
-		firebaseUtentiService.contaUtenti().thenAccept(num -> {
+		utentiService.contaUtenti().thenAccept(num -> {
 			getUI().ifPresent(ui -> ui.access(() -> utentiCard.setNumber(num.toString())));
 		}).exceptionally(ex -> {
 			getUI().ifPresent(ui -> ui.access(() -> utentiCard.setNumber("Errore")));
 			return null;
 		});
 
-		firebaseUtentiService.contaUtentiNuovi().thenAccept(num -> {
+		utentiService.contaUtentiNuovi().thenAccept(num -> {
 
 			String utentiNuovi = num.toString();
 
@@ -192,7 +190,7 @@ public class AdminDashboardView extends VerticalLayout implements AfterNavigatio
 		 */
 
 		// Colonnine
-		firebaseColonnineService.contaColonnine().thenAccept(num -> {
+		colonnineService.contaColonnine().thenAccept(num -> {
 			getUI().ifPresent(ui -> ui.access(() -> colonnineTotaliCard.setNumber(num.toString())));
 		}).exceptionally(ex -> {
 			getUI().ifPresent(ui -> ui.access(() -> colonnineTotaliCard.setNumber("Errore")));
@@ -200,11 +198,11 @@ public class AdminDashboardView extends VerticalLayout implements AfterNavigatio
 		});
 		
 
-		colonnineService.inizializza("Libera")
-	    .thenCompose(v -> colonnineService.aggiornaStato("Prenotata")) 
-	    .thenCompose(v -> colonnineService.aggiornaStatoCarica("In carica")) 
+		colonnineService.inizializza(StatoColonnina.LIBERA)
+	    .thenCompose(v -> colonnineService.aggiornaStato(StatoColonnina.PRENOTATA)) 
+	    .thenCompose(v -> colonnineService.aggiornaStatoCarica(StatoColonnina.IN_CARICA)) 
 	    .thenRun(() -> {
-			firebaseColonnineService.contaColonnineLG("Libera").thenAccept(num -> {
+			colonnineService.contaColonnineLG(StatoColonnina.LIBERA).thenAccept(num -> {
 				getUI().ifPresent(ui -> ui.access(() -> colonnineLibereCard.setNumber(num.toString())));
 			}).exceptionally(ex -> {
 				getUI().ifPresent(ui -> ui.access(() -> colonnineLibereCard.setNumber("Errore")));
@@ -213,7 +211,7 @@ public class AdminDashboardView extends VerticalLayout implements AfterNavigatio
 		});
 	
 		
-		firebaseColonnineService.contaColonnineLG("Manutenzione").thenAccept(num -> {
+		colonnineService.contaColonnineLG(StatoColonnina.GUASTA).thenAccept(num -> {
 
 			String colonnineGuaste = num.toString();
 
@@ -233,14 +231,14 @@ public class AdminDashboardView extends VerticalLayout implements AfterNavigatio
 		});
 
 		// Prenotazioni
-		firebasePrenotazioniService.contaPrenotazioni().thenAccept(num -> {
+		prenotazioniService.contaPrenotazioni().thenAccept(num -> {
 			getUI().ifPresent(ui -> ui.access(() -> prenotazioniTotaliCard.setNumber(num.toString())));
 		}).exceptionally(ex -> {
 			getUI().ifPresent(ui -> ui.access(() -> prenotazioniTotaliCard.setNumber("Errore")));
 			return null;
 		});
 
-		firebasePrenotazioniService.contaPrenotazioniNuove().thenAccept(num -> {
+		prenotazioniService.contaPrenotazioniNuove().thenAccept(num -> {
 			getUI().ifPresent(ui -> ui.access(() -> prenotazioniNuoveCard.setNumber(num.toString())));
 		}).exceptionally(ex -> {
 			getUI().ifPresent(ui -> ui.access(() -> prenotazioniNuoveCard.setNumber("Errore")));
@@ -375,7 +373,7 @@ public class AdminDashboardView extends VerticalLayout implements AfterNavigatio
 	private void loadChartData() {
 					
 		// Avvia entrambe le chiamate in parallelo
-		CompletableFuture<Integer[]> futureBookings = firebasePrenotazioniService.contaPrenotazioniGiorni();
+		CompletableFuture<Integer[]> futureBookings = prenotazioniService.contaPrenotazioniGiorni();
 		//CompletableFuture<Integer[]> futureUsers = fb.getDatiGraficoUtenti();
 
 		// Quando sono finite entrambe le chiamate:

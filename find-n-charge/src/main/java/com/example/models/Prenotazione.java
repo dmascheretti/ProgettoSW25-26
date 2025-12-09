@@ -32,7 +32,7 @@ public class Prenotazione {
 		this.setInizio(inizio);
 		this.timestamp=ts;
 		this.setTarga(targa);
-		this.setStato("Futura");
+		this.setStato(StatoPrenotazione.FUTURA.toString());
 		
 	}
 

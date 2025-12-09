@@ -154,4 +154,13 @@ public class UtentiService {
 		return future;
 	}
 
+	public CompletableFuture<Integer> contaUtenti() {
+		return utentiInterface.contaUtenti() ;
+	}
+	
+	public CompletableFuture<Integer> contaUtentiNuovi() {
+		return utentiInterface.contaUtentiNuovi() ;
+	}
+
+
 }
