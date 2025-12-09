@@ -87,4 +87,18 @@ public CompletableFuture<Void> aggiungiAuto(String targa, String modello, String
 	return future;
 }
 
+public CompletableFuture<Void> eliminaAuto(Auto a) {
+	CompletableFuture<Void> future = new CompletableFuture<>();
+
+    autoInterface.deleteAuto(a)
+        .thenRun(() -> future.complete(null))
+        .exceptionally(ex -> {
+            future.completeExceptionally(ex);
+            return null;
+        });
+
+    return future;
+
+}
+
 }

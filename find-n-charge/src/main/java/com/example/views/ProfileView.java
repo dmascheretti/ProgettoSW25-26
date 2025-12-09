@@ -16,6 +16,7 @@ import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
+import com.vaadin.flow.component.confirmdialog.ConfirmDialog;
 import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.html.Span;
@@ -92,7 +93,32 @@ public class ProfileView extends VerticalLayout implements BeforeEnterObserver {
 							card.add(inCarica);
 						});
 					});
-					autoLayout.add(card);
+					Button eliminaBtn = new Button("Elimina");
+				    eliminaBtn.getStyle().set("background-color", "#E74C3C");
+				    eliminaBtn.getStyle().set("color", "white");
+				    eliminaBtn.getStyle().set("border-radius", "6px");
+
+				    eliminaBtn.addClickListener(click -> {
+				        ConfirmDialog dialog = new ConfirmDialog(
+				            "Conferma eliminazione",
+				            "Vuoi davvero eliminare questa auto?",
+				            "Elimina",
+				            ev -> {
+				                autoService.eliminaAuto(a).thenRun(() -> {
+				                    ui.access(() -> {
+				                        Notification.show("Auto eliminata").addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+				                        autoLayout.remove(card); 
+				                    });
+				                });
+				            },
+				            "Annulla",
+				            ev -> {}
+				        );
+				        dialog.open();
+				    });
+
+				    card.add(eliminaBtn);
+				    autoLayout.add(card);
 				}
 			}));
 		});
@@ -185,6 +211,7 @@ public class ProfileView extends VerticalLayout implements BeforeEnterObserver {
 		modelloField.setWidthFull();
 		tipoField.setWidthFull();
 		Button aggiungiAutoBtn = createMainButton("Aggiungi Auto");
+		
 		autoCard.add(targaField, modelloField, tipoField, aggiungiAutoBtn);
 
 		aggiungiAutoBtn.addClickListener(e -> {

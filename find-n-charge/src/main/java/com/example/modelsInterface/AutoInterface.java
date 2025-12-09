@@ -13,7 +13,9 @@ public interface AutoInterface {
 	
 	public CompletableFuture<Void> salvaAuto(Auto auto);
 	
-	public double calcolaNuovoStato(Auto auto, LocalDateTime oraAttuale, double potenzaColonninaKw);
+	public CompletableFuture<Void> deleteAuto(Auto auto);
+	
+	public CompletableFuture<Void> calcolaNuovoStato(Auto auto, LocalDateTime oraAttuale, double potenzaColonninaKw);
 	
 	public CompletableFuture<List<Auto>> listaAutoUtente(Utente u);
 	

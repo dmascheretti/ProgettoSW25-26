@@ -86,31 +86,54 @@ public class FirebaseAutoService implements AutoInterface {
 		// esecuzione
 	}
 
-	public double calcolaNuovoStato(Auto auto, LocalDateTime oraAttuale, double potenzaColonninaKw) {
+	public CompletableFuture<Void> calcolaNuovoStato(Auto auto, LocalDateTime oraAttuale, double potenzaColonninaKw) {
+		
+		CompletableFuture<Void> future = new CompletableFuture<>();
+		
+		try {
 
-		if (auto.getInizioRicarica() == null)
-			return auto.getStatoCarica();
+	        // se non è in carica → niente da fare
+	        if (auto.getInizioRicarica() == null) {
+	            future.complete(null);
+	            return future;
+	        }
 
-		Duration durata = Duration.between(auto.getInizioRicarica(), oraAttuale);
-		double oreTrascorse = durata.toMinutes() / 60.0;
+	        // tempo trascorso
+	        Duration durata = Duration.between(auto.getInizioRicarica(), oraAttuale);
+	        double oreTrascorse = durata.toMinutes() / 60.0;
 
-		// energia caricata in kWh
-		double energiaCaricata = potenzaColonninaKw * oreTrascorse;
+	        // energia caricata (kWh)
+	        double energiaCaricata = potenzaColonninaKw * oreTrascorse;
 
-		// energia iniziale
-		double energiaIniziale = auto.getCapacitaBatteria() * (auto.getStatoCarica() / 100.0);
+	        // energia attuale (in kWh)
+	        double energiaAttuale = auto.getCapacitaBatteria() * (auto.getStatoCarica() / 100.0);
 
-		// nuova energia
-		double energiaTotale = energiaIniziale + energiaCaricata;
+	        // nuova energia
+	        double energiaTotale = energiaAttuale + energiaCaricata;
 
-		if (energiaTotale > auto.getCapacitaBatteria())
-			energiaTotale = auto.getCapacitaBatteria();
+	        if (energiaTotale > auto.getCapacitaBatteria()) {
+	            energiaTotale = auto.getCapacitaBatteria();
+	        }
 
-		// convertitore in %
-		double nuovoSoC = (energiaTotale / auto.getCapacitaBatteria()) * 100.0;
+	        double nuovoSoC = (energiaTotale / auto.getCapacitaBatteria()) * 100.0;
 
-		auto.setStatoCarica(nuovoSoC);
-		return nuovoSoC;
+	        auto.setStatoCarica(nuovoSoC);
+	        auto.setInizioRicarica(oraAttuale);
+
+	        // salva su Firebase
+	        automobile.child(auto.getTarga()).setValue(auto, (error, ref) -> {
+	            if (error != null) {
+	                future.completeExceptionally(new RuntimeException(error.getMessage()));
+	            } else {
+	                future.complete(null);
+	            }
+	        });
+
+	    } catch (Exception ex) {
+	        future.completeExceptionally(ex);
+	    }
+
+	    return future;
 	}
 
 	/**
@@ -193,6 +216,20 @@ public class FirebaseAutoService implements AutoInterface {
 		});
 		return future;
 
+	}
+
+	public CompletableFuture<Void> deleteAuto(Auto auto) { 
+		CompletableFuture<Void> future = new CompletableFuture<>();
+
+	    automobile.child(auto.getTarga()).removeValue((databaseError, ref) -> {
+	        if (databaseError != null) {
+	            future.completeExceptionally(new RuntimeException(databaseError.getMessage()));
+	        } else {
+	            future.complete(null);
+	        }
+	    });
+
+	    return future;
 	}
 
 }
