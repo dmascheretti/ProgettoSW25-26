@@ -12,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.threeten.bp.LocalDate;
 
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 @Service
@@ -19,10 +20,12 @@ public class UtentiService {
 
 	private final UtentiInterface utentiInterface;
 	private final PasswordEncoder passwordEncoder;
+	private final EmailService emailService;
 
-	public UtentiService(UtentiInterface utentiInterface, PasswordEncoder passwordEncoder) {
+	public UtentiService(UtentiInterface utentiInterface, PasswordEncoder passwordEncoder, EmailService emailService) {
 		this.utentiInterface = utentiInterface;
 		this.passwordEncoder = passwordEncoder;
+		this.emailService=emailService;
 	}
 
 	/**
@@ -97,6 +100,9 @@ public class UtentiService {
 
 			// Chiamo firebase per salvare utente nel database
 			utentiInterface.salvaUtente(u).thenRun(() -> {
+				
+				emailService.inviaEmailBenvenuto(email, username);
+				
 				future.complete(null);
 				// eccezione di salvaUtente
 			}).exceptionally(ex -> {
@@ -160,6 +166,24 @@ public class UtentiService {
 	
 	public CompletableFuture<Integer> contaUtentiNuovi() {
 		return utentiInterface.contaUtentiNuovi() ;
+	}
+
+	public CompletableFuture<List<Utente>> getAllUtenti() {
+
+		return utentiInterface.getAllUtenti();
+	}
+
+	public CompletableFuture<Void> cancellaUtente(Utente u) {
+		return utentiInterface.cancellaUtente(u);
+	}
+
+	public CompletableFuture<Utente> verificaUtente(String u) {
+		
+		return utentiInterface.verificaUtente(u);
+	}
+
+	public CompletableFuture<Void> salvaUtente(Utente nuovoUtente) {
+		return utentiInterface.salvaUtente(nuovoUtente);
 	}
 
 

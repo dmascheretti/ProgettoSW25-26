@@ -17,11 +17,10 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.component.notification.Notification;
 import com.example.models.Utente;
+import com.example.service.UtentiService;
 import com.example.util.DataValidator;
-import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
-import com.example.database.FirebaseUtentiService;
 import com.example.layout.AdminLayout;
 import org.threeten.bp.LocalDate;
 
@@ -31,23 +30,23 @@ import org.threeten.bp.LocalDate;
 public class AdminUtentiView extends VerticalLayout {
 
 	private Grid<Utente> utentiGrid = new Grid<>(Utente.class);
-	private final FirebaseUtentiService firebaseUtentiService;
+	private final UtentiService utentiService;
 
 	/**
 	 * Costruttore che genera la griglia contenente tutti gli utenti
 	 * 
 	 * @param fb Firebase per accedere ai dati utente
 	 */
-	public AdminUtentiView(FirebaseUtentiService firebaseUtentiService) {
+	public AdminUtentiView(UtentiService utentiService) {
 
-		this.firebaseUtentiService = firebaseUtentiService;
+		this.utentiService = utentiService;
 		setSpacing(true);
 		setPadding(true);
 
 		H3 titolo = new H3("Ecco la lista di tutti gli utenti ");
 		titolo.getStyle().set("color", "#008000");
 
-		//Imposta le colonne
+		// Imposta le colonne
 		utentiGrid.removeAllColumns();
 		utentiGrid.addColumn(Utente::getUsername).setHeader("Username").setSortable(true);
 		// utentiGrid.addColumn(Utente::getDataCreazione).setHeader("DataCreazione").setSortable(true);
@@ -61,16 +60,16 @@ public class AdminUtentiView extends VerticalLayout {
 					.set("border", "none");
 			return btn;
 		});
-		
+
 		Button nuovoUtenteBtn = new Button("Nuovo Utente");
-	    nuovoUtenteBtn.getElement().getThemeList().add("success");
+		nuovoUtenteBtn.getElement().getThemeList().add("success");
 
 		nuovoUtenteBtn.addClickListener(e -> newUtente());
 
 		add(titolo, nuovoUtenteBtn, utentiGrid);
 
 		// Ottiene la lista di utenti da Firebase
-		firebaseUtentiService.getAllUtenti().thenAccept(lista -> {
+		utentiService.getAllUtenti().thenAccept(lista -> {
 			getUI().ifPresent(ui -> ui.access(() -> {
 
 				// Aggiunge la lista alla griglia
@@ -85,11 +84,10 @@ public class AdminUtentiView extends VerticalLayout {
 		});
 
 	}
-	
 
 	private void banUtente(Utente u) {
 
-		firebaseUtentiService.cancellaUtente(u).thenRun(() -> getUI().ifPresent(ui -> ui.access(() -> {
+		utentiService.cancellaUtente(u).thenRun(() -> getUI().ifPresent(ui -> ui.access(() -> {
 
 			Notification
 					.show("Utente " + u.getUsername() + " bandito dal sistema.", 3000, Notification.Position.TOP_CENTER)
@@ -108,48 +106,45 @@ public class AdminUtentiView extends VerticalLayout {
 					return null;
 				});
 	}
-	
 
 	private void newUtente() {
 
-		Dialog dialog= new Dialog();
+		Dialog dialog = new Dialog();
 
-	    VerticalLayout formLayout = new VerticalLayout();
-	    formLayout.setPadding(true);
-	    formLayout.setSpacing(true);
+		VerticalLayout formLayout = new VerticalLayout();
+		formLayout.setPadding(true);
+		formLayout.setSpacing(true);
 
-	    H3 titolo = new H3("Crea un nuovo utente");
-	    titolo.getStyle().set("color", "#008000");
+		H3 titolo = new H3("Crea un nuovo utente");
+		titolo.getStyle().set("color", "#008000");
 
-	    TextField nome = new TextField("Nome");
-	    TextField cognome = new TextField("Cognome");
-	    TextField username = new TextField("Username");
-	    EmailField email = new EmailField("Email");
-	    PasswordField password = new PasswordField("Password");
+		TextField nome = new TextField("Nome");
+		TextField cognome = new TextField("Cognome");
+		TextField username = new TextField("Username");
+		EmailField email = new EmailField("Email");
+		PasswordField password = new PasswordField("Password");
 
-	    Button salva = new Button("Salva Utente");
-	    salva.getElement().getThemeList().add("success");
-	    
-	    Button annulla = new Button("Annulla", e -> dialog.close());
-	    
-	    salva.addClickListener(e -> {
+		Button salva = new Button("Salva Utente");
+		salva.getElement().getThemeList().add("success");
 
-	        if (nome.isEmpty() || cognome.isEmpty() || username.isEmpty() || 
-	            email.isEmpty() || password.isEmpty()) {
+		Button annulla = new Button("Annulla", e -> dialog.close());
 
-	            Notification.show("Compila tutti i campi!",
-	                3000, Notification.Position.TOP_CENTER)
-	                .getElement().getThemeList().add("error");
-	            return;
-	        }
-	        
-	        String n= nome.getValue();
-	        String c=cognome.getValue();
-	        String u=username.getValue();
-	        String em=email.getValue();
-	        String p=password.getValue();
-	        
-	        String errore = DataValidator.verificaDati(n, c, u, em, p, p);
+		salva.addClickListener(e -> {
+
+			if (nome.isEmpty() || cognome.isEmpty() || username.isEmpty() || email.isEmpty() || password.isEmpty()) {
+
+				Notification.show("Compila tutti i campi!", 3000, Notification.Position.TOP_CENTER).getElement()
+						.getThemeList().add("error");
+				return;
+			}
+
+			String n = nome.getValue();
+			String c = cognome.getValue();
+			String u = username.getValue();
+			String em = email.getValue();
+			String p = password.getValue();
+
+			String errore = DataValidator.verificaDati(n, c, u, em, p, p);
 			if (errore != null) {
 				Notification.show(errore, 3000, Notification.Position.TOP_CENTER).getElement().getThemeList()
 						.add("error");
@@ -165,12 +160,12 @@ public class AdminUtentiView extends VerticalLayout {
 			 * se utente==null salvo nuovo utente con quello username
 			 */
 
-			firebaseUtentiService.verificaUtente(u).thenAccept(utente -> {
+			utentiService.verificaUtente(u).thenAccept(utente -> {
 				getUI().ifPresent(ui -> ui.access(() -> {
 
 					if (utente == null) {
 
-						Utente nuovoUtente = new Utente(n,c,u,em,p, LocalDate.now().toString(), "Utente");
+						Utente nuovoUtente = new Utente(n, c, u, em, p, LocalDate.now().toString(), "Utente");
 
 						/*
 						 * in modo asicrono salvo utente nel database il thenRun() permette di lavorare
@@ -182,7 +177,7 @@ public class AdminUtentiView extends VerticalLayout {
 						 * non viene eseguito, ed esegue .exceptionally (errore del database)
 						 */
 
-						firebaseUtentiService.salvaUtente(nuovoUtente).thenRun(() -> ui.access(() -> {
+						utentiService.salvaUtente(nuovoUtente).thenRun(() -> ui.access(() -> {
 							Notification.show("Registrazione completata! Benvenuto, " + u + ".", 3000,
 									Notification.Position.TOP_CENTER);
 							getUI().ifPresent(ui1 -> ui1.getPage().reload());
@@ -206,7 +201,7 @@ public class AdminUtentiView extends VerticalLayout {
 
 						Notification.show("Lo username : " + u + " e' già in uso, prova con un altro!", 3000,
 								Notification.Position.TOP_CENTER).getElement().getThemeList().add("error");
-			        	   ;
+						;
 
 					}
 
@@ -215,23 +210,23 @@ public class AdminUtentiView extends VerticalLayout {
 			});
 
 		});
-	        
-	    HorizontalLayout datiPersonaliLayout = new HorizontalLayout (nome, cognome);
-	    datiPersonaliLayout.setAlignItems(FlexComponent.Alignment.CENTER);
-	    HorizontalLayout credenzialiLayout = new HorizontalLayout (username, password);	    
-	    credenzialiLayout.setAlignItems(FlexComponent.Alignment.CENTER);
-	    HorizontalLayout pulsantiLayout = new HorizontalLayout (salva, annulla);	    
-	    pulsantiLayout.setAlignItems(FlexComponent.Alignment.CENTER);
 
-	    formLayout.add(titolo, datiPersonaliLayout, email, credenzialiLayout, pulsantiLayout);
+		HorizontalLayout datiPersonaliLayout = new HorizontalLayout(nome, cognome);
+		datiPersonaliLayout.setAlignItems(FlexComponent.Alignment.CENTER);
+		HorizontalLayout credenzialiLayout = new HorizontalLayout(username, password);
+		credenzialiLayout.setAlignItems(FlexComponent.Alignment.CENTER);
+		HorizontalLayout pulsantiLayout = new HorizontalLayout(salva, annulla);
+		pulsantiLayout.setAlignItems(FlexComponent.Alignment.CENTER);
 
-	    formLayout.expand(titolo, datiPersonaliLayout, email, credenzialiLayout, pulsantiLayout);
+		formLayout.add(titolo, datiPersonaliLayout, email, credenzialiLayout, pulsantiLayout);
 
-	    // Mostra il form in una nuova finestra/dialog
-	    dialog.add(formLayout);
-	    dialog.setModal(true);
-	    //dialog.setWidth("600px");
-	    dialog.open();
-	    }
-	    
+		formLayout.expand(titolo, datiPersonaliLayout, email, credenzialiLayout, pulsantiLayout);
+
+		// Mostra il form in una nuova finestra/dialog
+		dialog.add(formLayout);
+		dialog.setModal(true);
+		// dialog.setWidth("600px");
+		dialog.open();
+	}
+
 }

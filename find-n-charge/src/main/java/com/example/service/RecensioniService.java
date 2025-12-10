@@ -4,7 +4,6 @@ import java.util.concurrent.CompletableFuture;
 
 import org.springframework.stereotype.Service;
 
-import com.example.models.Auto;
 import com.example.models.Prenotazione;
 import com.example.models.Recensione;
 import com.example.modelsInterface.RecensioniInterface;

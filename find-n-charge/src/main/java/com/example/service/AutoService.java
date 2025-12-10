@@ -7,7 +7,6 @@ import java.util.concurrent.CompletableFuture;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.database.FirebaseAutoService;
 import com.example.models.Auto;
 import com.example.models.Utente;
 import com.example.modelsInterface.AutoInterface;

@@ -155,28 +155,26 @@ public class AdminColonnineView extends HorizontalLayout {
 					Double.parseDouble(latField.getValue()), Double.parseDouble(lonField.getValue()),
 					indirizzoField.getValue(), comuneField.getValue(), 0);
 
-			colonnineService.salvaColonnina(nuova)
-            .thenRun(() -> getUI().ifPresent(ui -> ui.access(() -> {
-                Notification.show("Colonnina salvata!").addThemeVariants(NotificationVariant.LUMO_SUCCESS);
-                nascondiDialog();
-                aggiornaGridConFiltro("");
-            })))
-            .exceptionally(ex -> {
-                getUI().ifPresent(ui -> ui.access(() -> {
-                    Notification.show("Errore salvataggio: " + ex.getMessage()).addThemeVariants(NotificationVariant.LUMO_ERROR);
-                }));
-                return null;
-            });
+			colonnineService.salvaColonnina(nuova).thenRun(() -> getUI().ifPresent(ui -> ui.access(() -> {
+				Notification.show("Colonnina salvata!").addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+				nascondiDialog();
+				aggiornaGridConFiltro("");
+			}))).exceptionally(ex -> {
+				getUI().ifPresent(ui -> ui.access(() -> {
+					Notification.show("Errore salvataggio: " + ex.getMessage())
+							.addThemeVariants(NotificationVariant.LUMO_ERROR);
+				}));
+				return null;
+			});
 
 		} catch (Exception e) {
 			System.out.println("Errore inserimento nuova colonnina: " + e.getMessage());
 		}
-		
+
 	}
 
 	private void showSidebar(Colonnina col) {
 
-		
 		stationSidebar.setDati(col);
 		stationSidebar.getPrenotaButton().setVisible(false);
 

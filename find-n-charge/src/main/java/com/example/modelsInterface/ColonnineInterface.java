@@ -3,8 +3,8 @@ package com.example.modelsInterface;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
+import com.example.enums.StatoColonnina;
 import com.example.models.Colonnina;
-import com.example.models.StatoColonnina;
 
 public interface ColonnineInterface {
 

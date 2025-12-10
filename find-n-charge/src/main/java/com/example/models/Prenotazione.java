@@ -3,9 +3,8 @@
  */
 package com.example.models;
 
-import java.time.LocalTime;
-import java.util.Date;
-import org.threeten.bp.LocalDate;
+
+import com.example.enums.StatoPrenotazione;
 
 public class Prenotazione {
 	

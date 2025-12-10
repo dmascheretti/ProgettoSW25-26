@@ -1,4 +1,4 @@
-package com.example.models;
+package com.example.enums;
 
 public enum StatoPrenotazione {
 	FUTURA("Futura"),

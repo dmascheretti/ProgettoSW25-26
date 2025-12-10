@@ -29,7 +29,6 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import com.example.models.Prenotazione;
-import com.example.models.StatoPrenotazione;
 import com.example.models.Utente;
 import com.example.service.ColonnineService;
 import com.example.service.PrenotazioniService;
@@ -39,6 +38,7 @@ import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dialog.Dialog;
+import com.example.enums.StatoPrenotazione;
 import com.example.layout.MainLayout;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import java.awt.image.BufferedImage;
@@ -227,7 +227,7 @@ public class ReservationView extends VerticalLayout implements BeforeEnterObserv
 				return null;
 			} else {
 				Button btn = new Button("Cancella");
-				btn.addClickListener(e -> cancellaPrenot(p));
+				btn.addClickListener(e -> prenotazioniService.cancellaPrenotazione(p));
 				btn.getStyle().set("color", "red").set("text-decoration", "underline").set("background", "none")
 						.set("border", "none");
 				return btn;
@@ -305,25 +305,6 @@ public class ReservationView extends VerticalLayout implements BeforeEnterObserv
 		}
 	}
 
-	// funzione di cancellazione, DA METTERE IN UNA CLASSE A PARTE!
-	private void cancellaPrenot(Prenotazione p) {
-
-		prenotazioniService.cancellaPrenotazione(p).thenRun(() -> getUI().ifPresent(ui -> ui.access(() -> {
-			Notification.show("Prenotazione eliminata con successo", 3000, Notification.Position.TOP_CENTER);
-
-			getUI().ifPresent(ui1 -> ui1.getPage().reload());
-		})))
-
-				// gestione e messaggio di errore
-
-				.exceptionally(ex -> {
-					getUI().ifPresent(ui -> ui.access(() -> {
-						Notification.show("Errore durante il salvataggio: " + ex.getMessage(), 4000,
-								Notification.Position.TOP_CENTER).getElement().getThemeList().add("error");
-					}));
-					return null;
-				});
-	}
 
 	/**
 	 * Se l'utente prova ad accedere direttamente a questa pagina senza aver

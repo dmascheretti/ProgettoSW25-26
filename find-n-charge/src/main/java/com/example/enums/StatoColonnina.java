@@ -1,4 +1,4 @@
-package com.example.models;
+package com.example.enums;
 
 public enum StatoColonnina {
     LIBERA("Libera"), // Codice per DB + Label per UI

@@ -8,8 +8,8 @@ import java.util.concurrent.CompletableFuture;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.enums.StatoColonnina;
 import com.example.models.Colonnina;
-import com.example.models.StatoColonnina;
 import com.example.modelsInterface.ColonnineInterface;
 
 @Service

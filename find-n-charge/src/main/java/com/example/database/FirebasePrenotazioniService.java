@@ -1,7 +1,6 @@
 package com.example.database;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,10 +9,10 @@ import java.util.concurrent.CompletableFuture;
 
 import org.springframework.stereotype.Service;
 
+import com.example.enums.StatoPrenotazione;
 import com.example.models.Auto;
 import com.example.models.Colonnina;
 import com.example.models.Prenotazione;
-import com.example.models.StatoPrenotazione;
 import com.example.modelsInterface.PrenotazioniInterface;
 import com.example.util.DataValidator;
 import com.google.firebase.database.DataSnapshot;

@@ -10,10 +10,10 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
+import com.example.enums.StatoColonnina;
+import com.example.enums.StatoPrenotazione;
 import com.example.models.Colonnina;
 import com.example.models.Prenotazione;
-import com.example.models.StatoColonnina;
-import com.example.models.StatoPrenotazione;
 import com.example.modelsInterface.ColonnineInterface;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;

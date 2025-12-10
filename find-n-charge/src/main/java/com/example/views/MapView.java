@@ -8,7 +8,6 @@ package com.example.views;
 
 import com.example.components.Sidebar;
 import com.example.models.Colonnina;
-import com.example.models.StatoColonnina;
 import com.example.models.Utente;
 import com.example.service.ColonnineService;
 import com.example.service.PrenotazioniService;
@@ -24,6 +23,7 @@ import java.util.stream.Collectors;
 import com.example.database.FirebaseAutoService;
 import com.example.database.FirebaseColonnineService;
 import com.example.database.FirebasePrenotazioniService;
+import com.example.enums.StatoColonnina;
 import com.example.layout.MainLayout;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

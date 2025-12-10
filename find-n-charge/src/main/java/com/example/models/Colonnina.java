@@ -6,6 +6,8 @@
 
 package com.example.models;
 
+import com.example.enums.StatoColonnina;
+
 public class Colonnina {
 
 	private String id;
@@ -22,7 +24,7 @@ public class Colonnina {
 	public Colonnina() {
 	}
 	
-	public Colonnina(String id, String nome, String tipo, double latitudine, double longitudine, String indirizzo, String comune, double potenza) {
+	public Colonnina(String id, String nome, String tipo, double latitudine, double longitudine, String indirizzo, String comune, double potenza, String linkImmagine) {
 		this.id=id;
 		this.nome=nome;
 		this.tipo=tipo;

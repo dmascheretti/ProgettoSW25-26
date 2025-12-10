@@ -11,11 +11,11 @@ import java.util.concurrent.CompletableFuture;
 
 import org.springframework.stereotype.Service;
 
+import com.example.enums.StatoColonnina;
+import com.example.enums.StatoPrenotazione;
 import com.example.models.Auto;
 import com.example.models.Colonnina;
 import com.example.models.Prenotazione;
-import com.example.models.StatoColonnina;
-import com.example.models.StatoPrenotazione;
 import com.example.models.Utente;
 import com.example.modelsInterface.PrenotazioniInterface;
 
@@ -164,4 +164,8 @@ public class PrenotazioniService  {
 		return prenotazioniInterface.contaPrenotazioniGiorni();
 	}
 
+	public CompletableFuture<List<Prenotazione>> getAllReservation() {
+
+		return prenotazioniInterface.getAllReservation();
+	}
 }

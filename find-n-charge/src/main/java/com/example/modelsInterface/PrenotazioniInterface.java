@@ -3,10 +3,10 @@ package com.example.modelsInterface;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
+import com.example.enums.StatoPrenotazione;
 import com.example.models.Auto;
 import com.example.models.Colonnina;
 import com.example.models.Prenotazione;
-import com.example.models.StatoPrenotazione;
 
 public interface PrenotazioniInterface {
 
