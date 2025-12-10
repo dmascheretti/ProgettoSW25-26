@@ -45,7 +45,8 @@ public class ProfileView extends VerticalLayout implements BeforeEnterObserver {
     private VerticalLayout modifica;
     private Paragraph mail;
     private HorizontalLayout datiEmodifica;
-
+    private HorizontalLayout autoLayout;
+    
 	public ProfileView(AutoService autoService, UtentiService utentiService, PrenotazioniService prenotazioniService) {
 		this.autoService = autoService;
 		this.utentiService = utentiService;
@@ -73,11 +74,13 @@ public class ProfileView extends VerticalLayout implements BeforeEnterObserver {
 		// Profile Card
 		//add(createProfileCard(utente));
 		
-		HorizontalLayout autoLayout = new HorizontalLayout();
+	    autoLayout = new HorizontalLayout();
 		autoLayout.setWidthFull();
 		autoLayout.setPadding(true);
 		autoLayout.setSpacing(true);
 
+		add(autoLayout);
+		
 		autoService.getAutoUtente(utente).thenAccept(lista -> {
 			getUI().ifPresent(ui -> ui.access(() -> {
 
@@ -91,6 +94,35 @@ public class ProfileView extends VerticalLayout implements BeforeEnterObserver {
 						ui.access(() -> {
 							Paragraph inCarica = new Paragraph(trovata ? "Auto in carica" : "Auto non in carica");
 							card.add(inCarica);
+							
+							if (trovata) {
+
+							    Button aggiornaBtn = new Button("Aggiorna stato");
+							    aggiornaBtn.getStyle().set("background-color", "#27AE60");
+							    aggiornaBtn.getStyle().set("color", "white");
+							    aggiornaBtn.getStyle().set("border-radius", "6px");
+
+							    aggiornaBtn.addClickListener(ev -> {
+
+							        double potenzaColonnina = 22; // puoi cambiarla
+
+							        
+							        autoService.nuovoStato(a, java.time.LocalDateTime.now(), potenzaColonnina).thenRun(() -> {
+							            ui.access(() -> {
+
+							                
+							                card.updateStato(a.getStatoCarica());
+
+							                Notification.show("Stato aggiornato!", 2500, Notification.Position.TOP_CENTER)
+							                        .addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+							            });
+							        });
+							    });
+
+							    card.add(aggiornaBtn);
+							}
+
+
 						});
 					});
 					Button eliminaBtn = new Button("Elimina");

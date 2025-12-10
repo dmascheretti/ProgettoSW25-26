@@ -26,16 +26,9 @@ public class CardAuto extends VerticalLayout {
 		this.caricaAuto=statoCarica;
 		modelloAuto.setText(modello);
 		targaAuto.setText("Targa: " + targa);
-		carica.setText("Carica residua: " + caricaAuto + "%");
+		updateStato(statoCarica);
 		
-		if (statoCarica <= 30) {
-			carica.getStyle().set("color", "#FF3B30").set("font-weight", "bold");
-			carica.setText("Carica residua: " + statoCarica + "%  ⚠ Mettere in carica");
-		} else if (statoCarica <= 55) {
-			carica.getStyle().set("color", "#F7DC6F").set("font-weight", "bold");
-		} else {
-			carica.getStyle().set("color", "#27AE60").set("font-weight", "bold");
-		}
+		
 		
 		modelloAuto.getStyle().set("margin-bottom", "0");
 
@@ -80,4 +73,20 @@ public class CardAuto extends VerticalLayout {
 	public void setCarica(Double caricaNuova) {
 		caricaAuto = caricaNuova;
 	}
+	public void updateStato(double nuovoStato) {
+		
+		this.caricaAuto = nuovoStato;
+	
+	if (nuovoStato <= 30) {
+		carica.getStyle().set("color", "#FF3B30").set("font-weight", "bold");
+		carica.setText("Carica residua: " + nuovoStato + "%  ⚠ Mettere in carica");
+	} else if (nuovoStato <= 55) {
+		carica.getStyle().set("color", "#F7DC6F").set("font-weight", "bold");
+		carica.setText("Carica residua: " + nuovoStato + "%");
+	} else {
+		carica.getStyle().set("color", "#27AE60").set("font-weight", "bold");
+		carica.setText("Carica residua: " + nuovoStato + "%");
+	}
+	}
+	
 }

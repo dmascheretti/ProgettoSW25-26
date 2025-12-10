@@ -221,5 +221,9 @@ Tutte le fasi precedenti sono contenute all'interno del file meeting
 
 06/12/2025		Mascheretti Davide
 			11.00-12.30 + 13.45-14.15 Implementazione logica di recensione e salvataggio nel database. Aggiunta di tutte le classi necessarie per mantenere corretta 				architettura delle altre classi. Aggiunti controlli di duplicazione recensione.
+09/10/2025              Morgera Claudio
+                        15.00-16.00 Aggiunta delle funzioni elimina auto e aggiorna stato di ricarica auto
+10/10/2025              Morgera Claudio
+                        16.00-17.00 Modifiche alle funzioni di aggiornamento auto e al design delle card auto nella pagina profilo
 			
 			

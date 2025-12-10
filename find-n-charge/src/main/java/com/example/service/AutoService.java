@@ -1,5 +1,6 @@
 package com.example.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
@@ -51,6 +52,11 @@ public CompletableFuture<List<Auto>> getAutoUtente(Utente u){
 		return future;
 	}
 
+public CompletableFuture<Void> aggiornaAuto(Auto a){
+	return autoInterface.salvaAuto(a);
+	
+}
+
 public CompletableFuture<Void> aggiungiAuto(String targa, String modello, String tipo, Utente u) {
 
 	CompletableFuture<Void> future = new CompletableFuture<>();
@@ -101,4 +107,9 @@ public CompletableFuture<Void> eliminaAuto(Auto a) {
 
 }
 
+public CompletableFuture<Void> nuovoStato(Auto a,LocalDateTime oraAttuale, double potenzaColonninaKw) {
+	
+	return autoInterface.calcolaNuovoStato(a, oraAttuale, potenzaColonninaKw);
+
+}
 }
