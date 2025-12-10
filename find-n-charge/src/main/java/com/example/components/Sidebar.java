@@ -18,7 +18,9 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.html.H3;
+import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.html.Image;
+import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -27,6 +29,7 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 public class Sidebar extends VerticalLayout {
 
 	private H3 title;
+	private Span valutazioni;
 	private VerticalLayout details;
 	private DatePicker bookingDatePicker; // Calendario interattivo
 	private ComboBox<String> bookingTimeSlot; // Menù a tendina con gli slot orari
@@ -50,11 +53,19 @@ public class Sidebar extends VerticalLayout {
 
 		title = new H3("Dettagli");
 		title.getStyle().set("margin", "0");
+
+		valutazioni = new Span();
+		VaadinIcon star = VaadinIcon.STAR_O;
+		Icon icon = star.create();
+		icon.setColor("gold");
+		HorizontalLayout rating = new HorizontalLayout(valutazioni, icon);
+		rating.setAlignItems(Alignment.CENTER);
+		rating.setSpacing(false);
 		
-		HorizontalLayout headerLayout = new HorizontalLayout(title, closeButton);
+		HorizontalLayout headerLayout = new HorizontalLayout(title, rating, closeButton);
 		headerLayout.setWidthFull(); 
 		headerLayout.setAlignItems(Alignment.CENTER); 
-		headerLayout.expand(title);
+		headerLayout.expand(title, rating);
 		
 		details = new VerticalLayout();
 		details.setSpacing(false); // Rimuove spazio extra tra le righe
@@ -78,6 +89,7 @@ public class Sidebar extends VerticalLayout {
 		prenotaButton = new Button("Prenota ora");
 		prenotaButton.getElement().getThemeList().add("success");
 		prenotaButton.getStyle().set("margin-top", "var(--lumo-space-l)");
+		
 
 		add(headerLayout, details, bookingDatePicker, bookingTimeSlot, autoSelection, prenotaButton);
 
@@ -86,6 +98,7 @@ public class Sidebar extends VerticalLayout {
 	public void setDati(Colonnina colonnina) {
 		// Mette i dati della colonnina nella sidebar
         this.title.setText(colonnina.getNome());
+        this.valutazioni.setText(colonnina.getNome() + "/5.0 ");
 		// Pulisci i dettagli vecchi
         this.details.removeAll();
         this.details.setAlignItems(Alignment.CENTER);
