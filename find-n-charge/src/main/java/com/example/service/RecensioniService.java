@@ -7,14 +7,34 @@ import org.springframework.stereotype.Service;
 import com.example.models.Prenotazione;
 import com.example.models.Recensione;
 import com.example.modelsInterface.RecensioniInterface;
+import java.util.List;
 
 @Service
 public class RecensioniService {
 	
 	private final RecensioniInterface recensioniInterface;
+	float valutazione;
+	int i;
 	
 	public RecensioniService(RecensioniInterface recensioniInterface) {
 		this.recensioniInterface=recensioniInterface;
+		this.i=0;
+		this.valutazione=0;
+	}
+	
+	public CompletableFuture<Float> getValutazColonnina(String colonninaID) {
+	    return recensioniInterface.getRecensioniColonnina(colonninaID)
+	        .thenApply(recensioni -> {
+	            if (recensioni == null || recensioni.isEmpty()) {
+	                return -1f; 
+	            }
+	            double media = recensioni.stream()
+	                    .mapToDouble(Recensione::getStelle) // Estrae il voto
+	                    .average()                          // Calcola la media
+	                    .orElse(-1f);                       // Default se qualcosa va storto
+
+	            return (float) media; // Cast a float come richiesto
+	        });
 	}
 	
 	public CompletableFuture<Void> aggiungiRecensione(String utente, String colonnina, int stelle, Prenotazione prenotazione){

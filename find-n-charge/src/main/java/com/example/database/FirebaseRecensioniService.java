@@ -1,10 +1,15 @@
 package com.example.database;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 import org.springframework.stereotype.Repository;
+
+import com.example.models.Colonnina;
 import com.example.models.Prenotazione;
 import com.example.models.Recensione;
+import com.example.models.Utente;
 import com.example.modelsInterface.RecensioniInterface;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -71,6 +76,40 @@ public class FirebaseRecensioniService implements RecensioniInterface {
 			}
 		});
 
+		return future;
+	}
+
+	@Override
+	public CompletableFuture<List<Recensione>> getRecensioniColonnina(String colonninaID) {
+		// Oggetto che permette al programma di non fermarsi perchè sa che conterrà la
+		// lista che sta cercando
+		CompletableFuture<List<Recensione>> future = new CompletableFuture<>();
+
+		// Legge il nodo recensioni
+		recensioni.orderByChild("colonnina").equalTo(colonninaID).addListenerForSingleValueEvent(new ValueEventListener() {
+
+			// Se le legge senza problemi
+			@Override
+			public void onDataChange(DataSnapshot dataSnapshot) {
+				List<Recensione> listaRec = new ArrayList<>();
+				if (dataSnapshot.exists()) {
+					for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+						Recensione r = snapshot.getValue(Recensione.class); // Acquisisce tutti i dati delle recensioni
+						if (r != null) {
+							listaRec.add(r);
+						}
+					}
+				}
+				future.complete(listaRec); // Restituisce la lista (piena o vuota)
+			}
+
+			// Se trova errori
+			@Override
+			public void onCancelled(DatabaseError databaseError) {
+				System.err.println("Errore nel caricamento: " + databaseError.getMessage());
+				future.completeExceptionally(databaseError.toException());
+			}
+		});
 		return future;
 	}
 

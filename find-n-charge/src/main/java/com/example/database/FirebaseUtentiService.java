@@ -388,7 +388,7 @@ public class FirebaseUtentiService implements UtentiInterface {
 			// Se trova errori
 			@Override
 			public void onCancelled(DatabaseError databaseError) {
-				System.err.println("Errore nel caricamento colonnine: " + databaseError.getMessage());
+				System.err.println("Errore nel caricamento utenti: " + databaseError.getMessage());
 				future.completeExceptionally(databaseError.toException());
 			}
 		});
