@@ -62,7 +62,7 @@ public class AdminLayout extends AppLayout {
 				createMenuLink(AdminColonnineView.class, "Gestione colonnine", VaadinIcon.PLUG),
 				createMenuLink(AdminUtentiView.class, "Gestione utenti", VaadinIcon.USER),
 				createMenuLink(AdminPrenotazioniView.class, "Gestione prenotazioni", VaadinIcon.CALENDAR),
-				logoutButton);
+				spacer, logoutButton);
 
 		// Espande lo spacer in modo da occupare tutto lo spazio extra disponibile
 		// all'interno di draweMenu (non utilizzato)

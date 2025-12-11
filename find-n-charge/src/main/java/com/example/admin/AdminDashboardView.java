@@ -4,33 +4,44 @@
  */
 package com.example.admin;
 
+import java.util.concurrent.CompletableFuture;
+
+import com.example.components.KpiCard;
+import com.example.enums.StatoColonnina;
+import com.example.layout.AdminLayout;
+import com.example.models.Utente;
+import com.example.service.ColonnineService;
+import com.example.service.PrenotazioniService;
+import com.example.service.UtentiService;
+import com.github.appreciated.apexcharts.ApexCharts;
+import com.github.appreciated.apexcharts.ApexChartsBuilder;
+import com.github.appreciated.apexcharts.config.builder.ChartBuilder;
+import com.github.appreciated.apexcharts.config.builder.LegendBuilder;
+import com.github.appreciated.apexcharts.config.builder.XAxisBuilder;
+import com.github.appreciated.apexcharts.config.builder.YAxisBuilder;
+import com.github.appreciated.apexcharts.config.chart.Type;
+import com.github.appreciated.apexcharts.config.chart.builder.ZoomBuilder;
+import com.github.appreciated.apexcharts.helper.Series;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.router.AfterNavigationEvent;
+import com.vaadin.flow.router.AfterNavigationObserver;
+import com.vaadin.flow.router.BeforeEnterEvent;
+import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
-import com.example.components.KpiCard;
-import com.example.enums.StatoColonnina;
-import com.example.layout.AdminLayout;
-import com.example.service.ColonnineService;
-import com.example.service.PrenotazioniService;
-import com.example.service.UtentiService;
+import com.vaadin.flow.server.VaadinSession;
+import com.vaadin.flow.shared.Registration;
 
 import jakarta.annotation.security.RolesAllowed;
-import com.vaadin.flow.router.AfterNavigationEvent;
-import com.vaadin.flow.router.AfterNavigationObserver;
-import com.github.appreciated.apexcharts.ApexCharts;
-import com.github.appreciated.apexcharts.ApexChartsBuilder;
-import com.github.appreciated.apexcharts.config.builder.*;
-import com.github.appreciated.apexcharts.config.chart.Type;
-import com.github.appreciated.apexcharts.config.chart.builder.ZoomBuilder;
-import com.github.appreciated.apexcharts.helper.Series;
-import java.util.concurrent.CompletableFuture;
 
 @PageTitle("Find&Charge | Dashboard")
 @Route(value = "dashboard", layout = AdminLayout.class) // Carica la pagina nel layout dell'admin
@@ -38,7 +49,7 @@ import java.util.concurrent.CompletableFuture;
 @RolesAllowed("ADMIN")
 
 // AfterNavigationObserver serve per caricare i dati in automatico non appena viene aperta la pagina
-public class AdminDashboardView extends VerticalLayout implements AfterNavigationObserver {
+public class AdminDashboardView extends VerticalLayout implements AfterNavigationObserver, BeforeEnterObserver{
 
 	private ApexCharts bookingsChart;
 	private final UtentiService utentiService;
@@ -400,5 +411,33 @@ public class AdminDashboardView extends VerticalLayout implements AfterNavigatio
 		});
 					
 		
+	}
+	
+	/**
+	 * Se l'utente prova ad accedere direttamente a questa pagina senza aver
+	 * effettuato l'accesso, lo si reindirizza alla pagina di login mostrando una
+	 * notifica di errore. beforeEnter viene eseguito un attimo prima che la pagina
+	 * venga mostrata all'utente.
+	 */
+	@Override
+	public void beforeEnter(BeforeEnterEvent event) {
+		Utente utente = (Utente) VaadinSession.getCurrent().getAttribute("utente");
+
+		if (utente == null) {
+			event.forwardTo("login"); // Reindirizza alla pagina di login
+			Registration[] registrationWrapper = new Registration[1]; // Array per registrare l'aggiunta del listener
+			// Dopo che ha cambiato pagina, mostra la notifica
+			registrationWrapper[0] = UI.getCurrent().addAfterNavigationListener(navEvent -> {
+				Notification.show("Utente non trovato. Effettua il login.", 3000, Notification.Position.TOP_CENTER)
+						.getElement().getThemeList().add("error");
+
+				// Rimuove il listener, altrimenti scatterebbe ogni volta
+				if (registrationWrapper[0] != null) {
+					registrationWrapper[0].remove();
+				}
+			});
+		} else if(utente.getRuolo().equals("Utente")) {
+			event.forwardTo("");
+		} 
 	}
 }

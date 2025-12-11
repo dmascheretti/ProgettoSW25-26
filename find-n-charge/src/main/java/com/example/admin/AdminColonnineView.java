@@ -8,7 +8,9 @@ package com.example.admin;
 import com.example.components.Sidebar;
 import com.example.layout.AdminLayout;
 import com.example.models.Colonnina;
+import com.example.models.Utente;
 import com.example.service.ColonnineService;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.grid.Grid;
@@ -19,21 +21,27 @@ import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.data.value.ValueChangeMode;
+import com.vaadin.flow.router.BeforeEnterEvent;
+import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.server.VaadinSession;
+import com.vaadin.flow.shared.Registration;
 
 @Route(value = "gestioneColonnine", layout = AdminLayout.class)
 @PageTitle("Find&Charge | Gestione colonnine")
 
-public class AdminColonnineView extends HorizontalLayout {
+public class AdminColonnineView extends HorizontalLayout implements BeforeEnterObserver{
 	private String tema = "#008000";
 	private Grid<Colonnina> colonGrid = new Grid<>(Colonnina.class);
 	private final ColonnineService colonnineService;
 	private Sidebar stationSidebar;
 	private Dialog nuovaColonninaLayout;
 
-	private TextField idField, nomeField, tipoField, latField, lonField, indirizzoField, comuneField;
+	private TextField idField, nomeField, tipoField, latField, lonField, indirizzoField, comuneField, linkField;
+	private NumberField potenzaField;
 
 	private Button salvaNuovaButton;
 	private Button annullaNuovaButton;
@@ -121,6 +129,8 @@ public class AdminColonnineView extends HorizontalLayout {
 		lonField = new TextField("Longitudine");
 		indirizzoField = new TextField("Indirizzo");
 		comuneField = new TextField("Comune");
+		linkField = new TextField("Link per l'immagine");
+		potenzaField = new NumberField("Potenza");
 
 		salvaNuovaButton = new Button("Salva");
 		salvaNuovaButton.getElement().getThemeList().add("success");
@@ -133,8 +143,10 @@ public class AdminColonnineView extends HorizontalLayout {
 		indirizzoLayout.setAlignItems(FlexComponent.Alignment.CENTER);
 		HorizontalLayout coordinateLayout = new HorizontalLayout(latField, lonField);
 		coordinateLayout.setAlignItems(FlexComponent.Alignment.CENTER);
+		HorizontalLayout idLinkLayout = new HorizontalLayout(idField, linkField);
+		coordinateLayout.setAlignItems(FlexComponent.Alignment.CENTER);
 
-		dialogLayout.add(new H3("Nuova colonnina"), idField, infoLayout, coordinateLayout, indirizzoLayout,
+		dialogLayout.add(new H3("Nuova colonnina"), idLinkLayout, potenzaField, infoLayout, coordinateLayout, indirizzoLayout,
 				new HorizontalLayout(salvaNuovaButton, annullaNuovaButton));
 
 		dialog.add(dialogLayout);
@@ -153,7 +165,7 @@ public class AdminColonnineView extends HorizontalLayout {
 		try {
 			Colonnina nuova = new Colonnina(idField.getValue(), nomeField.getValue(), tipoField.getValue(),
 					Double.parseDouble(latField.getValue()), Double.parseDouble(lonField.getValue()),
-					indirizzoField.getValue(), comuneField.getValue(), 0);
+					indirizzoField.getValue(), comuneField.getValue(), potenzaField.getValue(), linkField.getValue());
 
 			colonnineService.salvaColonnina(nuova).thenRun(() -> getUI().ifPresent(ui -> ui.access(() -> {
 				Notification.show("Colonnina salvata!").addThemeVariants(NotificationVariant.LUMO_SUCCESS);
@@ -187,5 +199,33 @@ public class AdminColonnineView extends HorizontalLayout {
 				colonGrid.setItems(lista);
 			}));
 		});
+	}
+	
+	/**
+	 * Se l'utente prova ad accedere direttamente a questa pagina senza aver
+	 * effettuato l'accesso, lo si reindirizza alla pagina di login mostrando una
+	 * notifica di errore. beforeEnter viene eseguito un attimo prima che la pagina
+	 * venga mostrata all'utente.
+	 */
+	@Override
+	public void beforeEnter(BeforeEnterEvent event) {
+		Utente utente = (Utente) VaadinSession.getCurrent().getAttribute("utente");
+
+		if (utente == null) {
+			event.forwardTo("login"); // Reindirizza alla pagina di login
+			Registration[] registrationWrapper = new Registration[1]; // Array per registrare l'aggiunta del listener
+			// Dopo che ha cambiato pagina, mostra la notifica
+			registrationWrapper[0] = UI.getCurrent().addAfterNavigationListener(navEvent -> {
+				Notification.show("Utente non trovato. Effettua il login.", 3000, Notification.Position.TOP_CENTER)
+						.getElement().getThemeList().add("error");
+
+				// Rimuove il listener, altrimenti scatterebbe ogni volta
+				if (registrationWrapper[0] != null) {
+					registrationWrapper[0].remove();
+				}
+			});
+		} else if(utente.getRuolo().equals("Utente")) {
+			event.forwardTo("");
+		} 
 	}
 }
