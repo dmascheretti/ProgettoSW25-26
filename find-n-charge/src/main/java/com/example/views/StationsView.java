@@ -16,6 +16,7 @@ import com.example.layout.MainLayout;
 import com.example.models.Colonnina;
 import com.example.models.Utente;
 import com.example.service.PrenotazioniService;
+import com.example.service.RecensioniService;
 import com.example.util.DataValidator;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.button.Button;
@@ -38,6 +39,7 @@ public class StationsView extends HorizontalLayout {
 	private Grid<Colonnina> colonGrid = new Grid<>(Colonnina.class);
 
 	private PrenotazioniService prenotazioniService;
+	private final RecensioniService recensioniService;
 	private AutoService autoService;
 	private ColonnineService colonnineService;
 
@@ -46,10 +48,11 @@ public class StationsView extends HorizontalLayout {
 
 	// Classe per l'elenco delle colonnine (indipendente dalla mappa)
 	public StationsView(AutoService autoService, PrenotazioniService prenotazioniService,
-			ColonnineService colonnineService) {
+			ColonnineService colonnineService, RecensioniService recensioniService) {
 		this.autoService = autoService;
 		this.colonnineService = colonnineService;
 		this.prenotazioniService = prenotazioniService;
+		this.recensioniService=recensioniService;
 		setSpacing(true);
 		setPadding(true);
 		setSizeFull();
@@ -99,7 +102,7 @@ public class StationsView extends HorizontalLayout {
 		aggiornaGridConFiltro("");
 
 		// Crea la sidebar
-		stationSidebar = new Sidebar();
+		stationSidebar = new Sidebar(recensioniService);
 		stationSidebar.setHeightFull(); // Occupa tutta l'altezza disponibile
 		stationSidebar.getStyle().set("overflow-y", "auto"); // Abilita lo scroll solo per la sidebar
 

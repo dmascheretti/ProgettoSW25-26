@@ -86,7 +86,7 @@ public class FirebaseRecensioniService implements RecensioniInterface {
 		CompletableFuture<List<Recensione>> future = new CompletableFuture<>();
 
 		// Legge il nodo recensioni
-		recensioni.orderByChild("colonnina").equalTo(colonninaID).addListenerForSingleValueEvent(new ValueEventListener() {
+		recensioni.child(colonninaID).addListenerForSingleValueEvent(new ValueEventListener() {
 
 			// Se le legge senza problemi
 			@Override

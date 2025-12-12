@@ -11,6 +11,7 @@ import com.example.models.Colonnina;
 import com.example.models.Utente;
 import com.example.service.ColonnineService;
 import com.example.service.PrenotazioniService;
+import com.example.service.RecensioniService;
 import com.example.util.DataValidator;
 
 import java.time.LocalDate;
@@ -61,16 +62,19 @@ public class MapView extends HorizontalLayout {
 	private FirebaseAutoService firebaseAutoService;
 	private List<Colonnina> colonnine;
 	private Colonnina colonninaSelezionata;
+	private final RecensioniService recensioniService;
 	private ObjectMapper objectMapper = new ObjectMapper(); // Per tradurre gli oggetti da Java a JSON
 
 	public MapView(@Autowired FirebaseColonnineService firebaseColonnineService,FirebaseAutoService firebaseAutoService,
-			FirebasePrenotazioniService firebasePrenotazioniService, ColonnineService colonnineService, PrenotazioniService prenotazioneService) {
+			FirebasePrenotazioniService firebasePrenotazioniService, ColonnineService colonnineService, PrenotazioniService prenotazioneService,
+			RecensioniService recensioniService) {
 
         this.firebaseColonnineService=firebaseColonnineService;
         this.firebaseAutoService=firebaseAutoService;
         this.firebasePrenotazioniService=firebasePrenotazioniService;
         this.colonnineService = colonnineService;
         this.prenotazioneService=prenotazioneService;
+        this.recensioniService=recensioniService;
 
 		setSizeFull();
 		setPadding(false);
@@ -78,7 +82,7 @@ public class MapView extends HorizontalLayout {
 		getStyle().set("overflow", "hidden"); 	// Blocca lo scroll della pagina intera (scrolla solo la sidebar)
 
 		// Crea la sidebar
-		stationSidebar = new Sidebar();
+		stationSidebar = new Sidebar(recensioniService);
 		stationSidebar.setHeightFull();							// Occupa tutta l'altezza disponibile
 		stationSidebar.getStyle().set("overflow-y", "auto"); 	// Abilita lo scroll solo per la sidebar
 		

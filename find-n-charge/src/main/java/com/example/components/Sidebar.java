@@ -14,13 +14,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.example.models.Colonnina;
+import com.example.service.RecensioniService;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.html.Image;
-import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -35,8 +36,11 @@ public class Sidebar extends VerticalLayout {
 	private ComboBox<String> bookingTimeSlot; // Menù a tendina con gli slot orari
 	private ComboBox<String> autoSelection;
 	private Button prenotaButton;
+	private final RecensioniService recensioniService;
 
-	public Sidebar() {
+	public Sidebar(RecensioniService recensioniService) {
+		
+		this.recensioniService=recensioniService;
 
 		setWidth("35%");
 		setHeightFull();
@@ -96,9 +100,19 @@ public class Sidebar extends VerticalLayout {
 	}	
 
 	public void setDati(Colonnina colonnina) {
+		UI ui = UI.getCurrent();
 		// Mette i dati della colonnina nella sidebar
+		this.valutazioni.setText("-/5.0");
         this.title.setText(colonnina.getNome());
-        this.valutazioni.setText(colonnina.getNome() + "/5.0 ");
+        recensioniService.getValutazColonnina(colonnina).thenAccept(media -> {
+        	if (ui != null) {
+                ui.access(() -> {
+                    String testo = String.format("%.1f/5.0", media);
+                    this.valutazioni.setText(testo);
+                });
+            }
+        });
+  
 		// Pulisci i dettagli vecchi
         this.details.removeAll();
         this.details.setAlignItems(Alignment.CENTER);

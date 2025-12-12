@@ -4,41 +4,52 @@ import java.util.concurrent.CompletableFuture;
 
 import org.springframework.stereotype.Service;
 
+import com.example.models.Colonnina;
 import com.example.models.Prenotazione;
 import com.example.models.Recensione;
 import com.example.modelsInterface.RecensioniInterface;
-import java.util.List;
 
 @Service
 public class RecensioniService {
-	
+
 	private final RecensioniInterface recensioniInterface;
 	float valutazione;
 	int i;
-	
-	public RecensioniService(RecensioniInterface recensioniInterface) {
-		this.recensioniInterface=recensioniInterface;
-		this.i=0;
-		this.valutazione=0;
-	}
-	
-	public CompletableFuture<Float> getValutazColonnina(String colonninaID) {
-	    return recensioniInterface.getRecensioniColonnina(colonninaID)
-	        .thenApply(recensioni -> {
-	            if (recensioni == null || recensioni.isEmpty()) {
-	                return -1f; 
-	            }
-	            double media = recensioni.stream()
-	                    .mapToDouble(Recensione::getStelle) // Estrae il voto
-	                    .average()                          // Calcola la media
-	                    .orElse(-1f);                       // Default se qualcosa va storto
 
-	            return (float) media; // Cast a float come richiesto
-	        });
+	public RecensioniService(RecensioniInterface recensioniInterface) {
+		this.recensioniInterface = recensioniInterface;
+		this.i = 0;
+		this.valutazione = 0;
 	}
-	
-	public CompletableFuture<Void> aggiungiRecensione(String utente, String colonnina, int stelle, Prenotazione prenotazione){
-		
+
+	public CompletableFuture<Float> getValutazColonnina(Colonnina colonnina) {
+
+		CompletableFuture<Float> future = new CompletableFuture<>();
+		//qui id colonnina è presente perche quando scarico le colonnine faccio .setId
+		recensioniInterface.getRecensioniColonnina(colonnina.getId()).thenAccept(recensioni -> {
+
+			float somma = 0;
+
+			if (recensioni.isEmpty()) {
+				future.completeExceptionally(null);
+				return;
+			}
+			for (Recensione r : recensioni) {
+				somma = somma + r.getStelle();
+			}
+
+			future.complete(somma / recensioni.size());
+		}).exceptionally(ex -> {
+			future.completeExceptionally(ex);
+			return null;
+		});
+
+		return future;
+	}
+
+	public CompletableFuture<Void> aggiungiRecensione(String utente, String colonnina, int stelle,
+			Prenotazione prenotazione) {
+
 		CompletableFuture<Void> future = new CompletableFuture<>();
 		recensioniInterface.verificaRecensione(prenotazione).thenAccept(recensione -> {
 
@@ -47,8 +58,7 @@ public class RecensioniService {
 				return;
 			}
 
-
-			Recensione r=new Recensione(utente,colonnina,stelle,prenotazione.getId());
+			Recensione r = new Recensione(utente, colonnina, stelle, prenotazione.getId());
 
 			recensioniInterface.aggiungiRecensione(r).thenRun(() -> {
 				future.complete(null);
@@ -68,6 +78,5 @@ public class RecensioniService {
 		// null se tutto è andato a buon fine
 		return future;
 	}
-
 
 }

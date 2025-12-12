@@ -10,6 +10,7 @@ import com.example.layout.AdminLayout;
 import com.example.models.Colonnina;
 import com.example.models.Utente;
 import com.example.service.ColonnineService;
+import com.example.service.RecensioniService;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
@@ -39,6 +40,7 @@ public class AdminColonnineView extends HorizontalLayout implements BeforeEnterO
 	private final ColonnineService colonnineService;
 	private Sidebar stationSidebar;
 	private Dialog nuovaColonninaLayout;
+	private final RecensioniService recensioniService;
 
 	private TextField idField, nomeField, tipoField, latField, lonField, indirizzoField, comuneField, linkField;
 	private NumberField potenzaField;
@@ -47,8 +49,9 @@ public class AdminColonnineView extends HorizontalLayout implements BeforeEnterO
 	private Button annullaNuovaButton;
 
 	// Classe per l'elenco delle colonnine (indipendente dalla mappa)
-	public AdminColonnineView(ColonnineService colonnineService) {
+	public AdminColonnineView(ColonnineService colonnineService, RecensioniService recensioniService) {
 		this.colonnineService = colonnineService;
+		this.recensioniService=recensioniService;
 		setSpacing(true);
 		setPadding(true);
 
@@ -100,7 +103,7 @@ public class AdminColonnineView extends HorizontalLayout implements BeforeEnterO
 		// Caricamento iniziale senza filtri
 		aggiornaGridConFiltro("");
 
-		stationSidebar = new Sidebar();
+		stationSidebar = new Sidebar(recensioniService);
 		stationSidebar.setHeightFull();
 		stationSidebar.setWidth("400px");
 		stationSidebar.getStyle().set("background-color", "white");
