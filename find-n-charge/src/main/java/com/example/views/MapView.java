@@ -9,6 +9,7 @@ package com.example.views;
 import com.example.components.Sidebar;
 import com.example.models.Colonnina;
 import com.example.models.Utente;
+import com.example.service.AutoService;
 import com.example.service.ColonnineService;
 import com.example.service.PrenotazioniService;
 import com.example.service.RecensioniService;
@@ -21,9 +22,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import com.example.database.FirebaseAutoService;
-import com.example.database.FirebaseColonnineService;
-import com.example.database.FirebasePrenotazioniService;
 import com.example.enums.StatoColonnina;
 import com.example.layout.MainLayout;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -39,8 +37,6 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
 import com.vaadin.flow.server.VaadinSession;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 @PageTitle("Find&Charge - Mappa")
 @Route(value = "", layout = MainLayout.class) // Carica la pagina nel layout della home page
 @RouteAlias(value = "main", layout = MainLayout.class) // URL alternativo
@@ -53,43 +49,37 @@ public class MapView extends HorizontalLayout {
 
 	// Componenti per la Sidebar
 	private Sidebar stationSidebar;
-	private ColonnineService colonnineService;
+	private final ColonnineService colonnineService;
+	private final PrenotazioniService prenotazioniService;
+	private final AutoService autoService;
+	private final RecensioniService recensioniService;
 
-	// Serve Firebase con la lista della colonnine del database
-	private FirebaseColonnineService firebaseColonnineService;
-	private PrenotazioniService prenotazioneService;
-	private FirebasePrenotazioniService firebasePrenotazioniService;
-	private FirebaseAutoService firebaseAutoService;
 	private List<Colonnina> colonnine;
 	private Colonnina colonninaSelezionata;
-	private final RecensioniService recensioniService;
+
 	private ObjectMapper objectMapper = new ObjectMapper(); // Per tradurre gli oggetti da Java a JSON
 
-	public MapView(@Autowired FirebaseColonnineService firebaseColonnineService,FirebaseAutoService firebaseAutoService,
-			FirebasePrenotazioniService firebasePrenotazioniService, ColonnineService colonnineService, PrenotazioniService prenotazioneService,
+	public MapView(AutoService autoService, ColonnineService colonnineService, PrenotazioniService prenotazioniService,
 			RecensioniService recensioniService) {
 
-        this.firebaseColonnineService=firebaseColonnineService;
-        this.firebaseAutoService=firebaseAutoService;
-        this.firebasePrenotazioniService=firebasePrenotazioniService;
-        this.colonnineService = colonnineService;
-        this.prenotazioneService=prenotazioneService;
-        this.recensioniService=recensioniService;
+		this.colonnineService = colonnineService;
+		this.prenotazioniService = prenotazioniService;
+		this.recensioniService = recensioniService;
+		this.autoService=autoService;
 
 		setSizeFull();
 		setPadding(false);
 		setSpacing(false);
-		getStyle().set("overflow", "hidden"); 	// Blocca lo scroll della pagina intera (scrolla solo la sidebar)
+		getStyle().set("overflow", "hidden"); // Blocca lo scroll della pagina intera (scrolla solo la sidebar)
 
 		// Crea la sidebar
 		stationSidebar = new Sidebar(recensioniService);
-		stationSidebar.setHeightFull();							// Occupa tutta l'altezza disponibile
-		stationSidebar.getStyle().set("overflow-y", "auto"); 	// Abilita lo scroll solo per la sidebar
-		
-		configuraGestioneOrari();	//Per gestire gli slot orari
-		reservationLogic();			//Per gestire le prenotazioni
-		configuraAutoUtente();		//Per gestire le auto dell'utente
-		
+		stationSidebar.setHeightFull(); // Occupa tutta l'altezza disponibile
+		stationSidebar.getStyle().set("overflow-y", "auto"); // Abilita lo scroll solo per la sidebar
+
+		configuraGestioneOrari(); // Per gestire gli slot orari
+		reservationLogic(); // Per gestire le prenotazioni
+		configuraAutoUtente(); // Per gestire le auto dell'utente
 
 		// Crea il contenitore per la mappa
 		mapDiv = new Div();
@@ -113,105 +103,109 @@ public class MapView extends HorizontalLayout {
 
 	}
 
-
 	private void reservationLogic() {
 
 		stationSidebar.getPrenotaButton().addClickListener(e -> {
-        
-        LocalDate data = stationSidebar.getDataSelezionata();
-        String orario = stationSidebar.getOrarioSelezionato();
-        String autoSelezionata = stationSidebar.getAutoSelected(); 
-        Utente utenteCorrente = (Utente) VaadinSession.getCurrent().getAttribute("utente");
 
-        //Controlla che l'utente sia loggato, altrimenti viene reindirizzato alla pagina di login
-        if (utenteCorrente == null) {
-            Notification.show("Errore: Utente non loggato.", 3000, Notification.Position.TOP_CENTER)
-                    .getElement().getThemeList().add("error");
-            UI.getCurrent().navigate("login"); 
-            return;
-        }
+			LocalDate data = stationSidebar.getDataSelezionata();
+			String orario = stationSidebar.getOrarioSelezionato();
+			String autoSelezionata = stationSidebar.getAutoSelected();
+			Utente utenteCorrente = (Utente) VaadinSession.getCurrent().getAttribute("utente");
 
-        //Deve essere selezionata una colonnina
-        if (colonninaSelezionata == null) {
-            Notification.show("Errore: Nessuna colonnina selezionata.", 3000, Notification.Position.TOP_CENTER)
-                    .getElement().getThemeList().add("error");
-            return;
-        }
-        
-        //Deve essere selezionata una auto
-        if (autoSelezionata == null) {
-            Notification.show("Errore: Nessuna auto selezionata.", 3000, Notification.Position.TOP_CENTER)
-                    .getElement().getThemeList().add("error");
-            return;
-        }
+			// Controlla che l'utente sia loggato, altrimenti viene reindirizzato alla
+			// pagina di login
+			if (utenteCorrente == null) {
+				Notification.show("Errore: Utente non loggato.", 3000, Notification.Position.TOP_CENTER).getElement()
+						.getThemeList().add("error");
+				UI.getCurrent().navigate("login");
+				return;
+			}
 
-        // Verifica che non ci sia già una prenotazione per quello slot
-        String errore = DataValidator.verificaPrenotazione(colonninaSelezionata.getId(), data, orario);
-        if (errore != null) {
-            Notification.show(errore, 3000, Notification.Position.TOP_CENTER)
-                    .getElement().getThemeList().add("error");
-            return;
-        }
+			// Deve essere selezionata una colonnina
+			if (colonninaSelezionata == null) {
+				Notification.show("Errore: Nessuna colonnina selezionata.", 3000, Notification.Position.TOP_CENTER)
+						.getElement().getThemeList().add("error");
+				return;
+			}
 
-        //Scrive la prenotazione nel Firebase
-        String dataString = data.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-        
-        prenotazioneService.prenota(colonninaSelezionata, utenteCorrente, dataString, orario, autoSelezionata)
-            .thenAccept(success -> {
-                getUI().ifPresent(ui -> ui.access(() -> {
-                    if (success) {
-                        Notification.show("Prenotazione confermata per " + orario + " il " + dataString, 
-                                3000, Notification.Position.TOP_CENTER)
-                                .getElement().getThemeList().add("success");
-                        stationSidebar.setVisible(false);
-                    } else {
-                        Notification.show("Slot già occupato o errore server.", 4000, Notification.Position.TOP_CENTER)
-                                .getElement().getThemeList().add("error");
-                    }
-                }));
-            });
+			// Deve essere selezionata una auto
+			if (autoSelezionata == null) {
+				Notification.show("Errore: Nessuna auto selezionata.", 3000, Notification.Position.TOP_CENTER)
+						.getElement().getThemeList().add("error");
+				return;
+			}
+
+			// Verifica che non ci sia già una prenotazione per quello slot
+			String errore = DataValidator.verificaPrenotazione(colonninaSelezionata.getId(), data, orario);
+			if (errore != null) {
+				Notification.show(errore, 3000, Notification.Position.TOP_CENTER).getElement().getThemeList()
+						.add("error");
+				return;
+			}
+
+			// Scrive la prenotazione nel Firebase
+			String dataString = data.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+
+			prenotazioniService.prenota(colonninaSelezionata, utenteCorrente, dataString, orario, autoSelezionata)
+					.thenAccept(success -> {
+						getUI().ifPresent(ui -> ui.access(() -> {
+							if (success) {
+								Notification
+										.show("Prenotazione confermata per " + orario + " il " + dataString, 3000,
+												Notification.Position.TOP_CENTER)
+										.getElement().getThemeList().add("success");
+								stationSidebar.setVisible(false);
+							} else {
+								Notification
+										.show("Slot già occupato o errore server.", 4000,
+												Notification.Position.TOP_CENTER)
+										.getElement().getThemeList().add("error");
+							}
+						}));
+					});
 		});
 
 	}
-	
-	private void configuraAutoUtente() {
-        Utente utenteCorrente = (Utente) VaadinSession.getCurrent().getAttribute("utente");
 
-        if (utenteCorrente == null) {
-            return;
-        }
-        
-		firebaseAutoService.getTargheUtente(utenteCorrente)
-		.thenAccept(autoUtente -> {
-			
+	private void configuraAutoUtente() {
+		Utente utenteCorrente = (Utente) VaadinSession.getCurrent().getAttribute("utente");
+
+		if (utenteCorrente == null) {
+			return;
+		}
+
+		autoService.getTargheUtente(utenteCorrente).thenAccept(autoUtente -> {
+
 			getUI().ifPresent(ui -> ui.access(() -> {
 				stationSidebar.setAuto(autoUtente);
 			}));
 		});
-		
+
 	}
-	
+
 	private void configuraGestioneOrari() {
-        stationSidebar.getBookingDatePicker().addValueChangeListener(e -> {
-            
-            LocalDate dataScelta = e.getValue();
-            if (dataScelta == null) return;
+		stationSidebar.getBookingDatePicker().addValueChangeListener(e -> {
 
-            stationSidebar.aggiornaOrari(dataScelta, Collections.emptyList());	//Forza l'aggiornamento anche se la data non cambia
+			LocalDate dataScelta = e.getValue();
+			if (dataScelta == null)
+				return;
 
-            if (colonninaSelezionata != null) {
-                
-                String dataString = dataScelta.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+			stationSidebar.aggiornaOrari(dataScelta, Collections.emptyList()); // Forza l'aggiornamento anche se la data
+																				// non cambia
 
-                firebasePrenotazioniService.getSlotOccupati(colonninaSelezionata.getId(), dataString)
-                    .thenAccept(listaOccupati -> {
-                        getUI().ifPresent(ui -> ui.access(() -> {
-                            stationSidebar.aggiornaOrari(dataScelta, listaOccupati);
-                        }));
-                    });
-            }
-        });
-    }
+			if (colonninaSelezionata != null) {
+
+				String dataString = dataScelta.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+
+				prenotazioniService.getSlotOccupati(colonninaSelezionata.getId(), dataString)
+						.thenAccept(listaOccupati -> {
+							getUI().ifPresent(ui -> ui.access(() -> {
+								stationSidebar.aggiornaOrari(dataScelta, listaOccupati);
+							}));
+						});
+			}
+		});
+	}
 
 	/**
 	 * Sovrascrive il metodo standard di Vaadin che viene chiamato automaticamente
@@ -232,59 +226,60 @@ public class MapView extends HorizontalLayout {
 
 		// Per l'asincronicità
 		UI ui = attachEvent.getUI();
-		
 
 		String jsCode =
 				// Questa parte di codice deve aspettare che il file .js di Leaflet sia stato
 				// scaricato, quindi lo controlliamo ciclicamente ogni 100ms
-				"var checkLeaflet = setInterval(function() { if (typeof L !== 'undefined') {" + 		// Controlla se
-																										// il file è
-																										// stato
-																										// scaricato
+				"var checkLeaflet = setInterval(function() { if (typeof L !== 'undefined') {" + // Controlla se
+																								// il file è
+																								// stato
+																								// scaricato
 						"    clearInterval(checkLeaflet);" + // Se esiste, ferma il controllo
 						"    var mapElement = document.getElementById('" + mapId + "');" + // Cerca il div che deve
 																							// contenere la mappa
 						"    if (!mapElement) return;" + // Se non esiste interrompe
 						"    if (mapElement._leaflet_id) return;" + // Controlla che non ci sia già una mappa nel div,
 																	// in caso affermativo interrompe
-						
 
 						// Crea la mappa
-						"    var map = L.map('" + mapId + "', {" +					// Crea la mappa
-						"        minZoom: 3," +                                     // Impedisce zoom troppo lontani
-						"        maxBounds: [[-90, -180], [90, 180]]," +            // Movimento limitato ai confini del mondo
-						"        maxBoundsViscosity: 0.0" +                         // Muro solido
-						"    }).setView([45.6493, 9.6021], 15);" +					// Coordinate di default su Dalmine con zoom default pari a 15
+						"    var map = L.map('" + mapId + "', {" + // Crea la mappa
+						"        minZoom: 3," + // Impedisce zoom troppo lontani
+						"        maxBounds: [[-90, -180], [90, 180]]," + // Movimento limitato ai confini del mondo
+						"        maxBoundsViscosity: 0.0" + // Muro solido
+						"    }).setView([45.6493, 9.6021], 15);" + // Coordinate di default su Dalmine con zoom default
+																	// pari a 15
 						"    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {" + // Si appoggia a
 																									// OpenStreetMap per
 																									// disegnare le
 																									// mattonelle della
 																									// mappa
-						"      attribution: '© OpenStreetMap contributors'," +  
-						"      noWrap: true" +                                  //La mappa non si ripete
+						"      attribution: '© OpenStreetMap contributors'," + "      noWrap: true" + // La mappa non si
+																										// ripete
 						"    }).addTo(map);" +
-						
+
 						// Geolocalizzazione
-				        "	map.locate({setView: true, maxZoom: 15, enableHighAccuracy: false});" +		//Trova la posizione e centra la mappa	
-						
-						"   map.on('locationfound', function(e) {" +			// Quando la posizione viene trovata:
-						
-				        "		var userIcon = L.divIcon({" +					// Definisce un'icona per il marker della posizione attuale dell'utente
-				        "		className: 'user-location-marker'," + 			// Classe CSS personalizzata per la box in cui verrà visualizzata l'icona
-				        "   		html: '<vaadin-icon icon=\"vaadin:bullseye\" style=\"color: #305000; width: 35px; height: 35px; filter: drop-shadow(1px 1px 1px rgba(0,0,0,0.5));\"></vaadin-icon>'," +
-				        "           iconSize: [35, 35]," +   	 				// Grandezza dell'icona in pixel
-				        "           iconAnchor: [17.5, 17.5]," +               	// Centra l'incona 
-			            "  		});" +
-				        
-			            "   	var userMarker = L.marker(e.latlng, {" +		// Creazione marker della posizione utente
-			            "   		icon: userIcon," +
-			            "       	zIndexOffset: 10000" + 						// Sempre sopra le colonnine
-			            "   	}).addTo(map);" +
-			            
-			            "		userMarker.on('click', function() {" +			// Quando viene cliccato il marker utente:
-			            "   		map.flyTo(e.latlng, 15);" +		 			// Viene centrata la mappa sulla posizione corrente
-			            "   	});" +
-				        "	});" +
+						"	map.locate({setView: true, maxZoom: 15, enableHighAccuracy: false});" + // Trova la
+																									// posizione e
+																									// centra la mappa
+
+						"   map.on('locationfound', function(e) {" + // Quando la posizione viene trovata:
+
+						"		var userIcon = L.divIcon({" + // Definisce un'icona per il marker della posizione
+																// attuale dell'utente
+						"		className: 'user-location-marker'," + // Classe CSS personalizzata per la box in cui
+																		// verrà visualizzata l'icona
+						"   		html: '<vaadin-icon icon=\"vaadin:bullseye\" style=\"color: #305000; width: 35px; height: 35px; filter: drop-shadow(1px 1px 1px rgba(0,0,0,0.5));\"></vaadin-icon>',"
+						+ "           iconSize: [35, 35]," + // Grandezza dell'icona in pixel
+						"           iconAnchor: [17.5, 17.5]," + // Centra l'incona
+						"  		});" +
+
+						"   	var userMarker = L.marker(e.latlng, {" + // Creazione marker della posizione utente
+						"   		icon: userIcon," + "       	zIndexOffset: 10000" + // Sempre sopra le colonnine
+						"   	}).addTo(map);" +
+
+						"		userMarker.on('click', function() {" + // Quando viene cliccato il marker utente:
+						"   		map.flyTo(e.latlng, 15);" + // Viene centrata la mappa sulla posizione corrente
+						"   	});" + "	});" +
 
 						// Funzione che definisce l'icona del marker di default
 						"    var IconBase = L.Icon.extend({" + "        options: {"
@@ -328,60 +323,60 @@ public class MapView extends HorizontalLayout {
 						"      component.$server.onMarkerClick(station.id);" + "      });});}}, 100);"; // Ciclo ogni//
 																										// 100ms
 
+		//Prima inizalizza a libere tutte le colonnine, poi controlla quelle prenotate ed infine quelle in carica
+		//In questo modo tutte sono verdi, solo alcune solo gialle e solo alcune di quelle gialle diventano rosse
 		colonnineService.inizializza(StatoColonnina.LIBERA)
-	    .thenCompose(v -> colonnineService.aggiornaStato(StatoColonnina.PRENOTATA)) 
-	    .thenCompose(v -> colonnineService.aggiornaStatoCarica(StatoColonnina.IN_CARICA)) 
-	    .thenRun(() -> {
-			
-		
-			
-				
-					
-				// Se getAllColonnine() ha successo
-				firebaseColonnineService.getAllColonnine().thenAccept(stations -> {
+				.thenCompose(v -> colonnineService.aggiornaStato(StatoColonnina.PRENOTATA))
+				.thenCompose(v -> colonnineService.aggiornaStatoCarica(StatoColonnina.IN_CARICA)).thenRun(() -> {
 
-					// Memorizza la lista delle colonnine
-					this.colonnine = stations;
+					// Se getAllColonnine() ha successo
+					colonnineService.getAllColonnine().thenAccept(stations -> {
 
-					String stationsJson;
-					try {
-						// Prende i dati che servono per disegnare il marker
-						List<Map<String, Object>> markerData = stations.stream().map(c -> { // Trasforma la lista
-																							// List<Colonnina> in una
-																							// List<Map<String, Object>>
-							// Usa un HashMap esplicito per evitare problemi di inferenza dei tipi
-							Map<String, Object> map = new java.util.HashMap<>();
-							map.put("id", c.getId());
-							map.put("lat", c.getLatitudine());
-							map.put("lon", c.getLongitudine());
-							map.put("stato", c.getStato());
-							return map; // Restituisce l'HashMap
-						}).collect(Collectors.toList());
+						// Memorizza la lista delle colonnine
+						this.colonnine = stations;
 
-						stationsJson = objectMapper.writeValueAsString(markerData); // Converte la lista Java in una
-																					// lista JSON
+						String stationsJson;
+						try {
+							// Prende i dati che servono per disegnare il marker
+							List<Map<String, Object>> markerData = stations.stream().map(c -> { // Trasforma la lista
+																								// List<Colonnina> in
+																								// una
+																								// List<Map<String,
+																								// Object>>
+								// Usa un HashMap esplicito per evitare problemi di inferenza dei tipi
+								Map<String, Object> map = new java.util.HashMap<>();
+								map.put("id", c.getId());
+								map.put("lat", c.getLatitudine());
+								map.put("lon", c.getLongitudine());
+								map.put("stato", c.getStato());
+								return map; // Restituisce l'HashMap
+							}).collect(Collectors.toList());
 
-					} catch (JsonProcessingException e) {
-						e.printStackTrace();
-						stationsJson = "[]"; // Array vuoto in caso di errore
-					}
+							stationsJson = objectMapper.writeValueAsString(markerData); // Converte la lista Java in una
+																						// lista JSON
 
-					// Esegue il JS in modo sicuro sul thread della UI
-					// Dobbiamo usare ui.access() perché siamo in un thread asincrono
-					String finalStationsJson = stationsJson;
-					ui.access(() -> { // Questo thread deve essere eseguito sulla UI perchè deve aggiornarla
-						getElement().executeJs(jsCode, getElement(), finalStationsJson); // Viene eseguito il codice JS
+						} catch (JsonProcessingException e) {
+							e.printStackTrace();
+							stationsJson = "[]"; // Array vuoto in caso di errore
+						}
+
+						// Esegue il JS in modo sicuro sul thread della UI
+						// Dobbiamo usare ui.access() perché siamo in un thread asincrono
+						String finalStationsJson = stationsJson;
+						ui.access(() -> { // Questo thread deve essere eseguito sulla UI perchè deve aggiornarla
+							getElement().executeJs(jsCode, getElement(), finalStationsJson); // Viene eseguito il codice
+																								// JS
+						});
+
+					}).exceptionally(ex -> { // In caso fallisca getAllColonnine()
+						ex.printStackTrace();
+						ui.access(() -> {
+							Notification.show("Errore nel caricamento delle colonnine: " + ex.getMessage(), 3000,
+									Notification.Position.TOP_CENTER).getElement().getThemeList().add("error");
+						});
+						return null;
 					});
-
-				}).exceptionally(ex -> { // In caso fallisca getAllColonnine()
-					ex.printStackTrace();
-					ui.access(() -> {
-						Notification.show("Errore nel caricamento delle colonnine: " + ex.getMessage(), 3000,
-								Notification.Position.TOP_CENTER).getElement().getThemeList().add("error");
-					});
-					return null;
 				});
-	    });
 
 	}
 

@@ -133,4 +133,13 @@ public class ColonnineService {
 	public CompletableFuture<Integer> contaColonnineLG(StatoColonnina stato) {
 		return colonnineInterface.contaColonnineLG(stato);
 	}
+
+	/**
+	 * Chiama funzione da database per restituire la lista di tutte le colonnine
+	 * @return Lista di tipo Colonnina
+	 */
+	public CompletableFuture<List<Colonnina>> getAllColonnine() {
+		// TODO Auto-generated method stub
+		return colonnineInterface.getAllColonnine();
+	}
 }
