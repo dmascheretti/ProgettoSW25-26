@@ -134,7 +134,7 @@ public class PrenotazioniService  {
 		return future;
 	}
 
-	public CompletableFuture<Boolean> inCarica(Auto a) {
+	public CompletableFuture<Prenotazione> inCarica(Auto a) {
 		return prenotazioniInterface.inCarica(a);
 	}
 

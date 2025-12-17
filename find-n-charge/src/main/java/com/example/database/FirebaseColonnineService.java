@@ -283,6 +283,39 @@ public class FirebaseColonnineService implements ColonnineInterface{
 		});
 		return future;
 	}
+	
+	/**
+	 * Permette di trovare una colonnina tramite il suo id
+	 * @param id
+	 * @return Ritorna la colonnina
+	 */
 
-
+	public CompletableFuture<Colonnina> getColonninaById(String id) {
+	    CompletableFuture<Colonnina> future = new CompletableFuture<>();
+	    colonnine.child(id).addListenerForSingleValueEvent(new ValueEventListener() {
+	        @Override
+	        public void onDataChange(DataSnapshot snapshot) {
+	            if (snapshot.exists()) {
+	                Colonnina c = snapshot.getValue(Colonnina.class);
+	                if (c != null) {
+	                    c.setId(snapshot.getKey());
+	                    future.complete(c);
+	                } else {
+	                    future.complete(null);
+	                }
+	            } else {
+	                future.complete(null);
+	            }
+	        }
+	        @Override
+	        public void onCancelled(DatabaseError error) {
+	            future.completeExceptionally(error.toException());
+	        }
+	    });
+	    return future;
+	}
+	
 }
+
+
+

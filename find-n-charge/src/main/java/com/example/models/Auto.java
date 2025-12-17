@@ -17,8 +17,8 @@ public class Auto {
 	private String proprietario;
 	private  int capacitaBatteria;
 	private double statoCaricaIniziale;
-	private LocalDateTime inizioRicarica;
-	private Colonnina colonna;
+	private String inizioRicarica;
+	private String oraUltimoControllo;
 	private static final Random rand = new Random();
 	
 	public Auto(String targa, String modello, String tipo, String proprietario) {
@@ -89,11 +89,11 @@ public class Auto {
 		this.modello = modello;
 	}
 
-	public LocalDateTime getInizioRicarica() {
+	public String getInizioRicarica() {
 		return inizioRicarica;
 	}
 
-	public void setInizioRicarica(LocalDateTime inizioRicarica) {
+	public void setInizioRicarica(String inizioRicarica) {
 		this.inizioRicarica = inizioRicarica;
 	}
 
@@ -105,9 +105,14 @@ public class Auto {
 		this.tipo = tipo;
 	}
 
-	public Colonnina getColonna() {
-		return colonna;
+	public String getOraUltimoControllo() {
+		return oraUltimoControllo;
 	}
+
+	public void setOraUltimoControllo(String oraUltimoControllo) {
+		this.oraUltimoControllo = oraUltimoControllo;
+	}
+
 	
 	
 	

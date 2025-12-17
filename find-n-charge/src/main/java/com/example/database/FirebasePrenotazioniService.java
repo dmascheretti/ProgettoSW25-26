@@ -390,8 +390,8 @@ public class FirebasePrenotazioniService implements PrenotazioniInterface{
 		return future;
 	}
 	
-	public CompletableFuture <Boolean> inCarica(Auto a){
-		CompletableFuture <Boolean> inCarica=new CompletableFuture<>();
+	public CompletableFuture <Prenotazione> inCarica(Auto a){
+		CompletableFuture <Prenotazione> inCarica=new CompletableFuture<>();
 		
 		
 		
@@ -404,7 +404,7 @@ public class FirebasePrenotazioniService implements PrenotazioniInterface{
 			@Override
 			public void onDataChange(DataSnapshot dataSnapshot) {
 				
-				Boolean trovata=false;
+				Prenotazione trovata=null;
 				
 				for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
 					Prenotazione p = snapshot.getValue(Prenotazione.class);
@@ -412,7 +412,7 @@ public class FirebasePrenotazioniService implements PrenotazioniInterface{
 					if(p.getTarga().equals(a.getTarga()) && p.getData().equals(todayStr) && p.getInizio().equals(DataValidator.getSlotCorrenteTimestamp())
 							&& p.getStato().equals(StatoPrenotazione.IN_CARICA.toString()))
 							{
-						trovata=true;
+						trovata=p;
 						break;
 					
 				}

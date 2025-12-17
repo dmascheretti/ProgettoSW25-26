@@ -98,8 +98,9 @@ public class FirebaseAutoService implements AutoInterface {
 	            return future;
 	        }
 
+	        LocalDateTime inizio=LocalDateTime.parse(auto.getInizioRicarica());
 	        // tempo trascorso
-	        Duration durata = Duration.between(auto.getInizioRicarica(), oraAttuale);
+	        Duration durata = Duration.between(inizio, oraAttuale);
 	        double oreTrascorse = durata.toMinutes() / 60.0;
 
 	        // energia caricata (kWh)
@@ -118,7 +119,7 @@ public class FirebaseAutoService implements AutoInterface {
 	        double nuovoSoC = (energiaTotale / auto.getCapacitaBatteria()) * 100.0;
 
 	        auto.setStatoCarica(nuovoSoC);
-	        auto.setInizioRicarica(oraAttuale);
+	        auto.setInizioRicarica(oraAttuale.toString());
 
 	        // salva su Firebase
 	        automobile.child(auto.getTarga()).setValue(auto, (error, ref) -> {

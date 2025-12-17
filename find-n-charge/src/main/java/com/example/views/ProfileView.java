@@ -4,13 +4,15 @@
  * @author Claudio Morgera, Francesco Valenari, Tommaso Maistrello
  */
 package com.example.views;
-
+import com.example.service.ColonnineService;
+import com.example.models.Prenotazione;
 import com.example.models.Auto;
 import com.example.models.Utente;
 import com.example.service.AutoService;
 import com.example.service.PrenotazioniService;
 import com.example.service.UtentiService;
 import com.example.components.CardAuto;
+import com.example.enums.TipoAuto;
 import com.example.layout.MainLayout;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.UI;
@@ -42,15 +44,17 @@ public class ProfileView extends VerticalLayout implements BeforeEnterObserver {
 	private final AutoService autoService;
 	private final UtentiService utentiService;
 	private final PrenotazioniService prenotazioniService;
+	private final ColonnineService colonnineService;
     private VerticalLayout modifica;
     private Paragraph mail;
     private HorizontalLayout datiEmodifica;
     private HorizontalLayout autoLayout;
     
-	public ProfileView(AutoService autoService, UtentiService utentiService, PrenotazioniService prenotazioniService) {
+	public ProfileView(AutoService autoService, UtentiService utentiService, PrenotazioniService prenotazioniService, ColonnineService colonnineService) {
 		this.autoService = autoService;
 		this.utentiService = utentiService;
 		this.prenotazioniService = prenotazioniService;
+		this.colonnineService=colonnineService;
 		setSizeFull();
 		setSpacing(true);
 		setPadding(true);
@@ -92,10 +96,11 @@ public class ProfileView extends VerticalLayout implements BeforeEnterObserver {
 
 					prenotazioniService.inCarica(a).thenAccept(trovata -> {
 						ui.access(() -> {
-							Paragraph inCarica = new Paragraph(trovata ? "Auto in carica" : "Auto non in carica");
+							boolean isInCarica=(trovata!=null);
+							Paragraph inCarica = new Paragraph(isInCarica ? "Auto in carica" : "Auto non in carica");
 							card.add(inCarica);
 							
-							if (trovata) {
+							if (isInCarica) {
 
 							    Button aggiornaBtn = new Button("Aggiorna stato");
 							    aggiornaBtn.getStyle().set("background-color", "#27AE60");
@@ -104,9 +109,10 @@ public class ProfileView extends VerticalLayout implements BeforeEnterObserver {
 
 							    aggiornaBtn.addClickListener(ev -> {
 
-							        double potenzaColonnina = 22; // puoi cambiarla
-
-							        
+							    	String idColonnina = trovata.getIDColonnina();
+							    	colonnineService.getColonninaById(idColonnina).thenAccept(colonnina -> {
+							    		
+							    		double potenzaColonnina = (colonnina != null) ? colonnina.getPotenza() : 22.0;
 							        autoService.nuovoStato(a, java.time.LocalDateTime.now(), potenzaColonnina).thenRun(() -> {
 							            ui.access(() -> {
 
@@ -119,6 +125,7 @@ public class ProfileView extends VerticalLayout implements BeforeEnterObserver {
 							        });
 							    });
 
+							    });
 							    card.add(aggiornaBtn);
 							}
 
@@ -233,8 +240,9 @@ public class ProfileView extends VerticalLayout implements BeforeEnterObserver {
 		TextField targaField = new TextField("Targa");
 		TextField modelloField = new TextField("Modello");
 
-		ComboBox<String> tipoField = new ComboBox<>("Tipo di auto");
-		tipoField.setItems("Berlina (65 kWh)", "Suv (100 kWh)", "Sportiva (75 kWh)", "Utilitaria (40 kWh)");
+		ComboBox<TipoAuto> tipoField = new ComboBox<>("Tipo di auto");
+		tipoField.setItems(TipoAuto.values());
+		tipoField.setItemLabelGenerator(TipoAuto::getLabel);
 		tipoField.setPlaceholder("Seleziona il tipo");
 		tipoField.setAllowCustomValue(false);
 
@@ -250,13 +258,14 @@ public class ProfileView extends VerticalLayout implements BeforeEnterObserver {
 			// .trim serve per controllare che non sia vuoto es " " -> non va bene
 			String targa = targaField.getValue() == null ? "" : targaField.getValue().trim();
 			String modello = modelloField.getValue() == null ? "" : modelloField.getValue().trim();
-			String tipo = tipoField.getValue();
-			if (targa.isEmpty() || modello.isEmpty() || tipo == null || tipo.isEmpty()) {
+			TipoAuto tipo = tipoField.getValue();
+			if (targa.isEmpty() || modello.isEmpty() || tipo == null) {
 				Notification.show("Compila tutti i campi dell’auto");
 				return;
 			}
 
-			autoService.aggiungiAuto(targa, modello, tipo, utente)
+			String tipoStringa=tipo.getLabel();
+			autoService.aggiungiAuto(targa, modello, tipoStringa, utente)
 					.thenRun(() -> getUI().ifPresent(ui -> ui.access(() -> {
 
 						Notification n = Notification.show("Auto registrata!", 3000, Notification.Position.TOP_CENTER);

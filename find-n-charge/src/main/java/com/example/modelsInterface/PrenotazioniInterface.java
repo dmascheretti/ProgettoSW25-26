@@ -28,7 +28,7 @@ public interface PrenotazioniInterface {
 	
 	public CompletableFuture<List<String>> getSlotOccupati(String colonnina, String data) ;
 	
-	public CompletableFuture <Boolean> inCarica(Auto a);
+	public CompletableFuture <Prenotazione> inCarica(Auto a);
 	
 	public CompletableFuture<Void> aggiornaStato(Prenotazione p, StatoPrenotazione stato);
 	
