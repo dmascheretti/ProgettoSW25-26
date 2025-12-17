@@ -24,6 +24,9 @@ public class DataValidator {
 	 * @param password_conferma
 	 * @return messaggio di errore / null
 	 */
+	
+	private static final String PASSWORD_REGEX = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!._-]).{8,}$";
+	
 	public static String verificaDati(String nome, String cognome, String username, String email, String password,
 			String password_conferma) {
 
@@ -34,10 +37,11 @@ public class DataValidator {
 		if (!password.equals(password_conferma)) {
 			return "Le password non corrispondono!";
 		}
+		
+		if (!password.matches(PASSWORD_REGEX)) {
+            return "La password deve avere almeno 8 caratteri, una maiuscola, una minuscola, un numero e un carattere speciale (@ # $ % ^ & + = ! . _ -)";
+        }
 
-		if (password.length() < 6) {
-			return "La password deve contenere almeno 6 caratteri!";
-		}
 
 		// mail del tipo lettere/numeri+@+dominio
 		if (!email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")) {
@@ -91,7 +95,7 @@ public class DataValidator {
 	}
 	
 	public static boolean controllaPassword(String password) {
-		return password!=null && password.length()>=6;
+		return password != null && password.matches(PASSWORD_REGEX);
 	}
 	
 	public static boolean controllaMail(String email) {

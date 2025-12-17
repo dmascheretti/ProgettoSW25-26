@@ -34,6 +34,8 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.VaadinSession;
 import com.vaadin.flow.shared.Registration;
+
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Route(value = "profilo", layout = MainLayout.class)
@@ -108,19 +110,46 @@ public class ProfileView extends VerticalLayout implements BeforeEnterObserver {
 							    aggiornaBtn.getStyle().set("border-radius", "6px");
 
 							    aggiornaBtn.addClickListener(ev -> {
-
-							    	String idColonnina = trovata.getIDColonnina();
+							    	LocalTime orarioInizio = LocalTime.parse(trovata.getInizio());
+						    	    LocalTime orarioFineSlot = orarioInizio.plusMinutes(30);
+						    	   
+						    	    LocalDateTime fineSlotData = LocalDateTime.of(java.time.LocalDate.now(), orarioFineSlot);
+						    	    LocalDateTime adesso = java.time.LocalDateTime.now();
+						    	    
+						    	    LocalDateTime orarioPerCalcolo = adesso.isAfter(fineSlotData) ? fineSlotData : adesso;
+							    	
+						    	    String idColonnina = trovata.getIDColonnina();
 							    	colonnineService.getColonninaById(idColonnina).thenAccept(colonnina -> {
 							    		
-							    		double potenzaColonnina = (colonnina != null) ? colonnina.getPotenza() : 22.0;
-							        autoService.nuovoStato(a, java.time.LocalDateTime.now(), potenzaColonnina).thenRun(() -> {
+							    	double potenzaColonnina=22;
+							    		if (colonnina != null && colonnina.getTipo() != null) {
+							                // Controllo il tipo di colonnina
+							                if (colonnina.getTipo().equalsIgnoreCase("Standard")) {
+							                	potenzaColonnina = 7.0;
+							                } else if (colonnina.getTipo().equalsIgnoreCase("Fast")) {
+							                	potenzaColonnina = 22.0;
+							                } else {
+							                    // Se il tipo è sconosciuto, usa la potenza salvata nell'oggetto o resta 22
+							                	potenzaColonnina = colonnina.getPotenza() > 0 ? colonnina.getPotenza() : 22.0;
+							                }
+							            }
+							    		final double potenza= potenzaColonnina;
+							        autoService.nuovoStato(a, java.time.LocalDateTime.now(), potenza).thenRun(() -> {
 							            ui.access(() -> {
 
 							                
 							                card.updateStato(a.getStatoCarica());
 
+							                if (adesso.isAfter(fineSlotData)) {
+							                    Notification.show("Ricarica conclusa alle " + orarioFineSlot + ". Stato aggiornato.")
+							                        .addThemeVariants(NotificationVariant.LUMO_PRIMARY);
+							                    prenotazioniService.aggiornaStato(trovata, com.example.enums.StatoPrenotazione.PASSATA);
+							                    
+							                    aggiornaBtn.setVisible(false);
+							                }
+							                else {
 							                Notification.show("Stato aggiornato!", 2500, Notification.Position.TOP_CENTER)
-							                        .addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+							                        .addThemeVariants(NotificationVariant.LUMO_SUCCESS);}
 							            });
 							        });
 							    });
@@ -264,6 +293,12 @@ public class ProfileView extends VerticalLayout implements BeforeEnterObserver {
 				return;
 			}
 
+			if (!targa.matches("^[A-Z]{2}[0-9]{3}[A-Z]{2}$")) {
+		        Notification.show("Targa non valida! Usa il formato: AA123BB", 4000, Notification.Position.TOP_CENTER)
+		            .addThemeVariants(NotificationVariant.LUMO_ERROR);
+		        return;
+		        }
+			
 			String tipoStringa=tipo.getLabel();
 			autoService.aggiungiAuto(targa, modello, tipoStringa, utente)
 					.thenRun(() -> getUI().ifPresent(ui -> ui.access(() -> {

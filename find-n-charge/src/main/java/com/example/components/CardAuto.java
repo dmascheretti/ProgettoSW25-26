@@ -75,17 +75,23 @@ public class CardAuto extends VerticalLayout {
 	}
 	public void updateStato(double nuovoStato) {
 		
-		this.caricaAuto = nuovoStato;
-	
+		int percentualeArrotondata = (int) Math.ceil(nuovoStato);
+		
+		if (percentualeArrotondata > 100) {
+	        percentualeArrotondata = 100;
+	      }
+		
+		this.caricaAuto = (double) percentualeArrotondata;
+		
 	if (nuovoStato <= 30) {
 		carica.getStyle().set("color", "#FF3B30").set("font-weight", "bold");
-		carica.setText("Carica residua: " + nuovoStato + "%  ⚠ Mettere in carica");
+		carica.setText("Carica residua: " + percentualeArrotondata + "%  ⚠ Mettere in carica");
 	} else if (nuovoStato <= 55) {
 		carica.getStyle().set("color", "#F7DC6F").set("font-weight", "bold");
-		carica.setText("Carica residua: " + nuovoStato + "%");
+		carica.setText("Carica residua: " + percentualeArrotondata + "%");
 	} else {
 		carica.getStyle().set("color", "#27AE60").set("font-weight", "bold");
-		carica.setText("Carica residua: " + nuovoStato + "%");
+		carica.setText("Carica residua: " + percentualeArrotondata + "%");
 	}
 	}
 	

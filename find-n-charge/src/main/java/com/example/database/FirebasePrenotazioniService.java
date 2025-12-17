@@ -409,8 +409,7 @@ public class FirebasePrenotazioniService implements PrenotazioniInterface{
 				for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
 					Prenotazione p = snapshot.getValue(Prenotazione.class);
 					if(p.getTarga()!=null) {
-					if(p.getTarga().equals(a.getTarga()) && p.getData().equals(todayStr) && p.getInizio().equals(DataValidator.getSlotCorrenteTimestamp())
-							&& p.getStato().equals(StatoPrenotazione.IN_CARICA.toString()))
+					if(p.getTarga().equals(a.getTarga()) && p.getData().equals(todayStr)&& p.getStato().equals(StatoPrenotazione.IN_CARICA.toString()))
 							{
 						trovata=p;
 						break;
