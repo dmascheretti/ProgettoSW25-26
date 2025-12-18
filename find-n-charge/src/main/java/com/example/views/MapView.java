@@ -242,12 +242,12 @@ public class MapView extends HorizontalLayout {
 																	// in caso affermativo interrompe
 
 						// Crea la mappa
-						"    var map = L.map('" + mapId + "', {" + // Crea la mappa
-						"        minZoom: 3," + // Impedisce zoom troppo lontani
-						"        maxBounds: [[-90, -180], [90, 180]]," + // Movimento limitato ai confini del mondo
-						"        maxBoundsViscosity: 0.0" + // Muro solido
-						"    }).setView([45.6493, 9.6021], 15);" + // Coordinate di default su Dalmine con zoom default
-																	// pari a 15
+						"    var map = L.map('" + mapId + "', {" +					// Crea la mappa
+						"        minZoom: 3," +                                     // Impedisce zoom troppo lontani
+						"        maxBounds: [[-90, -180], [90, 180]]," +            // Movimento limitato ai confini del mondo
+						"        maxBoundsViscosity: 0.0" +                         // Muro elastico
+						"    }).setView([45.6493, 9.6021], 15);" +					// Coordinate di default su Dalmine con zoom default pari a 15
+
 						"    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {" + // Si appoggia a
 																									// OpenStreetMap per
 																									// disegnare le
