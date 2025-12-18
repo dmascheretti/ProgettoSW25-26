@@ -315,27 +315,25 @@ public class FirebasePrenotazioniService implements PrenotazioniInterface{
 	public CompletableFuture<Integer> contaPrenotazioniNuove() {
 		CompletableFuture<Integer> future = new CompletableFuture<>();
 
-		prenotazioni.addListenerForSingleValueEvent(new ValueEventListener() {
+		// Prendo la data di oggi
+		LocalDate today = LocalDate.now();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd"); // Adatta al formato della
+																					// tua stringa
+		String todayStr = today.format(formatter);
+		
+		prenotazioni.orderByChild("timestamp").equalTo(todayStr).addListenerForSingleValueEvent(new ValueEventListener() {
 
 			@Override
 			public void onDataChange(DataSnapshot snapshot) {
-				// TODO Auto-generated method stub
+				
 				int count = 0;
 
 				if (snapshot.exists()) {
-					// Prendo la data di oggi
-					LocalDate today = LocalDate.now();
-					DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd"); // Adatta al formato della
-																								// tua stringa
-					String todayStr = today.format(formatter);
-
-					for (DataSnapshot prenotazioneSnap : snapshot.getChildren()) {
-						String dataPrenotazione = prenotazioneSnap.child("timestamp").getValue(String.class);
-						if (todayStr.equals(dataPrenotazione)) {
-							count++;
-						}
+			
+						count= (int) snapshot.getChildrenCount(); 
+						
 					}
-				}
+	
 
 				future.complete(count);
 			}
@@ -343,7 +341,7 @@ public class FirebasePrenotazioniService implements PrenotazioniInterface{
 			@Override
 			public void onCancelled(DatabaseError databaseError) {
 				// Gestione errore standard, come negli altri metodi
-				System.err.println("Errore nel contare le colonnine: " + databaseError.getMessage());
+				System.err.println("Errore nel contare le prenotazioni: " + databaseError.getMessage());
 				future.completeExceptionally(databaseError.toException());
 			}
 
@@ -400,7 +398,7 @@ public class FirebasePrenotazioniService implements PrenotazioniInterface{
 																					// tua stringa
 		String todayStr = today.format(formatter);
 		
-		prenotazioni.addListenerForSingleValueEvent(new ValueEventListener() {
+		prenotazioni.orderByChild("targa").equalTo(a.getTarga()).addListenerForSingleValueEvent(new ValueEventListener() {
 			@Override
 			public void onDataChange(DataSnapshot dataSnapshot) {
 				
@@ -408,13 +406,12 @@ public class FirebasePrenotazioniService implements PrenotazioniInterface{
 				
 				for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
 					Prenotazione p = snapshot.getValue(Prenotazione.class);
-					if(p.getTarga()!=null) {
-					if(p.getTarga().equals(a.getTarga()) && p.getData().equals(todayStr)&& p.getStato().equals(StatoPrenotazione.IN_CARICA.toString()))
+					if(p!=null && p.getData().equals(todayStr)&& p.getStato().equals(StatoPrenotazione.IN_CARICA.toString()))
 							{
 						trovata=p;
 						break;
 					
-				}
+				
 					}
 			}
 				inCarica.complete(trovata);

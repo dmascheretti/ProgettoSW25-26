@@ -31,7 +31,7 @@ public class FirebaseUtentiService implements UtentiInterface {
 	public FirebaseUtentiService(FirebasePrenotazioniService firebasePrenotazioniService) {
 		this.utenti = FirebaseDatabase.getInstance().getReference("utenti");
 		this.prenotazioni = FirebaseDatabase.getInstance().getReference("prenotazioni");
-		this.firebasePrenotazioniService=firebasePrenotazioniService;
+		this.firebasePrenotazioniService = firebasePrenotazioniService;
 
 	}
 
@@ -164,56 +164,55 @@ public class FirebaseUtentiService implements UtentiInterface {
 
 		return future;
 	}
-	
+
 	/**
 	 * Cancella un utente dal database e insieme anche tutte le sue prenotazioni.
+	 * 
 	 * @param u Utente da eliminare dal sistema
 	 * @return future di tipo void
 	 */
 	public CompletableFuture<Void> cancellaUtente(Utente u) {
 
-	    CompletableFuture<Void> futureUtente = new CompletableFuture<>();
+		CompletableFuture<Void> futureUtente = new CompletableFuture<>();
 
-	    // Cancella l'utente
-	    utenti.child(u.getUsername()).setValue(null, (databaseError, ref) -> {
+		// Cancella l'utente
+		utenti.child(u.getUsername()).setValue(null, (databaseError, ref) -> {
 
-	        if (databaseError != null) {
-	            futureUtente.completeExceptionally(
-	                    new RuntimeException(databaseError.getMessage()));
-	            return;
-	        }
+			if (databaseError != null) {
+				futureUtente.completeExceptionally(new RuntimeException(databaseError.getMessage()));
+				return;
+			}
 
-	        //ottengo tutte le prenotaazioni dell'utente eliminato
-	        getUtenteReservation(u.getUsername()).thenAccept(lista -> {
+			// ottengo tutte le prenotaazioni dell'utente eliminato
+			getUtenteReservation(u.getUsername()).thenAccept(lista -> {
 
-	            List<CompletableFuture<Void>> prenotazioniUtente = new ArrayList<>();
-	            //per ogni prenotazione presente in lista
-	            for (Prenotazione p : lista) {
-	                
-	            	//cancella la prenotazione e aggiungi la funzione alla lista
-	                CompletableFuture<Void> pren = firebasePrenotazioniService.cancellaPrenotazione(p)
-	                        .thenRun(()->{});
-	                prenotazioniUtente.add(pren);
-	            }
+				List<CompletableFuture<Void>> prenotazioniUtente = new ArrayList<>();
+				// per ogni prenotazione presente in lista
+				for (Prenotazione p : lista) {
 
-	            // futureUtente termina solo quando sono tutte le funzioni di cancellazione sono state completate
-	            CompletableFuture.allOf(prenotazioniUtente.toArray(new CompletableFuture[0]))
-	                    .thenRun(() -> futureUtente.complete(null))
-	                    .exceptionally(ex -> {
-	                        futureUtente.completeExceptionally(ex);
-	                        return null;
-	                    });
+					// cancella la prenotazione e aggiungi la funzione alla lista
+					CompletableFuture<Void> pren = firebasePrenotazioniService.cancellaPrenotazione(p).thenRun(() -> {
+					});
+					prenotazioniUtente.add(pren);
+				}
 
-	        }).exceptionally(ex -> {
-	            futureUtente.completeExceptionally(ex);
-	            return null;
-	        });
-	    });
+				// futureUtente termina solo quando sono tutte le funzioni di cancellazione sono
+				// state completate
+				CompletableFuture.allOf(prenotazioniUtente.toArray(new CompletableFuture[0]))
+						.thenRun(() -> futureUtente.complete(null)).exceptionally(ex -> {
+							futureUtente.completeExceptionally(ex);
+							return null;
+						});
 
-	    return futureUtente;
+			}).exceptionally(ex -> {
+				futureUtente.completeExceptionally(ex);
+				return null;
+			});
+		});
+
+		return futureUtente;
 	}
-	
-	
+
 	/**
 	 * Restituisce una lista filtrata di prenotazioni in base all'utente che viene
 	 * passato. La funzione cerca nel database sotto al nodo prenotazione tutte le
@@ -264,8 +263,6 @@ public class FirebaseUtentiService implements UtentiInterface {
 		// ritorno la lista filtrata delle prenotazioni dell'utente
 		return future;
 	}
-	
- 
 
 	/**
 	 * Conta il numero degli utenti presenti nel database. Conta i figli del nodo
@@ -315,7 +312,13 @@ public class FirebaseUtentiService implements UtentiInterface {
 	public CompletableFuture<Integer> contaUtentiNuovi() {
 		CompletableFuture<Integer> future = new CompletableFuture<>();
 
-		utenti.addListenerForSingleValueEvent(new ValueEventListener() {
+		// Prendo la data di oggi
+		LocalDate today = LocalDate.now();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd"); // Adatta al formato della
+																					// tua stringa
+		String todayStr = today.format(formatter);
+
+		utenti.orderByChild("timestamp").equalTo(todayStr).addListenerForSingleValueEvent(new ValueEventListener() {
 
 			@Override
 			public void onDataChange(DataSnapshot snapshot) {
@@ -323,19 +326,9 @@ public class FirebaseUtentiService implements UtentiInterface {
 				int count = 0;
 
 				if (snapshot.exists()) {
-					// Prendo la data di oggi
-					LocalDate today = LocalDate.now();
-					DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd"); // Adatta al formato della
-																								// tua stringa
-					String todayStr = today.format(formatter);
 
-					// Itero su tutte le prenotazioni
-					for (DataSnapshot utenteSnap : snapshot.getChildren()) {
-						String data = utenteSnap.child("timestamp").getValue(String.class);
-						if (todayStr.equals(data)) {
-							count++;
-						}
-					}
+					count = (int) snapshot.getChildrenCount();
+
 				}
 
 				future.complete(count);
@@ -367,7 +360,7 @@ public class FirebaseUtentiService implements UtentiInterface {
 		CompletableFuture<List<Utente>> future = new CompletableFuture<>();
 
 		// Legge il nodo utenti
-		utenti.addListenerForSingleValueEvent(new ValueEventListener() {
+		utenti.orderByChild("ruolo").equalTo("Utente").addListenerForSingleValueEvent(new ValueEventListener() {
 
 			// Se li legge senza problemi
 			@Override
@@ -377,7 +370,7 @@ public class FirebaseUtentiService implements UtentiInterface {
 					for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
 						Utente u = snapshot.getValue(Utente.class); // Acquisisce tutti i dati degli
 																	// utenti
-						if (u != null && u.getRuolo()!=null && u.getRuolo().equals("Utente")) {
+						if (u != null) {
 							listaUtenti.add(u);
 						}
 					}

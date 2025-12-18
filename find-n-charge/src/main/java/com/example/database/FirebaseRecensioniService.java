@@ -30,8 +30,7 @@ public class FirebaseRecensioniService implements RecensioniInterface {
 	/**
 	 * Aggiunge recensione sotto il nodo recensioni/colonnina
 	 * 
-	 * @param u      Utente che ha scritto la recensione
-	 * @param c      Colonnina selezionato
+	 * @param recensione da aggiungere al DB
 	 * @param stelle Valutazione
 	 * @return
 	 */
@@ -50,11 +49,18 @@ public class FirebaseRecensioniService implements RecensioniInterface {
 		return future;
 	}
 	
-	public CompletableFuture<Recensione> verificaRecensione(Prenotazione p) {
+	/**
+	 * Verifiche che l'utente non abbia già inserito la valutazione per quella prenotazione
+	 * 
+	 * @param p Prenotazione da verificare 
+	 * @return Recensione da inserire se passa la verifica
+	 * 
+	 */
+	public CompletableFuture<Recensione> verificaRecensione(Prenotazione prenotazione) {
 		CompletableFuture<Recensione> future = new CompletableFuture<>();
 
 	
-		DatabaseReference userRef = recensioni.child(p.getIDColonnina()).child(p.getId());
+		DatabaseReference userRef = recensioni.child(prenotazione.getIDColonnina()).child(prenotazione.getId());
 		userRef.addListenerForSingleValueEvent(new ValueEventListener() {
 			@Override
 
@@ -79,7 +85,12 @@ public class FirebaseRecensioniService implements RecensioniInterface {
 		return future;
 	}
 
-	@Override
+	/**
+	 * Ottiene lista delle recensioni per una colonnina
+	 * 
+	 * @param colonninaID id univoco della colonnina
+	 * @return Lista di recensioni
+	 */
 	public CompletableFuture<List<Recensione>> getRecensioniColonnina(String colonninaID) {
 		// Oggetto che permette al programma di non fermarsi perchè sa che conterrà la
 		// lista che sta cercando
