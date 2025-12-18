@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xmi:XMI xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:standard="http://www.eclipse.org/uml2/5.0.0/UML/Profile/Standard" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML">
+<xmi:XMI xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:standard="http://www.eclipse.org/uml2/5.0.0/UML/Profile/Standard" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML">
   <uml:Model xmi:id="_q-1cwKuSEfCM07EDP-YkGA" name="ProgettoSW">
     <packageImport xmi:type="uml:PackageImport" xmi:id="_rAV4oKuSEfCM07EDP-YkGA">
       <importedPackage xmi:type="uml:Model" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#_0"/>
@@ -133,8 +133,8 @@ Utente non ancora iscritto</body>
       <lifeline xmi:type="uml:Lifeline" xmi:id="_xfGf0MIPEfCJO_aOLPnAPg" name="FirebaseService" coveredBy="_jRGzYML8EfCuLOgLF_g-Rg _nbQfoML8EfCuLOgLF_g-Rg _mskGQML_EfCuLOgLF_g-Rg _quviQML_EfCuLOgLF_g-Rg"/>
       <lifeline xmi:type="uml:Lifeline" xmi:id="_0E0oMML8EfCuLOgLF_g-Rg" name="" represents="_0E3EcML8EfCuLOgLF_g-Rg"/>
       <lifeline xmi:type="uml:Lifeline" xmi:id="_mTs1ANWwEfCXapj_HnO-mQ" name="Prenotazione" coveredBy="_jkR8MNqkEfCzJPYQxYrvqQ"/>
-      <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_1kp_8MIPEfCJO_aOLPnAPg" name="Message7ReceiveEvent" covered="_btbjQMIPEfCJO_aOLPnAPg" message="_1kg2AMIPEfCJO_aOLPnAPg"/>
       <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_1kpY4MIPEfCJO_aOLPnAPg" name="Message7SendEvent" covered="_ZnyFYMIPEfCJO_aOLPnAPg" message="_1kg2AMIPEfCJO_aOLPnAPg"/>
+      <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_1kp_8MIPEfCJO_aOLPnAPg" name="Message7ReceiveEvent" covered="_btbjQMIPEfCJO_aOLPnAPg" message="_1kg2AMIPEfCJO_aOLPnAPg"/>
       <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_XRMzEMIQEfCJO_aOLPnAPg" name="Message10SendEvent" covered="_btbjQMIPEfCJO_aOLPnAPg" message="_XRK94MIQEfCJO_aOLPnAPg"/>
       <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_XRNaIMIQEfCJO_aOLPnAPg" name="Message10ReceiveEvent" covered="_btbjQMIPEfCJO_aOLPnAPg" message="_XRK94MIQEfCJO_aOLPnAPg"/>
       <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_4r4ksMIREfCJO_aOLPnAPg" name="Message14ReceiveEvent" covered="_btbjQMIPEfCJO_aOLPnAPg" message="_4r2vgMIREfCJO_aOLPnAPg"/>
@@ -275,35 +275,34 @@ Utente non ancora iscritto</body>
       <message xmi:type="uml:Message" xmi:id="_m4INMNWvEfCXapj_HnO-mQ" name="InserisciAuto(auto)" messageSort="asynchCall" receiveEvent="_m4Ph8NWvEfCXapj_HnO-mQ" sendEvent="_m4O64NWvEfCXapj_HnO-mQ"/>
       <message xmi:type="uml:Message" xmi:id="_jkMcoNqkEfCzJPYQxYrvqQ" name="new Prenotazione (colonnina, utente, data, ora, auto)" messageSort="createMessage" receiveEvent="_jkR8MNqkEfCzJPYQxYrvqQ" sendEvent="_jkRVINqkEfCzJPYQxYrvqQ"/>
     </packagedElement>
-    <packagedElement xmi:type="uml:Activity" xmi:id="_7ko-QMxIEfC9ZqIAxAn4hg" name="App_Find&amp;Charge" visibility="protected" node="_n9rZMMxdEfCz-uEpwkEe1A _T7Ww0MxREfC9ZqIAxAn4hg _IP0MMMxQEfC9ZqIAxAn4hg _dwejMMxOEfC9ZqIAxAn4hg _Bf1_IMxOEfC9ZqIAxAn4hg _A8CHcMxOEfC9ZqIAxAn4hg _AafgoMxOEfC9ZqIAxAn4hg _-qGhEMxNEfC9ZqIAxAn4hg _J_bz4MxJEfC9ZqIAxAn4hg _4LaMEMxdEfCz-uEpwkEe1A _MQRokMxeEfCz-uEpwkEe1A _EXJukNaCEfChtZ8lQTzFSg _HhHJINaCEfChtZ8lQTzFSg _IM_-wNaCEfChtZ8lQTzFSg _Sl5FMNaCEfChtZ8lQTzFSg _XeHYYNaCEfChtZ8lQTzFSg _aLztsNaCEfChtZ8lQTzFSg _5LLv8NaCEfChtZ8lQTzFSg _jIFPsNaDEfChtZ8lQTzFSg _HzpjQNaFEfChtZ8lQTzFSg _RLKsQNaFEfChtZ8lQTzFSg _9CUSMNaFEfChtZ8lQTzFSg _BUVhANaGEfChtZ8lQTzFSg _FL954NaGEfChtZ8lQTzFSg _KMhpsNaGEfChtZ8lQTzFSg _ergRgNaVEfCvEujjQ155Pw _gLjvANaVEfCvEujjQ155Pw _o1EigNaVEfCvEujjQ155Pw _x1bIsNaVEfCvEujjQ155Pw _1IFzUNaVEfCvEujjQ155Pw _H4f-UNaWEfCvEujjQ155Pw _UOenENaXEfCvEujjQ155Pw _hJIfoNaXEfCvEujjQ155Pw _lwDncNaXEfCvEujjQ155Pw">
-      <ownedComment xmi:type="uml:Comment" xmi:id="_qhUmwNaGEfChtZ8lQTzFSg" annotatedElement="_zt0dcNaEEfChtZ8lQTzFSg _SWZskMxOEfC9ZqIAxAn4hg">
+    <packagedElement xmi:type="uml:Activity" xmi:id="_7ko-QMxIEfC9ZqIAxAn4hg" name="App_Find&amp;Charge" visibility="protected" node="_n9rZMMxdEfCz-uEpwkEe1A _T7Ww0MxREfC9ZqIAxAn4hg _IP0MMMxQEfC9ZqIAxAn4hg _dwejMMxOEfC9ZqIAxAn4hg _Bf1_IMxOEfC9ZqIAxAn4hg _A8CHcMxOEfC9ZqIAxAn4hg _AafgoMxOEfC9ZqIAxAn4hg _-qGhEMxNEfC9ZqIAxAn4hg _J_bz4MxJEfC9ZqIAxAn4hg _4LaMEMxdEfCz-uEpwkEe1A _MQRokMxeEfCz-uEpwkEe1A _EXJukNaCEfChtZ8lQTzFSg _HhHJINaCEfChtZ8lQTzFSg _IM_-wNaCEfChtZ8lQTzFSg _Sl5FMNaCEfChtZ8lQTzFSg _XeHYYNaCEfChtZ8lQTzFSg _aLztsNaCEfChtZ8lQTzFSg _5LLv8NaCEfChtZ8lQTzFSg _jIFPsNaDEfChtZ8lQTzFSg _HzpjQNaFEfChtZ8lQTzFSg _RLKsQNaFEfChtZ8lQTzFSg _9CUSMNaFEfChtZ8lQTzFSg _BUVhANaGEfChtZ8lQTzFSg _FL954NaGEfChtZ8lQTzFSg _KMhpsNaGEfChtZ8lQTzFSg _ergRgNaVEfCvEujjQ155Pw _gLjvANaVEfCvEujjQ155Pw _o1EigNaVEfCvEujjQ155Pw _x1bIsNaVEfCvEujjQ155Pw _1IFzUNaVEfCvEujjQ155Pw _H4f-UNaWEfCvEujjQ155Pw _UOenENaXEfCvEujjQ155Pw _hJIfoNaXEfCvEujjQ155Pw _lwDncNaXEfCvEujjQ155Pw _6X-xoNwREfCxqtYNiOPREw _I-MNENwSEfCxqtYNiOPREw _Q1hVsNwSEfCxqtYNiOPREw">
+      <ownedComment xmi:type="uml:Comment" xmi:id="_qhUmwNaGEfChtZ8lQTzFSg" annotatedElement="_SWZskMxOEfC9ZqIAxAn4hg">
         <body>[Utente != Utenti gia salvati]&#xD;
 [Caratteri Password >= 6]&#xD;
 [Formato Mail Valido]</body>
       </ownedComment>
-      <edge xmi:type="uml:ControlFlow" xmi:id="_N_uAMMxOEfC9ZqIAxAn4hg" target="_Bf1_IMxOEfC9ZqIAxAn4hg" source="_T7Ww0MxREfC9ZqIAxAn4hg"/>
-      <edge xmi:type="uml:ControlFlow" xmi:id="_PVncIMxOEfC9ZqIAxAn4hg" target="_-qGhEMxNEfC9ZqIAxAn4hg" source="_J_bz4MxJEfC9ZqIAxAn4hg"/>
-      <edge xmi:type="uml:ControlFlow" xmi:id="_QY_ksMxOEfC9ZqIAxAn4hg" target="_AafgoMxOEfC9ZqIAxAn4hg" source="_T7Ww0MxREfC9ZqIAxAn4hg"/>
-      <edge xmi:type="uml:ControlFlow" xmi:id="_SWZskMxOEfC9ZqIAxAn4hg" name="[Credenziali Valide]" target="_-qGhEMxNEfC9ZqIAxAn4hg" source="_Bf1_IMxOEfC9ZqIAxAn4hg"/>
+      <edge xmi:type="uml:ControlFlow" xmi:id="_N_uAMMxOEfC9ZqIAxAn4hg" name="[Nuovo Utente]" target="_Bf1_IMxOEfC9ZqIAxAn4hg" source="_T7Ww0MxREfC9ZqIAxAn4hg"/>
+      <edge xmi:type="uml:ControlFlow" xmi:id="_PVncIMxOEfC9ZqIAxAn4hg" target="_6X-xoNwREfCxqtYNiOPREw" source="_J_bz4MxJEfC9ZqIAxAn4hg"/>
+      <edge xmi:type="uml:ControlFlow" xmi:id="_QY_ksMxOEfC9ZqIAxAn4hg" name="[Utente già registrato]" target="_AafgoMxOEfC9ZqIAxAn4hg" source="_T7Ww0MxREfC9ZqIAxAn4hg"/>
+      <edge xmi:type="uml:ControlFlow" xmi:id="_SWZskMxOEfC9ZqIAxAn4hg" name="[Credenziali Valide]" target="_6X-xoNwREfCxqtYNiOPREw" source="_Bf1_IMxOEfC9ZqIAxAn4hg"/>
       <edge xmi:type="uml:ObjectFlow" xmi:id="_w-hFYMxOEfC9ZqIAxAn4hg" name="[Credenziali Esistenti]" target="_dwejMMxOEfC9ZqIAxAn4hg" source="_w-iTgMxOEfC9ZqIAxAn4hg">
         <guard xmi:type="uml:LiteralBoolean" xmi:id="_w-nzEMxOEfC9ZqIAxAn4hg" value="true"/>
         <weight xmi:type="uml:LiteralInteger" xmi:id="_w-nzEcxOEfC9ZqIAxAn4hg" value="1"/>
       </edge>
       <edge xmi:type="uml:ControlFlow" xmi:id="_IQC1sMxQEfC9ZqIAxAn4hg" name="[Credenziali Admin]" target="_IP0MMMxQEfC9ZqIAxAn4hg" source="_dwejMMxOEfC9ZqIAxAn4hg"/>
       <edge xmi:type="uml:ControlFlow" xmi:id="_e0uHEMxREfC9ZqIAxAn4hg" target="_T7Ww0MxREfC9ZqIAxAn4hg" source="_-qGhEMxNEfC9ZqIAxAn4hg"/>
-      <edge xmi:type="uml:ControlFlow" xmi:id="_uv2kENaDEfChtZ8lQTzFSg" target="_A8CHcMxOEfC9ZqIAxAn4hg" source="_dwejMMxOEfC9ZqIAxAn4hg"/>
+      <edge xmi:type="uml:ControlFlow" xmi:id="_uv2kENaDEfChtZ8lQTzFSg" target="_I-MNENwSEfCxqtYNiOPREw" source="_dwejMMxOEfC9ZqIAxAn4hg"/>
       <edge xmi:type="uml:ControlFlow" xmi:id="_w5NdQNaDEfChtZ8lQTzFSg" target="_n9rZMMxdEfCz-uEpwkEe1A" source="_A8CHcMxOEfC9ZqIAxAn4hg"/>
-      <edge xmi:type="uml:ControlFlow" xmi:id="_xwXuwNaDEfChtZ8lQTzFSg" target="_XeHYYNaCEfChtZ8lQTzFSg" source="_n9rZMMxdEfCz-uEpwkEe1A"/>
-      <edge xmi:type="uml:ControlFlow" xmi:id="_0JVKMNaDEfChtZ8lQTzFSg" target="_jIFPsNaDEfChtZ8lQTzFSg" source="_n9rZMMxdEfCz-uEpwkEe1A"/>
-      <edge xmi:type="uml:ControlFlow" xmi:id="_qILY4NaEEfChtZ8lQTzFSg" target="_4LaMEMxdEfCz-uEpwkEe1A" source="_HzpjQNaFEfChtZ8lQTzFSg"/>
+      <edge xmi:type="uml:ControlFlow" xmi:id="_xwXuwNaDEfChtZ8lQTzFSg" target="_Q1hVsNwSEfCxqtYNiOPREw" source="_n9rZMMxdEfCz-uEpwkEe1A"/>
+      <edge xmi:type="uml:ControlFlow" xmi:id="_0JVKMNaDEfChtZ8lQTzFSg" name="[Click Menu]" target="_jIFPsNaDEfChtZ8lQTzFSg" source="_n9rZMMxdEfCz-uEpwkEe1A"/>
+      <edge xmi:type="uml:ControlFlow" xmi:id="_qILY4NaEEfChtZ8lQTzFSg" name="[Click su Profilo]" target="_4LaMEMxdEfCz-uEpwkEe1A" source="_HzpjQNaFEfChtZ8lQTzFSg"/>
       <edge xmi:type="uml:ControlFlow" xmi:id="_tJo-wNaEEfChtZ8lQTzFSg" target="_MQRokMxeEfCz-uEpwkEe1A" source="_4LaMEMxdEfCz-uEpwkEe1A"/>
-      <edge xmi:type="uml:ControlFlow" xmi:id="_zt0dcNaEEfChtZ8lQTzFSg" name="[Credenziali Valide]" target="_4LaMEMxdEfCz-uEpwkEe1A" source="_MQRokMxeEfCz-uEpwkEe1A"/>
-      <edge xmi:type="uml:ControlFlow" xmi:id="_4mgqsNaEEfChtZ8lQTzFSg" target="_5LLv8NaCEfChtZ8lQTzFSg" source="_RLKsQNaFEfChtZ8lQTzFSg"/>
-      <edge xmi:type="uml:ControlFlow" xmi:id="_5Z1lENaEEfChtZ8lQTzFSg" target="_IM_-wNaCEfChtZ8lQTzFSg" source="_RLKsQNaFEfChtZ8lQTzFSg"/>
-      <edge xmi:type="uml:ControlFlow" xmi:id="_6FuasNaEEfChtZ8lQTzFSg" target="_HhHJINaCEfChtZ8lQTzFSg" source="_RLKsQNaFEfChtZ8lQTzFSg"/>
-      <edge xmi:type="uml:ControlFlow" xmi:id="_7A1_INaEEfChtZ8lQTzFSg" target="_EXJukNaCEfChtZ8lQTzFSg" source="_HzpjQNaFEfChtZ8lQTzFSg"/>
-      <edge xmi:type="uml:ControlFlow" xmi:id="_9c5K0NaEEfChtZ8lQTzFSg" target="_Sl5FMNaCEfChtZ8lQTzFSg" source="_HzpjQNaFEfChtZ8lQTzFSg"/>
-      <edge xmi:type="uml:ControlFlow" xmi:id="_-Tv6UNaEEfChtZ8lQTzFSg" target="_XeHYYNaCEfChtZ8lQTzFSg" source="_Sl5FMNaCEfChtZ8lQTzFSg"/>
+      <edge xmi:type="uml:ControlFlow" xmi:id="_4mgqsNaEEfChtZ8lQTzFSg" name="[Prenotazione Passata]" target="_5LLv8NaCEfChtZ8lQTzFSg" source="_RLKsQNaFEfChtZ8lQTzFSg"/>
+      <edge xmi:type="uml:ControlFlow" xmi:id="_5Z1lENaEEfChtZ8lQTzFSg" name="[Prenotazione Futura]" target="_IM_-wNaCEfChtZ8lQTzFSg" source="_RLKsQNaFEfChtZ8lQTzFSg"/>
+      <edge xmi:type="uml:ControlFlow" xmi:id="_6FuasNaEEfChtZ8lQTzFSg" name="[Prenotazione attiva (Iniziata massimo 30m fa)]" target="_HhHJINaCEfChtZ8lQTzFSg" source="_RLKsQNaFEfChtZ8lQTzFSg"/>
+      <edge xmi:type="uml:ControlFlow" xmi:id="_7A1_INaEEfChtZ8lQTzFSg" name="[Clock su Prenotazioni]" target="_EXJukNaCEfChtZ8lQTzFSg" source="_HzpjQNaFEfChtZ8lQTzFSg"/>
+      <edge xmi:type="uml:ControlFlow" xmi:id="_9c5K0NaEEfChtZ8lQTzFSg" name="[Click su Colonnine]" target="_Sl5FMNaCEfChtZ8lQTzFSg" source="_HzpjQNaFEfChtZ8lQTzFSg"/>
+      <edge xmi:type="uml:ControlFlow" xmi:id="_-Tv6UNaEEfChtZ8lQTzFSg" name="[Colonnina selezionata]" target="_Q1hVsNwSEfCxqtYNiOPREw" source="_Sl5FMNaCEfChtZ8lQTzFSg"/>
       <edge xmi:type="uml:ControlFlow" xmi:id="_N2SbINaFEfChtZ8lQTzFSg" target="_HzpjQNaFEfChtZ8lQTzFSg" source="_jIFPsNaDEfChtZ8lQTzFSg"/>
       <edge xmi:type="uml:ControlFlow" xmi:id="_aLs4oNaFEfChtZ8lQTzFSg" target="_RLKsQNaFEfChtZ8lQTzFSg" source="_EXJukNaCEfChtZ8lQTzFSg"/>
       <edge xmi:type="uml:ControlFlow" xmi:id="_OXGzwNaGEfChtZ8lQTzFSg" target="_FL954NaGEfChtZ8lQTzFSg" source="_9CUSMNaFEfChtZ8lQTzFSg"/>
@@ -312,36 +311,39 @@ Utente non ancora iscritto</body>
       <edge xmi:type="uml:ControlFlow" xmi:id="_RKux8NaGEfChtZ8lQTzFSg" name="[Slot Orario Valido]" target="_BUVhANaGEfChtZ8lQTzFSg" source="_KMhpsNaGEfChtZ8lQTzFSg"/>
       <edge xmi:type="uml:ControlFlow" xmi:id="_S9d64NaGEfChtZ8lQTzFSg" target="_aLztsNaCEfChtZ8lQTzFSg" source="_BUVhANaGEfChtZ8lQTzFSg"/>
       <edge xmi:type="uml:ControlFlow" xmi:id="_VJzPkNaGEfChtZ8lQTzFSg" target="_9CUSMNaFEfChtZ8lQTzFSg" source="_XeHYYNaCEfChtZ8lQTzFSg"/>
-      <edge xmi:type="uml:ControlFlow" xmi:id="_A3KfANaVEfCvEujjQ155Pw" target="_A8CHcMxOEfC9ZqIAxAn4hg" source="_HzpjQNaFEfChtZ8lQTzFSg"/>
+      <edge xmi:type="uml:ControlFlow" xmi:id="_A3KfANaVEfCvEujjQ155Pw" name="[Click su Mappa]" target="_I-MNENwSEfCxqtYNiOPREw" source="_HzpjQNaFEfChtZ8lQTzFSg"/>
       <edge xmi:type="uml:ControlFlow" xmi:id="_qH_i8NaVEfCvEujjQ155Pw" target="_o1EigNaVEfCvEujjQ155Pw" source="_IP0MMMxQEfC9ZqIAxAn4hg"/>
-      <edge xmi:type="uml:ControlFlow" xmi:id="_r5_sENaVEfCvEujjQ155Pw" target="_gLjvANaVEfCvEujjQ155Pw" source="_o1EigNaVEfCvEujjQ155Pw"/>
-      <edge xmi:type="uml:ControlFlow" xmi:id="_tho_UNaVEfCvEujjQ155Pw" target="_ergRgNaVEfCvEujjQ155Pw" source="_o1EigNaVEfCvEujjQ155Pw"/>
-      <edge xmi:type="uml:ControlFlow" xmi:id="_kAZAoNaXEfCvEujjQ155Pw" target="_hJIfoNaXEfCvEujjQ155Pw" source="_o1EigNaVEfCvEujjQ155Pw"/>
+      <edge xmi:type="uml:ControlFlow" xmi:id="_r5_sENaVEfCvEujjQ155Pw" name="[Clock su Prenotazioni]" target="_gLjvANaVEfCvEujjQ155Pw" source="_o1EigNaVEfCvEujjQ155Pw"/>
+      <edge xmi:type="uml:ControlFlow" xmi:id="_tho_UNaVEfCvEujjQ155Pw" name="[Click su Colonnine]" target="_ergRgNaVEfCvEujjQ155Pw" source="_o1EigNaVEfCvEujjQ155Pw"/>
+      <edge xmi:type="uml:ControlFlow" xmi:id="_kAZAoNaXEfCvEujjQ155Pw" name="[Click su Utenti]" target="_hJIfoNaXEfCvEujjQ155Pw" source="_o1EigNaVEfCvEujjQ155Pw"/>
       <edge xmi:type="uml:ControlFlow" xmi:id="_nwrbYNaXEfCvEujjQ155Pw" target="_lwDncNaXEfCvEujjQ155Pw" source="_hJIfoNaXEfCvEujjQ155Pw"/>
       <edge xmi:type="uml:ControlFlow" xmi:id="_oZNbANaXEfCvEujjQ155Pw" target="_UOenENaXEfCvEujjQ155Pw" source="_gLjvANaVEfCvEujjQ155Pw"/>
       <edge xmi:type="uml:ControlFlow" xmi:id="_pL8fgNaXEfCvEujjQ155Pw" target="_H4f-UNaWEfCvEujjQ155Pw" source="_ergRgNaVEfCvEujjQ155Pw"/>
       <edge xmi:type="uml:ControlFlow" xmi:id="_qBluENaXEfCvEujjQ155Pw" target="_x1bIsNaVEfCvEujjQ155Pw" source="_H4f-UNaWEfCvEujjQ155Pw"/>
       <edge xmi:type="uml:ControlFlow" xmi:id="_qwrosNaXEfCvEujjQ155Pw" target="_1IFzUNaVEfCvEujjQ155Pw" source="_H4f-UNaWEfCvEujjQ155Pw"/>
+      <edge xmi:type="uml:ControlFlow" xmi:id="_Epqc0NwSEfCxqtYNiOPREw" target="_-qGhEMxNEfC9ZqIAxAn4hg" source="_6X-xoNwREfCxqtYNiOPREw"/>
+      <edge xmi:type="uml:ControlFlow" xmi:id="_MxAXYNwSEfCxqtYNiOPREw" target="_A8CHcMxOEfC9ZqIAxAn4hg" source="_I-MNENwSEfCxqtYNiOPREw"/>
+      <edge xmi:type="uml:ControlFlow" xmi:id="_VxCNcNwSEfCxqtYNiOPREw" target="_XeHYYNaCEfChtZ8lQTzFSg" source="_Q1hVsNwSEfCxqtYNiOPREw"/>
       <node xmi:type="uml:InitialNode" xmi:id="_J_bz4MxJEfC9ZqIAxAn4hg" outgoing="_PVncIMxOEfC9ZqIAxAn4hg"/>
-      <node xmi:type="uml:OpaqueAction" xmi:id="_-qGhEMxNEfC9ZqIAxAn4hg" name="Accesso al Sito" incoming="_PVncIMxOEfC9ZqIAxAn4hg _SWZskMxOEfC9ZqIAxAn4hg" outgoing="_e0uHEMxREfC9ZqIAxAn4hg"/>
+      <node xmi:type="uml:OpaqueAction" xmi:id="_-qGhEMxNEfC9ZqIAxAn4hg" name="Accesso al Sito" incoming="_Epqc0NwSEfCxqtYNiOPREw" outgoing="_e0uHEMxREfC9ZqIAxAn4hg"/>
       <node xmi:type="uml:OpaqueAction" xmi:id="_AafgoMxOEfC9ZqIAxAn4hg" name="Login" incoming="_QY_ksMxOEfC9ZqIAxAn4hg">
         <outputValue xmi:type="uml:OutputPin" xmi:id="_w-iTgMxOEfC9ZqIAxAn4hg" name="Credenziali" outgoing="_w-hFYMxOEfC9ZqIAxAn4hg">
           <upperBound xmi:type="uml:LiteralInteger" xmi:id="_w-jhoMxOEfC9ZqIAxAn4hg" value="1"/>
         </outputValue>
       </node>
-      <node xmi:type="uml:OpaqueAction" xmi:id="_A8CHcMxOEfC9ZqIAxAn4hg" name="Consulta Mappa" incoming="_uv2kENaDEfChtZ8lQTzFSg _A3KfANaVEfCvEujjQ155Pw" outgoing="_w5NdQNaDEfChtZ8lQTzFSg"/>
+      <node xmi:type="uml:OpaqueAction" xmi:id="_A8CHcMxOEfC9ZqIAxAn4hg" name="Consulta Mappa" incoming="_MxAXYNwSEfCxqtYNiOPREw" outgoing="_w5NdQNaDEfChtZ8lQTzFSg"/>
       <node xmi:type="uml:OpaqueAction" xmi:id="_Bf1_IMxOEfC9ZqIAxAn4hg" name="Registrazione" incoming="_N_uAMMxOEfC9ZqIAxAn4hg" outgoing="_SWZskMxOEfC9ZqIAxAn4hg"/>
       <node xmi:type="uml:DecisionNode" xmi:id="_dwejMMxOEfC9ZqIAxAn4hg" incoming="_w-hFYMxOEfC9ZqIAxAn4hg" outgoing="_IQC1sMxQEfC9ZqIAxAn4hg _uv2kENaDEfChtZ8lQTzFSg"/>
       <node xmi:type="uml:OpaqueAction" xmi:id="_IP0MMMxQEfC9ZqIAxAn4hg" name="Consulta Analisi Sito" incoming="_IQC1sMxQEfC9ZqIAxAn4hg" outgoing="_qH_i8NaVEfCvEujjQ155Pw"/>
       <node xmi:type="uml:DecisionNode" xmi:id="_T7Ww0MxREfC9ZqIAxAn4hg" name="" incoming="_e0uHEMxREfC9ZqIAxAn4hg" outgoing="_QY_ksMxOEfC9ZqIAxAn4hg _N_uAMMxOEfC9ZqIAxAn4hg"/>
       <node xmi:type="uml:DecisionNode" xmi:id="_n9rZMMxdEfCz-uEpwkEe1A" name="" incoming="_w5NdQNaDEfChtZ8lQTzFSg" outgoing="_xwXuwNaDEfChtZ8lQTzFSg _0JVKMNaDEfChtZ8lQTzFSg"/>
-      <node xmi:type="uml:OpaqueAction" xmi:id="_4LaMEMxdEfCz-uEpwkEe1A" name="Consulta Dati Profilo" incoming="_qILY4NaEEfChtZ8lQTzFSg _zt0dcNaEEfChtZ8lQTzFSg" outgoing="_tJo-wNaEEfChtZ8lQTzFSg"/>
-      <node xmi:type="uml:OpaqueAction" xmi:id="_MQRokMxeEfCz-uEpwkEe1A" name="Modifica Dati" incoming="_tJo-wNaEEfChtZ8lQTzFSg" outgoing="_zt0dcNaEEfChtZ8lQTzFSg"/>
+      <node xmi:type="uml:OpaqueAction" xmi:id="_4LaMEMxdEfCz-uEpwkEe1A" name="Consulta Dati Profilo" incoming="_qILY4NaEEfChtZ8lQTzFSg" outgoing="_tJo-wNaEEfChtZ8lQTzFSg"/>
+      <node xmi:type="uml:OpaqueAction" xmi:id="_MQRokMxeEfCz-uEpwkEe1A" name="Modifica Dati" incoming="_tJo-wNaEEfChtZ8lQTzFSg"/>
       <node xmi:type="uml:OpaqueAction" xmi:id="_EXJukNaCEfChtZ8lQTzFSg" name="Consulta Prenotazioni" incoming="_7A1_INaEEfChtZ8lQTzFSg" outgoing="_aLs4oNaFEfChtZ8lQTzFSg"/>
       <node xmi:type="uml:OpaqueAction" xmi:id="_HhHJINaCEfChtZ8lQTzFSg" name="Genera e utilizza QR" incoming="_6FuasNaEEfChtZ8lQTzFSg"/>
       <node xmi:type="uml:OpaqueAction" xmi:id="_IM_-wNaCEfChtZ8lQTzFSg" name="Cancella prenotazione" incoming="_5Z1lENaEEfChtZ8lQTzFSg"/>
       <node xmi:type="uml:OpaqueAction" xmi:id="_Sl5FMNaCEfChtZ8lQTzFSg" name="Consulta Colonnine" incoming="_9c5K0NaEEfChtZ8lQTzFSg" outgoing="_-Tv6UNaEEfChtZ8lQTzFSg"/>
-      <node xmi:type="uml:OpaqueAction" xmi:id="_XeHYYNaCEfChtZ8lQTzFSg" name="Seleziona Colonnina" incoming="_xwXuwNaDEfChtZ8lQTzFSg _-Tv6UNaEEfChtZ8lQTzFSg" outgoing="_VJzPkNaGEfChtZ8lQTzFSg"/>
+      <node xmi:type="uml:OpaqueAction" xmi:id="_XeHYYNaCEfChtZ8lQTzFSg" name="Seleziona Colonnina" incoming="_VxCNcNwSEfCxqtYNiOPREw" outgoing="_VJzPkNaGEfChtZ8lQTzFSg"/>
       <node xmi:type="uml:OpaqueAction" xmi:id="_aLztsNaCEfChtZ8lQTzFSg" name="Effettua Prenotazione" incoming="_S9d64NaGEfChtZ8lQTzFSg"/>
       <node xmi:type="uml:OpaqueAction" xmi:id="_5LLv8NaCEfChtZ8lQTzFSg" name="Vota il Servizio" incoming="_4mgqsNaEEfChtZ8lQTzFSg"/>
       <node xmi:type="uml:OpaqueAction" xmi:id="_jIFPsNaDEfChtZ8lQTzFSg" name="Consulta Menu" incoming="_0JVKMNaDEfChtZ8lQTzFSg" outgoing="_N2SbINaFEfChtZ8lQTzFSg"/>
@@ -360,6 +362,15 @@ Utente non ancora iscritto</body>
       <node xmi:type="uml:OpaqueAction" xmi:id="_UOenENaXEfCvEujjQ155Pw" name="Elimina Prenotazione" incoming="_oZNbANaXEfCvEujjQ155Pw"/>
       <node xmi:type="uml:OpaqueAction" xmi:id="_hJIfoNaXEfCvEujjQ155Pw" name="Consulta Utenti" incoming="_kAZAoNaXEfCvEujjQ155Pw" outgoing="_nwrbYNaXEfCvEujjQ155Pw"/>
       <node xmi:type="uml:OpaqueAction" xmi:id="_lwDncNaXEfCvEujjQ155Pw" name="Ban Utente" incoming="_nwrbYNaXEfCvEujjQ155Pw"/>
+      <node xmi:type="uml:DecisionNode" xmi:id="_6X-xoNwREfCxqtYNiOPREw" incoming="_PVncIMxOEfC9ZqIAxAn4hg _SWZskMxOEfC9ZqIAxAn4hg" outgoing="_Epqc0NwSEfCxqtYNiOPREw">
+        <name xsi:nil="true"/>
+      </node>
+      <node xmi:type="uml:DecisionNode" xmi:id="_I-MNENwSEfCxqtYNiOPREw" incoming="_uv2kENaDEfChtZ8lQTzFSg _A3KfANaVEfCvEujjQ155Pw" outgoing="_MxAXYNwSEfCxqtYNiOPREw">
+        <name xsi:nil="true"/>
+      </node>
+      <node xmi:type="uml:DecisionNode" xmi:id="_Q1hVsNwSEfCxqtYNiOPREw" incoming="_-Tv6UNaEEfChtZ8lQTzFSg _xwXuwNaDEfChtZ8lQTzFSg" outgoing="_VxCNcNwSEfCxqtYNiOPREw">
+        <name xsi:nil="true"/>
+      </node>
     </packagedElement>
     <packagedElement xmi:type="uml:Package" xmi:id="_fIbOgM94EfCvI50SpPRHVQ" name="ProgettoSW">
       <packagedElement xmi:type="uml:Package" xmi:id="_fL71gM94EfCvI50SpPRHVQ" name="com">
