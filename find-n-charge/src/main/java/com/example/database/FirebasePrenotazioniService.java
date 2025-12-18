@@ -14,7 +14,6 @@ import com.example.models.Auto;
 import com.example.models.Colonnina;
 import com.example.models.Prenotazione;
 import com.example.modelsInterface.PrenotazioniInterface;
-import com.example.util.DataValidator;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
