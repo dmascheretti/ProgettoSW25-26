@@ -139,7 +139,6 @@ public class ColonnineService {
 	 * @return Lista di tipo Colonnina
 	 */
 	public CompletableFuture<List<Colonnina>> getAllColonnine() {
-		// TODO Auto-generated method stub
 		return colonnineInterface.getAllColonnine();
 	}
 	public CompletableFuture<Colonnina> getColonninaById(String id){

@@ -97,7 +97,7 @@ public class DataValidator {
 	public static boolean controllaPassword(String password) {
 		return password != null && password.matches(PASSWORD_REGEX);
 	}
-	
+																					
 	public static boolean controllaMail(String email) {
         return email != null && email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$");
     }
