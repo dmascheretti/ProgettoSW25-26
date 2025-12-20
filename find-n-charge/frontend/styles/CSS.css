@@ -1,0 +1,31 @@
+/* MapView */
+
+.map-view {
+	/* Blocca lo scroll della pagina intera (scrolla solo la sidebar) */
+    overflow: hidden !important;
+}
+
+.sidebar-scrollable {
+	/* Abilita lo scroll solo per la sidebar */
+    overflow-y: auto !important;
+}
+
+/* Stile per il contenitore della mappa */
+.map-canvas {
+    height: 100vh !important;
+}
+
+/* FIX per il calendario che finiva sotto la mappa */
+/* // Codice JS per rendere l'overlay del bookingDatePicker in primo piano
+		// Ora non va più sotto la mappa */
+vaadin-date-picker-overlay {
+    z-index: 20000 !important;
+}
+
+/* Stile per l'icona del marker utente (spostato da JS a qui) */
+.user-bullseye-icon {
+    color: #305000;
+    width: 35px;
+    height: 35px;
+    filter: drop-shadow(1px 1px 1px rgba(0,0,0,0.5));
+}

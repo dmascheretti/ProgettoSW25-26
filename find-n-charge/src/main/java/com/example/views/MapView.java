@@ -6,15 +6,6 @@
 
 package com.example.views;
 
-import com.example.components.Sidebar;
-import com.example.models.Colonnina;
-import com.example.models.Utente;
-import com.example.service.AutoService;
-import com.example.service.ColonnineService;
-import com.example.service.PrenotazioniService;
-import com.example.service.RecensioniService;
-import com.example.util.DataValidator;
-
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Collections;
@@ -22,13 +13,24 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import com.example.components.Sidebar;
 import com.example.enums.StatoColonnina;
 import com.example.layout.MainLayout;
+import com.example.models.Colonnina;
+import com.example.models.Utente;
+import com.example.service.AutoService;
+import com.example.service.ColonnineService;
+import com.example.service.PrenotazioniService;
+import com.example.service.RecensioniService;
+import com.example.util.DataValidator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.ClientCallable;
 import com.vaadin.flow.component.UI;
+import com.vaadin.flow.component.dependency.CssImport;
+import com.vaadin.flow.component.dependency.JavaScript;
+import com.vaadin.flow.component.dependency.StyleSheet;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -42,6 +44,11 @@ import com.vaadin.flow.server.VaadinSession;
 @RouteAlias(value = "main", layout = MainLayout.class) // URL alternativo
 @RouteAlias(value = "map", layout = MainLayout.class) // URL alternativo
 
+@JavaScript("./map.js")
+@CssImport("./styles/CSS.css")
+//Per la mappa Leaflet
+@StyleSheet("https://unpkg.com/leaflet@1.9.4/dist/leaflet.css")
+@JavaScript("https://unpkg.com/leaflet@1.9.4/dist/leaflet.js")
 public class MapView extends HorizontalLayout {
 
 	private Div mapDiv;
@@ -70,12 +77,12 @@ public class MapView extends HorizontalLayout {
 		setSizeFull();
 		setPadding(false);
 		setSpacing(false);
-		getStyle().set("overflow", "hidden"); // Blocca lo scroll della pagina intera (scrolla solo la sidebar)
+		addClassName("map-view");
 
 		// Crea la sidebar
 		stationSidebar = new Sidebar(recensioniService);
 		stationSidebar.setHeightFull(); // Occupa tutta l'altezza disponibile
-		stationSidebar.getStyle().set("overflow-y", "auto"); // Abilita lo scroll solo per la sidebar
+		stationSidebar.addClassName("sidebar-scrollable");
 
 		configuraGestioneOrari(); // Per gestire gli slot orari
 		reservationLogic(); // Per gestire le prenotazioni
@@ -84,23 +91,13 @@ public class MapView extends HorizontalLayout {
 		// Crea il contenitore per la mappa
 		mapDiv = new Div();
 		mapDiv.setSizeFull();
+		mapDiv.addClassName("map-canvas");
 		mapDiv.setId(mapId);
 
 		// Aggiunge mappa e sidebar all'HorizontalLayout
 		add(mapDiv, stationSidebar);
 		expand(mapDiv); // La mappa occupa tutto lo spazio disponibile
-
-		// Codice JS per rendere l'overlay del bookingDatePicker in primo piano
-		// Ora non va più sotto la mappa
-		UI.getCurrent().getElement()
-				.executeJs("const style = document.createElement('style');"
-						+ "style.innerHTML = 'vaadin-date-picker-overlay { z-index: 20000 !important; }';"
-						+ "document.head.appendChild(style);");
-
-		// Carica i file CSS e JS di Leaflet
-		UI.getCurrent().getPage().addStyleSheet("https://unpkg.com/leaflet@1.9.4/dist/leaflet.css");
-		UI.getCurrent().getPage().addJavaScript("https://unpkg.com/leaflet@1.9.4/dist/leaflet.js");
-
+		
 	}
 
 	private void reservationLogic() {
@@ -226,102 +223,7 @@ public class MapView extends HorizontalLayout {
 
 		// Per l'asincronicità
 		UI ui = attachEvent.getUI();
-
-		String jsCode =
-				// Questa parte di codice deve aspettare che il file .js di Leaflet sia stato
-				// scaricato, quindi lo controlliamo ciclicamente ogni 100ms
-				"var checkLeaflet = setInterval(function() { if (typeof L !== 'undefined') {" + // Controlla se
-																								// il file è
-																								// stato
-																								// scaricato
-						"    clearInterval(checkLeaflet);" + // Se esiste, ferma il controllo
-						"    var mapElement = document.getElementById('" + mapId + "');" + // Cerca il div che deve
-																							// contenere la mappa
-						"    if (!mapElement) return;" + // Se non esiste interrompe
-						"    if (mapElement._leaflet_id) return;" + // Controlla che non ci sia già una mappa nel div,
-																	// in caso affermativo interrompe
-
-						// Crea la mappa
-						"    var map = L.map('" + mapId + "', {" +					// Crea la mappa
-						"        minZoom: 3," +                                     // Impedisce zoom troppo lontani
-						"        maxBounds: [[-90, -180], [90, 180]]," +            // Movimento limitato ai confini del mondo
-						"        maxBoundsViscosity: 0.0" +                         // Muro elastico
-						"    }).setView([45.6493, 9.6021], 15);" +					// Coordinate di default su Dalmine con zoom default pari a 15
-
-						"    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {" + // Si appoggia a
-																									// OpenStreetMap per
-																									// disegnare le
-																									// mattonelle della
-																									// mappa
-						"      attribution: '© OpenStreetMap contributors'," + "      noWrap: true" + // La mappa non si
-																										// ripete
-						"    }).addTo(map);" +
-
-						// Geolocalizzazione
-						"	map.locate({setView: true, maxZoom: 15, enableHighAccuracy: false});" + // Trova la
-																									// posizione e
-																									// centra la mappa
-
-						"   map.on('locationfound', function(e) {" + // Quando la posizione viene trovata:
-
-						"		var userIcon = L.divIcon({" + // Definisce un'icona per il marker della posizione
-																// attuale dell'utente
-						"		className: 'user-location-marker'," + // Classe CSS personalizzata per la box in cui
-																		// verrà visualizzata l'icona
-						"   		html: '<vaadin-icon icon=\"vaadin:bullseye\" style=\"color: #305000; width: 35px; height: 35px; filter: drop-shadow(1px 1px 1px rgba(0,0,0,0.5));\"></vaadin-icon>',"
-						+ "           iconSize: [35, 35]," + // Grandezza dell'icona in pixel
-						"           iconAnchor: [17.5, 17.5]," + // Centra l'incona
-						"  		});" +
-
-						"   	var userMarker = L.marker(e.latlng, {" + // Creazione marker della posizione utente
-						"   		icon: userIcon," + "       	zIndexOffset: 10000" + // Sempre sopra le colonnine
-						"   	}).addTo(map);" +
-
-						"		userMarker.on('click', function() {" + // Quando viene cliccato il marker utente:
-						"   		map.flyTo(e.latlng, 15);" + // Viene centrata la mappa sulla posizione corrente
-						"   	});" + "	});" +
-
-						// Funzione che definisce l'icona del marker di default
-						"    var IconBase = L.Icon.extend({" + "        options: {"
-						+ "            shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',"
-						+ "            iconSize: [25, 41]," + "            iconAnchor: [12, 41],"
-						+ "            popupAnchor: [1, -34]," + "            shadowSize: [41, 41]" + "        }"
-						+ "    });" +
-
-						// Genera tre varianti diverse che saranno utilizzate a seconda dello stato
-						"    var greenIcon = new IconBase({iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png'});"
-						+ "    var yellowIcon = new IconBase({iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-gold.png'});"
-						+ "    var redIcon = new IconBase({iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png'});"
-						+ "    var greyIcon = new IconBase({iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-grey.png'});"
-						+ // Colore di default per gestire eventuali problemi di lettura
-
-						// Trasforma la stringa JSON in un array JS
-						"    var stations = JSON.parse($1);" + // $1 verrà sostituito da stationsJson
-						"    var component = $0;" + // $0 è 'this.getElement()'
-
-						"    stations.forEach(function(station) {" + // Ciclo su ogni elemento dell'array station
-
-						"      var selectedIcon;" + "      var st = station.stato ? station.stato.toLowerCase() : '';" +
-
-						// Controlla lo stato e in base a questo assegna il colore del marker
-						"      if (st === 'libera') {" + "          selectedIcon = greenIcon;"
-						+ "      } else if (st === 'prenotata') {" + "          selectedIcon = yellowIcon;"
-						+ "      } else {" + "          selectedIcon = redIcon;" + // Default
-						"      }" +
-
-						// Crea i marker
-						"      var marker = L.marker([station.lat, station.lon], {icon: selectedIcon}).addTo(map);" + // Per
-																														// ogni
-																														// colonnina
-																														// crea
-																														// il
-																														// marker
-																														// del
-																														// colore
-																														// giusto
-						"      marker.on('click', function() {" + // Aggiunge il listener di click alla componente
-						"      component.$server.onMarkerClick(station.id);" + "      });});}}, 100);"; // Ciclo ogni//
-																										// 100ms
+		
 
 		//Prima inizalizza a libere tutte le colonnine, poi controlla quelle prenotate ed infine quelle in carica
 		//In questo modo tutte sono verdi, solo alcune solo gialle e solo alcune di quelle gialle diventano rosse
@@ -364,10 +266,9 @@ public class MapView extends HorizontalLayout {
 						// Dobbiamo usare ui.access() perché siamo in un thread asincrono
 						String finalStationsJson = stationsJson;
 						ui.access(() -> { // Questo thread deve essere eseguito sulla UI perchè deve aggiornarla
-							getElement().executeJs(jsCode, getElement(), finalStationsJson); // Viene eseguito il codice
+							getElement().executeJs("window.initLeafletMap($0, $1, $2)", getElement(), finalStationsJson, mapId); // Viene eseguito il codice
 																								// JS
 						});
-
 					}).exceptionally(ex -> { // In caso fallisca getAllColonnine()
 						ex.printStackTrace();
 						ui.access(() -> {
