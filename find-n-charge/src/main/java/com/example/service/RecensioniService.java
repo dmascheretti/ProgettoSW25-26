@@ -13,13 +13,9 @@ import com.example.modelsInterface.RecensioniInterface;
 public class RecensioniService {
 
 	private final RecensioniInterface recensioniInterface;
-	float valutazione;
-	int i;
 
 	public RecensioniService(RecensioniInterface recensioniInterface) {
 		this.recensioniInterface = recensioniInterface;
-		this.i = 0;
-		this.valutazione = 0;
 	}
 
 	public CompletableFuture<Float> getValutazColonnina(Colonnina colonnina) {

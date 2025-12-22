@@ -10,6 +10,7 @@ import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.html.H4;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Span;
+import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.BeforeEnterEvent;
@@ -34,6 +35,7 @@ import com.example.service.ColonnineService;
 import com.example.service.PrenotazioniService;
 import com.example.service.RecensioniService;
 import com.example.util.QRCode;
+import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -41,6 +43,8 @@ import com.vaadin.flow.component.dialog.Dialog;
 import com.example.enums.StatoPrenotazione;
 import com.example.layout.MainLayout;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+
 import java.awt.image.BufferedImage;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -334,14 +338,14 @@ public class ReservationView extends VerticalLayout implements BeforeEnterObserv
 
 	/**
 	 * Crea un layout orizzontale con 5 stelline cliccabili. Gestisce la logica
-	 * visiva e il salvataggio del voto. (TODO il backend)
+	 * visiva e il salvataggio del voto.
 	 */
-	private com.vaadin.flow.component.Component creaComponenteStelle(Prenotazione p) {
-		com.vaadin.flow.component.orderedlayout.HorizontalLayout starLayout = new com.vaadin.flow.component.orderedlayout.HorizontalLayout();
+	private Component creaComponenteStelle(Prenotazione p) {
+		HorizontalLayout starLayout = new HorizontalLayout();
 		starLayout.setSpacing(false); // Tiene le stelle vicine
 
 		// Lista per tenere traccia delle icone e poterle aggiornare visivamente
-		List<com.vaadin.flow.component.icon.Icon> starIcons = new ArrayList<>();
+		List<Icon> starIcons = new ArrayList<>();
 
 		int votoAttuale = 0; // Voto parte da 0, Npn è salvato finche l'utente non clicca sulle stelline
 

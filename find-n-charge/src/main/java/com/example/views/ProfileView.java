@@ -5,7 +5,6 @@
  */
 package com.example.views;
 import com.example.service.ColonnineService;
-import com.example.models.Prenotazione;
 import com.example.models.Auto;
 import com.example.models.Utente;
 import com.example.service.AutoService;
