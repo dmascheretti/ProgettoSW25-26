@@ -127,7 +127,7 @@ public class Sidebar extends VerticalLayout {
 
 		this.details.add( // Span serve per poter mandare a capo le righe
 				new Span("Indirizzo: " + colonnina.getIndirizzo() + ", " + colonnina.getComune()),
-				new Span("Stato: " + colonnina.getStato()));
+				new Span("Stato: " + formattaStato(colonnina.getStato())));
 
 		// Pulisce i campi di prenotazione precedenti
 		bookingDatePicker.setValue(null);
@@ -228,5 +228,19 @@ public class Sidebar extends VerticalLayout {
 	public String getAutoSelected() {
 		// TODO Auto-generated method stub
 		return autoSelection.getValue();
+	}
+	
+	
+	private String formattaStato(String stato) {
+		
+	    if (stato == null || stato.isEmpty()) {
+	        return "N/D";
+	    }
+	    
+	    String testo = stato.replace("_", " ");
+	    
+	    testo = testo.toLowerCase();
+	    
+	    return testo.substring(0, 1).toUpperCase() + testo.substring(1);
 	}
 }

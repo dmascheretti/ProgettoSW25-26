@@ -151,7 +151,8 @@ public class ReservationView extends VerticalLayout implements BeforeEnterObserv
 					return text;
 				}
 				// se la colonnina è occupata da un altro utente, il bottone non compare
-				if (this.idColonnineOccupate.contains(p.getIDColonnina()) && !p.getStato().equals(StatoPrenotazione.IN_CARICA.toString())) {
+				if (this.idColonnineOccupate.contains(p.getIDColonnina())
+						&& !p.getStato().equals(StatoPrenotazione.IN_CARICA.toString())) {
 					Span text = new Span("Colonnina occupata.");
 					text.getStyle().set("font-size", "12px").set("color", "red");
 					return text;
@@ -264,12 +265,12 @@ public class ReservationView extends VerticalLayout implements BeforeEnterObserv
 
 					// aggiungo la lista alla griglia
 
-					List<Prenotazione> filtrata = lista.stream().filter(p -> !(calcolaStato(p) == StatoPrenotazione.PASSATA))
-							.toList();
+					List<Prenotazione> filtrata = lista.stream()
+							.filter(p -> !(calcolaStato(p) == StatoPrenotazione.PASSATA)).toList();
 					newPrenoGrid.setItems(filtrata);
 
-					List<Prenotazione> rimanenti = lista.stream().filter(p -> calcolaStato(p) == StatoPrenotazione.PASSATA )
-							.toList();
+					List<Prenotazione> rimanenti = lista.stream()
+							.filter(p -> calcolaStato(p) == StatoPrenotazione.PASSATA).toList();
 					oldPrenoGrid.setItems(rimanenti);
 
 				}));
@@ -308,7 +309,6 @@ public class ReservationView extends VerticalLayout implements BeforeEnterObserv
 			return null;
 		}
 	}
-
 
 	/**
 	 * Se l'utente prova ad accedere direttamente a questa pagina senza aver
@@ -354,7 +354,7 @@ public class ReservationView extends VerticalLayout implements BeforeEnterObserv
 
 			// Decide se la stella è piena o vuota in base al voto attuale
 			VaadinIcon iconType = (votoAttuale >= i) ? VaadinIcon.STAR : VaadinIcon.STAR_O;
-			com.vaadin.flow.component.icon.Icon star = iconType.create();
+			Icon star = iconType.create();
 
 			// Stile: Colore oro e cursore "mano" al passaggio del mouse
 			star.setColor(votoAttuale >= i ? "#FFD700" : "gray");
@@ -363,31 +363,21 @@ public class ReservationView extends VerticalLayout implements BeforeEnterObserv
 			// Gestore del click
 			star.addClickListener(event -> {
 
-				// p.setVoto(starValue);
-
-				for (int j = 0; j < starIcons.size(); j++) {
-					com.vaadin.flow.component.icon.Icon s = starIcons.get(j);
-					int val = j + 1;
-					if (val <= starValue) {
-						// Stella piena e colorata
-						s.getElement().setAttribute("icon", "vaadin:star");
-						s.setColor("#FFD700");
-					} else {
-						s.getElement().setAttribute("icon", "vaadin:star-o");
-						s.setColor("gray");
-					}
-				}
+				aggiornaStelle(starIcons, starValue);
 
 				recensioniService.aggiungiRecensione(p.getUtente(), p.getIDColonnina(), starValue, p).thenRun(() -> {
 					getUI().ifPresent(ui -> ui.access(() -> {
 						Notification.show("Voto salvato: " + starValue + "/5", 3000, Notification.Position.TOP_CENTER)
 								.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+
+						disabilitaStelle(starIcons);
 					}));
 				}).exceptionally(ex -> {
 					getUI().ifPresent(ui -> ui.access(() -> {
 						String msg = ex.getCause() != null ? ex.getCause().getMessage() : ex.getMessage();
 						Notification.show("Errore: " + msg, 3000, Notification.Position.TOP_CENTER)
 								.addThemeVariants(NotificationVariant.LUMO_ERROR);
+
 					}));
 					return null;
 				});
@@ -397,7 +387,53 @@ public class ReservationView extends VerticalLayout implements BeforeEnterObserv
 			starLayout.add(star);
 		}
 
+		recensioniService.getRecensionePrenotazione(p).thenAccept(recensione -> {
+			if (recensione != null) {
+				getUI().ifPresent(ui -> ui.access(() -> {
+					int votoSalvato = recensione.getStelle();
+
+					aggiornaStelle(starIcons, votoSalvato);
+
+					disabilitaStelle(starIcons);
+
+				}));
+
+			}
+		});
+
 		return starLayout;
+	}
+
+	/**
+	 * Aggiorna stelle prendendo valore dal db se la valutazione è già esistente
+	 * 
+	 * @param icons
+	 * @param valore
+	 */
+	private void aggiornaStelle(List<Icon> icons, int valore) {
+		for (int j = 0; j < icons.size(); j++) {
+			com.vaadin.flow.component.icon.Icon s = icons.get(j);
+			if (j < valore) {
+				s.getElement().setAttribute("icon", "vaadin:star"); // Stella piena
+				s.setColor("#FFD700"); // Oro
+			} else {
+				s.getElement().setAttribute("icon", "vaadin:star-o"); // Stella vuota
+				s.setColor("gray");
+			}
+		}
+	}
+
+	/**
+	 * Disabilita stelle se il voto è già stato assegnato
+	 * 
+	 * @param icons
+	 */
+	private void disabilitaStelle(List<Icon> icons) {
+		for (Icon s : icons) {
+			s.getStyle().set("cursor", "default");
+
+			s.getStyle().set("pointer-events", "none");
+		}
 	}
 
 }

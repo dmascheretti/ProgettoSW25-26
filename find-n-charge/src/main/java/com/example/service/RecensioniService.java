@@ -74,5 +74,9 @@ public class RecensioniService {
 		// null se tutto è andato a buon fine
 		return future;
 	}
+	
+	public CompletableFuture<Recensione> getRecensionePrenotazione(Prenotazione p) {
+	    return recensioniInterface.verificaRecensione(p);
+	}
 
 }

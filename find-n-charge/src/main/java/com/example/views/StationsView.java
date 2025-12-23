@@ -92,7 +92,7 @@ public class StationsView extends HorizontalLayout {
 		// Colonne con altre informazioni delle colonnine
 		colonGrid.addColumn(Colonnina::getTipo).setHeader("Tipo").setSortable(true);
 
-		colonGrid.addColumn(Colonnina::getStato).setHeader("Stato").setSortable(true);
+		colonGrid.addColumn(c -> formattaStato(c.getStato())).setHeader("Stato").setSortable(true);
 
 		colonGrid.addColumn(Colonnina::getIndirizzo).setHeader("Indirizzo").setSortable(true);
 
@@ -234,6 +234,20 @@ public class StationsView extends HorizontalLayout {
 						});
 			}
 		});
+	}
+	
+	
+	private String formattaStato(String stato) {
+		
+	    if (stato == null || stato.isEmpty()) {
+	        return "N/D";
+	    }
+	    
+	    String testo = stato.replace("_", " ");
+	    
+	    testo = testo.toLowerCase();
+	    
+	    return testo.substring(0, 1).toUpperCase() + testo.substring(1);
 	}
 
 }
