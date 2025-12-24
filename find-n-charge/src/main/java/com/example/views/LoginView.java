@@ -8,6 +8,7 @@ package com.example.views;
 
 import com.example.service.UtentiService;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.notification.Notification;
@@ -23,7 +24,7 @@ import com.vaadin.flow.server.VaadinSession;
 // Questa deve essere la prima pagina aperta dal sito web
 @Route("login")
 @PageTitle("Accedi")
-
+@CssImport("./styles/CSS.css")
 public class LoginView extends VerticalLayout {
 
 	private final UtentiService utentiService;
@@ -32,33 +33,24 @@ public class LoginView extends VerticalLayout {
 
 		this.utentiService = utentiService;
 
-		// Dimensione massima per occupare tutta la finestra
-		setSizeFull();
-		// Centra orizzontalmente e verticalmente il form nella pagina
-		setAlignItems(Alignment.CENTER);
-		setJustifyContentMode(JustifyContentMode.CENTER);
+		addClassName("auth-view-container");
 
 		// Titolo del form
 		H1 titolo = new H1("Accedi");
 
 		// Inseriamo i campi del form
 		// Campo del nome utente
-		TextField usernameField = new TextField();
-		usernameField.setLabel("Nome utente");
-		usernameField.setPlaceholder("Inserisci il tuo username");
-		usernameField.setWidth("300px");
-		usernameField.getStyle().set("--lumo-primary-text-color", "var(--lumo-success-text-color)"); // Tema verde
+		TextField usernameField = new TextField("Nome utente", "Inserisci il tuo username" );
+		usernameField.addClassNames("auth-input", "login-input-width");
 
 		// Campo della password
-		PasswordField passwordField = new PasswordField();
-		passwordField.setLabel("Password");
-		passwordField.setPlaceholder("Inserisci la password");
-		passwordField.setWidth("300px");
-		passwordField.getStyle().set("--lumo-primary-text-color", "var(--lumo-success-text-color)"); // Tema verde
+		PasswordField passwordField = new PasswordField("Password", "Inserisci la password");
+		passwordField.addClassNames("auth-input", "login-input-width");
 
 		// Pulsante di accesso
 		Button loginButton = new Button("Accedi");
-		loginButton.getElement().getThemeList().add("success"); // Tema verde
+		loginButton.getElement().getThemeList().add("success");
+        loginButton.addClickShortcut(com.vaadin.flow.component.Key.ENTER);
 		loginButton.addClickListener(event -> {
 			String user = usernameField.getValue();
 			String password = passwordField.getValue();
@@ -100,10 +92,8 @@ public class LoginView extends VerticalLayout {
 		// Box di testo
 		Span text = new Span("Non hai un account? ");
 		// Creazione link che riporti alla pagina di registrazione
-		RouterLink registerLink = new RouterLink();
-		registerLink.setText("Registrati ora!");
-		registerLink.setRoute(RegisterView.class);
-		registerLink.getStyle().set("color", "var(--lumo-success-text-color)");
+		RouterLink registerLink = new RouterLink("Registrati ora!", RegisterView.class);
+		registerLink.addClassName("success-link");
 
 		// Disposizione orizzontale di testo e link
 		HorizontalLayout registerLayout = new HorizontalLayout(text, registerLink);
@@ -113,23 +103,10 @@ public class LoginView extends VerticalLayout {
 		// Layout della box
 		VerticalLayout loginForm = new VerticalLayout(titolo, usernameField, passwordField, loginButton,
 				registerLayout);
-		loginForm.setAlignItems(Alignment.CENTER);
-
-		// Stile della box
-		loginForm.setMaxWidth("400px");
-		loginForm.getElement().getStyle().set("padding", "40px");
-		loginForm.getElement().getStyle().set("box-shadow", "0 8px 16px 0 rgba(0,0,0,0.3)");
-		loginForm.getElement().getStyle().set("background-color", "white");
-		loginForm.getElement().getStyle().set("border-radius", "8px");
+		loginForm.addClassNames("auth-form-box", "login-box-width");
 
 		// Aggiunge il form all'interno del layout
 		add(loginForm);
-
-		/*
-		 * Quando si schiaccia il tasto "Enter" dalla tastiera si ottiene lo stesso
-		 * effetto di cliccare sul tasto di accesso
-		 */
-		loginButton.addClickShortcut(com.vaadin.flow.component.Key.ENTER);
 
 	}
 }

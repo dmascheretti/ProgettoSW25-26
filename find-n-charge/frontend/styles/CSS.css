@@ -1,12 +1,12 @@
-/* MapView */
+/* MAPVIEW */
 
+/* Blocca lo scroll della pagina intera (scrolla solo la sidebar) */
 .map-view {
-	/* Blocca lo scroll della pagina intera (scrolla solo la sidebar) */
     overflow: hidden !important;
 }
 
+/* Abilita lo scroll solo per la sidebar */
 .sidebar-scrollable {
-	/* Abilita lo scroll solo per la sidebar */
     overflow-y: auto !important;
 }
 
@@ -22,10 +22,77 @@ vaadin-date-picker-overlay {
     z-index: 20000 !important;
 }
 
-/* Stile per l'icona del marker utente (spostato da JS a qui) */
+/* Stile per l'icona del marker utente */
 .user-bullseye-icon {
     color: #305000;
     width: 35px;
     height: 35px;
     filter: drop-shadow(1px 1px 1px rgba(0,0,0,0.5));
+}
+
+/* AUTH: REGISTERVIEW E LOGINVIEW */
+
+.auth-view-container {
+    display: flex;                  /* Diventa una FlexBox */
+    flex-direction: column;
+    align-items: center;   
+    justify-content: center;
+    min-height: 100vh;      
+    width: 100%;
+    background-color: #fcfcfc;
+}
+
+.auth-form-box {
+    display: flex;                  /* Diventa una FlexBox */
+    flex-direction: column;         /* Gli elementi vanno in verticale */
+    padding: 35px;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.3);
+    background-color: white;
+    border-radius: 8px;
+    gap: var(--lumo-space-s) !important; /* Spazio piccolo */
+    align-items: center;
+}
+
+.auth-input {
+    --lumo-primary-text-color: var(--lumo-success-text-color);
+}
+
+/* Spaziatura sopra al campo */
+.register-margin-top {
+    margin-top: var(--lumo-space-l); 
+}
+
+.success-link {
+    color: var(--lumo-success-text-color) !important; 
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.success-link:hover {
+    text-decoration: underline;
+}
+
+/* REGISTERVIEW */
+
+.register-box-width {
+    max-width: 500px;
+}
+
+.register-input-width {
+    width: 400px;
+}
+
+/* Per Nome e Cognome */
+.register-input-2 {
+    width: 190px; 
+}
+
+/* LOGINVIEW */
+/* Specifiche per Login */
+.login-box-width {
+    max-width: 400px;
+}
+
+.login-input-width {
+    width: 300px;
 }

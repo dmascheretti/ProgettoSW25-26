@@ -9,6 +9,7 @@ package com.example.views;
 import com.example.service.UtentiService;
 import com.example.util.DataValidator;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.notification.Notification;
@@ -25,6 +26,7 @@ import com.vaadin.flow.spring.annotation.UIScope;
 @Route("register")
 @PageTitle("Registrati")
 @UIScope
+@CssImport("./styles/CSS.css")
 public class RegisterView extends VerticalLayout {
 
 	private final UtentiService utentiService;
@@ -33,59 +35,42 @@ public class RegisterView extends VerticalLayout {
 
 		this.utentiService = utentiService;
 
-		setSizeFull();
-		setAlignItems(Alignment.CENTER);
-		setJustifyContentMode(JustifyContentMode.CENTER);
+		addClassName("auth-view-container");
 
 		H1 titolo = new H1("Registrati");
 
 		// Campi del form di registrazione
-		TextField nomeField = new TextField();
-		nomeField.setLabel("Nome");
-		nomeField.setPlaceholder("Inserisci il tuo nome");
-		nomeField.setWidth("190px");
-		nomeField.getStyle().set("--lumo-primary-text-color", "var(--lumo-success-text-color)"); // Tema verde
-		nomeField.getStyle().set("margin-top", "var(--lumo-space-l)"); // Spaziatura sopra al campo
+		TextField nomeField = new TextField("Nome", "Inserisci il tuo nome");
+		nomeField.addClassNames("auth-input", "register-input-2", "register-margin-top");
 
-		TextField cognomeField = new TextField();
-		cognomeField.setLabel("Cognome");
-		cognomeField.setPlaceholder("Inserisci il tuo cognome");
-		cognomeField.setWidth("190px");
-		cognomeField.getStyle().set("--lumo-primary-text-color", "var(--lumo-success-text-color)");
+		TextField cognomeField = new TextField("Cognome", "Inserisci il tuo cognome");
+		cognomeField.addClassNames("auth-input", "register-input-2");
 
 		// Allinea orizzontalmente i campi di nome e cognome
 		HorizontalLayout fullNameLayout = new HorizontalLayout(nomeField, cognomeField);
-		fullNameLayout.setSpacing(true);
 		fullNameLayout.setDefaultVerticalComponentAlignment(Alignment.BASELINE);
 
-		TextField usernameField = new TextField();
-		usernameField.setLabel("Username");
-		usernameField.setPlaceholder("Inserisci il tuo nome utente");
-		usernameField.setWidth("400px");
-		usernameField.getStyle().set("--lumo-primary-text-color", "var(--lumo-success-text-color)");
-
-		EmailField emailField = new EmailField();
-		emailField.setLabel("Indirizzo Email");
-		emailField.setPlaceholder("Inserisci la tua email");
-		emailField.setWidth("400px");
-		emailField.getStyle().set("--lumo-primary-text-color", "var(--lumo-success-text-color)");
-
-		PasswordField passwordField = new PasswordField();
-		passwordField.setLabel("Scegli una Password");
-		passwordField.setPlaceholder("Inserisci la tua password");
-		passwordField.setWidth("400px");
-		passwordField.getStyle().set("--lumo-primary-text-color", "var(--lumo-success-text-color)");
-
-		PasswordField confirmPasswordField = new PasswordField();
-		confirmPasswordField.setLabel("Conferma Password");
-		confirmPasswordField.setPlaceholder("Inserisci di nuovo la tua password");
-		confirmPasswordField.setWidth("400px");
-		confirmPasswordField.getStyle().set("--lumo-primary-text-color", "var(--lumo-success-text-color)");
-
+		TextField usernameField = new TextField("Username", "Inserisci il tuo nome utente");
+		usernameField.addClassNames("auth-input", "register-input-width");
+		
+		EmailField emailField = new EmailField("Indirizzo Email", "Inserisci la tua email");
+		emailField.addClassNames("auth-input", "register-input-width");
+		
+		PasswordField passwordField = new PasswordField("Scegli una Password", "Inserisci la tua password");
+		passwordField.addClassNames("auth-input", "register-input-width");
+		
+		PasswordField confirmPasswordField = new PasswordField("Conferma Password", "Inserisci di nuovo la tua password");
+		confirmPasswordField.addClassNames("auth-input", "register-input-width");
+		
 		// Pulsante di registrazione
 		Button submitButton = new Button("Completa Registrazione");
 		submitButton.getElement().getThemeList().add("success");
-		submitButton.getStyle().set("margin-top", "var(--lumo-space-l)");
+		submitButton.addClassName("register-margin-top");
+		/*
+		 * Quando si schiaccia il tasto "Enter" dalla tastiera si ottiene lo stesso
+		 * effetto di cliccare sul tasto di registazione
+		 */
+		submitButton.addClickShortcut(com.vaadin.flow.component.Key.ENTER);
 		submitButton.addClickListener(e -> {
 
 			String nome = nomeField.getValue();
@@ -133,36 +118,19 @@ public class RegisterView extends VerticalLayout {
 		// Box di testo
 		Span text = new Span("Hai già un account? ");
 		// Creazione link che riporti alla pagina di registrazione
-		RouterLink loginLink = new RouterLink();
-		loginLink.setText("Accedi ora!");
-		loginLink.setRoute(LoginView.class);
-		loginLink.getStyle().set("color", "var(--lumo-success-text-color)");
-
+		RouterLink loginLink = new RouterLink("Accedi ora!", LoginView.class);
+		loginLink.addClassName("success-link");
+		
 		// Disposizione orizzontale di testo e link
 		HorizontalLayout loginLayout = new HorizontalLayout(text, loginLink);
-		loginLayout.setSpacing(true);
 		loginLayout.setDefaultVerticalComponentAlignment(Alignment.BASELINE);
 
 		// Layout del form
 		VerticalLayout registerForm = new VerticalLayout(titolo, fullNameLayout, usernameField, emailField,
 				passwordField, confirmPasswordField, submitButton, loginLayout);
-		registerForm.setSpacing(true);
-		registerForm.getStyle().set("gap", "var(--lumo-space-s)"); // Spazio piccolo
-		registerForm.setAlignItems(Alignment.CENTER);
-
-		// Stile della box
-		registerForm.setMaxWidth("500px");
-		registerForm.getElement().getStyle().set("padding", "35px");
-		registerForm.getElement().getStyle().set("box-shadow", "0 8px 16px 0 rgba(0,0,0,0.3)");
-		registerForm.getElement().getStyle().set("background-color", "white");
-		registerForm.getElement().getStyle().set("border-radius", "8px");
+		registerForm.addClassNames("auth-form-box", "register-box-width");
 
 		add(registerForm);
 
-		/*
-		 * Quando si schiaccia il tasto "Enter" dalla tastiera si ottiene lo stesso
-		 * effetto di cliccare sul tasto di registazione
-		 */
-		submitButton.addClickShortcut(com.vaadin.flow.component.Key.ENTER);
 	}
 }
