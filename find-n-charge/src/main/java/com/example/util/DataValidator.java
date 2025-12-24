@@ -14,7 +14,7 @@ public class DataValidator {
 	 * Metodo statico (della classe) per controllare la velidità dei campi inseiriti
 	 * 1-i campi non possono essere vuoti 2-le password devono coincidere 3-la
 	 * password deve essere lunga almeno 6 caratteri 4-la mail deve essere del
-	 * tipo @ e dominio
+	 * tipo @ e dominio 5-il nome utente non può contenere caratteri speciali ad eccezione di - e _
 	 * 
 	 * @param nome
 	 * @param cognome
@@ -38,6 +38,11 @@ public class DataValidator {
 			return "Le password non corrispondono!";
 		}
 		
+		//username non può contenere caratteri speciali
+		if (!username.matches("^[a-zA-Z0-9_-]+$")) {
+			return "L'username non è valido! Non utilizzare simboli speciali: sono possibili solo trattini (-) e underscore (_)! ";
+		}
+		
 		if (!password.matches(PASSWORD_REGEX)) {
             return "La password deve avere almeno 8 caratteri, una maiuscola, una minuscola, un numero e un carattere speciale (@ # $ % ^ & + = ! . _ -)";
         }
@@ -47,6 +52,7 @@ public class DataValidator {
 		if (!email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")) {
 			return "Inserisci un indirizzo email valido. Assicurati che contenga @ e un dominio valido!";
 		}
+		
 
 		return null; // Nessun errore
 	}
