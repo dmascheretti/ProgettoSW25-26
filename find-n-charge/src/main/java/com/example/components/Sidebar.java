@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.example.models.Colonnina;
+import com.example.models.Utente;
 import com.example.service.RecensioniService;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
@@ -25,6 +26,7 @@ import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.server.VaadinSession;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 
 public class Sidebar extends VerticalLayout {
@@ -95,7 +97,14 @@ public class Sidebar extends VerticalLayout {
 		prenotaButton.getStyle().set("margin-top", "var(--lumo-space-l)");
 		
 
-		add(headerLayout, details, bookingDatePicker, bookingTimeSlot, autoSelection, prenotaButton);
+		add(headerLayout, details, bookingDatePicker, bookingTimeSlot);
+		
+		// Se l'utente non è loggato non può selezionare l'auto
+		Utente utente = (Utente) VaadinSession.getCurrent().getAttribute("utente");
+		if (utente != null) {
+			add(autoSelection);
+		}
+		add(prenotaButton);
 
 	}	
 
