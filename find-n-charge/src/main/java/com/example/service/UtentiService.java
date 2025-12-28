@@ -25,7 +25,7 @@ public class UtentiService {
 	public UtentiService(UtentiInterface utentiInterface, PasswordEncoder passwordEncoder, EmailService emailService) {
 		this.utentiInterface = utentiInterface;
 		this.passwordEncoder = passwordEncoder;
-		this.emailService=emailService;
+		this.emailService = emailService;
 	}
 
 	/**
@@ -100,9 +100,17 @@ public class UtentiService {
 
 			// Chiamo firebase per salvare utente nel database
 			utentiInterface.salvaUtente(u).thenRun(() -> {
-				
-				emailService.inviaEmailBenvenuto(email, username);
-				
+
+				//mail inviata in maniera asincrona al salvataggio utente nel database
+				CompletableFuture.runAsync(() -> {
+					try {
+						emailService.inviaEmailBenvenuto(email, username);
+					} catch (Exception e) {
+						System.err.println("Errore mail non inviata" + e.getMessage());
+						e.printStackTrace();
+					}
+				});
+
 				future.complete(null);
 				// eccezione di salvaUtente
 			}).exceptionally(ex -> {
@@ -126,8 +134,8 @@ public class UtentiService {
 
 		CompletableFuture<Void> future = new CompletableFuture<>();
 		if (!DataValidator.controllaPassword(nuovaPassword)) {
-		    future.completeExceptionally(new IllegalArgumentException("Password non valida"));
-		    return future;
+			future.completeExceptionally(new IllegalArgumentException("Password non valida"));
+			return future;
 		}
 		String passwordCriptata = passwordEncoder.encode(nuovaPassword);
 
@@ -146,8 +154,8 @@ public class UtentiService {
 		CompletableFuture<Void> future = new CompletableFuture<>();
 
 		if (!DataValidator.controllaMail(nuovaMail)) {
-		    future.completeExceptionally(new IllegalArgumentException("Email non valida"));
-		    return future;
+			future.completeExceptionally(new IllegalArgumentException("Email non valida"));
+			return future;
 		}
 
 		utentiInterface.cambiaMail(u, nuovaMail).thenRun(() -> {
@@ -161,11 +169,11 @@ public class UtentiService {
 	}
 
 	public CompletableFuture<Integer> contaUtenti() {
-		return utentiInterface.contaUtenti() ;
+		return utentiInterface.contaUtenti();
 	}
-	
+
 	public CompletableFuture<Integer> contaUtentiNuovi() {
-		return utentiInterface.contaUtentiNuovi() ;
+		return utentiInterface.contaUtentiNuovi();
 	}
 
 	public CompletableFuture<List<Utente>> getAllUtenti() {
@@ -178,13 +186,12 @@ public class UtentiService {
 	}
 
 	public CompletableFuture<Utente> verificaUtente(String u) {
-		
+
 		return utentiInterface.verificaUtente(u);
 	}
 
 	public CompletableFuture<Void> salvaUtente(Utente nuovoUtente) {
 		return utentiInterface.salvaUtente(nuovoUtente);
 	}
-
 
 }
