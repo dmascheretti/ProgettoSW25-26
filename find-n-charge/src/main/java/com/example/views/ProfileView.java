@@ -4,6 +4,7 @@
  * @author Claudio Morgera, Francesco Valenari, Tommaso Maistrello
  */
 package com.example.views;
+
 import com.example.service.ColonnineService;
 import com.example.models.Auto;
 import com.example.models.Utente;
@@ -46,24 +47,25 @@ public class ProfileView extends VerticalLayout implements BeforeEnterObserver {
 	private final UtentiService utentiService;
 	private final PrenotazioniService prenotazioniService;
 	private final ColonnineService colonnineService;
-    private VerticalLayout modifica;
-    private Paragraph mail;
-    private HorizontalLayout datiEmodifica;
-    private HorizontalLayout autoLayout;
-    
-	public ProfileView(AutoService autoService, UtentiService utentiService, PrenotazioniService prenotazioniService, ColonnineService colonnineService) {
+	private VerticalLayout modifica;
+	private Paragraph mail;
+	private HorizontalLayout datiEmodifica;
+	private HorizontalLayout autoLayout;
+
+	public ProfileView(AutoService autoService, UtentiService utentiService, PrenotazioniService prenotazioniService,
+			ColonnineService colonnineService) {
 		this.autoService = autoService;
 		this.utentiService = utentiService;
 		this.prenotazioniService = prenotazioniService;
-		this.colonnineService=colonnineService;
+		this.colonnineService = colonnineService;
 		setSizeFull();
 		setSpacing(true);
 		setPadding(true);
-		datiEmodifica= new HorizontalLayout();
+		datiEmodifica = new HorizontalLayout();
 		modifica = new VerticalLayout();
 		modifica.setVisible(false);
-        modifica.getStyle().set("padding-left", "20px"); 
-        modifica.getStyle().set("border-left", "1px solid #ddd");
+		modifica.getStyle().set("padding-left", "20px");
+		modifica.getStyle().set("border-left", "1px solid #ddd");
 
 		// Prendi utente dalla sessione (controllo null per sicurezza)
 		Utente utente = (Utente) VaadinSession.getCurrent().getAttribute("utente");
@@ -75,17 +77,17 @@ public class ProfileView extends VerticalLayout implements BeforeEnterObserver {
 
 		// Header
 		add(createSaluto(utente.getUsername().toUpperCase()));
-		
+
 		// Profile Card
-		//add(createProfileCard(utente));
-		
-	    autoLayout = new HorizontalLayout();
+		// add(createProfileCard(utente));
+
+		autoLayout = new HorizontalLayout();
 		autoLayout.setWidthFull();
 		autoLayout.setPadding(true);
 		autoLayout.setSpacing(true);
 
 		add(autoLayout);
-		
+
 		autoService.getAutoUtente(utente).thenAccept(lista -> {
 			getUI().ifPresent(ui -> ui.access(() -> {
 
@@ -97,95 +99,96 @@ public class ProfileView extends VerticalLayout implements BeforeEnterObserver {
 
 					prenotazioniService.inCarica(a).thenAccept(trovata -> {
 						ui.access(() -> {
-							boolean isInCarica=(trovata!=null);
+							boolean isInCarica = (trovata != null);
 							Paragraph inCarica = new Paragraph(isInCarica ? "Auto in carica" : "Auto non in carica");
 							card.add(inCarica);
-							
+
 							if (isInCarica) {
 
-							    Button aggiornaBtn = new Button("Aggiorna stato");
-							    aggiornaBtn.getStyle().set("background-color", "#27AE60");
-							    aggiornaBtn.getStyle().set("color", "white");
-							    aggiornaBtn.getStyle().set("border-radius", "6px");
+								Button aggiornaBtn = new Button("Aggiorna stato");
+								aggiornaBtn.getStyle().set("background-color", "#27AE60");
+								aggiornaBtn.getStyle().set("color", "white");
+								aggiornaBtn.getStyle().set("border-radius", "6px");
 
-							    aggiornaBtn.addClickListener(ev -> {
-							    	LocalTime orarioInizio = LocalTime.parse(trovata.getInizio());
-						    	    LocalTime orarioFineSlot = orarioInizio.plusMinutes(30);
-						    	   
-						    	    LocalDateTime fineSlotData = LocalDateTime.of(java.time.LocalDate.now(), orarioFineSlot);
-						    	    LocalDateTime adesso = java.time.LocalDateTime.now();
-						    	    
-						    	    LocalDateTime orarioPerCalcolo = adesso.isAfter(fineSlotData) ? fineSlotData : adesso;
-							    	
-						    	    String idColonnina = trovata.getIDColonnina();
-							    	colonnineService.getColonninaById(idColonnina).thenAccept(colonnina -> {
-							    		
-							    	double potenzaColonnina=22;
-							    		if (colonnina != null && colonnina.getTipo() != null) {
-							                // Controllo il tipo di colonnina
-							                if (colonnina.getTipo().equalsIgnoreCase("Standard")) {
-							                	potenzaColonnina = 7.0;
-							                } else if (colonnina.getTipo().equalsIgnoreCase("Fast")) {
-							                	potenzaColonnina = 22.0;
-							                } else {
-							                    // Se il tipo è sconosciuto, usa la potenza salvata nell'oggetto o resta 22
-							                	potenzaColonnina = colonnina.getPotenza() > 0 ? colonnina.getPotenza() : 22.0;
-							                }
-							            }
-							    		final double potenza= potenzaColonnina;
-							        autoService.nuovoStato(a, java.time.LocalDateTime.now(), potenza).thenRun(() -> {
-							            ui.access(() -> {
+								aggiornaBtn.addClickListener(ev -> {
+									LocalTime orarioInizio = LocalTime.parse(trovata.getInizio());
+									LocalTime orarioFineSlot = orarioInizio.plusMinutes(30);
 
-							                
-							                card.updateStato(a.getStatoCarica());
+									LocalDateTime fineSlotData = LocalDateTime.of(java.time.LocalDate.now(),
+											orarioFineSlot);
+									LocalDateTime adesso = java.time.LocalDateTime.now();
 
-							                if (adesso.isAfter(fineSlotData)) {
-							                    Notification.show("Ricarica conclusa alle " + orarioFineSlot + ". Stato aggiornato.")
-							                        .addThemeVariants(NotificationVariant.LUMO_PRIMARY);
-							                    prenotazioniService.aggiornaStato(trovata, com.example.enums.StatoPrenotazione.PASSATA);
-							                    
-							                    aggiornaBtn.setVisible(false);
-							                }
-							                else {
-							                Notification.show("Stato aggiornato!", 2500, Notification.Position.TOP_CENTER)
-							                        .addThemeVariants(NotificationVariant.LUMO_SUCCESS);}
-							            });
-							        });
-							    });
+									String idColonnina = trovata.getIDColonnina();
+									colonnineService.getColonninaById(idColonnina).thenAccept(colonnina -> {
 
-							    });
-							    card.add(aggiornaBtn);
+										double potenzaColonnina = 22;
+										if (colonnina != null && colonnina.getTipo() != null) {
+											// Controllo il tipo di colonnina
+											if (colonnina.getTipo().equalsIgnoreCase("Standard")) {
+												potenzaColonnina = 7.0;
+											} else if (colonnina.getTipo().equalsIgnoreCase("Fast")) {
+												potenzaColonnina = 22.0;
+											} else {
+												// Se il tipo è sconosciuto, usa la potenza salvata nell'oggetto o resta
+												// 22
+												potenzaColonnina = colonnina.getPotenza() > 0 ? colonnina.getPotenza()
+														: 22.0;
+											}
+										}
+										final double potenza = potenzaColonnina;
+										autoService.nuovoStato(a, java.time.LocalDateTime.now(), potenza)
+												.thenRun(() -> {
+													ui.access(() -> {
+
+														card.updateStato(a.getStatoCarica());
+
+														if (adesso.isAfter(fineSlotData)) {
+															Notification
+																	.show("Ricarica conclusa alle " + orarioFineSlot
+																			+ ". Stato aggiornato.")
+																	.addThemeVariants(NotificationVariant.LUMO_PRIMARY);
+															prenotazioniService.aggiornaStato(trovata,
+																	com.example.enums.StatoPrenotazione.PASSATA);
+
+															aggiornaBtn.setVisible(false);
+														} else {
+															Notification
+																	.show("Stato aggiornato!", 2500,
+																			Notification.Position.TOP_CENTER)
+																	.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+														}
+													});
+												});
+									});
+
+								});
+								card.add(aggiornaBtn);
 							}
-
 
 						});
 					});
 					Button eliminaBtn = new Button("Elimina");
-				    eliminaBtn.getStyle().set("background-color", "#E74C3C");
-				    eliminaBtn.getStyle().set("color", "white");
-				    eliminaBtn.getStyle().set("border-radius", "6px");
+					eliminaBtn.getStyle().set("background-color", "#E74C3C");
+					eliminaBtn.getStyle().set("color", "white");
+					eliminaBtn.getStyle().set("border-radius", "6px");
 
-				    eliminaBtn.addClickListener(click -> {
-				        ConfirmDialog dialog = new ConfirmDialog(
-				            "Conferma eliminazione",
-				            "Vuoi davvero eliminare questa auto?",
-				            "Elimina",
-				            ev -> {
-				                autoService.eliminaAuto(a).thenRun(() -> {
-				                    ui.access(() -> {
-				                        Notification.show("Auto eliminata").addThemeVariants(NotificationVariant.LUMO_SUCCESS);
-				                        autoLayout.remove(card); 
-				                    });
-				                });
-				            },
-				            "Annulla",
-				            ev -> {}
-				        );
-				        dialog.open();
-				    });
+					eliminaBtn.addClickListener(click -> {
+						ConfirmDialog dialog = new ConfirmDialog("Conferma eliminazione",
+								"Vuoi davvero eliminare questa auto?", "Elimina", ev -> {
+									autoService.eliminaAuto(a).thenRun(() -> {
+										ui.access(() -> {
+											Notification.show("Auto eliminata")
+													.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+											autoLayout.remove(card);
+										});
+									});
+								}, "Annulla", ev -> {
+								});
+						dialog.open();
+					});
 
-				    card.add(eliminaBtn);
-				    autoLayout.add(card);
+					card.add(eliminaBtn);
+					autoLayout.add(card);
 				}
 			}));
 		});
@@ -279,7 +282,7 @@ public class ProfileView extends VerticalLayout implements BeforeEnterObserver {
 		modelloField.setWidthFull();
 		tipoField.setWidthFull();
 		Button aggiungiAutoBtn = createMainButton("Aggiungi Auto");
-		
+
 		autoCard.add(targaField, modelloField, tipoField, aggiungiAutoBtn);
 
 		aggiungiAutoBtn.addClickListener(e -> {
@@ -293,12 +296,12 @@ public class ProfileView extends VerticalLayout implements BeforeEnterObserver {
 			}
 
 			if (!targa.matches("^[A-Z]{2}[0-9]{3}[A-Z]{2}$")) {
-		        Notification.show("Targa non valida! Usa il formato: AA123BB", 4000, Notification.Position.TOP_CENTER)
-		            .addThemeVariants(NotificationVariant.LUMO_ERROR);
-		        return;
-		        }
-			
-			String tipoStringa=tipo.getLabel();
+				Notification.show("Targa non valida! Usa il formato: AA123BB", 4000, Notification.Position.TOP_CENTER)
+						.addThemeVariants(NotificationVariant.LUMO_ERROR);
+				return;
+			}
+
+			String tipoStringa = tipo.getLabel();
 			autoService.aggiungiAuto(targa, modello, tipoStringa, utente)
 					.thenRun(() -> getUI().ifPresent(ui -> ui.access(() -> {
 
@@ -327,20 +330,19 @@ public class ProfileView extends VerticalLayout implements BeforeEnterObserver {
 		modifica.add(emailField, cambiaMailBtn, passwordField, cambiaPwdBtn, confAuto, aggiungiAutoBtn);
 		datiEmodifica.add(createProfileCard(utente), modifica);
 		add(datiEmodifica, autoLayout);
-		datiEmodifica.setFlexGrow(1, modifica); 
+		datiEmodifica.setFlexGrow(1, modifica);
 		add(datiEmodifica, autoLayout);
 
 	}
-	
+
 	private void aggiornaMail(String nuovaEmail) {
 
-		mail.setText("Mail: " + nuovaEmail);		
+		mail.setText("Mail: " + nuovaEmail);
 	}
 
 	private VerticalLayout createProfileCard(Utente utente) {
 		VerticalLayout layout = new VerticalLayout();
-		
-		
+
 		Paragraph nome = new Paragraph(utente.getNome());
 		Paragraph cognome = new Paragraph(utente.getCognome());
 		mail = new Paragraph(utente.getEmail());
@@ -365,44 +367,44 @@ public class ProfileView extends VerticalLayout implements BeforeEnterObserver {
 		title.getStyle().set("margin-bottom", "10px");
 
 		VerticalLayout infoBlock = new VerticalLayout();
-        infoBlock.setPadding(false);
-        infoBlock.setSpacing(false); // Riduciamo lo spazio tra le righe
-        infoBlock.setWidth("100%");
-        
-        // Creiamo righe orizzontali per ogni dato
-        infoBlock.add(createRow("Nome:", nome.getText()));
-        infoBlock.add(createRow("Cognome:", cognome.getText()));
-        
-        // Per la mail, salviamo il riferimento al valore per poterlo aggiornare dopo
-        Span labelMail = new Span("Email:");
-        labelMail.getStyle().set("font-weight", "bold").set("width", "80px");
-        Span valueMail = new Span(mail.getText());
-        valueMail.getStyle().set("color", "#333");
-		HorizontalLayout rowMail = new HorizontalLayout(labelMail, valueMail);
-        rowMail.setAlignItems(Alignment.BASELINE);
-        infoBlock.add(rowMail);
-		
-		Button toggleModificaBtn = new Button("Modifica Dati");
-        toggleModificaBtn.getStyle().set("background-color", "#3498DB"); // Blu
-        toggleModificaBtn.getStyle().set("color", "white");
-        toggleModificaBtn.getStyle().set("margin-top", "15px");
+		infoBlock.setPadding(false);
+		infoBlock.setSpacing(false); // Riduciamo lo spazio tra le righe
+		infoBlock.setWidth("100%");
 
-        toggleModificaBtn.addClickListener(e -> {
-            boolean isVisible = modifica.isVisible();
-            modifica.setVisible(!isVisible); // Inverte la visibilità
-            
-            // Cambia il testo del bottone per feedback visivo
-            if (!isVisible) {
-                toggleModificaBtn.setText("Chiudi Modifica");
-                toggleModificaBtn.getStyle().set("background-color", "#95A5A6"); // Grigio
-            } else {
-                toggleModificaBtn.setText("Modifica Dati");
-                toggleModificaBtn.getStyle().set("background-color", "#3498DB"); // Blu
-            }
-        });
-        
-        layout.add(avatar, title, infoBlock, toggleModificaBtn);
-		profileCard.getStyle().set("flex-shrink", "0"); 
+		// Creiamo righe orizzontali per ogni dato
+		infoBlock.add(createRow("Nome:", nome.getText()));
+		infoBlock.add(createRow("Cognome:", cognome.getText()));
+
+		// Per la mail, salviamo il riferimento al valore per poterlo aggiornare dopo
+		Span labelMail = new Span("Email:");
+		labelMail.getStyle().set("font-weight", "bold").set("width", "80px");
+		Span valueMail = new Span(mail.getText());
+		valueMail.getStyle().set("color", "#333");
+		HorizontalLayout rowMail = new HorizontalLayout(labelMail, valueMail);
+		rowMail.setAlignItems(Alignment.BASELINE);
+		infoBlock.add(rowMail);
+
+		Button toggleModificaBtn = new Button("Modifica Dati");
+		toggleModificaBtn.getStyle().set("background-color", "#3498DB"); // Blu
+		toggleModificaBtn.getStyle().set("color", "white");
+		toggleModificaBtn.getStyle().set("margin-top", "15px");
+
+		toggleModificaBtn.addClickListener(e -> {
+			boolean isVisible = modifica.isVisible();
+			modifica.setVisible(!isVisible); // Inverte la visibilità
+
+			// Cambia il testo del bottone per feedback visivo
+			if (!isVisible) {
+				toggleModificaBtn.setText("Chiudi Modifica");
+				toggleModificaBtn.getStyle().set("background-color", "#95A5A6"); // Grigio
+			} else {
+				toggleModificaBtn.setText("Modifica Dati");
+				toggleModificaBtn.getStyle().set("background-color", "#3498DB"); // Blu
+			}
+		});
+
+		layout.add(avatar, title, infoBlock, toggleModificaBtn);
+		profileCard.getStyle().set("flex-shrink", "0");
 		return layout;
 	}
 
@@ -420,29 +422,29 @@ public class ProfileView extends VerticalLayout implements BeforeEnterObserver {
 
 		HorizontalLayout titolo = new HorizontalLayout();
 		Span userSpan = new Span(user);
-        userSpan.getStyle().set("font-weight", "bold");
-        H3 title = new H3(new Text(saluto), userSpan, new Text("! Ecco la tua pagina di profilo"));
-        title.getStyle().set("color", "#008000");
-        userSpan.getStyle().set("color", "#2E7D32");
-        
+		userSpan.getStyle().set("font-weight", "bold");
+		H3 title = new H3(new Text(saluto), userSpan, new Text("! Ecco la tua pagina di profilo"));
+		title.getStyle().set("color", "#008000");
+		userSpan.getStyle().set("color", "#2E7D32");
+
 		titolo.add(title);
 
 		return titolo;
 	}
 
 	private HorizontalLayout createRow(String labelText, String valueText) {
-        Span label = new Span(labelText);
-        label.getStyle().set("font-weight", "bold");
-        label.getStyle().set("width", "80px"); // Larghezza fissa per allineare i valori verticalmente
+		Span label = new Span(labelText);
+		label.getStyle().set("font-weight", "bold");
+		label.getStyle().set("width", "80px"); // Larghezza fissa per allineare i valori verticalmente
 
-        Span value = new Span(valueText);
-        value.getStyle().set("color", "#333");
+		Span value = new Span(valueText);
+		value.getStyle().set("color", "#333");
 
-        HorizontalLayout row = new HorizontalLayout(label, value);
-        row.setAlignItems(Alignment.BASELINE); // Allinea il testo sulla stessa linea di base
-        row.setSpacing(true);
-        return row;
-    }
+		HorizontalLayout row = new HorizontalLayout(label, value);
+		row.setAlignItems(Alignment.BASELINE); // Allinea il testo sulla stessa linea di base
+		row.setSpacing(true);
+		return row;
+	}
 
 	/**
 	 * Se l'utente prova ad accedere direttamente a questa pagina senza aver

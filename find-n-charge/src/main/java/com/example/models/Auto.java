@@ -4,6 +4,8 @@
  */
 package com.example.models;
 import java.util.Random;
+
+import com.example.enums.TipoAuto;
 public class Auto {
 
 	
@@ -53,20 +55,11 @@ public class Auto {
 	
     public int setCapacitaBatteria(String tipo) {
     	
-    	switch(tipo) {
+    	TipoAuto tipoAuto= TipoAuto.getTipoFromString(tipo);
     	
-    	case "Berlina (65 kWh)": return 65;
+    	if(tipoAuto != null) return tipoAuto.getCapacita();
     	
-    	case "Suv (100 kWh)": return 100;
-    	
-    	case "Utilitaria (40 kWh)": return 40;
-    	
-    	case "Sportiva (75 kWh)": return 75;
-    	
-    	default: return 0;	
-    	
-    		
-    	}
+    	else return 0;
 		
 	}
 
