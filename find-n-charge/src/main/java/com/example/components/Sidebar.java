@@ -13,6 +13,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.example.enums.StatoColonnina;
 import com.example.models.Colonnina;
 import com.example.models.Utente;
 import com.example.service.RecensioniService;
@@ -41,8 +42,8 @@ public class Sidebar extends VerticalLayout {
 	private final RecensioniService recensioniService;
 
 	public Sidebar(RecensioniService recensioniService) {
-		
-		this.recensioniService=recensioniService;
+
+		this.recensioniService = recensioniService;
 
 		setWidth("35%");
 		setHeightFull();
@@ -67,12 +68,12 @@ public class Sidebar extends VerticalLayout {
 		HorizontalLayout rating = new HorizontalLayout(valutazioni, icon);
 		rating.setAlignItems(Alignment.CENTER);
 		rating.setSpacing(false);
-		
+
 		HorizontalLayout headerLayout = new HorizontalLayout(title, rating, closeButton);
-		headerLayout.setWidthFull(); 
-		headerLayout.setAlignItems(Alignment.CENTER); 
+		headerLayout.setWidthFull();
+		headerLayout.setAlignItems(Alignment.CENTER);
 		headerLayout.expand(title, rating);
-		
+
 		details = new VerticalLayout();
 		details.setSpacing(false); // Rimuove spazio extra tra le righe
 		details.setPadding(false); // Rimuove padding
@@ -87,7 +88,7 @@ public class Sidebar extends VerticalLayout {
 		bookingTimeSlot.setEnabled(false);
 		bookingTimeSlot.getStyle().set("width", "100%");
 		bookingTimeSlot.getStyle().set("--lumo-primary-text-color", "var(--lumo-success-text-color)");
-		
+
 		autoSelection = new ComboBox<>("Seleziona l'auto da ricaricare");
 		autoSelection.getStyle().set("width", "100%");
 		autoSelection.getStyle().set("--lumo-primary-text-color", "var(--lumo-success-text-color)");
@@ -95,10 +96,9 @@ public class Sidebar extends VerticalLayout {
 		prenotaButton = new Button("Prenota ora");
 		prenotaButton.getElement().getThemeList().add("success");
 		prenotaButton.getStyle().set("margin-top", "var(--lumo-space-l)");
-		
 
 		add(headerLayout, details, bookingDatePicker, bookingTimeSlot);
-		
+
 		// Se l'utente non è loggato non può selezionare l'auto
 		Utente utente = (Utente) VaadinSession.getCurrent().getAttribute("utente");
 		if (utente != null) {
@@ -106,70 +106,86 @@ public class Sidebar extends VerticalLayout {
 		}
 		add(prenotaButton);
 
-	}	
+	}
 
 	public void setDati(Colonnina colonnina) {
 		UI ui = UI.getCurrent();
 		// Mette i dati della colonnina nella sidebar
 		this.valutazioni.setText("-/5.0");
-        this.title.setText(colonnina.getNome());
-        recensioniService.getValutazColonnina(colonnina).thenAccept(media -> {
-        	if (ui != null) {
-                ui.access(() -> {
-                    String testo = String.format("%.1f/5.0", media);
-                    this.valutazioni.setText(testo);
-                });
-            }
-        });
-  
-		// Pulisci i dettagli vecchi
-        this.details.removeAll();
-        this.details.setAlignItems(Alignment.CENTER);
+		this.title.setText(colonnina.getNome());
+		recensioniService.getValutazColonnina(colonnina).thenAccept(media -> {
+			if (ui != null) {
+				ui.access(() -> {
+					String testo = String.format("%.1f/5.0", media);
+					this.valutazioni.setText(testo);
+				});
+			}
+		});
 
-        //Aggiunge l'immagine (se esiste)
-        if (colonnina.getLinkImmagine() != null && !colonnina.getLinkImmagine().isEmpty()) {
-            Image image = new Image(colonnina.getLinkImmagine(), "IMMAGINE COLONNINA");
-            image.setWidth("250px");
-            image.getStyle().set("margin-top", "10px").set("margin-bottom", "10px");
-            this.details.add(image);
-        }
+		// Pulisci i dettagli vecchi
+		this.details.removeAll();
+		this.details.setAlignItems(Alignment.CENTER);
+
+		// Aggiunge l'immagine (se esiste)
+		if (colonnina.getLinkImmagine() != null && !colonnina.getLinkImmagine().isEmpty()) {
+			Image image = new Image(colonnina.getLinkImmagine(), "IMMAGINE COLONNINA");
+			image.setWidth("250px");
+			image.getStyle().set("margin-top", "10px").set("margin-bottom", "10px");
+			this.details.add(image);
+		}
 
 		this.details.add( // Span serve per poter mandare a capo le righe
 				new Span("Indirizzo: " + colonnina.getIndirizzo() + ", " + colonnina.getComune()),
 				new Span("Stato: " + formattaStato(colonnina.getStato())));
 
+		//Se lo stato è guasto la colonnina non deve essere prenotabile
+		if (colonnina.getStato().equals(StatoColonnina.GUASTA.toString())) {
+			prenotaButton.setVisible(false);
+			bookingDatePicker.setEnabled(false);
+			autoSelection.setEnabled(false);
+
+			Span avvisoGuasto = new Span("⚠️ COLONNINA GUASTA");
+			avvisoGuasto.getStyle().set("color", "var(--lumo-error-text-color)").set("font-weight", "bold")
+					.set("margin-top", "10px");
+			this.details.add(avvisoGuasto);
+
+		} else {
+			prenotaButton.setVisible(true);
+			bookingDatePicker.setEnabled(true);
+			autoSelection.setEnabled(true);
+		}
 		// Pulisce i campi di prenotazione precedenti
 		bookingDatePicker.setValue(null);
 		bookingTimeSlot.setValue(null);
 		bookingTimeSlot.setEnabled(false);
 		autoSelection.setValue(null);
-		
-        setVisible(true);
-        
+
+		setVisible(true);
 	}
-	
+
 	public void setAuto(List<String> autoUtente) {
 		autoSelection.setItems(autoUtente);
 	}
-	
+
 	public void aggiornaOrari(LocalDate date, List<String> orariOccupati) {
 
-		if (!isVisible() || getParent() == null) return;
+		if (!isVisible() || getParent() == null)
+			return;
 		bookingTimeSlot.clear();
-		
-		//Generazione di tutti i time slots
-        List<String> slots = generateTimeSlots(date);
-        
-        //Toglie quelli occupati
-        if (orariOccupati != null && !orariOccupati.isEmpty()) {
-            slots.removeAll(orariOccupati);
-        }
-        
-        // Aggiorna i campi
-        bookingTimeSlot.setItems(slots);
-        bookingTimeSlot.setEnabled(!slots.isEmpty());
-    }
-	
+
+		// Generazione di tutti i time slots
+		List<String> slots = generateTimeSlots(date);
+
+		// Toglie quelli occupati
+		if (orariOccupati != null && !orariOccupati.isEmpty()) {
+			slots.removeAll(orariOccupati);
+		}
+
+		// Aggiorna i campi
+		bookingTimeSlot.setItems(slots);
+		bookingTimeSlot.setEnabled(!slots.isEmpty());
+	}
+
 	/**
 	 * Metodo per generare la lista degli slot orari. Se la data è oggi, parte
 	 * dall'orario attuale arrotondato alla mezz'ora successiva. Se la data è
@@ -185,11 +201,11 @@ public class Sidebar extends VerticalLayout {
 		LocalTime time;
 
 		LocalDate oggi = LocalDate.now(ZoneId.of("Europe/Rome"));
-		
+
 		// Se la data selezionata è oggi, calcola la prossima mezz'ora, altrimenti parte
 		// da mezzanotte
 		if (date.equals(oggi)) {
-		    LocalTime now = LocalTime.now(ZoneId.of("Europe/Rome"));
+			LocalTime now = LocalTime.now(ZoneId.of("Europe/Rome"));
 			if (now.getMinute() < 30) {
 				time = now.withMinute(30).withSecond(0).withNano(0);
 			} else {
@@ -217,39 +233,38 @@ public class Sidebar extends VerticalLayout {
 
 		return slots;
 	}
-	
+
 	public DatePicker getBookingDatePicker() {
-	    return bookingDatePicker;
+		return bookingDatePicker;
 	}
-	
+
 	public LocalDate getDataSelezionata() {
-        return bookingDatePicker.getValue();
-    }
+		return bookingDatePicker.getValue();
+	}
 
-    public String getOrarioSelezionato() {
-        return bookingTimeSlot.getValue();
-    }
+	public String getOrarioSelezionato() {
+		return bookingTimeSlot.getValue();
+	}
 
-    public Button getPrenotaButton() {
-        return prenotaButton;
-    }
+	public Button getPrenotaButton() {
+		return prenotaButton;
+	}
 
 	public String getAutoSelected() {
 		// TODO Auto-generated method stub
 		return autoSelection.getValue();
 	}
-	
-	
+
 	private String formattaStato(String stato) {
-		
-	    if (stato == null || stato.isEmpty()) {
-	        return "N/D";
-	    }
-	    
-	    String testo = stato.replace("_", " ");
-	    
-	    testo = testo.toLowerCase();
-	    
-	    return testo.substring(0, 1).toUpperCase() + testo.substring(1);
+
+		if (stato == null || stato.isEmpty()) {
+			return "N/D";
+		}
+
+		String testo = stato.replace("_", " ");
+
+		testo = testo.toLowerCase();
+
+		return testo.substring(0, 1).toUpperCase() + testo.substring(1);
 	}
 }

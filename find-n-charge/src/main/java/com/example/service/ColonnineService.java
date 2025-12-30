@@ -34,7 +34,6 @@ public class ColonnineService {
 	}
 
 	public CompletableFuture<Void> aggiornaStato(StatoColonnina stato) {
-		
 
 		CompletableFuture<Void> future = colonnineInterface.getColonnineSlot(getSlotCorrenteTimestamp())
 				.thenCompose(lista -> {
@@ -54,7 +53,6 @@ public class ColonnineService {
 	}
 
 	public CompletableFuture<Void> aggiornaStatoCarica(StatoColonnina stato) {
-		
 
 		CompletableFuture<Void> future = colonnineInterface.getColonnineInCarica().thenCompose(lista -> {
 			// lista dei CompletableFuture per aggiornare lo stato
@@ -73,7 +71,6 @@ public class ColonnineService {
 	}
 
 	public CompletableFuture<Void> inizializza(StatoColonnina stato) {
-		
 
 		CompletableFuture<Void> future = colonnineInterface.getAllColonnine().thenCompose(lista -> {
 			// lista dei CompletableFuture per aggiornare lo stato
@@ -96,6 +93,10 @@ public class ColonnineService {
 		return colonnineInterface.cercaColonnine(query);
 	}
 
+	public CompletableFuture<Void> cambiaStatoColonnina(String id, StatoColonnina stato) {
+		return colonnineInterface.cambiaStatoColonnina(id, stato);
+	}
+
 	public CompletableFuture<List<String>> getColonnineInCarica() {
 
 		CompletableFuture<List<String>> future = new CompletableFuture<>();
@@ -111,7 +112,7 @@ public class ColonnineService {
 	}
 
 	public CompletableFuture<Void> salvaColonnina(Colonnina c) {
-		
+
 		CompletableFuture<Void> future = new CompletableFuture<>();
 		colonnineInterface.salvaColonnina(c).thenRun(() -> {
 			future.complete(null);
@@ -125,23 +126,24 @@ public class ColonnineService {
 
 	}
 
-	
 	public CompletableFuture<Integer> contaColonnine() {
-		return colonnineInterface.contaColonnine() ;
+		return colonnineInterface.contaColonnine();
 	}
-	
+
 	public CompletableFuture<Integer> contaColonnineLG(StatoColonnina stato) {
 		return colonnineInterface.contaColonnineLG(stato);
 	}
 
 	/**
 	 * Chiama funzione da database per restituire la lista di tutte le colonnine
+	 * 
 	 * @return Lista di tipo Colonnina
 	 */
 	public CompletableFuture<List<Colonnina>> getAllColonnine() {
 		return colonnineInterface.getAllColonnine();
 	}
-	public CompletableFuture<Colonnina> getColonninaById(String id){
+
+	public CompletableFuture<Colonnina> getColonninaById(String id) {
 		return colonnineInterface.getColonninaById(id);
 	}
 }

@@ -93,10 +93,11 @@ window.initLeafletMap = function (component, stationsJson, mapId) {
 					selectedIcon = greenIcon;
 				} else if (st === 'prenotata') {
 					selectedIcon = yellowIcon;
+				} else if (st === 'guasta') {
+					selectedIcon = greyIcon;  
 				} else {
-					selectedIcon = redIcon;  // Default
+					selectedIcon = redIcon;
 				}
-
 				// Crea i marker
 				var marker = L.marker([station.lat, station.lon], { icon: selectedIcon }).addTo(map); // Per
 				// ogni

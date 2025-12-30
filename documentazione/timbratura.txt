@@ -240,7 +240,22 @@ Tutte le fasi precedenti sono contenute all'interno del file meeting
 
 17/12/2025              Morgera Claudio
                         11.00-12.30+15.30-16.30 Implementazione calcolo della carica tramite tasto "aggiorna ricarica" e maggiore controllo per la targa e la password
+
+18/12/2025 		Mascheretti Davide
+			11.45-12.15 + 14.30-15.30 Aggiunta primi test prova e test su inserimento e controllo dati DataValidator
+
+22/12/2025		Mascheretti Davide
+			15.30-16.15 Test per auto
 			
-			
-			
+23/12/2025		Mascheretti Davide
+			11.00-12.00 Issue 20
+
+24/12/2025		Mascheretti Davide
+			11.30-12.30 Risolta issue 32
+
+28/12/2025		Mascheretti Davide
+			12.00-13.00 ore Risolte issue 29 e 30 + creazione documenti necessari per la consegna 
+
+29/11/2025		Mascheretti Davide
+			15.30-17.10 Implementazione colonnina guasta, blocco prenotazioni e pulsante per admin		
 			

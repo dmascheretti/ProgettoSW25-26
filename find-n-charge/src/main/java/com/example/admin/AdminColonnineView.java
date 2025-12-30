@@ -6,6 +6,7 @@
 package com.example.admin;
 
 import com.example.components.Sidebar;
+import com.example.enums.StatoColonnina;
 import com.example.layout.AdminLayout;
 import com.example.models.Colonnina;
 import com.example.models.Utente;
@@ -13,6 +14,7 @@ import com.example.service.ColonnineService;
 import com.example.service.RecensioniService;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H3;
@@ -34,7 +36,7 @@ import com.vaadin.flow.shared.Registration;
 @Route(value = "gestioneColonnine", layout = AdminLayout.class)
 @PageTitle("Find&Charge | Gestione colonnine")
 
-public class AdminColonnineView extends HorizontalLayout implements BeforeEnterObserver{
+public class AdminColonnineView extends HorizontalLayout implements BeforeEnterObserver {
 	private String tema = "#008000";
 	private Grid<Colonnina> colonGrid = new Grid<>(Colonnina.class);
 	private final ColonnineService colonnineService;
@@ -51,7 +53,7 @@ public class AdminColonnineView extends HorizontalLayout implements BeforeEnterO
 	// Classe per l'elenco delle colonnine (indipendente dalla mappa)
 	public AdminColonnineView(ColonnineService colonnineService, RecensioniService recensioniService) {
 		this.colonnineService = colonnineService;
-		this.recensioniService=recensioniService;
+		this.recensioniService = recensioniService;
 		setSpacing(true);
 		setPadding(true);
 
@@ -99,6 +101,34 @@ public class AdminColonnineView extends HorizontalLayout implements BeforeEnterO
 		colonGrid.addColumn(Colonnina::getIndirizzo).setHeader("Indirizzo").setSortable(true);
 
 		colonGrid.addColumn(Colonnina::getComune).setHeader("Comune").setSortable(true);
+
+		colonGrid.addComponentColumn(colonnina -> {
+			Button guasta = new Button("Segnala Guasta");
+
+			if (colonnina.getStato().equals(StatoColonnina.GUASTA.toString())) {
+				guasta.setText("Ripristina");
+				guasta.addClickListener(e -> {
+					colonnineService.cambiaStatoColonnina(colonnina.getId(), StatoColonnina.LIBERA).thenRun(() -> {
+						getUI().ifPresent(ui -> ui.access(() -> {
+							Notification.show("Colonnina ripristinata!");
+							aggiornaGridConFiltro("");
+						}));
+					});
+				});
+			} else {
+
+				guasta.addThemeVariants(ButtonVariant.LUMO_ERROR);
+				guasta.addClickListener(e -> {
+					colonnineService.cambiaStatoColonnina(colonnina.getId(), StatoColonnina.GUASTA).thenRun(() -> {
+						getUI().ifPresent(ui -> ui.access(() -> {
+							Notification.show("Colonnina segnalata!");
+							aggiornaGridConFiltro(""); 
+						}));
+					});
+				});
+			}
+			return guasta;
+		}).setHeader("Gestione Guasti");
 
 		// Caricamento iniziale senza filtri
 		aggiornaGridConFiltro("");
@@ -149,8 +179,8 @@ public class AdminColonnineView extends HorizontalLayout implements BeforeEnterO
 		HorizontalLayout idLinkLayout = new HorizontalLayout(idField, linkField);
 		coordinateLayout.setAlignItems(FlexComponent.Alignment.CENTER);
 
-		dialogLayout.add(new H3("Nuova colonnina"), idLinkLayout, potenzaField, infoLayout, coordinateLayout, indirizzoLayout,
-				new HorizontalLayout(salvaNuovaButton, annullaNuovaButton));
+		dialogLayout.add(new H3("Nuova colonnina"), idLinkLayout, potenzaField, infoLayout, coordinateLayout,
+				indirizzoLayout, new HorizontalLayout(salvaNuovaButton, annullaNuovaButton));
 
 		dialog.add(dialogLayout);
 		return dialog;
@@ -203,7 +233,7 @@ public class AdminColonnineView extends HorizontalLayout implements BeforeEnterO
 			}));
 		});
 	}
-	
+
 	/**
 	 * Se l'utente prova ad accedere direttamente a questa pagina senza aver
 	 * effettuato l'accesso, lo si reindirizza alla pagina di login mostrando una
@@ -227,8 +257,8 @@ public class AdminColonnineView extends HorizontalLayout implements BeforeEnterO
 					registrationWrapper[0].remove();
 				}
 			});
-		} else if(utente.getRuolo().equals("Utente")) {
+		} else if (utente.getRuolo().equals("Utente")) {
 			event.forwardTo("");
-		} 
+		}
 	}
 }
