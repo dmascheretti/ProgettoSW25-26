@@ -146,4 +146,8 @@ public class ColonnineService {
 	public CompletableFuture<Colonnina> getColonninaById(String id) {
 		return colonnineInterface.getColonninaById(id);
 	}
+
+	public CompletableFuture<Void> eliminaColonnina(String id) {
+		return colonnineInterface.eliminaColonnina(id);
+	}
 }

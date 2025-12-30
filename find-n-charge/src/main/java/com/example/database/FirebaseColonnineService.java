@@ -315,6 +315,19 @@ public class FirebaseColonnineService implements ColonnineInterface{
 	    return future;
 	}
 	
+	public CompletableFuture<Void> eliminaColonnina(String id) {
+	    CompletableFuture<Void> future = new CompletableFuture<>();
+	    
+	    colonnine.child(id).removeValue((databaseError, ref) -> {
+	        if (databaseError != null) {
+	            future.completeExceptionally(databaseError.toException());
+	        } else {
+	            future.complete(null);
+	        }
+	    });
+	    return future;
+	}
+	
 }
 
 
