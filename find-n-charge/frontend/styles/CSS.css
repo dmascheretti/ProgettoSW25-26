@@ -96,3 +96,65 @@ vaadin-date-picker-overlay {
 .login-input-width {
     width: 300px;
 }
+
+/* STATIONVIEW E RESERVATIONVIEW */
+/* Titoli e Testi colorati */
+.text-green-primary {
+    color: #008000;
+}
+
+.text-green-dark {
+    color: #006000;
+}
+
+.search-field {
+    color: #008000;
+    --lumo-primary-text-color: var(--lumo-success-text-color);
+    width: 300px;
+}
+
+/* Stile per i bottoni dentro le griglie che sembrano link */
+.grid-btn-link {
+    background: none;
+    border: none;
+    text-decoration: underline;
+    color: #008000;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+}
+
+/* Variante rossa per il tasto cancella */
+.grid-btn-link.red {
+    color: red;
+}
+
+/* Messaggi di stato piccoli (es. "Disponibile 5 min prima") */
+.qrcode-msg {
+    font-size: 12px;
+}
+
+.qrcode-msg.wait {
+    color: gray;
+}
+
+.qrcode-msg.error {
+    color: red;
+}
+
+.dialog-close-btn {
+    align-self: flex-end;
+    margin-left: auto;
+    --lumo-primary-text-color: var(--lumo-success-text-color);
+}
+
+.star-icon {
+    cursor: pointer;
+}
+
+.star-icon.disabled {
+    cursor: default;
+    pointer-events: none;
+}
+
+

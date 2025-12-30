@@ -20,6 +20,7 @@ import com.example.service.RecensioniService;
 import com.example.util.DataValidator;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.notification.Notification;
@@ -34,8 +35,8 @@ import com.vaadin.flow.server.VaadinSession;
 @PageTitle("Find&Charge - Colonnine")
 @Route(value = "colonnine", layout = MainLayout.class)
 
+@CssImport("./styles/CSS.css")
 public class StationsView extends HorizontalLayout {
-	private String tema = "#008000";
 	private Grid<Colonnina> colonGrid = new Grid<>(Colonnina.class);
 
 	private PrenotazioniService prenotazioniService;
@@ -56,18 +57,16 @@ public class StationsView extends HorizontalLayout {
 		setSpacing(true);
 		setPadding(true);
 		setSizeFull();
-		getStyle().set("overflow", "hidden"); // Blocca lo scroll della pagina intera (scrolla solo la sidebar)
+		addClassName("map-view");	// Per bloccare lo scroll usiamo lo stile di MapView
 
 		// Titolo
 		H3 titolo = new H3("Queste sono le colonnine più vicine a te");
-		titolo.getStyle().set("color", tema);
+		titolo.addClassName("text-green-primary");
+		
 		// Barra di ricerca per nome o indirizzo delle colonnine
 		TextField searchField = new TextField("Cerca");
-		searchField.getElement().getThemeList().add("success");
+		searchField.addClassName("custom-search-field");
 		searchField.setPlaceholder("Nome o indirizzo...");
-		searchField.setWidth("300px");
-		searchField.getStyle().set("color", tema);
-		searchField.getStyle().set("--lumo-primary-text-color", "var(--lumo-success-text-color)"); // Tema verde
 		// EVENTO DI RICERCA → chiama cercaColonnine()
 		searchField.setValueChangeMode(ValueChangeMode.EAGER);
 		searchField.addValueChangeListener(e -> {
@@ -84,8 +83,7 @@ public class StationsView extends HorizontalLayout {
 		colonGrid.addComponentColumn(col -> {
 			Button btn = new Button(col.getNome());
 			btn.addClickListener(e -> showSidebar(col));
-			btn.getStyle().set("color", tema).set("text-decoration", "underline").set("background", "none")
-					.set("border", "none");
+			btn.addClassName("grid-btn-link");
 			return btn;
 		}).setHeader("Nome").setComparator(Colonnina::getNome).setSortable(true);
 
@@ -104,8 +102,8 @@ public class StationsView extends HorizontalLayout {
 		// Crea la sidebar
 		stationSidebar = new Sidebar(recensioniService);
 		stationSidebar.setHeightFull(); // Occupa tutta l'altezza disponibile
-		stationSidebar.getStyle().set("overflow-y", "auto"); // Abilita lo scroll solo per la sidebar
-
+		stationSidebar.addClassName("sidebar-scrollable");
+		
 		configuraGestioneOrari(); // Per gestire gli slot orari
 		reservationLogic(); // Per gestire le prenotazioni
 		configuraAutoUtente(); // Per gestire le auto dell'utente

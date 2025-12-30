@@ -39,6 +39,7 @@ import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.example.enums.StatoPrenotazione;
 import com.example.layout.MainLayout;
@@ -56,6 +57,7 @@ import java.util.List;
 @Route(value = "prenotazioni", layout = MainLayout.class)
 @PageTitle("Find&Charge - Prenotazioni")
 
+@CssImport("./styles/CSS.css")
 public class ReservationView extends VerticalLayout implements BeforeEnterObserver {
 
 	private Grid<Prenotazione> newPrenoGrid = new Grid<>(Prenotazione.class, false);
@@ -85,8 +87,8 @@ public class ReservationView extends VerticalLayout implements BeforeEnterObserv
 		setSpacing(true);
 		setPadding(true);
 		H3 titolo = new H3("Ciao " + utente.getUsername().toUpperCase() + "! Ecco le tue prenotazioni...");
-		titolo.getStyle().set("color", "#008000");
-
+		titolo.addClassName("text-green-primary");
+		
 		// Configurazione griglia (visualizzazione dei campi di ogni prenotazione)
 
 		// Prenotazioni attive o future
@@ -147,14 +149,16 @@ public class ReservationView extends VerticalLayout implements BeforeEnterObserv
 				// Se è troppo presto il bottone non compare
 				if (adesso.isBefore(orarioMinimo)) {
 					Span text = new Span("Disponibile 5 min prima.");
-					text.getStyle().set("font-size", "12px").set("color", "gray");
+					text.addClassName("qrcode-msg");
+					text.addClassName("wait");
 					return text;
 				}
 				// se la colonnina è occupata da un altro utente, il bottone non compare
 				if (this.idColonnineOccupate.contains(p.getIDColonnina())
 						&& !p.getStato().equals(StatoPrenotazione.IN_CARICA.toString())) {
 					Span text = new Span("Colonnina occupata.");
-					text.getStyle().set("font-size", "12px").set("color", "red");
+					text.addClassName("qrcode-msg");
+					text.addClassName("error");
 					return text;
 				}
 
@@ -164,8 +168,7 @@ public class ReservationView extends VerticalLayout implements BeforeEnterObserv
 			}
 
 			Button btn = new Button("Visualizza QR");
-			btn.getStyle().set("color", "green").set("text-decoration", "underline").set("background", "none")
-					.set("border", "none");
+			btn.addClassName("grid-btn-link");
 
 			btn.addClickListener(event -> {
 				String id = p.getId();
@@ -213,9 +216,7 @@ public class ReservationView extends VerticalLayout implements BeforeEnterObserv
 				// Pulsante di chiusura dialog
 				Button closeButton = new Button(VaadinIcon.CLOSE.create(), e -> dialog.close());
 				closeButton.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
-				closeButton.getStyle().set("align-self", "flex-end");
-				closeButton.getElement().getThemeList().add("success");
-				closeButton.getStyle().set("margin-left", "auto"); // Spinge il pulsante tutto a destra
+				closeButton.addClassName("dialog-close-btn");
 
 				dialog.getHeader().add(header, closeButton);
 				dialog.open();
@@ -233,16 +234,16 @@ public class ReservationView extends VerticalLayout implements BeforeEnterObserv
 			} else {
 				Button btn = new Button("Cancella");
 				btn.addClickListener(e -> prenotazioniService.cancellaPrenotazione(p));
-				btn.getStyle().set("color", "red").set("text-decoration", "underline").set("background", "none")
-						.set("border", "none");
+				btn.addClassName("grid-btn-link");
+				btn.addClassName("danger");
 				return btn;
 			}
 		});
 
 		H4 newP = new H4("Prenotazioni Attive o Future");
-		newP.getStyle().set("color", "#006000");
+		newP.addClassName("text-green-dark");
 		H4 oldP = new H4("Prenotazioni Passate");
-		oldP.getStyle().set("color", "#006000");
+		oldP.addClassName("text-green-dark");
 
 		add(titolo, newP, newPrenoGrid, oldP, oldPrenoGrid);
 
@@ -358,8 +359,8 @@ public class ReservationView extends VerticalLayout implements BeforeEnterObserv
 
 			// Stile: Colore oro e cursore "mano" al passaggio del mouse
 			star.setColor(votoAttuale >= i ? "#FFD700" : "gray");
-			star.getStyle().set("cursor", "pointer");
-
+			star.addClassName("star-icon");
+			
 			// Gestore del click
 			star.addClickListener(event -> {
 
@@ -430,9 +431,8 @@ public class ReservationView extends VerticalLayout implements BeforeEnterObserv
 	 */
 	private void disabilitaStelle(List<Icon> icons) {
 		for (Icon s : icons) {
-			s.getStyle().set("cursor", "default");
-
-			s.getStyle().set("pointer-events", "none");
+			s.removeClassName("star-icon"); // Rimuove il puntatore
+			s.addClassName("disabled");
 		}
 	}
 
