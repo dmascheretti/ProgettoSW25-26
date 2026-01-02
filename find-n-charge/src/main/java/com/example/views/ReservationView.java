@@ -66,6 +66,7 @@ public class ReservationView extends VerticalLayout implements BeforeEnterObserv
 	private final PrenotazioniService prenotazioniService;
 	private final ColonnineService colonnineService;
 	private final RecensioniService recensioniService;
+	private final Utente utenteCorrente;
 
 	/**
 	 * Costruttore che genera la griglia contenente tutte le prenotazioni
@@ -81,14 +82,16 @@ public class ReservationView extends VerticalLayout implements BeforeEnterObserv
 		this.recensioniService = recensioniService;
 		Utente utente = (Utente) VaadinSession.getCurrent().getAttribute("utente");
 		if (utente == null) {
+			this.utenteCorrente = null;
 			return;
 		}
+		this.utenteCorrente=utente;
 
 		setSpacing(true);
 		setPadding(true);
 		H3 titolo = new H3("Ciao " + utente.getUsername().toUpperCase() + "! Ecco le tue prenotazioni...");
 		titolo.addClassName("text-green-primary");
-		
+
 		// Configurazione griglia (visualizzazione dei campi di ogni prenotazione)
 
 		// Prenotazioni attive o future
@@ -233,9 +236,28 @@ public class ReservationView extends VerticalLayout implements BeforeEnterObserv
 				return null;
 			} else {
 				Button btn = new Button("Cancella");
-				btn.addClickListener(e -> prenotazioniService.cancellaPrenotazione(p));
 				btn.addClassName("grid-btn-link");
 				btn.addClassName("danger");
+				btn.addClickListener(e -> {
+
+					prenotazioniService.cancellaPrenotazione(p).thenRun(() -> {
+
+						getUI().ifPresent(ui -> ui.access(() -> {
+							Notification.show("Prenotazione cancellata con successo!", 3000, Notification.Position.TOP_CENTER)
+									.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+							
+							aggiornaPrenotazioni();
+
+						}));
+					}).exceptionally(ex -> {
+
+						getUI().ifPresent(ui -> ui.access(() -> {
+							Notification.show("Errore: " + ex.getMessage())
+									.addThemeVariants(NotificationVariant.LUMO_ERROR);
+						}));
+						return null;
+					});
+				});
 				return btn;
 			}
 		});
@@ -249,42 +271,17 @@ public class ReservationView extends VerticalLayout implements BeforeEnterObserv
 
 		colonnineService.getColonnineInCarica().thenAccept(occupate -> {
 
-			// Salvo la lista nella variabile della classe
-			if (occupate != null) {
-				this.idColonnineOccupate = occupate;
-			} else {
-				this.idColonnineOccupate = new ArrayList<>();
-			}
-			/*
-			 * Chiamo funzione da firebaseService che restituisce la lista delle
-			 * prenotazioni filtrate per l'utente, la lista ottenuta va in lista L'utilizzo
-			 * di thenAccept permette di lavorare in maniera asincrona ed è necessaria per
-			 * utilizzare il CompletableFuture in getAllReservation
-			 */
-			prenotazioniService.getUtenteReservation(utente.getUsername()).thenAccept(lista -> {
-				getUI().ifPresent(ui -> ui.access(() -> {
+		    if (occupate != null) {
+		        this.idColonnineOccupate = occupate;
+		    } else {
+		        this.idColonnineOccupate = new ArrayList<>();
+		    }
 
-					// aggiungo la lista alla griglia
-
-					List<Prenotazione> filtrata = lista.stream()
-							.filter(p -> !(calcolaStato(p) == StatoPrenotazione.PASSATA)).toList();
-					newPrenoGrid.setItems(filtrata);
-
-					List<Prenotazione> rimanenti = lista.stream()
-							.filter(p -> calcolaStato(p) == StatoPrenotazione.PASSATA).toList();
-					oldPrenoGrid.setItems(rimanenti);
-
-				}));
-
-				// gestione errori
-			}).exceptionally(ex -> {
-				ex.printStackTrace();
-				return null;
-			});
+		    aggiornaPrenotazioni();
 
 		}).exceptionally(ex -> {
-			ex.printStackTrace(); // Errore nel caricamento colonnine occupate
-			return null;
+		    ex.printStackTrace(); 
+		    return null;
 		});
 
 	}
@@ -360,7 +357,7 @@ public class ReservationView extends VerticalLayout implements BeforeEnterObserv
 			// Stile: Colore oro e cursore "mano" al passaggio del mouse
 			star.setColor(votoAttuale >= i ? "#FFD700" : "gray");
 			star.addClassName("star-icon");
-			
+
 			// Gestore del click
 			star.addClickListener(event -> {
 
@@ -434,6 +431,33 @@ public class ReservationView extends VerticalLayout implements BeforeEnterObserv
 			s.removeClassName("star-icon"); // Rimuove il puntatore
 			s.addClassName("disabled");
 		}
+	}
+	
+	
+	private void aggiornaPrenotazioni() {
+	    if (this.utenteCorrente == null) return;
+
+	    /*
+		 * Chiamo funzione da firebaseService che restituisce la lista delle
+		 * prenotazioni filtrate per l'utente, la lista ottenuta va in lista L'utilizzo
+		 * di thenAccept permette di lavorare in maniera asincrona ed è necessaria per
+		 * utilizzare il CompletableFuture in getAllReservation
+		 */
+	    
+	    prenotazioniService.getUtenteReservation(this.utenteCorrente.getUsername()).thenAccept(lista -> {
+	        getUI().ifPresent(ui -> ui.access(() -> {
+	            List<Prenotazione> future = lista.stream()
+	                    .filter(p -> !(calcolaStato(p) == StatoPrenotazione.PASSATA)).toList();
+	            newPrenoGrid.setItems(future);
+
+	            List<Prenotazione> passate = lista.stream()
+	                    .filter(p -> calcolaStato(p) == StatoPrenotazione.PASSATA).toList();
+	            oldPrenoGrid.setItems(passate);
+	        }));
+	    }).exceptionally(ex -> {
+	        ex.printStackTrace();
+	        return null;
+	    });
 	}
 
 }
