@@ -23,14 +23,16 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 @Service
-public class FirebaseColonnineService implements ColonnineInterface{
+public class FirebaseColonnineService implements ColonnineInterface {
 
 	private final DatabaseReference colonnine;
 	private final DatabaseReference prenotazioni;
+	private FirebasePrenotazioniService firebasePrenotazioniService;
 
-	public FirebaseColonnineService(FirebaseDatabase db) {
+	public FirebaseColonnineService(FirebaseDatabase db, FirebasePrenotazioniService firebasePrenotazioniService) {
 		this.colonnine = db.getReference("colonnine");
 		this.prenotazioni = db.getReference("prenotazioni");
+		this.firebasePrenotazioniService = firebasePrenotazioniService;
 
 	}
 
@@ -164,7 +166,7 @@ public class FirebaseColonnineService implements ColonnineInterface{
 	 */
 
 	public CompletableFuture<Integer> contaColonnineLG(StatoColonnina stato) {
-		
+
 		CompletableFuture<Integer> future = new CompletableFuture<>();
 
 		Query colonnineCount = colonnine.orderByChild("stato").equalTo(stato.toString());
@@ -262,7 +264,8 @@ public class FirebaseColonnineService implements ColonnineInterface{
 							prenotazioni.child(p.getIDColonnina() + " " + p.getData() + " " + p.getInizio())
 									.child("stato").setValue(StatoPrenotazione.PASSATA, null);
 
-						} else if (p != null && !lista.contains(p.getIDColonnina()) && p.getStato().equals(StatoPrenotazione.IN_CARICA.toString())
+						} else if (p != null && !lista.contains(p.getIDColonnina())
+								&& p.getStato().equals(StatoPrenotazione.IN_CARICA.toString())
 								&& todayStr.equals(p.getData())) {
 
 							lista.add(p.getIDColonnina());
@@ -283,52 +286,120 @@ public class FirebaseColonnineService implements ColonnineInterface{
 		});
 		return future;
 	}
-	
+
 	/**
 	 * Permette di trovare una colonnina tramite il suo id
+	 * 
 	 * @param id
 	 * @return Ritorna la colonnina
 	 */
 
 	public CompletableFuture<Colonnina> getColonninaById(String id) {
-	    CompletableFuture<Colonnina> future = new CompletableFuture<>();
-	    colonnine.child(id).addListenerForSingleValueEvent(new ValueEventListener() {
-	        @Override
-	        public void onDataChange(DataSnapshot snapshot) {
-	            if (snapshot.exists()) {
-	                Colonnina c = snapshot.getValue(Colonnina.class);
-	                if (c != null) {
-	                    c.setId(snapshot.getKey());
-	                    future.complete(c);
-	                } else {
-	                    future.complete(null);
-	                }
-	            } else {
-	                future.complete(null);
-	            }
-	        }
-	        @Override
-	        public void onCancelled(DatabaseError error) {
-	            future.completeExceptionally(error.toException());
-	        }
-	    });
-	    return future;
+		CompletableFuture<Colonnina> future = new CompletableFuture<>();
+		colonnine.child(id).addListenerForSingleValueEvent(new ValueEventListener() {
+			@Override
+			public void onDataChange(DataSnapshot snapshot) {
+				if (snapshot.exists()) {
+					Colonnina c = snapshot.getValue(Colonnina.class);
+					if (c != null) {
+						c.setId(snapshot.getKey());
+						future.complete(c);
+					} else {
+						future.complete(null);
+					}
+				} else {
+					future.complete(null);
+				}
+			}
+
+			@Override
+			public void onCancelled(DatabaseError error) {
+				future.completeExceptionally(error.toException());
+			}
+		});
+		return future;
 	}
-	
+
+	/**
+	 * Elimina colonnina e tutte le prenotazioni ad essa legata
+	 * @param id id della colonnina
+	 */
 	public CompletableFuture<Void> eliminaColonnina(String id) {
-	    CompletableFuture<Void> future = new CompletableFuture<>();
-	    
-	    colonnine.child(id).removeValue((databaseError, ref) -> {
-	        if (databaseError != null) {
-	            future.completeExceptionally(databaseError.toException());
-	        } else {
-	            future.complete(null);
-	        }
-	    });
-	    return future;
+		CompletableFuture<Void> future = new CompletableFuture<>();
+
+		colonnine.child(id).setValue(null, (databaseError, ref) -> {
+
+			if (databaseError != null) {
+				future.completeExceptionally(new RuntimeException(databaseError.getMessage()));
+				return;
+			}
+
+			// ottengo tutte le prenotazioni per quella colonnina
+			getColonnineReservation(id).thenAccept(lista -> {
+
+				List<CompletableFuture<Void>> prenotazioniUtente = new ArrayList<>();
+				// per ogni prenotazione presente in lista
+				for (Prenotazione p : lista) {
+
+					// cancella la prenotazione e aggiungi la funzione alla lista
+					CompletableFuture<Void> pren = firebasePrenotazioniService.cancellaPrenotazione(p).thenRun(() -> {
+					});
+					prenotazioniUtente.add(pren);
+				}
+
+				// future termina solo quando sono tutte le funzioni di cancellazione sono
+				// state completate
+				CompletableFuture.allOf(prenotazioniUtente.toArray(new CompletableFuture[0]))
+						.thenRun(() -> future.complete(null)).exceptionally(ex -> {
+							future.completeExceptionally(ex);
+							return null;
+						});
+
+			}).exceptionally(ex -> {
+				future.completeExceptionally(ex);
+				return null;
+			});
+		});
+
+		return future;
 	}
-	
+
+	/**
+	 * Restituisce la lista delle prenotazioni per la colonnina selezionata 
+	 * @param id
+	 * @return
+	 */
+	public CompletableFuture<List<Prenotazione>> getColonnineReservation(String id) {
+		CompletableFuture<List<Prenotazione>> future = new CompletableFuture<>();
+
+		prenotazioni.orderByChild("idcolonnina").equalTo(id).addListenerForSingleValueEvent(new ValueEventListener() {
+			@Override
+			public void onDataChange(DataSnapshot dataSnapshot) {
+				// creo lista di prenotazioni
+				List<Prenotazione> prenotazioni = new ArrayList<>();
+
+				for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+					Prenotazione p = snapshot.getValue(Prenotazione.class);
+					prenotazioni.add(p);
+				}
+
+				// finito il for salvo nel future la lista
+				future.complete(prenotazioni);
+
+			}
+
+			@Override
+			public void onCancelled(DatabaseError databaseError) {
+				// TODO Auto-generated method stub
+				System.err.println("Errore nel caricamento colonnine: " + databaseError.getMessage());
+				future.completeExceptionally(databaseError.toException());
+
+			}
+
+		});
+
+		// ritorno la lista filtrata delle prenotazioni dell'utente
+		return future;
+	}
+
 }
-
-
-
