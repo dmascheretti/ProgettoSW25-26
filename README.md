@@ -25,6 +25,13 @@ Il progetto segue un'architettura divisa a Layer per garantire il disaccoppiamen
 * Business Layer (Service): Logica applicativa e validazione.
 * Data Access Layer (Interface + FirebaseService): Gestione dati.
 
+* ### Pattern Utilizzati
+
+Il progetto sfrutta Design Pattern quali:
+
+* **Singleton :**  utilizzo di @service e @repository garantisce la creazione di una sola istanza di quella classe
+* **Adapter :**  utilizzo di interfacce permette di cambiare database in qualunque momento
+* **Observer :**  utilizzo di addClickListener per frontend e ValueEventListener per backend
 
 
  ### Funzionalità principali
@@ -66,6 +73,13 @@ Per l'Admin
 - **Analytics**
   - ApexCharts
 
+### Qualità del codice e testing
+* **Separazione delle responsabilità** : divisone definita dei compiti di ogni classe
+* **Gestione della concorrenza** : gestione asincrona di accesso sicura
+* **Information Hiding**
+
+* **Test manuale in seguito ad ogni moidifca effettuata** 
+* **Test automatici con JUnit** : test effettuati in apposita cartella
 
 ### Istruzioni per installazione e utilizzo
 
@@ -82,13 +96,7 @@ Per l'Admin
     Run As -> Java Application -> Application.java  
 3.  **Attendi l'avvio:**
     L'applicazione si avvierà in maniera automatica sul browser predefinito su una porta libera del tuo PC.
-
-
-### Qualità del codice e testing
-Da inserire
-<br>
-<br>
-
+    
 ### Team di sviluppo
 
 Progetto realizzato per il corso di **Ingegneria del Software**, Università degli Studi di Bergamo (A.A. 2025/2026).
