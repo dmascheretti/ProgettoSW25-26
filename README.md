@@ -25,13 +25,13 @@ Il progetto segue un'architettura divisa a Layer per garantire il disaccoppiamen
 * Business Layer (Service): Logica applicativa e validazione.
 * Data Access Layer (Interface + FirebaseService): Gestione dati.
 
-* ### Pattern Utilizzati
+ ### Pattern Utilizzati
 
 Il progetto sfrutta Design Pattern quali:
 
-* **Singleton :**  utilizzo di @service e @repository garantisce la creazione di una sola istanza di quella classe
-* **Adapter :**  utilizzo di interfacce permette di cambiare database in qualunque momento
-* **Observer :**  utilizzo di addClickListener per frontend e ValueEventListener per backend
+* **Singleton:**  utilizzo di @Service e @Repository garantisce la creazione di una sola istanza di quella classe
+* **Adapter:**  utilizzo di interfacce permette di cambiare database in qualunque momento
+* **Observer:**  utilizzo di addClickListener per frontend e ValueEventListener per backend
 
 
  ### Funzionalità principali
@@ -74,12 +74,12 @@ Per l'Admin
   - ApexCharts
 
 ### Qualità del codice e testing
-* **Separazione delle responsabilità** : divisone definita dei compiti di ogni classe
-* **Gestione della concorrenza** : gestione asincrona di accesso sicura
+* **Separazione delle responsabilità**: divisione definita dei compiti di ogni classe
+* **Gestione della concorrenza**: gestione asincrona di accesso sicura
 * **Information Hiding**
-
-* **Test manuale in seguito ad ogni moidifca effettuata** 
-* **Test automatici con JUnit** : test effettuati in apposita cartella
+<br><br>
+* **Test manuale in seguito ad ogni modifica effettuata** 
+* **Test automatici con JUnit**: test effettuati in apposita cartella
 
 ### Istruzioni per installazione e utilizzo
 
