@@ -5,10 +5,11 @@
  */
 package com.example.components;
 
+import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-
+@CssImport("./styles/CSS.css")
 public class KpiCard extends VerticalLayout {
 
 	private H2 numberDisplay = new H2();
@@ -25,24 +26,7 @@ public class KpiCard extends VerticalLayout {
 		// Imposta i valori
 		titleDisplay.setText(title);
 		numberDisplay.setText(number);
-
-		numberDisplay.getStyle().set("margin-top", "0");
-		numberDisplay.getStyle().set("margin-bottom", "0");
-
-		titleDisplay.getStyle().set("font-size", "var(--lumo-font-size-s)");
-		titleDisplay.getStyle().set("color", "var(--lumo-secondary-text-color)");
-
-		setAlignItems(Alignment.CENTER); // Centra il contenuto
-		setPadding(true);
-		setSpacing(false);
-		getStyle().set("border", "1px solid #e0e0e0");
-		getStyle().set("border-radius", "12px");
-		getStyle().set("box-shadow", "0 2px 8px rgba(0,0,0,0.10)");
-		getStyle().set("background-color", "white");
-		
-		// Imposta una larghezza minima per un layout omogeneo
-		setMinWidth("180px");
-
+		addClassName("kpi-card");
 		
 		add(numberDisplay, titleDisplay);
 	}

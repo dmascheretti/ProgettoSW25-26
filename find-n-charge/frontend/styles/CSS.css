@@ -158,3 +158,25 @@ vaadin-date-picker-overlay {
 }
 
 
+/* KPICARD */
+.kpi-card {
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+    background-color: white;
+    min-width: 180px;
+    align-items: center;
+    padding: var(--lumo-space-m);
+    gap: 0; 
+}
+
+.kpi-card h2 {
+    margin: 0;
+}
+
+.kpi-card span {
+    font-size: var(--lumo-font-size-s);
+    color: var(--lumo-secondary-text-color);
+}
+
+
