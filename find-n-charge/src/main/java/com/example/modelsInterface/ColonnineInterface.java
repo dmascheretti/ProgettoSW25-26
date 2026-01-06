@@ -25,6 +25,8 @@ public interface ColonnineInterface {
 	public CompletableFuture<List<String>> getColonnineSlot(String ora);
 	
 	public CompletableFuture<Colonnina> getColonninaById(String id);
+
+	public CompletableFuture<Void> eliminaColonnina(String id);
 	
 	
 	
