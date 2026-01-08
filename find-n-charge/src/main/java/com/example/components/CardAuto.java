@@ -4,10 +4,12 @@
  * @author Maistrello Tommaso
  */
 package com.example.components;
+import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 
+@CssImport("./styles/CSS.css")
 public class CardAuto extends VerticalLayout {
 
 	private H3 modelloAuto = new H3();
@@ -28,18 +30,10 @@ public class CardAuto extends VerticalLayout {
 		targaAuto.setText("Targa: " + targa);
 		updateStato(statoCarica);
 		
-		
+		addClassName("card");
 		
 		modelloAuto.getStyle().set("margin-bottom", "0");
 
-		setAlignItems(Alignment.CENTER); // Centra il contenuto
-		setPadding(true);
-		setSpacing(false);
-		getStyle().set("text-align", "center");
-		getStyle().set("border", "1px solid #e0e0e0");
-		getStyle().set("border-radius", "12px");
-		getStyle().set("box-shadow", "0 2px 8px rgba(0,0,0,0.10)");
-		getStyle().set("background-color", "white");
 		
 		//setMinWidth("150px");
 		
@@ -84,13 +78,13 @@ public class CardAuto extends VerticalLayout {
 		this.caricaAuto = (double) percentualeArrotondata;
 		
 	if (nuovoStato <= 30) {
-		carica.getStyle().set("color", "#FF3B30").set("font-weight", "bold");
+		carica.setClassName("charge-status charge-low");
 		carica.setText("Carica residua: " + percentualeArrotondata + "%  ⚠ Mettere in carica");
 	} else if (nuovoStato <= 55) {
-		carica.getStyle().set("color", "#F7DC6F").set("font-weight", "bold");
+		carica.setClassName("charge-status charge-medium");
 		carica.setText("Carica residua: " + percentualeArrotondata + "%");
 	} else {
-		carica.getStyle().set("color", "#27AE60").set("font-weight", "bold");
+		carica.setClassName("charge-status charge-high");
 		carica.setText("Carica residua: " + percentualeArrotondata + "%");
 	}
 	}

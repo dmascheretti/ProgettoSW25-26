@@ -158,14 +158,15 @@ vaadin-date-picker-overlay {
 }
 
 
-/* KPICARD */
-.kpi-card {
+/* KPICARD e CARDAUTO */
+.card {
     border: 1px solid #e0e0e0;
     border-radius: 12px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.10);
     background-color: white;
     min-width: 180px;
     align-items: center;
+    text-align: center;
     padding: var(--lumo-space-m);
     gap: 0; 
 }
@@ -180,3 +181,58 @@ vaadin-date-picker-overlay {
 }
 
 
+.auto-card h3 {
+    margin-bottom: 0;
+}
+
+.charge-status {
+    font-weight: bold;
+}
+
+.charge-low {
+    color: #FF3B30; /* Rosso */
+}
+
+.charge-medium {
+    color: #F7DC6F; /* Giallo */
+}
+
+.charge-high {
+    color: #27AE60; /* Verde */
+}
+
+/* SIDEBAR */
+.sidebar {
+    width: 35% !important;
+    align-items: stretch !important; /* Forza i figli a occupare tutta la larghezza */
+    height: 100%;
+    padding: var(--lumo-space-m);
+    background-color: var(--lumo-base-color);
+    border-left: 1px solid var(--lumo-contrast-20pct);
+}
+
+.sidebar-title {
+    margin: 0;
+}
+
+.sidebar-input {
+	width: 100%;
+    --lumo-primary-text-color: var(--lumo-success-text-color);
+}
+
+.sidebar-image {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    width: 250px;
+}
+
+.sidebar-btn-prenota {
+    margin-top: var(--lumo-space-l);
+}
+
+/* Avviso colonnina guasta */
+.sidebar-fault-alert {
+    color: var(--lumo-error-text-color);
+    font-weight: bold;
+    margin-top: 10px;
+}

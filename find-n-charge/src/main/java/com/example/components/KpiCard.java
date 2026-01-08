@@ -26,7 +26,7 @@ public class KpiCard extends VerticalLayout {
 		// Imposta i valori
 		titleDisplay.setText(title);
 		numberDisplay.setText(number);
-		addClassName("kpi-card");
+		addClassName("card");
 		
 		add(numberDisplay, titleDisplay);
 	}

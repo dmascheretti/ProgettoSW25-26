@@ -21,15 +21,17 @@ import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.datepicker.DatePicker;
+import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.H3;
-import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Span;
+import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.server.VaadinSession;
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 
+@CssImport("./styles/CSS.css")
 public class Sidebar extends VerticalLayout {
 
 	private H3 title;
@@ -45,21 +47,16 @@ public class Sidebar extends VerticalLayout {
 
 		this.recensioniService = recensioniService;
 
-		setWidth("35%");
-		setHeightFull();
-		this.setPadding(true);
-		getStyle().set("background-color", "var(--lumo-base-color)")
-				.set("border-left", "1px solid var(--lumo-contrast-20pct)").set("padding", "var(--lumo-space-m)");
-
+		addClassName("sidebar");
+		
 		// Di default deve essere nascosta
 		setVisible(false);
 
 		Button closeButton = new Button(VaadinIcon.CLOSE.create(), e -> setVisible(false));
-		closeButton.getStyle().set("align-self", "flex-end");
-		closeButton.getElement().getThemeList().add("success");
+		addClassName("dialog-close-btn");
 
 		title = new H3("Dettagli");
-		title.getStyle().set("margin", "0");
+		title.addClassName("sidebar-title");
 
 		valutazioni = new Span();
 		VaadinIcon star = VaadinIcon.STAR_O;
@@ -81,21 +78,17 @@ public class Sidebar extends VerticalLayout {
 		bookingDatePicker = new DatePicker("Giorno");
 		bookingDatePicker.setMin(LocalDate.now()); // Non si può prenotare nel passato
 		bookingDatePicker.setValue(LocalDate.now()); // Valore di default
-		bookingDatePicker.getStyle().set("width", "100%");
-		bookingDatePicker.getStyle().set("--lumo-primary-text-color", "var(--lumo-success-text-color)");
+		addClassName("sidebar-input");
 
 		bookingTimeSlot = new ComboBox<>("Orario (slot 30 min)");
 		bookingTimeSlot.setEnabled(false);
-		bookingTimeSlot.getStyle().set("width", "100%");
-		bookingTimeSlot.getStyle().set("--lumo-primary-text-color", "var(--lumo-success-text-color)");
+		addClassName("sidebar-input");
 
 		autoSelection = new ComboBox<>("Seleziona l'auto da ricaricare");
-		autoSelection.getStyle().set("width", "100%");
-		autoSelection.getStyle().set("--lumo-primary-text-color", "var(--lumo-success-text-color)");
+		addClassName("sidebar-input");
 
 		prenotaButton = new Button("Prenota ora");
-		prenotaButton.getElement().getThemeList().add("success");
-		prenotaButton.getStyle().set("margin-top", "var(--lumo-space-l)");
+		prenotaButton.addClassName("sidebar-btn-prenota");
 
 		add(headerLayout, details, bookingDatePicker, bookingTimeSlot);
 
@@ -129,8 +122,7 @@ public class Sidebar extends VerticalLayout {
 		// Aggiunge l'immagine (se esiste)
 		if (colonnina.getLinkImmagine() != null && !colonnina.getLinkImmagine().isEmpty()) {
 			Image image = new Image(colonnina.getLinkImmagine(), "IMMAGINE COLONNINA");
-			image.setWidth("250px");
-			image.getStyle().set("margin-top", "10px").set("margin-bottom", "10px");
+			image.addClassName("sidebar-image");
 			this.details.add(image);
 		}
 
@@ -145,8 +137,7 @@ public class Sidebar extends VerticalLayout {
 			autoSelection.setEnabled(false);
 
 			Span avvisoGuasto = new Span("⚠️ COLONNINA GUASTA");
-			avvisoGuasto.getStyle().set("color", "var(--lumo-error-text-color)").set("font-weight", "bold")
-					.set("margin-top", "10px");
+			avvisoGuasto.addClassName("sidebar-fault-alert");
 			this.details.add(avvisoGuasto);
 
 		} else {
