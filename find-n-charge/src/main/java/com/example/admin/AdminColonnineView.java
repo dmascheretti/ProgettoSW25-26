@@ -15,6 +15,7 @@ import com.example.service.RecensioniService;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H3;
@@ -23,8 +24,8 @@ import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.component.textfield.NumberField;
+import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
@@ -36,6 +37,7 @@ import com.vaadin.flow.shared.Registration;
 @Route(value = "gestioneColonnine", layout = AdminLayout.class)
 @PageTitle("Find&Charge | Gestione colonnine")
 
+@CssImport("./styles/CSS.css")
 public class AdminColonnineView extends HorizontalLayout implements BeforeEnterObserver {
 	private String tema = "#008000";
 	private Grid<Colonnina> colonGrid = new Grid<>(Colonnina.class);
@@ -54,12 +56,15 @@ public class AdminColonnineView extends HorizontalLayout implements BeforeEnterO
 	public AdminColonnineView(ColonnineService colonnineService, RecensioniService recensioniService) {
 		this.colonnineService = colonnineService;
 		this.recensioniService = recensioniService;
+
 		setSpacing(true);
 		setPadding(true);
-
+		setSizeFull();
+		addClassName("map-view");	// Per bloccare lo scroll usiamo lo stile di MapView
+		
 		// Titolo
 		H3 titolo = new H3("Lista universale delle colonnine di ricarica");
-		titolo.getStyle().set("color", tema);
+		titolo.addClassName("text-green-primary");
 
 		// Bottone per l'inizializzazione inserimento dati di una nuova colonnina
 		Button nuovaColonninaButton = new Button("Nuova colonnina");
@@ -68,11 +73,8 @@ public class AdminColonnineView extends HorizontalLayout implements BeforeEnterO
 
 		// Barra di ricerca per nome o indirizzo delle colonnine
 		TextField searchField = new TextField("Cerca");
-		searchField.getElement().getThemeList().add("success");
 		searchField.setPlaceholder("Nome o indirizzo...");
-		searchField.setWidth("300px");
-		searchField.getStyle().set("color", tema);
-		searchField.getStyle().set("--lumo-primary-text-color", "var(--lumo-success-text-color)"); // Tema verde
+		searchField.addClassName("search-field");
 		// EVENTO DI RICERCA → chiama cercaColonnine()
 		searchField.setValueChangeMode(ValueChangeMode.EAGER);
 		searchField.addValueChangeListener(e -> {
@@ -88,8 +90,7 @@ public class AdminColonnineView extends HorizontalLayout implements BeforeEnterO
 		colonGrid.addComponentColumn(col -> {
 			Button btn = new Button(col.getNome());
 			btn.addClickListener(e -> showSidebar(col));
-			btn.getStyle().set("color", tema).set("text-decoration", "underline").set("background", "none")
-					.set("border", "none");
+			btn.addClassName("grid-btn-link");
 			return btn;
 		}).setHeader("Nome").setComparator(Colonnina::getNome).setSortable(true);
 
@@ -172,9 +173,7 @@ public class AdminColonnineView extends HorizontalLayout implements BeforeEnterO
 
 		stationSidebar = new Sidebar(recensioniService);
 		stationSidebar.setHeightFull();
-		stationSidebar.setWidth("400px");
-		stationSidebar.getStyle().set("background-color", "white");
-		stationSidebar.getStyle().set("box-shadow", "5px 0 15px rgba(0,0,0,0.1)");
+		stationSidebar.addClassNames("sidebar", "sidebar-scrollable");
 		stationSidebar.setVisible(false);
 
 		nuovaColonninaLayout = createNuovaColonninaLayout();
