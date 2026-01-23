@@ -1,7 +1,7 @@
 Tutte le fasi precedenti sono contenute all'interno del file meeting
 
 03/11/2025 		Valenari Francesco
-			Creazione diagrammi uml (UseCaseDiagram e StateMachineDiagram) seguendo le prime idee del progetto
+			- Creazione diagrammi uml (UseCaseDiagram e StateMachineDiagram) seguendo le prime idee del progetto
 
 04/11/2025 		Maistrello Tommaso
 			09.00-11.00 Creazione della LoginView con indirizzamento alla pagina di registrazione in caso non si abbia un account. Creazione file application.properties per 			runnare il programma.
@@ -13,39 +13,39 @@ Tutte le fasi precedenti sono contenute all'interno del file meeting
 06/11/2025 		Maistrello Tommaso
 			09.00-12.00 Creazione della MapView in cui viene visualizzata la mappa di Leaflet. Problemi nell'import di Leaflet legati a Maven, risolti utilizzando una stringa 			js
 
-06/11/2025  		Mascheretti Davide
-  			15.30-16.15 + 17.15-18.45 Creazione branch per issue, implemetazione del controllo di esistenza dell'utente durante la fase di login e implementazione della funziona 			nella classe FirebaseService, aggiunta documentazione varia 
+	  		Mascheretti Davide
+  			15.30-16.15 + 17.15-18.45 Creazione branch per issue, implemetazione del controllo di esistenza dell'utente durante la fase di login e implementazione della funzione nella classe FirebaseService, aggiunta documentazione varia 
 
 07/11/2025		Mascheretti Davide 
 			Creazione branch per risolvere issue del problema del doppio click, analisi delle possibili motivazioni, risoluzione della issue, creazione classe per controllo 			dati in fase di registrazione. Creato classe per controlli che vengono effettuati in register view in modo da rendere la classe più leggibile e 					dividere al meglio i ruoli tra classi
 
-07/11/2025		Maistrello Tommaso
+			Maistrello Tommaso
 			17.30-19.00 Creata MainLayout.java, strutturata come home page del progetto. In alto presenta una barra con titolo e tasto del menù. Quest'ultimo si apre sulla 			sinistra e permette di navigare attraverso le altre pagine dell'app web.
 			Modificata la Route di MapView.java in modo tale che si apra direttamente all'avvio di LoginView. Create classi di profilo e colonnine senza implementarle.
 			20.00-22.00 Creato un pacchetto contenente i modelli delle componenti del database. Creato il modello (la classe) della colonnina. In MapView.java: Creata 				visualizzazione colonnine sulla mappa tramite marker. Le colonnine verranno aggiunte al firebase tramite pagina admin. Creata la sidebar della scheda colonnina una 			volta cliccato il marker. In FirebaseService.java, implementata la logica per leggere le colonnine del firebase in modalità asincrona rifacendomi al modello 				proposto da Mascheretti per gli utenti.
 
-07/11/2025		Valenari Francesco 
-			Creazione prototipi classi Prenotazione e ReservationView, primo approccio a vaadin con qualche difficoltà.
+			Valenari Francesco 
+			- Creazione prototipi classi Prenotazione e ReservationView, primo approccio a vaadin con qualche difficoltà.
 
 8/11/2025		Mascheretti Davide
 			9-10.45 Aggiunta funzione per verificare se lo username è gia esistente in FirebaseService e richiamata poi da RegisterView. Risolti problemi di conflitti con 				modifche in stash (motivo per cui una parte della regsiterView appare eliminata e poi riaggiunta con modifiche effettive). aggiunta di documentazione dei nuovi 			metodi e delle modiiche effettuate.
 
 9/11/2025		Valenari Francesco
-			Miglioramento grafica e usabilità della pagina prenotazioni
+			- Miglioramento grafica e usabilità della pagina prenotazioni
 
 10/11/2025 		Mascheretti Davide + Morgera Claudio
 			14.30-16.30 Implementazione della classe ReservationVew e di FirebaseService per la visualizzazione delle prenotazioni dell'utente , aggiunta documentazione varia.
 			Ora nella pagina di prenotazioni si visualizza tutto correttamente.
 
-10/11/2025		Valenari Francesco
-			Realizzazione Classe StationsView operativa, implementazione backend in FirebaseService, difficoltà nella gestione dei stashed changes
+			Valenari Francesco
+			- Realizzazione Classe StationsView operativa, implementazione backend in FirebaseService, difficoltà nella gestione dei stashed changes
 
 11/11/2025		Maistrello Tommaso
 			09.00-10.15 Implementata la scelta della data e ora per prenotare la colonnina nella sidebar. Implementata anche la logica della prenotazione con i vari controlli di esistenza. 
 			11.00-11.45 Implementato il layout che gestisce le pagine admin seguendo le caratteristiche del MainLayout.java.
 
-11/11/2025		Valenari Francesco
-			Miglioramento grafica e presetazione delle viste nel menù
+			Valenari Francesco
+			- Miglioramento grafica e presetazione delle viste nel menù
 
 			Mascheretti Davide
 			14.30-17.10 Implementato il salvataggio nel db delle prenotazioni e del controllo su colonnina, data e ora. Aggiunta funzione per svolgere questo in FirebaseService
@@ -56,84 +56,101 @@ Tutte le fasi precedenti sono contenute all'interno del file meeting
 			14.15-15.15 Specifica dei requisiti
 
 			Mascheretti Davide
-12/11/2025 		22.00-23.00 Modiche al project plan (punti da 1 a 6)
+	 		22.00-23.00 Modiche al project plan (punti da 1 a 6)
 
 13/11/2025		Maistrello Tommaso
 			14.00-15.00 Specifica dei requisiti
 
-13/11/2025		Mascheretti Davide
+			Mascheretti Davide
 			22.00-23.30 Modifiche al project plan (punti da 7 a 13)
 			Valenari Francesco
-			Aggiunta stato e prototipo di cancellazione nella lista prenotazioni in StationView
+			- Aggiunta stato e prototipo di cancellazione nella lista prenotazioni in StationView
 
 			Mascheretti Davide
 14/11/2025		10.15-12.15 Diviso logica di controllo e salvataggio da MapView a PrenotazioneService
 
-14/11/2025		Maistrello Tommaso
+			Maistrello Tommaso
 			09.00-11.00 Creata componente Kpi per mostrare le informazioni utili all'amministratore. Aggiunta delle KpiCard alla vista della dashboard.
 
-14/11/2025              Morgera Claudio
+			Morgera Claudio
                         14.00-15.00 Creazione del class diagramma e prime classi
 
-14/11/2025		Maistrello Tommaso
+			Maistrello Tommaso
 			20.00-21.00 Aggiunta l'implementazione con controllo errori per il richiamo del firebase (adesso presentati come commenti solo per poterlo testare). Aggiunto anche 			pulsante di refresh dei dati (non implementato) e sistemati gli allineamenti. Ho inoltre sistemato il codice di KpiCard.java.
 
 			Mascheretti Davide
 15/11/2025		11.00-12.30 + 16.30-17.45 Stesura diagramma di sequenza prima a mano e poi inizio dell'implementazione su papyrus con non poche difficoltà
 			
 
-15/11/2025		Valenari Francesco
-			Aggiunta possibilità di cancellazione solo per prenotazioni attive o future
+			Valenari Francesco
+			- Aggiunta possibilità di cancellazione solo per prenotazioni attive o future
 
 16/11/2025		Mascheretti Davide
 			9.00-9.30 + 16.00-17.00 Finito il sequence diagram (prima versione). Da controllare con gruppo.
 
-16/11/2025		Maistrello Tommaso
+			Maistrello Tommaso
 			09.00-10.00 Refactoring e documentation della classe: modifiche alla logica delle KpiCard, ora attributi della classe. Inoltre ho unito le logiche di caricamento 			dati e creazione delle card Aggiunta documentazione dei metodi.
 
 17/11/2025              Morgera Claudio
                         10.00-11.30 Modifiche apportate al class diagramma e creazione classe auto
 
-17/11/2025		Maistrello Tommaso
+			Maistrello Tommaso
 			10.30-12.00 Implementazione bozza del grafico per l'andamento degli utenti e delle prenotazioni nella settimana intera precedente alla data attuale. Ho utilizzato 			Apexcharts, una componente open-source.
 			14.30-15.15 Implementata bozza per l'amministrazione degli utenti con pulsante di ban. Per scrivere questa classe ho usato come riferimento il codice di 				ReservationView.java, dato che la composizione era simile.
 
 			Mascheretti Davide
 			15.00-17.00 Implementazione su branch principale metodi per cambiare mail e password, implementazione su branch secondario admin_branch dei metodi per interrogare 			il database e ottenere dati da inserire poi nella dashboard admin
 			
+			Valenari Francesco
+			- In collab con Mascheretti ritocchi sul sequence diagram
+
 18/11/2025              Morgera Claudio
                         10.30-12.30 Refactorig logica delle prenotazioni e apportate modifiche al class diagram
+
 			Mascheretti Davide
 			15.00-16.00 + 17.00-17.20 Aggiunta funziona ban utenti e risoluzione issue dopo il branch
+
+			Valenari Francesco
+			- Modifiche a PrenotazioneService
+			- Realizzazione AdminPrenotazioniView, AdminColonnineView
+			- Unificazione di tutti i diagrammi in un modello papyrus unico
+
 
 19/11/2025		Maistrello Tommaso
 			10.30-12.00 Implementata lettura dello stato con conseguente modifica del colore dell'icona del marker delle colonnine.
 			16.00-18.00 Prima di oggi gli slot nella sidebar per prenotare la colonnina partivano sempre da mezzanotte. Adesso partono dall'orario attuale (o meglio, 				approssimati alla mezz'ora successiva). Non è completo però, serve un listener per controllare sempre la data inserita nel bookingDatePicker.
 			Risolta visualizzazione tagliata di bookingDatePicker.
 
-19/11/2025		Mascheretti Davide
+			Mascheretti Davide
 			16.00-17.00 Implementato logica che se un utente viene eliminato, anche le sue prenotazioni vengono eliminate	
 
 20/11/2025		Maistrello Tommaso
 			12.00-13.30 Ora si generano gli slot considerando il girono, quindi se si considera la giornata odierna, gli slot si generano a partire dalla mezz'ora successiva. 			Risolti anche problemi di visualizzazione dell'overlay del bookingDatePicker.
 			14.00-14.30 Evitate duplicazioni di codice e sistemata visualizzazione della selezione del time slot.
 
-20/11/2025		Mascheretti Davide
+			Mascheretti Davide
 			20.45-21.45 Aggiunta classe e dipendenze qr code + pulsante per la visualizzazione e aggiunta immagini alle colonnine quando si clicca sul marker
+
+			Valenari Francesco
+			- Implementato inserimento di nuove colonnine direttamente da AdminColonnine
 
 21/11/2025		Maistrello Tommaso
 			11.00-13.00 Quando si schiaccia sul tasto del QR Code, questo viene generato automaticamente in maniera automatica. Manca il controllo sulle prenotazioni 				future/passate. Personalizzato banner che appare all'avvio del programma. 
 			Piccole modifiche di interfaccia: Aggiunto username alla navbar in alto così l'utente sa se è loggato o meno.
 
-21/11/2025		Mascheretti Davide
+			Mascheretti Davide
 			16.00-18.00 Implementazione cambio stato colonnina se esiste una prenotazione nello slot di tempo corrispondente al tempo reale e cambio colore marker + inserimento 			immagini colonnine
 
-21/11/2025              Morgera Claudio
+			Morgera Claudio
                         11.00-13.30 Implementazione logica per cambiare la password e la mail dell‘utente e aggiungere una macchina al profilo.
+
+			Valenari Francesco
+			- Implementato inserimento di nuovi utenti direttamente da AdminUtenti
 
 22/11/2025		Mascheretti Davide
 			11.30-12.30 Modifiche nella dashboard admin per vedere dati aggiornati e creazione classi per dividere firebaseservice (ora è troppo lunga e complessa) + 				refactoring	
-22/11/2025              Morgera Claudio
+
+			Morgera Claudio
                         11.00-12.00 Salvataggio delle modifiche della mail e della password nel database e piccole aggiunte per estetica di successo ed errore per quest‘ultime.
 			11.00-12.00 Iniziata divisione metodi firebaseService
 
@@ -145,10 +162,10 @@ Tutte le fasi precedenti sono contenute all'interno del file meeting
 			Colonnina prenotata = colore rosso.
 			Colonnina occupata è la stessa cosa di prenotata quindi rimossa.
 
-24/11/2025		Mascheretti Davide
+			Mascheretti Davide
 			14.30-15.30 + 17.00-18.00 Risoluzione issue sul colore marker in base allo stato delle colonnine + implementazione funzione per grafico dashboard admin
 
-24/11/2025              Morgera Claudio
+			Morgera Claudio
                         13.30-16.00 Logica di calcolo per la ricarica dell‘auto e controllo per non salvare auto con stessa targa
 
 25/11/2025		Maistrello Tommaso
@@ -158,28 +175,40 @@ Tutte le fasi precedenti sono contenute all'interno del file meeting
 			Piccola modifica a MainLayout che permette di navigare all'interno delle pagine senza l'errore NullPointerException in caso di utente non loggato.
 			Piccola modifica anche a ReservationView perchè alla generazione del QR Code, la scritta era sbagliata.
 
-25/11/2025		Mascheretti Davide
+			Mascheretti Davide
 			15.30-16.30 Rifinitura PP e file meeting. Aggiunta visualizzazione auto nella sezione profilo con funzione in FirebaseAutoService per restituire lista
 
-25/11/2025		Maistrello Tommaso
+			Maistrello Tommaso
 			17.00-18.00 Adesso appaiono solo gli slot liberi, quelli occupati non possono essere selezionati.
 
 26/11/2025		Maistrello Tommaso
 			15.30-16.00 Implementata gestione slot orari anche per StationView e aggiunta selezione auto per prenotazione.
 			17.00-18.00 La selezione dell'auto adesso dipende dalla targa.
+
 			Mascheretti Davide
 			10.00-12.00 + 16.30-17.30 Implementazione e miglioramento gestione recensioni e aggiunta stato della prenotazione (future, in carica o attiva) e della targa.
 			Aggiunto in profileView la lista auto + il loro stato (in carica o non in carica)
+
+			Valenari Francesco
+			- Separazione di prenotazioni passate e future in ReservView
+			- Refactoring su Prenotazione.nomeColonnina per maggior chiarezza
 
 27/11/2025 		Maistrello Tommaso
 			13.00-13.30 Riparazione errore di visualizzazione time slots: c'erano problemi con la data corrente per la generazione degli slot. Ora tutto funziona correttamente.
 			13.30-13.45 Creazione package per avere le classi più ordinate. Modifiche estetiche alla sidebar.
 			14.00-15.00 Separata sidebar da AdminColonnineView. Migliorata grafica di inserimento nuovo utente e nuova colonnina. Rimosse KpiCard inutilizzate in 					AdminDashboardView. Risolto problema di utente non loggato in MapView.
+
 			Mascheretti Davide
 			11.30-12-30 Iniziato logica colori marker anche con "in carica", conclusa poi in data 28/11
 
+			Valenari Francesco
+			- Funzione per ricavare colonnina dal suo id in FirebaseService
+
 28/11/2025		Mascheretti Davide
 			9.00-10-30 Concluso aggiornamento colori marker in base allo stato della colonnina. Aggiunto stato in prenotazione "in carica" che si attiva quando si apre il qr 			code per la prima volta. Ora se si apre la mappa il flusso è questo libere (verdi)->prenotate (gialle)->verifica prenotazioni in carica->se scadute prenotazione 			"passata" se attiva colonnine diventa rossa
+
+			Valenari Francesco
+			- Inizializzazione Activity Diagram
 
 29/11/2025 		Mascheretti Davide
 			10.00-13.00 Conclusa divisione delle classi di firebaseService in base ai nodi letti o scritti. 
@@ -207,14 +236,29 @@ Tutte le fasi precedenti sono contenute all'interno del file meeting
 02/12/2025		Mascheretti Davide
 			12.00-13.00 + 21.45-22.45 Gestione password criptate e inizio pulizia codice con divisione dei ruoli in maniera più precisa all'interno della vista di login e di 			registrazione. Aggiunto pacchetto service che fa da intermezzo da le viste e il database.
 
-02/12/2025              Morgera Claudio
+			Morgera Claudio
                         13.00-14.30.  Modificato il class diagram importando le classi principali e i servizi per le varie attività
 
-03/12/2025		Morgera Claudio
+			Valenari Francesco
+			- Modifica alla Grid in ReservView
+			- Aggiunta in Prenotazione l'attributo nomeColonnina per semplificare la manutenibilità
+			- Modifiche ai diagrammi
+			- Implementazione votazione a stelle su 5 per le colonnine di prenotazioni passate
+
+03/12/2025		Valenari Francesco
+			- Automatizzato l'avvio dell'app
+			- Sviluppo Activity diagram -> INCREDIBILE ERRORE DA PARTE DI CLAUDIO MORGERA NELLA MODIFICA SIMULTANEA DEI DIAGRAMMI
+			- Miglioramento front-end in ProfileView
+
+			Morgera Claudio
                         15.30-17.00    Aggiunta di relazioni tra classi e della sezione admin con rispettive view e funzionalità
 
 04/12/2025		Mascheretti Davide
 			Implementazione interfacce per rendere il codice più mantenibile. Ora le classi firebase implementano questa interfaccia e le classi service chiamano interfaccia e 			non più firebase. In questo modo se si dovesse cambiare db basterebbe creare delle nuove classi che implementerebbero l'interfaccia, lasciando il resto del codice 			uguale.
+
+			Valenari Francesco
+			- Modifica errore di accesso
+			- ORE DI CORREZIONE ERRORI NEI DIAGRAMMI UML, GRAZIE ANCORA CLAUDIO
 
 05/12/2025		Mascheretti Davide
 			14.30-15.30 Refactoring architettura e chiamate nella vista admin. Modificato per avere flusso corretto con vista, service e database.
@@ -224,25 +268,40 @@ Tutte le fasi precedenti sono contenute all'interno del file meeting
 
 09/10/2025              Morgera Claudio
                         15.00-16.00 Aggiunta delle funzioni elimina auto e aggiorna stato di ricarica auto
+
 			Mascheretti Davide 
 			15.30- 17.00 Aggiunta enumerativi e refactoring per divisione in layer delle classi rimanenti. Creato package enums + modifiche readme.
 
 10/10/2025              Morgera Claudio
                         16.00-17.00 Modifiche alle funzioni di aggiornamento auto e al design delle card auto nella pagina profilo
+
 			Mascheretti Davide
 			21.00-22.00 Aggiunto invio mail in fase di registrazione, modifiche alle classi service.
+
+			Valenari Francesco
+			- Modifiche al sequence diagram
 
 11/10/2025		Tutto il team
 			10.30-12.00 Revisione project plan
 
+			Valenari Francesco
+			- Sviluppo Activity Diagram
+			- Principio di implementazione delle valutazioni
+
 12/12/2025		Mascheretti Davide
 			10.00-11.30 Risolto problema visualizzazione valutazioni colonnine + modifiche a documentazione
+
+			Valenari Francesco
+			- Modifiche al project plan
 
 17/12/2025              Morgera Claudio
                         11.00-12.30+15.30-16.30 Implementazione calcolo della carica tramite tasto "aggiorna ricarica" e maggiore controllo per la targa e la password
 
 18/12/2025 		Mascheretti Davide
 			11.45-12.15 + 14.30-15.30 Aggiunta primi test prova e test su inserimento e controllo dati DataValidator
+
+			Valenari Francesco
+			- Ultime modifiche all'activity diagram
 
 22/12/2025		Mascheretti Davide
 			15.30-16.15 Test per auto
