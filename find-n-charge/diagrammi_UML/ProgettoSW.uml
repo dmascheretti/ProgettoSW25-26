@@ -90,9 +90,9 @@ Utente non ancora iscritto</body>
         <transition xmi:type="uml:Transition" xmi:id="_VbZxUK3TEfCnv4jACvPNJg" name="Click su &quot;Accedi&quot; [Credenziali corrette]" source="_tuykEK3QEfCDm6AtkyEGow" target="_Mt8R8K3TEfCnv4jACvPNJg"/>
         <transition xmi:type="uml:Transition" xmi:id="_vODBQK3ZEfCnv4jACvPNJg" source="_o4Gh8K3QEfCDm6AtkyEGow" target="_tuykEK3QEfCDm6AtkyEGow"/>
         <subvertex xmi:type="uml:Pseudostate" xmi:id="_o4Gh8K3QEfCDm6AtkyEGow" name="Ingresso al Sito"/>
-        <subvertex xmi:type="uml:State" xmi:id="_tuykEK3QEfCDm6AtkyEGow" name="State2"/>
-        <subvertex xmi:type="uml:State" xmi:id="_MT0zsK3REfCDm6AtkyEGow" name="State3"/>
-        <subvertex xmi:type="uml:State" xmi:id="_Mt8R8K3TEfCnv4jACvPNJg" name="State7">
+        <subvertex xmi:type="uml:State" xmi:id="_tuykEK3QEfCDm6AtkyEGow" name="Login"/>
+        <subvertex xmi:type="uml:State" xmi:id="_MT0zsK3REfCDm6AtkyEGow" name="Iscrizione"/>
+        <subvertex xmi:type="uml:State" xmi:id="_Mt8R8K3TEfCnv4jACvPNJg" name="Utente loggato">
           <region xmi:type="uml:Region" xmi:id="_csNQAK3UEfCnv4jACvPNJg" name="Region1">
             <transition xmi:type="uml:Transition" xmi:id="_mKu_8K3UEfCnv4jACvPNJg" name="/ Carica Mappa" source="_jHSdEK3UEfCnv4jACvPNJg" target="_csQ6YK3UEfCnv4jACvPNJg"/>
             <transition xmi:type="uml:Transition" xmi:id="_zzNn0K3UEfCnv4jACvPNJg" name="Click su Icona Menù" source="_csQ6YK3UEfCnv4jACvPNJg" target="_qG4FYK3UEfCnv4jACvPNJg"/>
@@ -114,6 +114,7 @@ Utente non ancora iscritto</body>
             </subvertex>
           </region>
         </subvertex>
+        <subvertex xmi:type="uml:State" xmi:id="_2uqMIPhNEfC9yY9aMuI_UA" name="VistaMappa"/>
       </region>
     </packagedElement>
     <packagedElement xmi:type="uml:Association" xmi:id="_cKFysK3aEfCnv4jACvPNJg" memberEnd="_cKHA0K3aEfCnv4jACvPNJg _cKHA0a3aEfCnv4jACvPNJg">
