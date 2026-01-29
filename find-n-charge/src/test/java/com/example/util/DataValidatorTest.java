@@ -13,7 +13,7 @@ class DataValidatorTest {
 	@Test
 	void testVerificaDati_Successo() {
 
-		String result = DataValidator.verificaDati("Mario", "Rossi", "mario.rossi", "mario@example.com", "Password123!",
+		String result = DataValidator.verificaDati("Mario", "Rossi", "mariorossi", "mario@example.com", "Password123!",
 				"Password123!");
 		assertNull(result);
 	}
@@ -22,12 +22,15 @@ class DataValidatorTest {
 	 * Dati no ok
 	 */
 	@Test
-	void testVerificaDati_CampiVuoti() {
+	void testVerificaDati_CampiErrati() {
 		String result = DataValidator.verificaDati("", "Rossi", "user", "a@b.c", "P1!", "P1!");
 		assertEquals("Tutti i campi sono obbligatori!", result);
 
 		result = DataValidator.verificaDati("Mario", "", "user", "a@b.c", "P1!", "P1!");
 		assertEquals("Tutti i campi sono obbligatori!", result);
+		
+		result = DataValidator.verificaDati("Mario", "Rossi", "mario.rossi", "a@b.c", "P1!", "P1!");
+		assertEquals("L'username non è valido! Non utilizzare simboli speciali: sono possibili solo trattini (-) e underscore (_)! ", result);
 	}
 
 	@Test
