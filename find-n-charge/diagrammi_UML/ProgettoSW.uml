@@ -88,33 +88,48 @@ Utente non ancora iscritto</body>
         <transition xmi:type="uml:Transition" xmi:id="_VKk8gK3SEfCnv4jACvPNJg" name="Click su &quot;iscriviti&quot;" source="_tuykEK3QEfCDm6AtkyEGow" target="_MT0zsK3REfCDm6AtkyEGow"/>
         <transition xmi:type="uml:Transition" xmi:id="_XNblEK3SEfCnv4jACvPNJg" name="Click su &quot;torna all'accesso&quot;" source="_MT0zsK3REfCDm6AtkyEGow" target="_tuykEK3QEfCDm6AtkyEGow"/>
         <transition xmi:type="uml:Transition" xmi:id="_VbZxUK3TEfCnv4jACvPNJg" name="Click su &quot;Accedi&quot; [Credenziali corrette]" source="_tuykEK3QEfCDm6AtkyEGow" target="_Mt8R8K3TEfCnv4jACvPNJg"/>
-        <transition xmi:type="uml:Transition" xmi:id="_vODBQK3ZEfCnv4jACvPNJg" source="_o4Gh8K3QEfCDm6AtkyEGow" target="_tuykEK3QEfCDm6AtkyEGow"/>
+        <transition xmi:type="uml:Transition" xmi:id="_vODBQK3ZEfCnv4jACvPNJg" source="_o4Gh8K3QEfCDm6AtkyEGow" target="_2uqMIPhNEfC9yY9aMuI_UA"/>
+        <transition xmi:type="uml:Transition" xmi:id="_BCi54P34EfCcCMsZj6umLw" source="_2uqMIPhNEfC9yY9aMuI_UA" target="_tuykEK3QEfCDm6AtkyEGow"/>
+        <transition xmi:type="uml:Transition" xmi:id="_dlAbgP39EfCcCMsZj6umLw" source="_2uqMIPhNEfC9yY9aMuI_UA" target="_ZifoUP39EfCcCMsZj6umLw"/>
+        <transition xmi:type="uml:Transition" xmi:id="_e5ydIP39EfCcCMsZj6umLw" source="_ZifoUP39EfCcCMsZj6umLw" target="_csQ6YK3UEfCnv4jACvPNJg"/>
         <subvertex xmi:type="uml:Pseudostate" xmi:id="_o4Gh8K3QEfCDm6AtkyEGow" name="Ingresso al Sito"/>
         <subvertex xmi:type="uml:State" xmi:id="_tuykEK3QEfCDm6AtkyEGow" name="Login"/>
         <subvertex xmi:type="uml:State" xmi:id="_MT0zsK3REfCDm6AtkyEGow" name="Iscrizione"/>
         <subvertex xmi:type="uml:State" xmi:id="_Mt8R8K3TEfCnv4jACvPNJg" name="Utente loggato">
+          <connectionPoint xmi:type="uml:Pseudostate" xmi:id="_LiZxsP39EfCcCMsZj6umLw" kind="exitPoint"/>
+          <connectionPoint xmi:type="uml:Pseudostate" xmi:id="_ZifoUP39EfCcCMsZj6umLw" kind="entryPoint"/>
           <region xmi:type="uml:Region" xmi:id="_csNQAK3UEfCnv4jACvPNJg" name="Region1">
-            <transition xmi:type="uml:Transition" xmi:id="_mKu_8K3UEfCnv4jACvPNJg" name="/ Carica Mappa" source="_jHSdEK3UEfCnv4jACvPNJg" target="_csQ6YK3UEfCnv4jACvPNJg"/>
             <transition xmi:type="uml:Transition" xmi:id="_zzNn0K3UEfCnv4jACvPNJg" name="Click su Icona Menù" source="_csQ6YK3UEfCnv4jACvPNJg" target="_qG4FYK3UEfCnv4jACvPNJg"/>
             <transition xmi:type="uml:Transition" xmi:id="_0rCAoK3UEfCnv4jACvPNJg" name="Click su Icona Menù, Click su mappa" source="_qG4FYK3UEfCnv4jACvPNJg" target="_csQ6YK3UEfCnv4jACvPNJg"/>
             <transition xmi:type="uml:Transition" xmi:id="_8z2h4K3UEfCnv4jACvPNJg" name="Click su un Pin della Mappa" source="_csQ6YK3UEfCnv4jACvPNJg" target="_uXEvQK3UEfCnv4jACvPNJg"/>
             <transition xmi:type="uml:Transition" xmi:id="_Yx9ykK3VEfCnv4jACvPNJg" name="Click su un diverso Pin" source="_uXEvQK3UEfCnv4jACvPNJg" target="_uXEvQK3UEfCnv4jACvPNJg"/>
             <transition xmi:type="uml:Transition" xmi:id="_ipX8kK3VEfCnv4jACvPNJg" name="Click su mappa, Click su X" source="_uXEvQK3UEfCnv4jACvPNJg" target="_csQ6YK3UEfCnv4jACvPNJg"/>
             <transition xmi:type="uml:Transition" xmi:id="_3qbUgK3VEfCnv4jACvPNJg" name="Click su &quot;Prenota&quot; [Fascia oraria selezionata] [Disponibilità confermata]" source="_uXEvQK3UEfCnv4jACvPNJg" target="_JLiQQK3VEfCnv4jACvPNJg"/>
-            <transition xmi:type="uml:Transition" xmi:id="_5oNaYK3WEfCnv4jACvPNJg" name="Click su Pin della Mappa" source="_qG4FYK3UEfCnv4jACvPNJg" target="_uXEvQK3UEfCnv4jACvPNJg"/>
             <transition xmi:type="uml:Transition" xmi:id="_Xf6C4K3XEfCnv4jACvPNJg" source="_JLiQQK3VEfCnv4jACvPNJg" target="_csQ6YK3UEfCnv4jACvPNJg"/>
-            <transition xmi:type="uml:Transition" xmi:id="_khmQMK3aEfCnv4jACvPNJg" name="Click su &quot;Disconnetti&quot;" source="_qG4FYK3UEfCnv4jACvPNJg" target="_tuykEK3QEfCDm6AtkyEGow"/>
-            <transition xmi:type="uml:Transition" xmi:id="_L5CUIK3cEfCnv4jACvPNJg" name="Click su Icona Menu" source="_uXEvQK3UEfCnv4jACvPNJg" target="_qG4FYK3UEfCnv4jACvPNJg"/>
-            <subvertex xmi:type="uml:State" xmi:id="_csQ6YK3UEfCnv4jACvPNJg" name="State1"/>
-            <subvertex xmi:type="uml:Pseudostate" xmi:id="_jHSdEK3UEfCnv4jACvPNJg" name="Mappa aperta"/>
-            <subvertex xmi:type="uml:State" xmi:id="_qG4FYK3UEfCnv4jACvPNJg" name="State4"/>
-            <subvertex xmi:type="uml:State" xmi:id="_uXEvQK3UEfCnv4jACvPNJg" name="State5"/>
+            <transition xmi:type="uml:Transition" xmi:id="_khmQMK3aEfCnv4jACvPNJg" source="_LiZxsP39EfCcCMsZj6umLw" target="_2uqMIPhNEfC9yY9aMuI_UA"/>
+            <transition xmi:type="uml:Transition" xmi:id="_4Di3MP36EfCcCMsZj6umLw" name="Click su Utente" source="_qG4FYK3UEfCnv4jACvPNJg" target="_yu1cUP36EfCcCMsZj6umLw"/>
+            <transition xmi:type="uml:Transition" xmi:id="_4zDokP36EfCcCMsZj6umLw" name="Click su Prenotazioni" source="_qG4FYK3UEfCnv4jACvPNJg" target="_u-61AP36EfCcCMsZj6umLw"/>
+            <transition xmi:type="uml:Transition" xmi:id="_5prHgP36EfCcCMsZj6umLw" name="Click su Colonnine" source="_qG4FYK3UEfCnv4jACvPNJg" target="_jA48wP36EfCcCMsZj6umLw"/>
+            <transition xmi:type="uml:Transition" xmi:id="_7owDUP36EfCcCMsZj6umLw" name="Click su una Colonnina" source="_jA48wP36EfCcCMsZj6umLw" target="_uXEvQK3UEfCnv4jACvPNJg"/>
+            <transition xmi:type="uml:Transition" xmi:id="_qpUb0P38EfCcCMsZj6umLw" name="Cancella Prenotazione" source="_u-61AP36EfCcCMsZj6umLw" target="_u-61AP36EfCcCMsZj6umLw"/>
+            <transition xmi:type="uml:Transition" xmi:id="_TtRhYP39EfCcCMsZj6umLw" name="Click su &quot;Disconnetti&quot;" source="_qG4FYK3UEfCnv4jACvPNJg" target="_LiZxsP39EfCcCMsZj6umLw"/>
+            <transition xmi:type="uml:Transition" xmi:id="__KvcAP39EfCcCMsZj6umLw" name="Click su Icona Menù" source="_jA48wP36EfCcCMsZj6umLw" target="_qG4FYK3UEfCnv4jACvPNJg"/>
+            <transition xmi:type="uml:Transition" xmi:id="_BwOQgP3-EfCcCMsZj6umLw" name="Click su Icona Menù" source="_u-61AP36EfCcCMsZj6umLw" target="_qG4FYK3UEfCnv4jACvPNJg"/>
+            <transition xmi:type="uml:Transition" xmi:id="_Db_10P3-EfCcCMsZj6umLw" name="Click su Icona Menù" source="_yu1cUP36EfCcCMsZj6umLw" target="_qG4FYK3UEfCnv4jACvPNJg"/>
+            <transition xmi:type="uml:Transition" xmi:id="_XjAnYP3-EfCcCMsZj6umLw" name="Modifica Dati" source="_yu1cUP36EfCcCMsZj6umLw" target="_yu1cUP36EfCcCMsZj6umLw"/>
+            <transition xmi:type="uml:Transition" xmi:id="_lCJtEP3-EfCcCMsZj6umLw" name="Consulta QR Prenotazione" source="_u-61AP36EfCcCMsZj6umLw" target="_u-61AP36EfCcCMsZj6umLw"/>
+            <subvertex xmi:type="uml:State" xmi:id="_csQ6YK3UEfCnv4jACvPNJg" name="VistaMappa"/>
+            <subvertex xmi:type="uml:State" xmi:id="_qG4FYK3UEfCnv4jACvPNJg" name="MenùAperto"/>
+            <subvertex xmi:type="uml:State" xmi:id="_uXEvQK3UEfCnv4jACvPNJg" name="VisualizzaColonnina"/>
             <subvertex xmi:type="uml:State" xmi:id="_JLiQQK3VEfCnv4jACvPNJg" name="State9">
               <doActivity xmi:type="uml:Activity" xmi:id="_XPlScK3YEfCnv4jACvPNJg" name="Genera QR" isActive="true" isReentrant="false"/>
             </subvertex>
+            <subvertex xmi:type="uml:State" xmi:id="_jA48wP36EfCcCMsZj6umLw" name="VistaColonnine"/>
+            <subvertex xmi:type="uml:State" xmi:id="_u-61AP36EfCcCMsZj6umLw" name="VistaPrenotazioni"/>
+            <subvertex xmi:type="uml:State" xmi:id="_yu1cUP36EfCcCMsZj6umLw" name="MenuUtente"/>
           </region>
         </subvertex>
-        <subvertex xmi:type="uml:State" xmi:id="_2uqMIPhNEfC9yY9aMuI_UA" name="VistaMappa"/>
+        <subvertex xmi:type="uml:State" xmi:id="_2uqMIPhNEfC9yY9aMuI_UA" name="PrimaVistaMappa"/>
       </region>
     </packagedElement>
     <packagedElement xmi:type="uml:Association" xmi:id="_cKFysK3aEfCnv4jACvPNJg" memberEnd="_cKHA0K3aEfCnv4jACvPNJg _cKHA0a3aEfCnv4jACvPNJg">
