@@ -1,3 +1,6 @@
+/**
+ * Enumerativi per la gestione degli stati della prenotazione
+ */
 package com.example.enums;
 
 public enum StatoPrenotazione {

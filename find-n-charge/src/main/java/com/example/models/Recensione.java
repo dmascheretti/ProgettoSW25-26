@@ -1,3 +1,6 @@
+/**
+ * Classe oggetto recensione
+ */
 package com.example.models;
 
 

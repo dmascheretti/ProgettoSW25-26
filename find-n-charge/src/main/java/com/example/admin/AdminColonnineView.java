@@ -44,8 +44,6 @@ public class AdminColonnineView extends HorizontalLayout implements BeforeEnterO
 	private final ColonnineService colonnineService;
 	private Sidebar stationSidebar;
 	private Dialog nuovaColonninaLayout;
-	private final RecensioniService recensioniService;
-
 	private TextField idField, nomeField, tipoField, latField, lonField, indirizzoField, comuneField, linkField;
 	private NumberField potenzaField;
 
@@ -55,13 +53,12 @@ public class AdminColonnineView extends HorizontalLayout implements BeforeEnterO
 	// Classe per l'elenco delle colonnine (indipendente dalla mappa)
 	public AdminColonnineView(ColonnineService colonnineService, RecensioniService recensioniService) {
 		this.colonnineService = colonnineService;
-		this.recensioniService = recensioniService;
 
 		setSpacing(true);
 		setPadding(true);
 		setSizeFull();
-		addClassName("map-view");	// Per bloccare lo scroll usiamo lo stile di MapView
-		
+		addClassName("map-view"); // Per bloccare lo scroll usiamo lo stile di MapView
+
 		// Titolo
 		H3 titolo = new H3("Lista universale delle colonnine di ricarica");
 		titolo.addClassName("text-green-primary");
@@ -123,49 +120,47 @@ public class AdminColonnineView extends HorizontalLayout implements BeforeEnterO
 					colonnineService.cambiaStatoColonnina(colonnina.getId(), StatoColonnina.GUASTA).thenRun(() -> {
 						getUI().ifPresent(ui -> ui.access(() -> {
 							Notification.show("Colonnina segnalata!");
-							aggiornaGridConFiltro(""); 
+							aggiornaGridConFiltro("");
 						}));
 					});
 				});
 			}
 			return guasta;
 		}).setHeader("Gestione Guasti");
-		
-		
+
 		colonGrid.addComponentColumn(colonnina -> {
-		    Button elimina = new Button("Elimina");
-		    elimina.addThemeVariants(ButtonVariant.LUMO_ERROR, ButtonVariant.LUMO_PRIMARY);
-		    
-		    elimina.addClickListener(e -> {
-		        Dialog confermaDialog= new Dialog();
-		        confermaDialog.add(new H3("Sei sicuro di voler eliminare la colonnina " + colonnina.getNome() + "?"));
-		        
-		        Button conferma = new Button("Conferma Eliminazione", evt -> {
-		            colonnineService.eliminaColonnina(colonnina.getId()).thenRun(() -> {
-		                 getUI().ifPresent(ui -> ui.access(() -> {
-		                     aggiornaGridConFiltro("");
-		                     Notification.show("Eliminata!");
-		                     confermaDialog.close();
-		                 }));
-		            })
-		            .exceptionally(ex -> {
-	                    getUI().ifPresent(ui -> ui.access(() -> {
-	                        Notification.show("Errore: " + ex.getMessage())
-	                                .addThemeVariants(NotificationVariant.LUMO_ERROR);
-	                        confermaDialog.close();
-	                    }));
-	                    return null;
-	                });
-	        });
-		        conferma.addThemeVariants(ButtonVariant.LUMO_ERROR);
-		        
-		        Button cancel = new Button("Annulla", evt -> confermaDialog.close());
-		        
-		        confermaDialog.add(new HorizontalLayout(conferma, cancel));
-		        confermaDialog.open();
-		    });
-		    
-		    return elimina;
+			Button elimina = new Button("Elimina");
+			elimina.addThemeVariants(ButtonVariant.LUMO_ERROR, ButtonVariant.LUMO_PRIMARY);
+
+			elimina.addClickListener(e -> {
+				Dialog confermaDialog = new Dialog();
+				confermaDialog.add(new H3("Sei sicuro di voler eliminare la colonnina " + colonnina.getNome() + "?"));
+
+				Button conferma = new Button("Conferma Eliminazione", evt -> {
+					colonnineService.eliminaColonnina(colonnina.getId()).thenRun(() -> {
+						getUI().ifPresent(ui -> ui.access(() -> {
+							aggiornaGridConFiltro("");
+							Notification.show("Eliminata!");
+							confermaDialog.close();
+						}));
+					}).exceptionally(ex -> {
+						getUI().ifPresent(ui -> ui.access(() -> {
+							Notification.show("Errore: " + ex.getMessage())
+									.addThemeVariants(NotificationVariant.LUMO_ERROR);
+							confermaDialog.close();
+						}));
+						return null;
+					});
+				});
+				conferma.addThemeVariants(ButtonVariant.LUMO_ERROR);
+
+				Button cancel = new Button("Annulla", evt -> confermaDialog.close());
+
+				confermaDialog.add(new HorizontalLayout(conferma, cancel));
+				confermaDialog.open();
+			});
+
+			return elimina;
 		}).setHeader("Elimina");
 
 		// Caricamento iniziale senza filtri

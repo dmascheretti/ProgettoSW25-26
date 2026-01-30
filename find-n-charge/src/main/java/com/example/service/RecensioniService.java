@@ -1,3 +1,6 @@
+/**
+ * Gestione recensioni, validazione e chiamata a interfaccia
+ */
 package com.example.service;
 
 import java.util.concurrent.CompletableFuture;

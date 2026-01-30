@@ -1,3 +1,7 @@
+/**
+ * Classe che gestisce la chiamata al database per il nodo colonnine 
+ * 
+ */
 package com.example.database;
 
 import java.time.LocalDate;

@@ -130,7 +130,7 @@ public class AdminDashboardView extends VerticalLayout implements AfterNavigatio
 		H2 utenti = new H2("Gestione utenti");
 		H2 colonnine = new H2("Gestione colonnine");
 		H2 prenotazioni = new H2("Gestione prenotazioni");
-		H2 segnalazioni = new H2("Gestione segnalazioni");
+		H2 segnalazioni = new H2("Gestione recensioni");
 
 		// Layout di gestione utenti e colonnine
 		VerticalLayout utentiLayout = new VerticalLayout(utenti, kpiUtenti());

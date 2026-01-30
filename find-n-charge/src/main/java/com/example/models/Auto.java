@@ -1,6 +1,6 @@
 /**
- * @author claudiomorgera
  * Classe per modellazione dell‘oggetto automobile: targa, proprietario, grandezza batteria in kWh e stato di carica della batteria in percentuale
+ * @author claudiomorgera
  */
 package com.example.models;
 import java.util.Random;

@@ -1,5 +1,8 @@
-package com.example.enums;
+/**
+ * Classe per gestione enumerativi TipoAuto con capacità batteria
+ */
 
+package com.example.enums;
 import java.util.Arrays;
 
 public enum TipoAuto {

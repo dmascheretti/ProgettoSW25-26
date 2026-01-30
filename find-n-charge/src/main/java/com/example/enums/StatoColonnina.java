@@ -1,3 +1,8 @@
+/**
+ * Enumerativi per la gestione dei vari stati della colonnine
+ * 
+ */
+
 package com.example.enums;
 
 public enum StatoColonnina {

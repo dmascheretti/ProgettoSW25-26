@@ -1,3 +1,7 @@
+/**
+ * Classe di configurazione firebase
+ * 
+ */
 package com.example.database;
 
 import com.google.auth.oauth2.GoogleCredentials;
