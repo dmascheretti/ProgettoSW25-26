@@ -268,7 +268,7 @@ Utente non ancora iscritto</body>
       <message xmi:type="uml:Message" xmi:id="_7aKv4MIREfCJO_aOLPnAPg" name="inserisciOra(ora)" messageSort="asynchCall" receiveEvent="_7aMlEcIREfCJO_aOLPnAPg" sendEvent="_7aMlEMIREfCJO_aOLPnAPg"/>
       <message xmi:type="uml:Message" xmi:id="_BQqCIMISEfCJO_aOLPnAPg" name="clickPrenota()" messageSort="asynchCall" receiveEvent="_BQr3UMISEfCJO_aOLPnAPg" sendEvent="_BQrQQMISEfCJO_aOLPnAPg"/>
       <message xmi:type="uml:Message" xmi:id="_K5oRQMJDEfCfA9o2HFeFbg" name="Mostra messaggio errore" messageSort="asynchCall" receiveEvent="_K5qtgMJDEfCfA9o2HFeFbg" sendEvent="_K5pfYMJDEfCfA9o2HFeFbg"/>
-      <message xmi:type="uml:Message" xmi:id="_P4k3gMJDEfCfA9o2HFeFbg" name="navigate (&quot;&quot;)" messageSort="asynchCall" receiveEvent="_P4n60MJDEfCfA9o2HFeFbg" sendEvent="_P4mssMJDEfCfA9o2HFeFbg"/>
+      <message xmi:type="uml:Message" xmi:id="_P4k3gMJDEfCfA9o2HFeFbg" name="navigate (&quot;login&quot;)" messageSort="asynchCall" receiveEvent="_P4n60MJDEfCfA9o2HFeFbg" sendEvent="_P4mssMJDEfCfA9o2HFeFbg"/>
       <message xmi:type="uml:Message" xmi:id="_cH02oMLHEfCuLOgLF_g-Rg" name="verificaDatiPrenotazione()" receiveEvent="_cIF8YMLHEfCuLOgLF_g-Rg" sendEvent="_cIFVUMLHEfCuLOgLF_g-Rg"/>
       <message xmi:type="uml:Message" xmi:id="_cKXNQMLHEfCuLOgLF_g-Rg" name="(errore)" messageSort="reply" receiveEvent="_cKZCcMLHEfCuLOgLF_g-Rg" sendEvent="_cKYbYMLHEfCuLOgLF_g-Rg"/>
       <message xmi:type="uml:Message" xmi:id="_JIzLYMLIEfCuLOgLF_g-Rg" name="Mostra notifica errore data/ora mancante" messageSort="asynchCall" receiveEvent="_JI1noMLIEfCuLOgLF_g-Rg" sendEvent="_JI1AkMLIEfCuLOgLF_g-Rg"/>
@@ -4893,7 +4893,7 @@ CompletableFuture.allOf(futureBookings).thenAccept( voidResult -> {
 3.5: chiudiSidebar()</body>
       </ownedComment>
       <ownedComment xmi:type="uml:Comment" xmi:id="_e3bzEP4FEfCErfU8KpGZqQ">
-        <body>3.1a.1: navigate(&quot;&quot;)</body>
+        <body>3.1a.1: navigate(&quot;login&quot;)</body>
       </ownedComment>
       <ownedComment xmi:type="uml:Comment" xmi:id="_CAw30P4HEfCiO7VJDC_JEg">
         <body>3.2b: [errore==NULL] prenota(colonnina,utente,data,ora)     </body>
