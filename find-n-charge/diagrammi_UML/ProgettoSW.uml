@@ -4979,6 +4979,41 @@ CompletableFuture.allOf(futureBookings).thenAccept( voidResult -> {
       <message xmi:type="uml:Message" xmi:id="_TKdcUP4KEfCiO7VJDC_JEg" name=" " messageSort="asynchCall" receiveEvent="_TKeqcf4KEfCiO7VJDC_JEg" sendEvent="_TKeqcP4KEfCiO7VJDC_JEg"/>
       <message xmi:type="uml:Message" xmi:id="_JFEEMP4LEfCiO7VJDC_JEg" name=" " messageSort="asynchCall" receiveEvent="_JFF5YP4LEfCiO7VJDC_JEg" sendEvent="_JFEEMf4LEfCiO7VJDC_JEg"/>
     </packagedElement>
+    <packagedElement xmi:type="uml:Package" xmi:id="_I3LuEAEdEfG0T9TC7Z83cg" name="Frontend">
+      <packagedElement xmi:type="uml:Package" xmi:id="_bJMwEAEhEfG0T9TC7Z83cg" name="AdminViews">
+        <packagedElement xmi:type="uml:Component" xmi:id="_uUvX4AEhEfG0T9TC7Z83cg" name="AdminUtentiView"/>
+        <packagedElement xmi:type="uml:Component" xmi:id="_wn-l0AEhEfG0T9TC7Z83cg" name="AdminDashboardView"/>
+        <packagedElement xmi:type="uml:Component" xmi:id="_yfYMUAEhEfG0T9TC7Z83cg" name="AdminPrenotazioniView"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Package" xmi:id="_eh0RsAEhEfG0T9TC7Z83cg" name="UserViews">
+        <packagedElement xmi:type="uml:Component" xmi:id="_GzEr0AEeEfG0T9TC7Z83cg" name="ReservationView"/>
+        <packagedElement xmi:type="uml:Component" xmi:id="_1VurMAEdEfG0T9TC7Z83cg" name="LoginView"/>
+        <packagedElement xmi:type="uml:Component" xmi:id="_DagNgAEeEfG0T9TC7Z83cg" name="MapView"/>
+      </packagedElement>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Package" xmi:id="_VRaaIAEdEfG0T9TC7Z83cg" name="Servizi">
+      <packagedElement xmi:type="uml:Component" xmi:id="_c1eMAAEeEfG0T9TC7Z83cg" name="AutoService"/>
+      <packagedElement xmi:type="uml:Component" xmi:id="_en-rcAEeEfG0T9TC7Z83cg" name="ColonnineService"/>
+      <packagedElement xmi:type="uml:Component" xmi:id="_gIxIwAEeEfG0T9TC7Z83cg" name="UtentiService"/>
+      <packagedElement xmi:type="uml:Component" xmi:id="_kOQ-gAEeEfG0T9TC7Z83cg" name="RecensioniService"/>
+      <packagedElement xmi:type="uml:Component" xmi:id="_lg1ZoAEeEfG0T9TC7Z83cg" name="PrenotazioniService"/>
+      <packagedElement xmi:type="uml:Package" xmi:id="_ZRUd4AEgEfG0T9TC7Z83cg" name="Utilities">
+        <packagedElement xmi:type="uml:Component" xmi:id="_eA6ZgAEgEfG0T9TC7Z83cg" name="DataValidator"/>
+        <packagedElement xmi:type="uml:Component" xmi:id="_hPspsAEgEfG0T9TC7Z83cg" name="QRCode"/>
+      </packagedElement>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Package" xmi:id="_WbH0MAEdEfG0T9TC7Z83cg" name="Interfacce">
+      <packagedElement xmi:type="uml:Interface" xmi:id="_u-Qg4AEfEfG0T9TC7Z83cg" name="ColonnineInterface"/>
+      <packagedElement xmi:type="uml:Interface" xmi:id="_y9y4kAEfEfG0T9TC7Z83cg" name="UtentiInterface"/>
+      <packagedElement xmi:type="uml:Interface" xmi:id="_58-4QAEfEfG0T9TC7Z83cg" name="RecensioniInterface"/>
+      <packagedElement xmi:type="uml:Interface" xmi:id="_7ZFC0AEfEfG0T9TC7Z83cg" name="PrenotazioniInterface"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Package" xmi:id="_kklCMAEdEfG0T9TC7Z83cg" name="Implementazione Firebase">
+      <packagedElement xmi:type="uml:Component" xmi:id="_x3BTMAEeEfG0T9TC7Z83cg" name="FirebaseColonnineService"/>
+      <packagedElement xmi:type="uml:Component" xmi:id="_0dci4AEeEfG0T9TC7Z83cg" name="FirebaseUtentiService"/>
+      <packagedElement xmi:type="uml:Component" xmi:id="_2xr2YAEeEfG0T9TC7Z83cg" name="FirebaseRecensioniService"/>
+      <packagedElement xmi:type="uml:Component" xmi:id="_8IhYMAEeEfG0T9TC7Z83cg" name="FirebasePrenotazioniService"/>
+    </packagedElement>
     <profileApplication xmi:type="uml:ProfileApplication" xmi:id="_szdM8K2_EfCDm6AtkyEGow">
       <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_szfCIK2_EfCDm6AtkyEGow" source="http://www.eclipse.org/uml2/2.0.0/UML">
         <references xmi:type="ecore:EPackage" href="pathmap://PAPYRUS_ACTIONLANGUAGE_PROFILE/ActionLanguage-Profile.profile.uml#_Kv8EIKFXEeS_KNX0nfvIVQ"/>
