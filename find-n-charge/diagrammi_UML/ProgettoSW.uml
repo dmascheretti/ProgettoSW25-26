@@ -4981,39 +4981,113 @@ CompletableFuture.allOf(futureBookings).thenAccept( voidResult -> {
     </packagedElement>
     <packagedElement xmi:type="uml:Package" xmi:id="_I3LuEAEdEfG0T9TC7Z83cg" name="Frontend">
       <packagedElement xmi:type="uml:Package" xmi:id="_bJMwEAEhEfG0T9TC7Z83cg" name="AdminViews">
-        <packagedElement xmi:type="uml:Component" xmi:id="_uUvX4AEhEfG0T9TC7Z83cg" name="AdminUtentiView"/>
-        <packagedElement xmi:type="uml:Component" xmi:id="_wn-l0AEhEfG0T9TC7Z83cg" name="AdminDashboardView"/>
-        <packagedElement xmi:type="uml:Component" xmi:id="_yfYMUAEhEfG0T9TC7Z83cg" name="AdminPrenotazioniView"/>
+        <packagedElement xmi:type="uml:Component" xmi:id="_uUvX4AEhEfG0T9TC7Z83cg" name="AdminUtentiView">
+          <packagedElement xmi:type="uml:Usage" xmi:id="_jgvBsAHwEfGpffBJbVInlQ" client="_uUvX4AEhEfG0T9TC7Z83cg" supplier="_R2gDUAHqEfGpffBJbVInlQ"/>
+          <packagedElement xmi:type="uml:Usage" xmi:id="_ncdQYAHwEfGpffBJbVInlQ" name="CRUD" client="_uUvX4AEhEfG0T9TC7Z83cg" supplier="_gIxIwAEeEfG0T9TC7Z83cg"/>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Component" xmi:id="_wn-l0AEhEfG0T9TC7Z83cg" name="AdminDashboardView">
+          <packagedElement xmi:type="uml:Usage" xmi:id="_QpfO4AHwEfGpffBJbVInlQ" name="KPI" client="_wn-l0AEhEfG0T9TC7Z83cg" supplier="_gIxIwAEeEfG0T9TC7Z83cg"/>
+          <packagedElement xmi:type="uml:Usage" xmi:id="_SL41wAHwEfGpffBJbVInlQ" name="KPI" client="_wn-l0AEhEfG0T9TC7Z83cg" supplier="_en-rcAEeEfG0T9TC7Z83cg"/>
+          <packagedElement xmi:type="uml:Usage" xmi:id="_W12qgAHwEfGpffBJbVInlQ" name="KPI/charts" client="_wn-l0AEhEfG0T9TC7Z83cg" supplier="_lg1ZoAEeEfG0T9TC7Z83cg"/>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Component" xmi:id="_yfYMUAEhEfG0T9TC7Z83cg" name="AdminPrenotazioniView">
+          <packagedElement xmi:type="uml:Usage" xmi:id="_6BUSsAHwEfGpffBJbVInlQ" client="_yfYMUAEhEfG0T9TC7Z83cg" supplier="_lg1ZoAEeEfG0T9TC7Z83cg"/>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Component" xmi:id="_RoyCUAHoEfGpffBJbVInlQ" name="AdminColonnineView">
+          <packagedElement xmi:type="uml:Usage" xmi:id="_G5Z_cAHxEfGpffBJbVInlQ" name="CRUD" client="_RoyCUAHoEfGpffBJbVInlQ" supplier="_en-rcAEeEfG0T9TC7Z83cg"/>
+          <packagedElement xmi:type="uml:Usage" xmi:id="_QAyasAHxEfGpffBJbVInlQ" client="_RoyCUAHoEfGpffBJbVInlQ" supplier="_kOQ-gAEeEfG0T9TC7Z83cg"/>
+          <packagedElement xmi:type="uml:Usage" xmi:id="_SGNPEAHxEfGpffBJbVInlQ" name="contiene" client="_RoyCUAHoEfGpffBJbVInlQ" supplier="_2z9qEAHpEfGpffBJbVInlQ"/>
+        </packagedElement>
       </packagedElement>
       <packagedElement xmi:type="uml:Package" xmi:id="_eh0RsAEhEfG0T9TC7Z83cg" name="UserViews">
-        <packagedElement xmi:type="uml:Component" xmi:id="_GzEr0AEeEfG0T9TC7Z83cg" name="ReservationView"/>
-        <packagedElement xmi:type="uml:Component" xmi:id="_1VurMAEdEfG0T9TC7Z83cg" name="LoginView"/>
-        <packagedElement xmi:type="uml:Component" xmi:id="_DagNgAEeEfG0T9TC7Z83cg" name="MapView"/>
+        <packagedElement xmi:type="uml:Component" xmi:id="_GzEr0AEeEfG0T9TC7Z83cg" name="ReservationView">
+          <packagedElement xmi:type="uml:Usage" xmi:id="_MAs7UAHvEfGpffBJbVInlQ" client="_GzEr0AEeEfG0T9TC7Z83cg" supplier="_lg1ZoAEeEfG0T9TC7Z83cg"/>
+          <packagedElement xmi:type="uml:Usage" xmi:id="_WZpFEAHvEfGpffBJbVInlQ" client="_GzEr0AEeEfG0T9TC7Z83cg" supplier="_en-rcAEeEfG0T9TC7Z83cg"/>
+          <packagedElement xmi:type="uml:Usage" xmi:id="_ZvFW4AHvEfGpffBJbVInlQ" client="_GzEr0AEeEfG0T9TC7Z83cg" supplier="_kOQ-gAEeEfG0T9TC7Z83cg"/>
+          <packagedElement xmi:type="uml:Usage" xmi:id="_nB7tAAHvEfGpffBJbVInlQ" client="_GzEr0AEeEfG0T9TC7Z83cg" supplier="_hPspsAEgEfG0T9TC7Z83cg"/>
+          <packagedElement xmi:type="uml:Usage" xmi:id="_ESnY0AHwEfGpffBJbVInlQ" name="calcola stato" client="_GzEr0AEeEfG0T9TC7Z83cg" supplier="_R2gDUAHqEfGpffBJbVInlQ"/>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Component" xmi:id="_1VurMAEdEfG0T9TC7Z83cg" name="LoginView">
+          <packagedElement xmi:type="uml:Usage" xmi:id="_po2W0AHtEfGpffBJbVInlQ" client="_1VurMAEdEfG0T9TC7Z83cg" supplier="_gIxIwAEeEfG0T9TC7Z83cg"/>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Component" xmi:id="_DagNgAEeEfG0T9TC7Z83cg" name="MapView">
+          <packagedElement xmi:type="uml:Usage" xmi:id="_29xJgAHtEfGpffBJbVInlQ" client="_DagNgAEeEfG0T9TC7Z83cg" supplier="_en-rcAEeEfG0T9TC7Z83cg"/>
+          <packagedElement xmi:type="uml:Usage" xmi:id="_43C_UAHtEfGpffBJbVInlQ" name="gestisce prenotazione" client="_DagNgAEeEfG0T9TC7Z83cg" supplier="_lg1ZoAEeEfG0T9TC7Z83cg"/>
+          <packagedElement xmi:type="uml:Usage" xmi:id="_6eFOkAHtEfGpffBJbVInlQ" client="_DagNgAEeEfG0T9TC7Z83cg" supplier="_c1eMAAEeEfG0T9TC7Z83cg"/>
+          <packagedElement xmi:type="uml:Usage" xmi:id="_MuLh0AHuEfGpffBJbVInlQ" name="integra" client="_DagNgAEeEfG0T9TC7Z83cg" supplier="_vfjL0AHqEfGpffBJbVInlQ"/>
+          <packagedElement xmi:type="uml:Usage" xmi:id="_QPBLUAHuEfGpffBJbVInlQ" name="verifica prenotazione" client="_DagNgAEeEfG0T9TC7Z83cg" supplier="_R2gDUAHqEfGpffBJbVInlQ"/>
+          <packagedElement xmi:type="uml:Usage" xmi:id="_ZhzlUAHuEfGpffBJbVInlQ" name="contiene" client="_DagNgAEeEfG0T9TC7Z83cg" supplier="_2z9qEAHpEfGpffBJbVInlQ"/>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Component" xmi:id="_pyU1MAHoEfGpffBJbVInlQ" name="StationsView">
+          <packagedElement xmi:type="uml:Usage" xmi:id="_LkAi0AHwEfGpffBJbVInlQ" client="_pyU1MAHoEfGpffBJbVInlQ" supplier="_en-rcAEeEfG0T9TC7Z83cg"/>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Component" xmi:id="_sQSscAHoEfGpffBJbVInlQ" name="RegisterView">
+          <packagedElement xmi:type="uml:Usage" xmi:id="_zP37cAHtEfGpffBJbVInlQ" client="_sQSscAHoEfGpffBJbVInlQ" supplier="_gIxIwAEeEfG0T9TC7Z83cg"/>
+          <packagedElement xmi:type="uml:Usage" xmi:id="_z-QEYAHtEfGpffBJbVInlQ" client="_sQSscAHoEfGpffBJbVInlQ" supplier="_R2gDUAHqEfGpffBJbVInlQ"/>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Component" xmi:id="_zwE3wAHoEfGpffBJbVInlQ" name="ProfileView">
+          <packagedElement xmi:type="uml:Usage" xmi:id="_IT_jkAHwEfGpffBJbVInlQ" client="_zwE3wAHoEfGpffBJbVInlQ" supplier="_c1eMAAEeEfG0T9TC7Z83cg"/>
+          <packagedElement xmi:type="uml:Usage" xmi:id="_JSAD8AHwEfGpffBJbVInlQ" client="_zwE3wAHoEfGpffBJbVInlQ" supplier="_gIxIwAEeEfG0T9TC7Z83cg"/>
+        </packagedElement>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Component" xmi:id="_2z9qEAHpEfGpffBJbVInlQ" name="Sidebar Component">
+        <packagedElement xmi:type="uml:Usage" xmi:id="_YsyhgAHxEfGpffBJbVInlQ" client="_2z9qEAHpEfGpffBJbVInlQ" supplier="_kOQ-gAEeEfG0T9TC7Z83cg"/>
       </packagedElement>
     </packagedElement>
     <packagedElement xmi:type="uml:Package" xmi:id="_VRaaIAEdEfG0T9TC7Z83cg" name="Servizi">
-      <packagedElement xmi:type="uml:Component" xmi:id="_c1eMAAEeEfG0T9TC7Z83cg" name="AutoService"/>
-      <packagedElement xmi:type="uml:Component" xmi:id="_en-rcAEeEfG0T9TC7Z83cg" name="ColonnineService"/>
-      <packagedElement xmi:type="uml:Component" xmi:id="_gIxIwAEeEfG0T9TC7Z83cg" name="UtentiService"/>
-      <packagedElement xmi:type="uml:Component" xmi:id="_kOQ-gAEeEfG0T9TC7Z83cg" name="RecensioniService"/>
-      <packagedElement xmi:type="uml:Component" xmi:id="_lg1ZoAEeEfG0T9TC7Z83cg" name="PrenotazioniService"/>
-      <packagedElement xmi:type="uml:Package" xmi:id="_ZRUd4AEgEfG0T9TC7Z83cg" name="Utilities">
-        <packagedElement xmi:type="uml:Component" xmi:id="_eA6ZgAEgEfG0T9TC7Z83cg" name="DataValidator"/>
-        <packagedElement xmi:type="uml:Component" xmi:id="_hPspsAEgEfG0T9TC7Z83cg" name="QRCode"/>
+      <packagedElement xmi:type="uml:Component" xmi:id="_c1eMAAEeEfG0T9TC7Z83cg" name="AutoService">
+        <packagedElement xmi:type="uml:Usage" xmi:id="_9IHPEAHxEfGpffBJbVInlQ" client="_c1eMAAEeEfG0T9TC7Z83cg" supplier="_DPdsAAHrEfGpffBJbVInlQ"/>
       </packagedElement>
+      <packagedElement xmi:type="uml:Component" xmi:id="_en-rcAEeEfG0T9TC7Z83cg" name="ColonnineService">
+        <packagedElement xmi:type="uml:Usage" xmi:id="_CgMuEAHyEfGpffBJbVInlQ" client="_en-rcAEeEfG0T9TC7Z83cg" supplier="_u-Qg4AEfEfG0T9TC7Z83cg"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Component" xmi:id="_gIxIwAEeEfG0T9TC7Z83cg" name="UtentiService">
+        <packagedElement xmi:type="uml:Usage" xmi:id="_61GqoAHxEfGpffBJbVInlQ" client="_gIxIwAEeEfG0T9TC7Z83cg" supplier="_BB9IEAHqEfGpffBJbVInlQ"/>
+        <packagedElement xmi:type="uml:Usage" xmi:id="_Dhi2UAHyEfGpffBJbVInlQ" client="_gIxIwAEeEfG0T9TC7Z83cg" supplier="_y9y4kAEfEfG0T9TC7Z83cg"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Component" xmi:id="_kOQ-gAEeEfG0T9TC7Z83cg" name="RecensioniService">
+        <packagedElement xmi:type="uml:Usage" xmi:id="_BgXowAHyEfGpffBJbVInlQ" client="_kOQ-gAEeEfG0T9TC7Z83cg" supplier="_58-4QAEfEfG0T9TC7Z83cg"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Component" xmi:id="_lg1ZoAEeEfG0T9TC7Z83cg" name="PrenotazioniService">
+        <packagedElement xmi:type="uml:Usage" xmi:id="__VNYwAHxEfGpffBJbVInlQ" client="_lg1ZoAEeEfG0T9TC7Z83cg" supplier="_7ZFC0AEfEfG0T9TC7Z83cg"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Package" xmi:id="_ZRUd4AEgEfG0T9TC7Z83cg" name="Utilities">
+        <packagedElement xmi:type="uml:Component" xmi:id="_hPspsAEgEfG0T9TC7Z83cg" name="QRCode Generator"/>
+        <packagedElement xmi:type="uml:Component" xmi:id="_R2gDUAHqEfGpffBJbVInlQ" name="DataValidator "/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Component" xmi:id="_BB9IEAHqEfGpffBJbVInlQ" name="EmailService"/>
     </packagedElement>
     <packagedElement xmi:type="uml:Package" xmi:id="_WbH0MAEdEfG0T9TC7Z83cg" name="Interfacce">
       <packagedElement xmi:type="uml:Interface" xmi:id="_u-Qg4AEfEfG0T9TC7Z83cg" name="ColonnineInterface"/>
       <packagedElement xmi:type="uml:Interface" xmi:id="_y9y4kAEfEfG0T9TC7Z83cg" name="UtentiInterface"/>
       <packagedElement xmi:type="uml:Interface" xmi:id="_58-4QAEfEfG0T9TC7Z83cg" name="RecensioniInterface"/>
       <packagedElement xmi:type="uml:Interface" xmi:id="_7ZFC0AEfEfG0T9TC7Z83cg" name="PrenotazioniInterface"/>
+      <packagedElement xmi:type="uml:Interface" xmi:id="_DPdsAAHrEfGpffBJbVInlQ" name="AutoInterface"/>
     </packagedElement>
     <packagedElement xmi:type="uml:Package" xmi:id="_kklCMAEdEfG0T9TC7Z83cg" name="Implementazione Firebase">
-      <packagedElement xmi:type="uml:Component" xmi:id="_x3BTMAEeEfG0T9TC7Z83cg" name="FirebaseColonnineService"/>
-      <packagedElement xmi:type="uml:Component" xmi:id="_0dci4AEeEfG0T9TC7Z83cg" name="FirebaseUtentiService"/>
-      <packagedElement xmi:type="uml:Component" xmi:id="_2xr2YAEeEfG0T9TC7Z83cg" name="FirebaseRecensioniService"/>
-      <packagedElement xmi:type="uml:Component" xmi:id="_8IhYMAEeEfG0T9TC7Z83cg" name="FirebasePrenotazioniService"/>
+      <packagedElement xmi:type="uml:Component" xmi:id="_x3BTMAEeEfG0T9TC7Z83cg" name="FirebaseColonnineService">
+        <interfaceRealization xmi:type="uml:InterfaceRealization" xmi:id="_Y0IDIAHyEfGpffBJbVInlQ" name="" client="_x3BTMAEeEfG0T9TC7Z83cg" supplier="_u-Qg4AEfEfG0T9TC7Z83cg" contract="_u-Qg4AEfEfG0T9TC7Z83cg"/>
+        <packagedElement xmi:type="uml:Usage" xmi:id="_JLH4gAHzEfGpffBJbVInlQ" name="read/write" client="_x3BTMAEeEfG0T9TC7Z83cg" supplier="_QIZ34AHsEfGpffBJbVInlQ"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Component" xmi:id="_0dci4AEeEfG0T9TC7Z83cg" name="FirebaseUtentiService">
+        <interfaceRealization xmi:type="uml:InterfaceRealization" xmi:id="_V2iQoAHyEfGpffBJbVInlQ" name="" client="_0dci4AEeEfG0T9TC7Z83cg" supplier="_y9y4kAEfEfG0T9TC7Z83cg" contract="_y9y4kAEfEfG0T9TC7Z83cg"/>
+        <packagedElement xmi:type="uml:Usage" xmi:id="_IRQRQAHzEfGpffBJbVInlQ" name="read/write" client="_0dci4AEeEfG0T9TC7Z83cg" supplier="_QIZ34AHsEfGpffBJbVInlQ"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Component" xmi:id="_2xr2YAEeEfG0T9TC7Z83cg" name="FirebaseRecensioniService">
+        <interfaceRealization xmi:type="uml:InterfaceRealization" xmi:id="_Zm6K8AHyEfGpffBJbVInlQ" name="" client="_2xr2YAEeEfG0T9TC7Z83cg" supplier="_58-4QAEfEfG0T9TC7Z83cg" contract="_58-4QAEfEfG0T9TC7Z83cg"/>
+        <packagedElement xmi:type="uml:Usage" xmi:id="_J9eigAHzEfGpffBJbVInlQ" name="read/write" client="_2xr2YAEeEfG0T9TC7Z83cg" supplier="_QIZ34AHsEfGpffBJbVInlQ"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Component" xmi:id="_8IhYMAEeEfG0T9TC7Z83cg" name="FirebasePrenotazioniService">
+        <interfaceRealization xmi:type="uml:InterfaceRealization" xmi:id="_aSoBcAHyEfGpffBJbVInlQ" name="" client="_8IhYMAEeEfG0T9TC7Z83cg" supplier="_7ZFC0AEfEfG0T9TC7Z83cg" contract="_7ZFC0AEfEfG0T9TC7Z83cg"/>
+        <packagedElement xmi:type="uml:Usage" xmi:id="_KskdIAHzEfGpffBJbVInlQ" name="read/write" client="_8IhYMAEeEfG0T9TC7Z83cg" supplier="_QIZ34AHsEfGpffBJbVInlQ"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Component" xmi:id="_VloLAAHrEfGpffBJbVInlQ" name="FirebaseAutoService">
+        <interfaceRealization xmi:type="uml:InterfaceRealization" xmi:id="_TCFMAAHyEfGpffBJbVInlQ" name="" client="_VloLAAHrEfGpffBJbVInlQ" supplier="_DPdsAAHrEfGpffBJbVInlQ" contract="_DPdsAAHrEfGpffBJbVInlQ"/>
+        <packagedElement xmi:type="uml:Usage" xmi:id="_HHDvAAHzEfGpffBJbVInlQ" name="read/write" client="_VloLAAHrEfGpffBJbVInlQ" supplier="_QIZ34AHsEfGpffBJbVInlQ"/>
+      </packagedElement>
     </packagedElement>
+    <packagedElement xmi:type="uml:Component" xmi:id="_vfjL0AHqEfGpffBJbVInlQ" name="Leaflet JS"/>
+    <packagedElement xmi:type="uml:Component" xmi:id="_QIZ34AHsEfGpffBJbVInlQ" name="Google Realtime Firebase"/>
     <profileApplication xmi:type="uml:ProfileApplication" xmi:id="_szdM8K2_EfCDm6AtkyEGow">
       <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_szfCIK2_EfCDm6AtkyEGow" source="http://www.eclipse.org/uml2/2.0.0/UML">
         <references xmi:type="ecore:EPackage" href="pathmap://PAPYRUS_ACTIONLANGUAGE_PROFILE/ActionLanguage-Profile.profile.uml#_Kv8EIKFXEeS_KNX0nfvIVQ"/>
