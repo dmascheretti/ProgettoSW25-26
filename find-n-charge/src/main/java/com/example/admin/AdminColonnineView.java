@@ -15,6 +15,7 @@ import com.example.service.RecensioniService;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.grid.Grid;
@@ -44,8 +45,9 @@ public class AdminColonnineView extends HorizontalLayout implements BeforeEnterO
 	private final ColonnineService colonnineService;
 	private Sidebar stationSidebar;
 	private Dialog nuovaColonninaLayout;
-	private TextField idField, nomeField, tipoField, latField, lonField, indirizzoField, comuneField, linkField;
-	private NumberField potenzaField;
+	private TextField idField, nomeField, indirizzoField, comuneField, linkField;
+	private ComboBox<String> tipoField;
+	private NumberField latField, lonField, potenzaField;
 
 	private Button salvaNuovaButton;
 	private Button annullaNuovaButton;
@@ -187,18 +189,33 @@ public class AdminColonnineView extends HorizontalLayout implements BeforeEnterO
 		dialogLayout.setAlignItems(FlexComponent.Alignment.CENTER);
 
 		idField = new TextField("ID");
+		idField.setRequired(true);
+		
 		nomeField = new TextField("Nome");
-		tipoField = new TextField("Tipo");
-		latField = new TextField("Latitudine");
-		lonField = new TextField("Longitudine");
+		nomeField.setRequired(true);
+		
+		tipoField = new ComboBox<>("Tipo");
+		tipoField.setItems("Fast", "Standard");
+		
+	    tipoField.setPlaceholder("Seleziona tipo...");
+	    tipoField.setRequired(true);
+	    
+	    latField = new NumberField("Latitudine");
+	    latField.setStep(0.000001);
+	    lonField = new NumberField("Longitudine");
+	    lonField.setStep(0.000001);
+	    
 		indirizzoField = new TextField("Indirizzo");
 		comuneField = new TextField("Comune");
 		linkField = new TextField("Link per l'immagine");
-		potenzaField = new NumberField("Potenza");
-
+		
+		potenzaField = new NumberField("Potenza (kW)");
+	    potenzaField.setMin(0);
+	    
 		salvaNuovaButton = new Button("Salva");
 		salvaNuovaButton.getElement().getThemeList().add("success");
 		salvaNuovaButton.addClickListener(e -> salvaNuovaColonnina());
+		
 		annullaNuovaButton = new Button("Annulla", e -> dialog.close());
 
 		HorizontalLayout infoLayout = new HorizontalLayout(nomeField, tipoField);
@@ -226,13 +243,33 @@ public class AdminColonnineView extends HorizontalLayout implements BeforeEnterO
 	}
 
 	private void salvaNuovaColonnina() {
+		if (idField.isEmpty() || nomeField.isEmpty() || tipoField.isEmpty() || 
+		        indirizzoField.isEmpty() || comuneField.isEmpty()) {
+		        
+		        Notification.show("Compila tutti i campi di testo obbligatori.")
+		                .addThemeVariants(NotificationVariant.LUMO_ERROR);
+		        return; 
+		    }
+		if (latField.getValue() == null || lonField.getValue() == null || potenzaField.getValue() == null) {
+	        Notification.show("Inserisci Latitudine, Longitudine e Potenza valide.")
+	                .addThemeVariants(NotificationVariant.LUMO_ERROR);
+	        return;
+	    }
+		if (latField.getValue() < -90 || latField.getValue() > 90 || 
+		        lonField.getValue() < -180 || lonField.getValue() > 180) {
+		        Notification.show("Coordinate non valide.")
+		                .addThemeVariants(NotificationVariant.LUMO_ERROR);
+		        return;
+		    }
+		
 		try {
 			Colonnina nuova = new Colonnina(idField.getValue(), nomeField.getValue(), tipoField.getValue(),
-					Double.parseDouble(latField.getValue()), Double.parseDouble(lonField.getValue()),
+					latField.getValue(), lonField.getValue(),
 					indirizzoField.getValue(), comuneField.getValue(), potenzaField.getValue(), linkField.getValue());
 
 			colonnineService.salvaColonnina(nuova).thenRun(() -> getUI().ifPresent(ui -> ui.access(() -> {
 				Notification.show("Colonnina salvata!").addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+				pulisciCampiForm();
 				nascondiDialog();
 				aggiornaGridConFiltro("");
 			}))).exceptionally(ex -> {
@@ -248,7 +285,17 @@ public class AdminColonnineView extends HorizontalLayout implements BeforeEnterO
 		}
 
 	}
-
+	private void pulisciCampiForm() {
+	    idField.clear();
+	    nomeField.clear();
+	    tipoField.clear();
+	    latField.clear();
+	    lonField.clear();
+	    indirizzoField.clear();
+	    comuneField.clear();
+	    linkField.clear();
+	    potenzaField.clear();
+	}
 	private void showSidebar(Colonnina col) {
 
 		stationSidebar.setDati(col);
