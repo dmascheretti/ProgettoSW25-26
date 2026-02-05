@@ -60,6 +60,7 @@ class DataValidatorTest {
 	/*
 	 * Prenotazione ok
 	 */
+	@Test
 	void testVerificaPrenotazione_Successo() {
 
 		String risultato = DataValidator.verificaPrenotazione("Colonnina", LocalDate.now(), "16:30");
