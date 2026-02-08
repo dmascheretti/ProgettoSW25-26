@@ -27,11 +27,6 @@
 **/.metadata/
 **/.settings/
 **/.classpath
-.settings/
-.project
-.classpath
-.metadata/
-.sonarlint/
 
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
@@ -46,16 +41,3 @@ replay_pid*
 .sonarlint/default/known-findings-store8821586626342661866/blobs/version
 .sonarlint/default/known-findings-store8821586626342661866/xd.lck
 /.sonarlint
-
-# Cartelle di output e file compilati
-bin/
-find-n-charge/bin/
-target/
-find-n-charge/target/
-*.class
-
-# Dipendenze
-node_modules/
-find-n-charge/node_modules/
-
-
