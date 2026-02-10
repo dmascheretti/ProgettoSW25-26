@@ -3,6 +3,8 @@
 # Find&Charge
 ### Progetto Ingegneria del Software 2025-2026
 
+**L'applicazione risulta attualmente non operativa (mappa e servizi database) poiché le chiavi di accesso a Firebase sono state revocate per proteggere l'integrità del database di produzione dopo la conclusione del progetto accademico.**
+
 <br>
 
 ![Java](https://img.shields.io/badge/Java-17%2B-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)
