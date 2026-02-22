@@ -26,6 +26,21 @@ public class FirebaseConfiguration {
         
         // Controlliamo se Firebase è già attivo
         if (FirebaseApp.getApps().isEmpty()) {
+        	
+        	ClassPathResource resource = new ClassPathResource("chiave.json");
+
+            // Check if the file exists
+            if (!resource.exists()) {
+                System.err.println("------------------------------------------------------------------");
+                System.err.println("CONFIGURATION ERROR: 'chiave.json' not found!");
+                System.err.println("1. Duplicate 'chiave.template.json'");
+                System.err.println("2. Rename the copy to 'chiave.json'");
+                System.err.println("3. Paste your actual Firebase service account key inside it.");
+                System.err.println("------------------------------------------------------------------");
+                return null;
+            }
+        	
+        	
             // Caricamento del file
             InputStream is = new ClassPathResource("chiave.json").getInputStream();
 
