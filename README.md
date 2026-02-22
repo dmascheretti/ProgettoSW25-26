@@ -91,10 +91,20 @@ Per l'Admin
 * Connessione internet stabile attiva.
 
 ### Avvio
-1.  **Clona la repository:**
+1.  **Clona la repository:** 
+    Scarica il progetto in locale sul tuo PC
    
-2.  **Compila ed esegui:**
-    Da terminale o dal tuo IDE:<br><br>
+2.  **Configura le chiavi di Firebase:**<br>
+    Per motivi di sicurezza, le chiavi private del database non sono incluse nella repository. <br>
+    Per far funzionare l'applicazione, devi collegarla al tuo database Firebase:
+    * Naviga nella cartella src/main/resources/, troverai un file chiamato chiave.template.json.
+    * Duplica questo file e rinomina la copia esattamente in chiave.json.
+    * Ottieni la tua chiave privata dalla Console di Firebase (Project Settings -> Service Accounts -> Generate new private key).
+    * Apri il tuo nuovo file chiave.json, cancella il contenuto di template e incolla il codice JSON della tua chiave reale.<br>
+      Il file chiave.json è già ignorato da Git tramite .gitignore per evitare caricamenti accidentali in repository.
+
+2.  **Compila ed esegui:**<br>
+    Da terminale o dal tuo IDE:<br>
     Run As -> Java Application -> Application.java  
 3.  **Attendi l'avvio:**
     L'applicazione si avvierà in maniera automatica sul browser predefinito su una porta libera del tuo PC.
