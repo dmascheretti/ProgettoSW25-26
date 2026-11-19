@@ -1,0 +1,394 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<link rel="stylesheet" href="fonts/local.css">
+<style>
+:root{--navy:#0D1B3D;--green:#8BC34A;--green2:#4CAF50;--blue:#1E88E5;--orange:#F59E0B;--red:#FF3B30}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1920px;height:1080px;overflow:hidden;background:#05070d;font-family:Inter,sans-serif;color:#fff}
+#stage{position:absolute;inset:0;overflow:hidden}
+.layer{position:absolute;inset:0}
+#bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+#bgph{position:absolute;inset:0}
+#vig{background:radial-gradient(ellipse at center,rgba(0,0,0,0) 55%,rgba(0,0,0,.55) 100%)}
+#grain{mix-blend-mode:overlay;opacity:.10}
+.headline{position:absolute;font-family:Montserrat,sans-serif;font-weight:800;letter-spacing:-1.5px;line-height:1.02;text-shadow:0 6px 30px rgba(0,0,0,.45)}
+.word{display:inline-block;will-change:transform}
+.mask{display:inline-block;overflow:hidden;vertical-align:bottom;padding:0 .08em .08em 0}
+.sub{position:absolute;font-family:Inter;font-weight:500;color:rgba(255,255,255,.82);letter-spacing:.2px}
+.pill{display:inline-flex;align-items:center;gap:12px;padding:12px 22px;border-radius:999px;font-weight:700;font-size:26px}
+/* phone */
+.phone{position:absolute;width:440px;height:900px;border-radius:66px;background:#0b0f18;padding:14px;
+ box-shadow:0 0 0 2px #2a3242,0 0 0 9px #11151f,0 40px 90px rgba(0,0,0,.6),0 0 160px rgba(139,195,74,.18)}
+.screen{position:relative;width:100%;height:100%;border-radius:54px;overflow:hidden;background:#fcfcfc;color:#1b2333}
+.notch{position:absolute;top:12px;left:50%;transform:translateX(-50%);width:120px;height:34px;border-radius:20px;background:#000;z-index:20}
+.status{position:absolute;top:0;left:0;right:0;height:56px;display:flex;justify-content:space-between;align-items:center;padding:8px 34px 0;font:600 17px Inter;color:#111;z-index:15}
+.navbar{position:absolute;top:56px;left:0;right:0;height:62px;background:#008000;color:#fff;display:flex;align-items:center;padding:0 22px;gap:10px;font:800 19px Montserrat;letter-spacing:.5px;z-index:12}
+.navbar small{font:500 15px Inter;opacity:.9;letter-spacing:0}
+.mapwrap{position:absolute;top:118px;left:0;right:0;bottom:0;overflow:hidden}
+.sheet{position:absolute;left:0;right:0;bottom:0;background:#fff;border-radius:28px 28px 0 0;box-shadow:0 -10px 40px rgba(0,0,0,.18);padding:16px 24px 26px;z-index:10}
+.grab{width:46px;height:5px;border-radius:3px;background:#d4d8de;margin:0 auto 14px}
+.st-name{font:800 23px Montserrat;color:#0D1B3D}
+.row{display:flex;align-items:center;gap:8px}
+.muted{color:#6b7385;font-size:15px}
+.tag{font:700 13px Inter;padding:5px 10px;border-radius:8px}
+.lbl{font:600 14px Inter;color:#3a4356;margin:14px 0 8px}
+.chip{flex:1;text-align:center;padding:11px 0;border-radius:12px;border:1.5px solid #dfe3e8;font:600 16px Inter;color:#2c3446}
+.chip.sel{background:#008000;border-color:#008000;color:#fff}
+.chip.off{color:#b8bec9;text-decoration:line-through;background:#f4f5f7}
+.field{border:1.5px solid #dfe3e8;border-radius:12px;padding:11px 14px;font:500 16px Inter;display:flex;justify-content:space-between;align-items:center}
+.btn{margin-top:18px;height:58px;border-radius:16px;background:#2E7D32;color:#fff;display:flex;align-items:center;justify-content:center;font:700 19px Inter;gap:10px}
+.toast{position:absolute;left:24px;right:24px;top:140px;background:#fff;border-radius:22px;padding:22px;box-shadow:0 20px 50px rgba(0,0,0,.25);z-index:30;display:flex;gap:16px;align-items:center}
+.tap{position:absolute;width:70px;height:70px;border-radius:50%;border:4px solid rgba(255,255,255,.95);background:rgba(255,255,255,.25);transform:translate(-50%,-50%);z-index:40;box-shadow:0 0 0 3px rgba(0,0,0,.15)}
+</style></head>
+<body>
+<div id="stage">
+  <!-- 3D background -->
+  <div id="bgph" class="layer"></div>
+  <img id="bg" alt="">
+  <div id="bgtint" class="layer"></div>
+
+  <!-- battery scene -->
+  <div id="sBatt" class="layer" style="background:radial-gradient(ellipse at 50% 60%,#1a0d10 0%,#06070b 70%)">
+    <svg id="dash" width="1920" height="1080" style="position:absolute;inset:0">
+      <defs>
+        <radialGradient id="redglow"><stop offset="0" stop-color="#ff3b30" stop-opacity=".45"/><stop offset="1" stop-color="#ff3b30" stop-opacity="0"/></radialGradient>
+        <linearGradient id="gaugeG" x1="0" x2="1"><stop offset="0" stop-color="#ff3b30"/><stop offset=".5" stop-color="#F59E0B"/><stop offset="1" stop-color="#8BC34A"/></linearGradient>
+      </defs>
+      <circle cx="960" cy="560" r="420" fill="url(#redglow)" id="battGlow"/>
+      <circle cx="960" cy="560" r="300" fill="none" stroke="#1d2230" stroke-width="26"/>
+      <circle id="battArc" cx="960" cy="560" r="300" fill="none" stroke="#ff3b30" stroke-width="26" stroke-linecap="round" transform="rotate(-90 960 560)" stroke-dasharray="1885" stroke-dashoffset="0"/>
+      <g id="ticks"></g>
+      <text id="battPct" x="960" y="590" text-anchor="middle" font-family="Montserrat" font-weight="800" font-size="150" fill="#fff">8%</text>
+      <text id="battRange" x="960" y="650" text-anchor="middle" font-family="Inter" font-weight="600" font-size="32" fill="#ff6b61" letter-spacing="3">AUTONOMIA 12 KM</text>
+      <g id="battIcon" transform="translate(925 420)"><rect x="0" y="6" width="62" height="32" rx="6" fill="none" stroke="#ff3b30" stroke-width="4"/><rect x="62" y="15" width="6" height="14" rx="2" fill="#ff3b30"/><rect id="battFill" x="5" y="11" width="6" height="22" rx="2" fill="#ff3b30"/></g>
+    </svg>
+    <div id="battTxt" class="headline" style="left:0;right:0;top:110px;text-align:center;font-size:64px"></div>
+  </div>
+
+  <!-- phone scenes -->
+  <div id="sPhone" class="layer">
+    <div id="phoneBg" class="layer" style="background:radial-gradient(ellipse at 70% 50%,#13305a 0%,#0a1428 45%,#04070f 100%)"></div>
+    <div id="phoneGlow" class="layer" style="background:radial-gradient(circle at 68% 52%,rgba(139,195,74,.28) 0%,rgba(139,195,74,0) 38%)"></div>
+    <div id="phoneHead" class="headline" style="left:150px;top:380px;font-size:92px;width:820px"></div>
+    <div id="phoneSub" class="sub" style="left:154px;top:620px;font-size:30px;width:760px"></div>
+    <div id="phone" class="phone" style="left:1130px;top:90px">
+      <div class="screen" id="screen">
+        <div class="notch"></div>
+        <div class="status"><span>18:12</span><span>▮▮▮ 5G ▭</span></div>
+        <div class="navbar"><span>FIND&amp;CHARGE</span><small>| davide</small></div>
+        <div class="mapwrap" id="mapwrap"><svg id="map" width="412" height="754"></svg></div>
+        <div class="mapwrap" id="chargeScr" style="z-index:11"></div>
+        <div class="sheet" id="sheet"></div>
+        <div class="toast" id="toast"></div>
+        <div class="tap" id="tap"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- QR check-in overlay (during plug-in shot) -->
+  <div id="qrBox" class="phone" style="left:1390px;top:250px;width:360px;height:720px;border-radius:54px;padding:12px">
+    <div class="screen" style="border-radius:44px;background:#fff">
+      <div class="status" style="height:48px;font-size:15px"><span>18:29</span><span>5G ▭</span></div>
+      <div style="position:absolute;top:70px;left:0;right:0;text-align:center;font:800 21px Montserrat;color:#0D1B3D">QR Code Prenotazione</div>
+      <div style="position:absolute;top:104px;left:0;right:0;text-align:center" class="muted">Colonnina Dalmine Centro · 18:30</div>
+      <div style="position:absolute;top:150px;left:44px;width:248px;height:248px;padding:14px;border-radius:18px;background:#fff;box-shadow:0 0 0 2px #e7eaee">
+        <img src="qr.svg" style="width:100%;height:100%;display:block">
+        <div id="scanLine" style="position:absolute;left:8px;right:8px;height:4px;border-radius:2px;background:#8BC34A;box-shadow:0 0 18px 4px rgba(139,195,74,.8)"></div>
+      </div>
+      <div id="qrOk" style="position:absolute;top:430px;left:24px;right:24px;height:64px;border-radius:16px;background:#2E7D32;color:#fff;display:flex;align-items:center;justify-content:center;gap:10px;font:700 19px Inter">✓ Check-in effettuato</div>
+      <div id="qrWait" style="position:absolute;top:430px;left:24px;right:24px;height:64px;border-radius:16px;background:#f1f3f5;color:#3a4356;display:flex;align-items:center;justify-content:center;font:600 17px Inter">Avvicina al lettore…</div>
+    </div>
+  </div>
+
+  <!-- overlay headlines on 3D -->
+  <div id="ovHead" class="headline" style="left:130px;bottom:150px;font-size:96px;width:1500px"></div>
+  <div id="ovSub" class="sub" style="left:134px;bottom:96px;font-size:30px"></div>
+  <div id="badge" style="position:absolute;left:130px;top:120px"></div>
+
+  <!-- end card -->
+  <div id="sEnd" class="layer" style="background:radial-gradient(ellipse at 50% 42%,#123064 0%,#0a1630 40%,#03060d 100%)">
+    <div id="endRing" class="layer"></div>
+    <div id="endLogo" style="position:absolute;left:50%;top:150px;width:300px;height:330px;transform:translateX(-50%)"></div>
+    <div id="endName" style="position:absolute;left:0;right:0;top:500px;text-align:center;font:900 112px Montserrat;letter-spacing:4px"></div>
+    <div id="endTag" style="position:absolute;left:0;right:0;top:648px;text-align:center;font:600 46px Inter;color:#cfe6b4"></div>
+    <div id="endCred" style="position:absolute;left:0;right:0;bottom:80px;text-align:center;font:500 22px Inter;color:rgba(255,255,255,.6);letter-spacing:1px"></div>
+  </div>
+
+  <canvas id="grain" class="layer" width="960" height="540" style="width:1920px;height:1080px"></canvas>
+  <div id="vig" class="layer"></div>
+  <div id="flash" class="layer" style="background:#fff;opacity:0"></div>
+  <div id="black" class="layer" style="background:#000;opacity:0"></div>
+</div>
+
+<script>
+const FPS=30;
+const $=id=>document.getElementById(id);
+const clamp=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));
+const lin=(t,a,b)=>clamp((t-a)/(b-a));
+const eo=x=>1-Math.pow(1-x,3);            // easeOutCubic
+const eio=x=>x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2;
+const back=x=>{const c=1.70158,c3=c+1;return 1+c3*Math.pow(x-1,3)+c*Math.pow(x-1,2)};
+const mix=(a,b,k)=>a+(b-a)*k;
+function rng(seed){let s=seed>>>0;return()=>{s=(s*1664525+1013904223)>>>0;return s/4294967296}}
+window.HAS3D={};
+
+/* ---------- kinetic text ---------- */
+function kinetic(el,lines,t0,t,opts={}){
+  // lines: array of [text,color]; words reveal with slide-up mask
+  const stagger=opts.stagger??0.09, dur=opts.dur??0.45, out=opts.out;
+  let k=0,html='';
+  lines.forEach((ln,li)=>{
+    const [txt,col]=ln; const words=txt.split(' ');
+    words.forEach(w=>{
+      const p=eo(lin(t,t0+k*stagger,t0+k*stagger+dur));
+      let o=p, y=(1-p)*110;
+      if(out!==undefined){const q=eio(lin(t,out,out+0.3));y-=q*110;o*=1-q}
+      html+=`<span class="mask"><span class="word" style="color:${col||'#fff'};transform:translateY(${y}%);opacity:${o}">${w}</span></span> `;
+      k++;
+    });
+    if(li<lines.length-1)html+='<br>';
+  });
+  el.innerHTML=html;
+}
+
+/* ---------- map ---------- */
+const PINS=[ // x,y,color,state
+ [96,170,'#2AAD27'],[300,120,'#CB2B3E'],[250,300,'#FFD326'],[120,470,'#7B7B7B'],[318,420,'#2AAD27'],[210,560,'#CB2B3E'],[350,620,'#FFD326'],[60,640,'#2AAD27']];
+const TARGET=[230,395];
+(function buildMap(){
+  const r=rng(7); let s='';
+  s+='<rect width="412" height="754" fill="#f2efe9"/>';
+  // park & water
+  s+='<path d="M-20 520 Q 90 470 170 540 T 330 600 L 330 780 L -20 780Z" fill="#d6ecc6"/>';
+  s+='<path d="M-20 300 C 80 280 140 360 230 330 S 380 250 440 280" stroke="#aad3df" stroke-width="26" fill="none"/>';
+  // blocks
+  for(let gx=0;gx<9;gx++)for(let gy=0;gy<16;gy++){
+    const x=gx*50-10+r()*6,y=gy*52-10+r()*6;
+    if(r()<.82)s+=`<rect x="${x}" y="${y}" width="${36+r()*6}" height="${36+r()*8}" rx="3" fill="${r()<.15?'#e3ddd3':'#e8e4dd'}"/>`;
+  }
+  // roads
+  const road=(d,w,c)=>s+=`<path d="${d}" stroke="#cfcac0" stroke-width="${w+3}" fill="none" stroke-linecap="round"/><path d="${d}" stroke="${c}" stroke-width="${w}" fill="none" stroke-linecap="round"/>`;
+  for(let i=0;i<10;i++)road(`M${i*50-14} -10 L${i*50-14+ (r()-.5)*20} 770`,7,'#fff');
+  for(let i=0;i<16;i++)road(`M-10 ${i*52-12} L 430 ${i*52-12+(r()-.5)*16}`,7,'#fff');
+  road('M-20 690 C 120 600 240 520 440 420',14,'#fcd6a4');
+  road('M150 -20 C 170 200 200 420 260 780',13,'#fcd6a4');
+  s+='<text x="20" y="676" font-family="Inter" font-size="12" fill="#7a6f60" transform="rotate(-24 20 676)">Viale Marconi</text>';
+  s+='<text x="168" y="120" font-family="Inter" font-size="12" fill="#7a6f60" transform="rotate(84 168 120)">Via Provinciale</text>';
+  s+='<text x="40" y="560" font-family="Inter" font-size="13" font-weight="600" fill="#5c8a49">Parco Camozzi</text>';
+  // pins (leaflet style)
+  s+='<g id="pins"></g><g id="me"></g>';
+  $('map').innerHTML=s;
+})();
+function pinSVG(x,y,c,sc=1,lift=0){
+  return `<g transform="translate(${x} ${y-lift}) scale(${sc})"><ellipse cx="0" cy="${lift/sc}" rx="9" ry="4" fill="rgba(0,0,0,.25)"/><path d="M0 0 C -4 -10 -14 -18 -14 -28 A14 14 0 1 1 14 -28 C 14 -18 4 -10 0 0Z" fill="${c}" stroke="rgba(0,0,0,.35)" stroke-width="1.2"/><circle cx="0" cy="-28" r="5.5" fill="#fff"/></g>`;
+}
+
+/* ---------- phone sheets ---------- */
+function stars(n,size=18,fill=5){let s='';for(let i=0;i<5;i++){const f=clamp(fill-i);s+=`<span style="position:relative;display:inline-block;font-size:${size}px;color:#d7dbe2">★<span style="position:absolute;left:0;top:0;overflow:hidden;width:${f*100}%;color:#FFD700">★</span></span>`}return s}
+function sheetInfo(){return `<div class="grab"></div>
+ <div class="row" style="justify-content:space-between"><div class="st-name">Colonnina Dalmine Centro</div></div>
+ <div class="row" style="margin-top:6px">${stars(0,17,4.7)}<b style="font-size:15px;margin-left:4px">4.7/5.0</b><span class="muted">· 128 recensioni</span></div>
+ <div class="muted" style="margin-top:8px">Indirizzo: Viale Marconi 12, Dalmine</div>
+ <div class="row" style="margin-top:10px;gap:8px"><span class="tag" style="background:#e8f5e9;color:#2E7D32">● Libera</span><span class="tag" style="background:#e3f2fd;color:#1565C0">⚡ Fast · 22 kW</span><span class="tag" style="background:#fff7e6;color:#b26a00">Type 2</span></div>`}
+function sheetBook(sel,pressed){
+ return sheetInfo()+`
+ <div class="lbl">Giorno</div><div class="field"><span>Oggi, 19 novembre</span><span>📅</span></div>
+ <div class="lbl">Orario (slot 30 min)</div>
+ <div class="row" style="gap:8px"><div class="chip off">17:30</div><div class="chip">18:00</div><div class="chip ${sel?'sel':''}">18:30</div><div class="chip">19:00</div></div>
+ <div class="lbl">Seleziona l'auto da ricaricare</div><div class="field"><span>🚗 Fiat 500e · AB123CD</span><span style="color:#ff3b30;font-weight:700">8%</span></div>
+ <div class="btn" style="transform:scale(${pressed?0.96:1});background:${pressed?'#1B5E20':'#2E7D32'}">Prenota ora</div>`}
+
+/* ---------- end logo (vector redraw of the team logo) ---------- */
+$('endLogo').innerHTML=`<svg viewBox="0 0 220 240" width="300" height="330">
+ <defs><filter id="lg" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="10"/></filter></defs>
+ <g id="logoGlow" opacity=".0" filter="url(#lg)"><path d="M110 228 C 60 170 22 132 22 92 A88 88 0 1 1 198 92 C 198 132 160 170 110 228Z" fill="#8BC34A"/></g>
+ <path d="M110 228 C 60 170 22 132 22 92 A88 88 0 1 1 198 92 C 198 132 160 170 110 228Z" fill="#8BC34A" stroke="#0D1B3D" stroke-width="7" stroke-linejoin="round"/>
+ <line x1="62" y1="150" x2="22" y2="196" stroke="#0D1B3D" stroke-width="26" stroke-linecap="round"/>
+ <line x1="62" y1="150" x2="22" y2="196" stroke="#1E88E5" stroke-width="15" stroke-linecap="round"/>
+ <circle cx="112" cy="92" r="60" fill="#1E88E5" stroke="#0D1B3D" stroke-width="7"/>
+ <circle cx="112" cy="92" r="42" fill="#fff" stroke="#0D1B3D" stroke-width="6"/>
+ <path d="M140 66 A36 36 0 0 1 146 100" stroke="#0D1B3D" stroke-width="4" fill="none" stroke-linecap="round"/>
+ <path id="bolt" d="M118 58 L94 98 L110 98 L102 128 L130 84 L114 84 L124 58Z" fill="#F59E0B" stroke="#0D1B3D" stroke-width="4" stroke-linejoin="round"/>
+ <g transform="translate(150 168) rotate(-40)"><rect x="-12" y="-9" width="24" height="18" rx="4" fill="#fff" stroke="#0D1B3D" stroke-width="4"/><line x1="12" y1="-4" x2="22" y2="-4" stroke="#0D1B3D" stroke-width="4"/><line x1="12" y1="4" x2="22" y2="4" stroke="#0D1B3D" stroke-width="4"/><path d="M-12 0 C -26 0 -30 14 -40 14" stroke="#0D1B3D" stroke-width="4" fill="none"/></g>
+</svg>`;
+
+/* ---------- grain ---------- */
+const gctx=$('grain').getContext('2d'); const gimg=gctx.createImageData(960,540);
+function grain(frame){const r=rng(frame*977+13);const d=gimg.data;for(let i=0;i<d.length;i+=4){const v=r()*255|0;d[i]=d[i+1]=d[i+2]=v;d[i+3]=255}gctx.putImageData(gimg,0,0)}
+
+/* ---------- background frames ---------- */
+let bgSrc='';
+function setBg(shot,idx,n){
+  idx=Math.max(1,Math.min(n,idx));
+  const src=`frames/${shot}/${String(idx).padStart(4,'0')}.png`;
+  if(window.HAS3D[shot]){ $('bg').style.display='block'; if(bgSrc!==src){bgSrc=src;$('bg').src=src;} }
+  else { $('bg').style.display='none'; }
+  $('bgph').style.background={shot1:'radial-gradient(circle at 60% 55%,#5a1418,#0b0d14 60%)',shot2:'radial-gradient(circle at 60% 55%,#1f5a26,#0b0d14 60%)',shot3:'radial-gradient(circle at 50% 60%,#1b3a6b,#0b0d14 60%)',shot4:'radial-gradient(circle at 50% 50%,#1b6b6b,#05070d 60%)'}[shot];
+}
+
+/* ---------- main ---------- */
+const show=(id,o)=>{const e=$(id);e.style.opacity=o;e.style.visibility=o<=0.001?'hidden':'visible'};
+function renderAt(t){
+  const f=Math.round(t*FPS);
+  grain(f);
+  // reset overlays
+  ['sBatt','sPhone','qrBox','sEnd','ovHead','ovSub','badge'].forEach(i=>show(i,0));
+  $('bgtint').style.background='none'; $('bg').style.filter='none'; $('bg').style.transform='none';
+  $('flash').style.opacity=0; $('black').style.opacity=0;
+
+  /* 0-3 HOOK (shot1) */
+  if(t<3.0){
+    setBg('shot1',Math.floor(t*FPS)+1,90);
+    $('bg').style.filter='saturate(.75) contrast(1.05)';
+    $('bgtint').style.background='linear-gradient(0deg,rgba(5,6,12,.75) 0%,rgba(5,6,12,0) 55%)';
+    show('ovHead',1); show('ovSub',lin(t,1.6,2.0));
+    kinetic($('ovHead'),[['Arrived.','#fff'],['Charger taken.','#ff6b61']],0.25,t,{stagger:.22,out:2.72});
+    $('ovSub').textContent='Again.'; $('ovSub').style.fontSize='44px';$('ovSub').style.fontWeight='700';$('ovSub').style.color='rgba(255,255,255,'+(1-lin(t,2.72,2.95))+')';
+    $('black').style.opacity=1-lin(t,0,.35);
+  }
+  /* 3-6 BATTERY */
+  else if(t<6.0){
+    show('sBatt',1);
+    const lt=t-3;
+    const pct=Math.round(mix(14,8,eo(lin(lt,0,1.2))));
+    $('battPct').textContent=pct+'%';
+    $('battArc').setAttribute('stroke-dashoffset',1885*(1-pct/100));
+    const pulse=.55+.45*Math.sin(lt*Math.PI*2*1.3);
+    $('battGlow').setAttribute('opacity',pulse);
+    $('battFill').setAttribute('opacity',.4+.6*(Math.sin(lt*14)>0?1:.2));
+    kinetic($('battTxt'),[['No free charger nearby.','#fff']],0.15,lt,{stagger:.07,out:1.55});
+    if(lt>1.6){kinetic($('battTxt'),[['Sound familiar?','#ff6b61']],1.75,lt,{stagger:.1,out:2.75});}
+    const z=1+lt*.03; $('dash').style.transform=`scale(${z})`;
+    $('black').style.opacity=1-lin(t,3,3.25);
+    $('black').style.opacity=Math.max(+$('black').style.opacity,lin(t,5.8,6.0));
+  }
+  /* 6-14 PHONE: find + book */
+  else if(t<14.0){
+    show('sPhone',1);$('chargeScr').style.display='none';$('phoneBg').style.opacity=1;
+    const lt=t-6;
+    const pin=eo(lin(lt,0,.9));
+    $('phone').style.transform=`translateY(${(1-pin)*160}px) rotate(${(1-pin)*6}deg) scale(${.94+.06*pin})`;
+    $('phone').style.opacity=pin;
+    // map zoom/pan
+    const zoom=mix(1,1.25,eio(lin(lt,1.8,3.0)));
+    const pan2=eio(lin(lt,3.7,4.2))*215;
+    $('map').style.transform=`translateY(${-pan2}px) scale(${zoom}) translate(${-(zoom-1)*40}px,${-(zoom-1)*170}px)`;
+    $('map').style.transformOrigin='0 0';
+    // pins drop
+    let ps='';PINS.forEach((p,i)=>{const d=back(lin(lt,.6+i*.07,1.0+i*.07));ps+=pinSVG(p[0],p[1],p[2],clamp(d,0,1.2),(1-clamp(d))*40)});
+    const tp=back(lin(lt,1.2,1.6)); const sel=lt>2.25;
+    ps+=pinSVG(TARGET[0],TARGET[1],'#2AAD27',clamp(tp,0,1.2)*(sel?1.35:1),(1-clamp(tp))*40);
+    $('pins').innerHTML=ps;
+    const pr=(lt*1.4)%1;
+    $('me').innerHTML=`<circle cx="180" cy="520" r="${10+pr*26}" fill="rgba(48,80,0,${.35*(1-pr)})"/><circle cx="180" cy="520" r="11" fill="#305000" stroke="#fff" stroke-width="4"/>`;
+    // tap on pin at 2.1s
+    const tapA=lin(lt,1.9,2.05)*(1-lin(lt,2.25,2.5));
+    const tapB=lin(lt,6.15,6.3)*(1-lin(lt,6.5,6.75));
+    const tapC=lin(lt,4.25,4.4)*(1-lin(lt,4.55,4.8));
+    const tapEl=$('tap');
+    if(tapA>0){tapEl.style.left=(TARGET[0]*zoom-(zoom-1)*40*zoom)+'px';tapEl.style.top=(118+TARGET[1]*zoom-(zoom-1)*170*zoom-36)+'px';tapEl.style.opacity=tapA;tapEl.style.transform=`translate(-50%,-50%) scale(${1.2-.25*tapA})`}
+    else if(tapC>0){tapEl.style.left='252px';tapEl.style.top='618px';tapEl.style.opacity=tapC;tapEl.style.transform=`translate(-50%,-50%) scale(${1.2-.25*tapC})`}
+    else if(tapB>0){tapEl.style.left='206px';tapEl.style.top='826px';tapEl.style.opacity=tapB;tapEl.style.transform=`translate(-50%,-50%) scale(${1.2-.25*tapB})`}
+    else tapEl.style.opacity=0;
+    // sheet
+    const sh=$('sheet');
+    if(lt<4.0){sh.innerHTML=sheetInfo();const k=eo(lin(lt,2.3,2.8));sh.style.transform=`translateY(${(1-k)*110}%)`;}
+    else {sh.innerHTML=sheetBook(lt>4.35,lt>6.2&&lt<6.5);const k=eio(lin(lt,3.7,4.1));sh.style.transform='none';sh.style.paddingTop=mix(16,16,k)+'px';}
+    // toast confirmation
+    const tk=back(lin(lt,6.55,6.95));
+    const toast=$('toast');
+    toast.style.opacity=clamp(tk);toast.style.transform=`translateY(${(1-clamp(tk))*-40}px) scale(${.9+.1*clamp(tk,0,1.05)})`;
+    toast.innerHTML=`<div style="width:56px;height:56px;border-radius:50%;background:#2E7D32;display:flex;align-items:center;justify-content:center;color:#fff;font-size:32px;font-weight:800">✓</div><div><div style="font:800 20px Montserrat;color:#0D1B3D">Prenotazione confermata!</div><div class="muted">Oggi · 18:30 – 19:00 · Dalmine Centro</div></div>`;
+    // headline
+    if(lt<3.85){kinetic($('phoneHead'),[['Find a charger','#fff'],['near you.','#8BC34A']],.5,lt,{stagger:.08,out:3.55});
+      $('phoneSub').textContent='Live map: free, booked and busy stations at a glance.';$('phoneSub').style.opacity=lin(lt,1.0,1.4)*(1-lin(lt,3.5,3.8));}
+    else {kinetic($('phoneHead'),[['Book your slot','#fff'],['in advance.','#8BC34A']],3.9,lt,{stagger:.08});
+      $('phoneSub').textContent='Pick a 30-minute slot and your car. Done.';$('phoneSub').style.opacity=lin(lt,4.4,4.8);}
+    $('phoneGlow').style.opacity=.6+.4*Math.sin(lt*2);
+    $('black').style.opacity=1-lin(t,6,6.25);
+    $('flash').style.opacity=.22*(1-lin(t,12.55,12.8))*lin(t,12.5,12.55);
+  }
+  /* 14-16.5 RESERVED (shot2) */
+  else if(t<16.5){
+    const lt=t-14;
+    setBg('shot2',Math.floor(lt*FPS)+1,75);
+    $('bgtint').style.background='linear-gradient(0deg,rgba(5,10,8,.7) 0%,rgba(5,10,8,0) 50%)';
+    show('ovHead',1);
+    kinetic($('ovHead'),[["It's waiting",'#fff'],['for you.','#8BC34A']],.2,lt,{stagger:.1,out:2.25});
+    show('badge',eo(lin(lt,.5,.9))*(1-lin(lt,2.2,2.45)));
+    $('badge').innerHTML=`<div class="pill" style="background:rgba(46,125,50,.92);box-shadow:0 10px 40px rgba(76,175,80,.45)"><span style="width:14px;height:14px;border-radius:50%;background:#b9f6ca;box-shadow:0 0 12px #b9f6ca"></span>RISERVATA PER TE · 18:30</div>`;
+    $('flash').style.opacity=.8*(1-lin(t,14,14.25));
+  }
+  /* 16.5-22.5 PLUG-IN (shot3) */
+  else if(t<22.5){
+    const lt=t-16.5;
+    setBg('shot3',Math.floor(lt*FPS)+1,180);
+    $('bgtint').style.background='linear-gradient(0deg,rgba(4,7,14,.72) 0%,rgba(4,7,14,0) 45%)';
+    // QR check-in phone
+    const q=eo(lin(lt,.3,.8))*(1-eio(lin(lt,2.6,3.0)));
+    show('qrBox',q); $('qrBox').style.transform=`translateY(${(1-q)*80}px) rotate(${(1-q)*4}deg)`;
+    const sl=lin(lt,.7,1.6); $('scanLine').style.top=(8+Math.abs(Math.sin(sl*Math.PI*1.5))*228)+'px'; $('scanLine').style.opacity=lt<1.7?1:0;
+    $('qrOk').style.opacity=lin(lt,1.7,1.85); $('qrWait').style.opacity=1-lin(lt,1.7,1.85);
+    show('ovHead',1);
+    const W=[['Scan.','#fff',.4],['Plug.','#fff',2.6],['Charge.','#8BC34A',4.4]];
+    let html='';W.forEach(([w,c,a])=>{const p=eo(lin(lt,a,a+.45));html+=`<span class="mask"><span class="word" style="color:${c};transform:translateY(${(1-p)*110}%);opacity:${p}">${w}</span></span> `});
+    $('ovHead').innerHTML=html; $('ovHead').style.opacity=1-lin(lt,5.7,6);
+    $('flash').style.opacity=.0;
+  }
+  /* 22.5-24.5 CLOSE-UP (shot4) */
+  else if(t<24.5){
+    const lt=t-22.5;
+    setBg('shot4',Math.floor(lt*FPS)+1,60);
+    $('flash').style.opacity=.6*lin(lt,.95,1.0)*(1-lin(lt,1.0,1.25));
+  }
+  /* 24.5-27 CHARGING + RATING */
+  else if(t<27.0){
+    const lt=t-24.5;
+    setBg('shot4',60,60);
+    $('bg').style.filter='blur(18px) brightness(.55)';$('bg').style.transform='scale(1.08)';
+    show('sPhone',1);$('phoneBg').style.opacity=.0;$('phoneGlow').style.opacity=.8;
+    const k=eo(lin(lt,0,.5));
+    $('phone').style.transform=`translateY(${(1-k)*120}px) scale(${.96+.04*k})`;$('phone').style.opacity=k;
+    $('sheet').style.transform='translateY(110%)';$('toast').style.opacity=0;$('tap').style.opacity=0;
+    $('pins').innerHTML='';
+    const pct=Math.round(mix(8,80,eio(lin(lt,.2,1.7))));
+    const C=2*Math.PI*120;
+    const rate=lin(lt,1.6,2.1)*5;
+    $('chargeScr').style.display='block';$('chargeScr').innerHTML=`<div style="position:absolute;inset:0;background:#fcfcfc;padding:26px 24px">
+      <div style="font:800 22px Montserrat;color:#0D1B3D">Ciao davide!</div><div class="muted">Ecco la tua ricarica in corso</div>
+      <svg width="364" height="300" style="margin-top:14px"><circle cx="182" cy="150" r="120" stroke="#e8edf2" stroke-width="22" fill="none"/>
+        <circle cx="182" cy="150" r="120" stroke="#27AE60" stroke-width="22" fill="none" stroke-linecap="round" transform="rotate(-90 182 150)" stroke-dasharray="${C}" stroke-dashoffset="${C*(1-pct/100)}"/>
+        <text x="182" y="160" text-anchor="middle" font-family="Montserrat" font-weight="800" font-size="64" fill="#0D1B3D">${pct}%</text>
+        <text x="182" y="196" text-anchor="middle" font-family="Inter" font-weight="600" font-size="16" fill="#27AE60">⚡ IN CARICA · 22 kW</text></svg>
+      <div class="field" style="margin-top:8px"><span>🚗 Fiat 500e · AB123CD</span><span class="muted">Dalmine Centro</span></div>
+      <div class="lbl" style="margin-top:22px">Dai un Voto al Servizio</div>
+      <div>${stars(0,40,rate)}</div>
+      <div class="muted" style="margin-top:6px;opacity:${lin(lt,2.1,2.25)}">Voto salvato: 5/5</div></div>`;
+    kinetic($('phoneHead'),[['Charge.','#8BC34A'],['Rate. Go.','#fff']],.2,lt,{stagger:.12});
+    $('phoneSub').textContent='Track your charge live and review every station.';$('phoneSub').style.opacity=lin(lt,.7,1.1);
+    $('black').style.opacity=lin(t,26.75,27.0);
+  }
+  /* 27-30 END CARD */
+  else {
+    const lt=t-27;
+    show('sEnd',1);
+    const k=back(lin(lt,.05,.6));
+    $('endLogo').style.transform=`translateX(-50%) translateY(${(1-clamp(k))*40}px) scale(${clamp(k,0,1.1)})`;
+    $('logoGlow').setAttribute('opacity',.35+.25*Math.sin(lt*4));
+    $('bolt').setAttribute('fill',lt>.6&&lt<.75?'#fff':'#F59E0B');
+    const n=eo(lin(lt,.45,.9));
+    $('endName').innerHTML=`<span style="color:#fff">FIND</span><span style="color:#F59E0B"> &amp; </span><span style="color:#8BC34A">CHARGE</span>`;
+    $('endName').style.opacity=n;$('endName').style.letterSpacing=mix(30,4,n)+'px';
+    kinetic($('endTag'),[['Your charger, guaranteed.','#cfe6b4']],1.0,lt,{stagger:.08});
+    $('endCred').innerHTML='Progetto di Ingegneria del Software · Università degli Studi di Bergamo · A.A. 2025/26<br><span style="opacity:.8">T. Maistrello · D. Mascheretti · C. Morgera · F. Valenari</span>';
+    $('endCred').style.opacity=lin(lt,1.5,2.0);
+    const rr=(lt*0.6)%1;
+    $('endRing').style.background=`radial-gradient(circle at 50% 30%,rgba(139,195,74,0) ${200+rr*600}px,rgba(139,195,74,${.12*(1-rr)}) ${210+rr*600}px,rgba(139,195,74,0) ${240+rr*600}px)`;
+    $('black').style.opacity=lin(t,29.6,30);
+    $('flash').style.opacity=.5*(1-lin(lt,0,.3));
+  }
+}
+window.renderAt=renderAt;
+window.waitImg=()=>new Promise(r=>{const i=$('bg');if(i.style.display==='none'||i.complete)r();else{i.onload=i.onerror=()=>r()}});
+</script>
+</body></html>
